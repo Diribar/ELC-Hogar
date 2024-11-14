@@ -344,16 +344,15 @@ module.exports = {
 			}
 
 			// Obtiene la fecha inicial para acumulados
-			let proximaFecha = ultFechaHistNavegs // condición si hay logins acums
+			let fechaSig = ultFechaHistNavegs // condición si hay logins acums
 				? procesos.sumaUnDia(ultFechaHistNavegs) // le suma un día al último registro
 				: primFechaDiarioNavegs; // la fecha del primer registro
 
 			// Loop mientras el día sea menor al actual
-			while (proximaFecha < hoy) {
+			while (fechaSig < hoy) {
 				// Variables
-				// const diaSem = diasSemana[new Date(proximaFecha).getUTCDay()];
-				const anoMes = proximaFecha.slice(0, 7);
-				const navegantes = navegsDelDia.filter((n) => n.fecha == proximaFecha);
+				const anoMes = fechaSig.slice(0, 7);
+				const navegantes = navegsDelDia.filter((n) => n.fecha == fechaSig);
 
 				// Cantidad y fidelidad de navegantes
 				const logins = navegantes.filter((n) => n.usuario_id).length;
@@ -362,12 +361,12 @@ module.exports = {
 
 				// Guarda el resultado
 				await baseDeDatos.agregaRegistro("navegsDiarias", {
-					...{fecha: proximaFecha, anoMes},
+					...{fecha: fechaSig, anoMes},
 					...{logins, usSinLogin, visitas},
 				});
 
 				// Obtiene la fecha siguiente
-				proximaFecha = procesos.sumaUnDia(proximaFecha);
+				fechaSig = procesos.sumaUnDia(fechaSig);
 			}
 
 			// Elimina las 'navegsDelDia' anteriores
@@ -380,8 +379,8 @@ module.exports = {
 			// Obtiene la última fecha del historial
 			const ultRegHistClientes = await baseDeDatos.obtienePorCondicionElUltimo("clientesAcum");
 			const ultFechaHistClientes = ultRegHistClientes ? ultRegHistClientes.fecha : "2024-10-03";
-			let proximaFecha = procesos.sumaUnDia(ultFechaHistClientes); // le suma un día al último registro
-			if (proximaFecha >= hoy) return;
+			let fechaSig = procesos.sumaUnDia(ultFechaHistClientes); // le suma un día al último registro
+			if (fechaSig >= hoy) return;
 
 			// Obtiene los clientes
 			const usuarios = baseDeDatos.obtieneTodos("usuarios");
@@ -392,83 +391,36 @@ module.exports = {
 				.then((n) => n.map((m) => ({...m, visitaCreadaEn: m.visitaCreadaEn.toISOString().slice(0, 10)})));
 
 			// Loop mientras el día sea menor al actual
-			while (proximaFecha < hoy) {
+			while (fechaSig < hoy) {
 				// Obtiene los tipos de cliente según el día
-				const anoMes = proximaFecha.slice(0, 7);
-				const tiposDeCliente = procesos.clientes.tiposDeCliente(clientes, proximaFecha);
+				const anoMes = fechaSig.slice(0, 7);
+				const frecPorCliente = procesos.clientes.frecPorCliente(clientes, fechaSig);
 
 				// Guarda el resultado
-				await baseDeDatos.agregaRegistro("clientesAcum", {fecha: proximaFecha, anoMes, ...tiposDeCliente});
+				await baseDeDatos.agregaRegistro("clientesAcum", {fecha: fechaSig, anoMes, ...frecPorCliente});
 
 				// Obtiene la fecha siguiente
-				proximaFecha = procesos.sumaUnDia(proximaFecha);
+				fechaSig = procesos.sumaUnDia(fechaSig);
 			}
 
 			// Fin
 			return;
 		},
 		urlsDelDia: async () => {
-			// Establece la fecha mínima
-			const fechaMax = new Date().setHours(0, 0, 0);
+			// Variables
+			const fechaMax = new Date(hoy);
+			let espera = [];
 
-			// Obtiene las rutas visitadas en el día
+			// Obtiene las últimas rutas usadas
 			const condicion = {fecha: {[Op.lt]: fechaMax}};
 			const rutasDelDia = await baseDeDatos.obtieneTodosPorCondicion("rutasDelDia", condicion);
-			console.log(417,rutasDelDia);
+			if (!rutasDelDia.length) return;
 
-		},
-		rutasAcum: async () => {
-			return
-			// Variables
-			const rutasAcumUlt = await baseDeDatos.obtienePorCondicionElUltimo("rutasAcum"); // Obtiene el último registro consolidado
-			if (!rutasAcumUlt) return;
-			const distintivos = Object.keys(rutasAcumUlt).filter((n) => n != "id" && n != "fecha");
+			// Procesos
+			espera.push(procesos.urlsDelDia.rutasMasUsadas(rutasDelDia));
 
-			// Establece la fecha mínima
-			let fechaMin = new Date(new Date(rutasAcumUlt.fecha).getTime() + unDia);
-
-			// Rutina por fecha
-			while (fechaMin.toISOString().slice(0, 10) < hoy) {
-				// Variables
-				let espera = [];
-				let fechaMax = new Date(fechaMin.getTime() + unDia); // establece la fecha máxima de corte
-
-				// Obtiene las rutas visitadas en el día
-				const condicion = {fecha: {[Op.and]: {[Op.gte]: fechaMin, [Op.lt]: fechaMax}}};
-				let rutasDelDia = await baseDeDatos.obtieneTodosPorCondicion("rutasDelDia", condicion);
-
-				// Si no hay rutas, aumenta el día e interrumpe el ciclo
-				if (!rutasDelDia.length) {
-					fechaMin = new Date(new Date(fechaMin).getTime() + unDia);
-					continue;
-				}
-
-				// Crea la variable consolidadora, con los métodos y valores iniciales cero
-				const rutasAcum = {fecha: fechaMin};
-				for (const distintivo of distintivos) rutasAcum[distintivo] = 0;
-
-				// Rutina por ruta visitada
-				for (let rutaPorUrl of rutasDelDia) {
-					// Aumenta el valor del método
-					const distintivo = procesos.clientes.rutasDistintivo(rutaPorUrl.ruta);
-					if (distintivo) rutasAcum[distintivo]++;
-				}
-
-				// Agrega un registro con los valores recogidos
-				espera.push(baseDeDatos.agregaRegistro("rutasAcum", rutasAcum));
-
-				// Elimina las rutas visitadas en ese rango de fechas
-				espera.push(baseDeDatos.eliminaPorCondicion("rutasDelDia", {fecha: {[Op.lt]: fechaMax}}));
-
-				// Fin
-				await Promise.all(espera);
-			}
-
-			// Si se supera la cantidad máxima de registros acumulados, elimina el más antiguo
-			const rutasAcum = await baseDeDatos.obtieneTodos("rutasAcum");
-			const cantEliminar = rutasAcum.length - 30;
-			if (cantEliminar > 0)
-				for (let i = 0; i < cantEliminar; i++) await baseDeDatos.eliminarPorId("rutasAcum", rutasAcum[i].id);
+			// Espera a que se completen los procesos
+			await Promise.all(espera);
 
 			// Fin
 			return;
