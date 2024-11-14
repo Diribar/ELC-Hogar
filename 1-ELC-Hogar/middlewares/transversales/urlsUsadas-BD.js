@@ -1,5 +1,4 @@
 "use strict";
-const procsRT = require("../../rutinas/RT-Procesos");
 
 module.exports = (req, res, next) => {
 	// Si corresponde, interrumpe la función
@@ -14,7 +13,7 @@ module.exports = (req, res, next) => {
 	let {originalUrl: ruta} = req;
 	if (ruta.includes("&")) ruta = ruta.split("&")[0];
 	if (ruta.startsWith("/consultas")) ruta = "/consultas";
-	const distintivo = procsRT.clientes.rutasDistintivo(ruta);
+	const distintivo = comp.distintivosDeRutas(ruta);
 	if (!distintivo) {
 		console.log("¡Atención! - Ruta sin distintivo:", ruta);
 		return next();
