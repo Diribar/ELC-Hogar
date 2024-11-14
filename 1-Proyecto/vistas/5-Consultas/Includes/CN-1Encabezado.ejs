@@ -1,0 +1,51 @@
+<section id="encabezado">
+	<!-- El id debe ser 'tituloPrincipal' por formato compartido -->
+	<div id="tituloPrincipal" class="flexCol">
+		<div id="layoutCheckbox" class="flexRowAlign">
+			<!-- Opciones -->
+			<select name="layout_id" class="prefSimple" required>
+				<option value="" selected class="ocultar">Buscando el layout...</option>
+				<optgroup label="Películas - sólo cuatro">
+					<% for (let layout of cnLayouts.filter(n => n.grupoSelect =="4botones")) { %>
+						<option value="<%= layout.id %>"><%= layout.nombre %></option>
+					<% } %>
+				</optgroup>
+				<optgroup label="Películas - más cantidad">
+					<% for (let layout of cnLayouts.filter(n => n.grupoSelect == "productos")) { %>
+						<option value="<%= layout.id %>"><%= layout.nombre %></option>
+					<% } %>
+				</optgroup>
+				<optgroup label="Relación con la vida">
+					<% for (let layout of cnLayouts.filter(n => n.grupoSelect == "rclvs")) { %>
+						<option value="<%= layout.id %>"><%= layout.nombre %></option>
+					<% } %>
+				</optgroup>
+				<% if (locals.usuario) { %>
+				<optgroup label="Mis listados">
+					<% for (let layout of cnLayouts.filter(n => n.grupoSelect == "loginNeces")) { %>
+						<option value="<%= layout.id %>"><%= layout.nombre %></option>
+					<% } %>
+				</optgroup>
+				<% } %>
+			</select>
+			<div id="checkbox" class="relative">
+				<input type="checkbox" name="excluyeBC">
+				<p class="mostrarLeyenda ocultar"></p>
+			</div>
+		</div>
+		<div id="iconosDelTitulo" class="flexRow">
+			<%- include("MN-Ayuda", {ayudaClass: "compCons", parrafo: "Las imágenes con fondo amarillo significa que tienen relación con la <em>Iglesia Católica</em>.", mensajes: ayudas.map(ayuda => "<span>" + ayuda.nombre + "</span>: " + ayuda.comentario + ".")}) %>
+
+			<!-- Compartir las preferencias -->
+			 <%- include("FM-Compartir", {mostrarLeyenda: "Consulta copiada"}) %>
+
+			<!-- Mostrar filtros -->
+			<div id="toggleFiltrosGlobal" class="iconosAzules scale pointer">
+				<i class="<%= iconos.faSolid %> fa-chevron-right"></i>
+			</div>
+		</div>
+	</div>
+
+	<!-- Contador -->
+	<button id="contadorDeProds" type="text">...</button>
+</section>

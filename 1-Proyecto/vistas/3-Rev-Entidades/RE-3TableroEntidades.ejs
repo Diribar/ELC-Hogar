@@ -1,0 +1,108 @@
+<div id="tituloPrincipal" class="<%= tema %>">
+	<h1 id="titulo"><%= titulo %></h1>
+	<%- include("MN-Ayuda", {mensajes: ["Estos registros están pendientes de revisar. Se necesita revisarlos a todos.", "En todos los casos, la novedad fue propuesta por otro usuario.", "Las <em>ediciones</em> a revisar son de registros aprobados."]}) %>
+</div>
+<!-- Datos -->
+<% let familias, DE %>
+<section id="familias">
+	<div id="primeraColumna" class="columna">
+		<% const revisorPERL = usuario.rolUsuario.revisorPERL %>
+		<% if (revisorPERL && prodsRclvs.ST.length) { %>
+			<% familias = "prodsRclvs" %>
+			<!-- PRODUCTOS Y RCLVS -->
+			<div id="<%= familias %>" class="bloques">
+				<!-- Título y ayuda -->
+				<div class="tituloSecundario">
+					<!-- Título -->
+					<h2>PRODUCTOS Y RCLVS</h2>
+					<%- include("MN-Ayuda", {mensajes: ["Para unificar el motivo o el status"]}) %>
+				</div>
+				<!-- Registros -->
+				<div class="temas">
+					<% const cr = "correccion/" %>
+					<% DE = dataEntry[familias] %>
+					<%- include("RE-Registros", {familias, DE, titulo: "Status c/difs", regs: prodsRclvs.ST, url: cr + "status"}) %>
+				</div>
+			</div>
+		<% } %>
+		<!-- PRODUCTOS -->
+		<div class="bloques">
+			<!-- Título y ayuda -->
+			<% familias = "productos" %>
+			<div class="tituloSecundario">
+				<!-- Título -->
+				<h2><%= familias.toUpperCase() %></h2>
+				<%- include("MN-Ayuda", {mensajes: ["Fecha de la novedad", "Tipo de producto", "Nombre del producto", "Año de lanzamiento"]}) %>
+			</div>
+			<!-- Registros -->
+			<div class="temas">
+				<% const dt = "/detalle/p" %>
+				<% const ed = "/edicion/p" %>
+				<% const rp = "revision/" %>
+				<% DE = dataEntry[familias] %>
+				<% if (revisorPERL) { %>
+					<%- include("RE-Registros", {familias, DE, titulo: "Inactivar", regs: prodsRclvs.IN, url: rp + "inactivar"}) %>
+					<%- include("RE-Registros", {familias, DE, titulo: "Recuperar", regs: prodsRclvs.RC, url: rp + "recuperar"}) %>
+					<%- include("RE-Registros", {familias, DE, titulo: "Ediciones", regs: prods.ED, url: rp + "edicion"}) %>
+					<%- include("RE-Registros", {familias, DE, titulo: "Productos repetidos", regs: prods.RP, url: dt}) %>
+				<% } %>
+				<%- include("RE-Registros", {familias, DE, titulo: "A completar - con Links", regs: prods.SE.filter(n => n.links), url: !revisorPERL ? dt : ed}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "A completar - sin Links", regs: prods.SE.filter(n => !n.links), url: !revisorPERL ? dt : ed}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Altas - con Links", regs: prods.AL.filter(n => n.links), url: !revisorPERL ? dt : (rp + "alta/p")}) %>
+				<%- include("RE-Registros", {familias, DE, titulo: "Altas - sin Links", regs: prods.AL.filter(n => !n.links), url: !revisorPERL ? dt : (rp + "alta/p")}) %>
+				<% if (revisorPERL) { %>
+				<% } %>
+			</div>
+		</div>
+	</div>
+	<% if (usuario.rolUsuario.revisorEnts) { %>
+		<div id="segundaColumna" class="columna">
+			<% if (revisorPERL && mostrarRclvs) { %>
+				<!-- RCLVs -->
+				<div class="bloques" id="rclv">
+					<!-- Título y ayuda -->
+					<div class="tituloSecundario">
+						<!-- Título -->
+						<% familias = "rclvs" %>
+						<h2><%= familias.toUpperCase() %></h2>
+						<%- include("MN-Ayuda", {mensajes: ["Si en las altas se le cambia el nombre a algún registro, debe seguir refiriéndose a la misma entidad."]}) %>
+					</div>
+					<!-- Registros -->
+					<div class="temas">
+						<% let rr = "revision/" %>
+						<% DE = dataEntry[familias] %>
+						<%- include("RE-Registros", {familias, DE, titulo: "Inactivar", regs: rclvs.IN, url: rr + "inactivar"}) %>
+						<%- include("RE-Registros", {familias, DE, titulo: "Recuperar", regs: rclvs.RC, url: rr + "recuperar"}) %>
+						<%- include("RE-Registros", {familias, DE, titulo: "Ediciones", regs: rclvs.ED, url: rr + "edicion"}) %>
+						<%- include("RE-Registros", {familias, DE, titulo: "Altas", regs: rclvs.AL, url: rr + "alta/r"}) %>
+						<%- include("RE-Registros", {familias, DE, titulo: "Solapamiento de Fechas", regs: rclvs.SL, url: rr + "solapamiento/r"}) %>
+						<%- include("RE-Registros", {familias, DE, titulo: "Fecha Móvil", regs: rclvs.FM, url: "/edicion/r"}) %>
+					</div>
+				</div>
+			<% } %>
+			<% if (usuario.rolUsuario.revisorLinks) { %>
+				<!-- LINKS -->
+				<div class="bloques" id="links">
+					<% const {prods} = cantLinksVencPorSem['0']; %>
+					<!-- Título y ayuda -->
+					<div class="tituloSecundario">
+						<!-- Título -->
+						<% familias = "links" %>
+						<h2><%= familias.toUpperCase() %></h2>
+						<div id="linksPends">Pends: <%= prods %></div>
+						<%- include("MN-Ayuda", {mensaje: "Son productos aprobados"}) %>
+					</div>
+					<!-- Gráfico -->
+					<div class="temas">
+						<% DE = dataEntry[familias] %>
+						<div id="cuadro" class="bordeConSombra">
+							<% if (sigProd) { %><a href="/revision/abm-links/p/<%= sigProd.entidad %>/?id=<%= sigProd.id %>"><% } %>
+								<div id="grafico"></div>
+							<% if (sigProd) { %></a><% } %>
+						</div>
+					</div>
+				</div>
+			<% } %>
+		</div>
+	<% } %>
+</section>

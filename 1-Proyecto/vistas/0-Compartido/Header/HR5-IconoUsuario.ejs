@@ -1,0 +1,12 @@
+<div id="iconoUsuario" class="scale" <% if (locals.usuario) { %>title="Hola <%= locals.usuario.apodo %>"<% } %>>
+	<% if (locals.usuario) { %>
+		<div id="imagenUsuario">
+			<% const avatarUsuario = usuario.avatar ? ("/Externa/1-Usuarios/"+ usuario.avatar) : "/publico/imagenes/Avatar/Usuario-SinRostro.jpg" %>
+			<img src="<%= avatarUsuario %>" class="clickIcono">
+		</div>
+	<% } else { %>
+		<a href="/usuarios/login">
+			<i class="fa-regular fa-circle-user iconoHeader" title="Login/Registrarse"></i>
+		</a>
+	<% } %>
+</div>

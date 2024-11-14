@@ -1,0 +1,54 @@
+#cuerpo {
+	flex-direction: row;
+
+	/* Zona de vitreaux */
+	#zonaDeVitreaux {
+		display: flex; flex-direction: column; justify-content: center;
+		max-width: 230px;
+		img {max-height: var(--altoCuerpo);}
+	}
+
+	/* Cartel de Bienvenida */
+	#zonaDeBienvenida {
+		display: flex; flex-direction: column; justify-content: space-evenly; align-items: center; flex-grow: 1;
+		#cartelBienvenida {
+			background: var(--gris-claro); box-shadow: 0px 0px 20px var(--azul-oscuro);
+			padding: 30px; border-radius: 15px; text-align: left; align-self: center;
+			max-width: 80%;
+			h1 {margin: 0; margin-bottom: 20px; text-align: center; color: var(--verde-oscuro); font-size: 1.4rem;}
+			& > ul li {
+				margin-top: 8px; font-size: 1.2rem; color: var(--azul-oscuro); line-height: 1.2;
+				ul {
+					padding-left: 10px;
+					li {margin-top: 0; font-style: italic; color: var(--gris-mas-oscuro); font-weight: bold;}
+				}
+			}
+		}
+
+		/* Zona de Íconos */
+		#sectorIconos {
+			display: flex; justify-content: space-evenly; align-items: center; width: 100%;
+			a {
+				border-radius: 50%; overflow: hidden;
+				border: solid 1px var(--gris-oscuro); box-shadow: 0px 0px 20px var(--gris-oscuro);
+				button {
+					width: 200px; padding: 20px; border-radius: 50%; background: var(--gris-claro);
+					img {max-height: 100px; max-width: 90%; border-radius: 10px; margin-top: 5px; margin-bottom: 5px;}
+					p {
+						font-size: 1.1rem;
+						span {font-weight: bold; font-size: 1.2rem; font-style: italic;}
+					}
+
+					.iconoComb {
+						position: relative; padding: 20px 0;
+						i {
+							font-size: 5rem;
+							&.adentro {position: absolute; left: 43%; top: 50%; translate: -50% -50%;}
+							&.adentro {font-size: 2rem; color: var(--celeste-claro);}
+						}
+					}
+				}
+			}
+		}
+	}
+}

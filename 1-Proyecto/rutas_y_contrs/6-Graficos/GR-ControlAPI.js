@@ -1,0 +1,152 @@
+"use strict";
+
+module.exports = {
+	// Usuarios
+	cantNavegs: async (req, res) => {
+		const navegsAcum = await baseDeDatos.obtieneTodosConOrden("navegsAcum", "fecha");
+		return res.json(navegsAcum);
+	},
+	cantClientes: async (req, res) => {
+		const datos = await baseDeDatos.obtieneTodosConOrden("clientesAcum", "fecha");
+		return res.json(datos);
+	},
+
+	// Productos
+	prodsPorPublico: async (req, res) => {
+		// Variables
+		const publicos = ["mayores", "familia", "menores"];
+		let cfc = {};
+		let vpc = {};
+		let productos = [];
+
+		// Obtiene los productos
+		for (const entidad of ["peliculas", "colecciones"])
+			productos.push(baseDeDatos.obtieneTodosPorCondicion(entidad, {statusRegistro_id: aprobados_ids}, "publico"));
+		productos = await Promise.all(productos).then((n) => n.flat());
+
+		// Cuenta las cantidades
+		let prods = {cfc: productos.filter((n) => n.cfc), vpc: productos.filter((n) => !n.cfc)};
+		for (const publico of publicos) {
+			cfc[publico] = prods.cfc.filter((n) => n.publico && n.publico.grupo == publico).length;
+			vpc[publico] = prods.vpc.filter((n) => n.publico && n.publico.grupo == publico).length;
+		}
+
+		// Fin
+		return res.json([{cfc, vpc}, publicos]);
+	},
+	prodsCfcVpc: async (req, res) => {
+		// Variables
+		let productos = [];
+
+		// Obtiene los productos
+		for (const entidad of ["peliculas", "colecciones"])
+			productos.push(baseDeDatos.obtieneTodosPorCondicion(entidad, {statusRegistro_id: activos_ids}));
+		productos = await Promise.all(productos).then((n) => n.flat());
+
+		// Cuenta las cantidades
+		let prods = {cfc: productos.filter((n) => n.cfc), vpc: productos.filter((n) => !n.cfc)};
+		const aprob = {
+			cfc: prods.cfc.length,
+			vpc: prods.vpc.filter((n) => aprobados_ids.includes(n.statusRegistro_id)).length,
+		};
+		const pend = prods.vpc.length - aprob.vpc;
+
+		// Fin
+		return res.json({aprob, pend});
+	},
+	prodsPorEpocaEstr: async (req, res) => {
+		// Variables
+		const epocasInverso = [...epocasEstreno].reverse();
+		const condicion = {statusRegistro_id: aprobados_ids, anoEstreno: {[Op.ne]: null}, linksGral: {[Op.gt]: 0}};
+		let cfc = {};
+		let vpc = {};
+		let productos = [];
+
+		for (let entidad of ["peliculas", "colecciones"])
+			productos.push(baseDeDatos.obtieneTodosPorCondicion(entidad, condicion));
+		productos = await Promise.all(productos).then((n) => n.flat());
+
+		for (let epoca of epocasInverso) {
+			const cantPelis = productos.filter((n) => n.anoEstreno >= epoca.desde && n.anoEstreno <= epoca.hasta);
+			cfc[epoca.nombre] = cantPelis.filter((n) => n.cfc).length;
+			vpc[epoca.nombre] = cantPelis.filter((n) => !n.cfc).length;
+		}
+
+		// Fin
+		return res.json({cfc, vpc});
+	},
+
+	// RCLVs
+	rclvsRangosSinEfems: async (req, res) => {
+		// Variables
+		let fechas = await obtieneEfemerides();
+
+		// Obtiene rangos entre efemérides
+		fechas.forEach((fecha, i) => {
+			const sig = i + 1 < fechas.length ? i + 1 : 0; // si se llegó al final, empieza desde el comienzo
+			fecha.rango = fechas[sig].id - fecha.id;
+			if (fecha.rango < 0) fecha.rango += 366; // excepción para el último registro
+		});
+
+		// Filtra los registros
+		fechas = fechas.filter((n) => n.rango > 4);
+
+		// Fin
+		return res.json(fechas);
+	},
+
+	// Links
+	linksVencim: async (req, res) =>
+		res.json({cantLinksVencPorSem, primerLunesDelAno, lunesDeEstaSemana, unaSemana, linksSemsEstandar}),
+	linksPorProv: async (req, res) => {
+		// Obtiene los provs
+		let provs = await baseDeDatos.obtieneTodos("linksProvs", "links");
+
+		// Cuenta la cantidad de links
+		provs = provs.map((m) => {
+			m.links = m.links.filter((p) => aprobados_ids.includes(p.statusRegistro_id)).length;
+			return m;
+		});
+
+		// Ordena de mayor a menor, por cantidad de links
+		provs.sort((a, b) => (a.links > b.links ? -1 : 1));
+
+		// Fin
+		return res.json(provs);
+	},
+};
+
+// Funciones
+const obtieneEfemerides = async () => {
+	// Variables
+	const entsRCLV = variables.entidades.rclvs.slice(0, -1);
+	const include = ["personajes", "hechos", "temas", "eventos"];
+	let fechas;
+
+	// Obtiene las fechas con sus RCLV
+	fechas = await baseDeDatos.obtieneTodos("fechasDelAno", include);
+	fechas = fechas.filter((n) => n.id < 400);
+
+	// Concentra los distintos RCLVs en el campo RCLV
+	for (let fecha of fechas) {
+		// Variables
+		fecha.rclvs = [];
+
+		// Rutina
+		for (let entRCLV of entsRCLV)
+			if (fecha[entRCLV].length) {
+				const nombres = fecha[entRCLV].map((n) => n.nombre);
+				fecha.rclvs.push(...nombres);
+			}
+
+		// Elimina info innecesaria
+		for (let prop in fecha) if (!["id", "nombre", "rclvs"].includes(prop)) delete fecha[prop];
+		if (!fecha.rclvs.length) delete fecha.rclvs;
+	}
+
+	// Conserva solo las fechas con efemérides
+	fechas = fechas.filter((n) => n.rclvs);
+
+	// Fin
+	return fechas;
+};

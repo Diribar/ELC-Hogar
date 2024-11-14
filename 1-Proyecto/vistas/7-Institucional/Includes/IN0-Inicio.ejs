@@ -1,0 +1,34 @@
+<!-- Zona de Vitreaux -->
+<%- include("MN-Vitreaux") %>
+
+<!-- Zona de Bienvenida -->
+<div id="zonaDeBienvenida">
+	<div id="cartelBienvenida">
+		<h1>¡Bienvenido a nuestro sitio gratuito de <em>Recomendación de Películas</em>!</h1>
+		<ul>
+			<li>Queremos ayudarte a resolver el típico problema de:
+				<ul>
+					<li>No sé qué película ver</li>
+					<li>Quiero ver una película que me deje algo bueno</li>
+				</ul>
+			</li>
+			<li>Acá te ayudamos a elegir una película con valores afines a la Fe Católica Apostólica Romana, y te derivamos a dónde verla.</li>
+			<li>Intentamos tener en catálogo todas las películas que existan con ese perfil. Si nos falta alguna, nos la podés agregar creándote un usuario.</li>
+			<li>Usamos cookies para que tengas una mejor experiencia de navegación.</li>
+		</ul>
+	</div>
+	<div id="sectorIconos">
+		<a href="/consultas" class="latido">
+			<button class="pointer">
+				<img src="/publico/imagenes/Varios/Movie.jpg">
+				<p>Apretá acá para <span>elegir</span><br>una película</p>
+			</button>
+		</a>
+		<a href="/institucional/quienes-somos">
+			<button class="pointer">
+				<img src="<%= imgInstitucional %>">
+				<p>Un paseo <span>institucional</span><br>por nuestro sitio</p>
+			</button>
+		</a>
+	</div>
+</div>

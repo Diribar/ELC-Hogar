@@ -1,0 +1,10 @@
+<% if (activos_ids.includes(registro.statusRegistro_id)) { %>
+	<!-- Links -->
+	<div id="tituloInfoDetalle" class="relative">
+		<% const oa = comp.obtieneDesdeEntidad.oa(locals.entidad) %>
+		<h3>Links para verl<%= oa %></h3>
+	</div>
+	<%- include("PR1-Detalle-2Links") %>
+<% } %>
+<!-- Información -->
+<%- include("PR1-Detalle-3Info") %>

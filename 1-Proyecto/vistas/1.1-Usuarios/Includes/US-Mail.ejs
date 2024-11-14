@@ -1,0 +1,16 @@
+<% if (codigo == "altaMail") { %>
+	<section class="labelInput flexRow">
+		<div class="inputError">
+			<input name="email" class="input" type="text" autofocus placeholder="Ingresá tu dirección de Correo Electrónico">
+			<%- include("MN-Errores", {nombre: "email", ocultarOK: true}) %>
+		</div>
+	</section>
+
+	<!-- Política para el uso de la información privada -->
+	<ul id="politicaInfo" type="disc">
+		<li>No compartimos los mails con otras entidades.</li>
+		<li>No enviamos mensajes comerciales a nuestros usuarios.</li>
+	</ul>
+<% } else { %>
+	<p id="email"><%= dataEntry.email %></p>
+<% } %>

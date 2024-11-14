@@ -1,0 +1,39 @@
+<section id="historial">
+	<% if (codigo == "corregirStatus") { %>
+		<!-- Status del Producto o RCLV -->
+		<div id="statusRegistro" class="titulos">
+			<input type="radio" name="opcion" value="prodRclv">
+			<h3>Status del Registro:</h3>
+			<div id="<%= registro.statusRegistro.codigo %>" class="status">
+				<b><%= registro.statusRegistro.nombre %></b>
+			</div>
+		</div>
+	<% } %>
+
+	<!-- Historial de status -->
+	<div class="titulos">
+		<% if (codigo == "corregirStatus") { %>
+			<input type="radio" name="opcion" value="historial">
+		<% } %>
+		<h3>Historial de status</h3>
+	</div>
+	<table>
+		<tbody>
+			<% let regAnt = {} %>
+			<% for (let reg of historialStatus) { %>
+				<tr>
+					<td class="fecha"><%= reg.fecha %></td>
+					<td>-</td>
+					<td id="<%= reg.statusCodigo %>" class="status">
+						<b><%= reg.statusNombre %></b>
+						<% if (reg.comentario && reg.comentario != regAnt.comentario) { %>
+							<span><%= reg.comentario %></span>
+						<% } %>
+					</td>
+				</tr>
+				<% regAnt = reg %>
+			<% } %>
+		</tbody>
+	</table>
+</section>
+<% if (["inactivar", "rechazar", "recuperar"].includes(codigo)) { %><%- include("FM-PR-Comentario") %><% } %>

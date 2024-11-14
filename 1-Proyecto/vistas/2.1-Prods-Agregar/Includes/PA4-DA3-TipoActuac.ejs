@@ -1,0 +1,14 @@
+<% const campo = camposDA.find(n => n.nombre == nombre) %>
+<% const {titulo, valores} = campo %>
+<section class="labelSelect altoFila">
+	<label><%= titulo %></label>
+	<div class="inputError">
+		<!-- Input -->
+		<select name="<%= nombre %>" class="input" autofocus>
+			<% for (let valor of valores) { %>
+				<option value="<%= valor.id %>" class="RCLV <%= valor.clase %>" <% if (dataEntry[nombre] == valor.id) { %>selected<% } %>><%= valor.nombre %></option>
+			<% } %>
+		</select>
+		<%- include("MN-Errores", {nombre, ocultarOK: true}) %>
+	</div>
+</section>

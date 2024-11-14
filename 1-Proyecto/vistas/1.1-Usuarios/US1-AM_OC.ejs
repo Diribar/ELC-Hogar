@@ -1,0 +1,21 @@
+<!-- Cartel de progreso -->
+<%- include('MN-CartelProgreso', {tarea: "Enviando el mail"}) %>
+
+<!-- Título y Ayuda -->
+<h1><%= titulo %></h1>
+
+<!--E-Mail-->
+<%- include("US-Mail") %>
+
+<% if (validarDatosPerennes) { %>
+	<!--Datos perennes-->
+	<div id="datosPerennesTitulo">
+		<h2>Necesitamos validar tus datos<br>para generarte una contraseña</h2>
+		<%- include("MN-Ayuda", {mensajes: ["Por favor brindanos los datos de tu identidad, como los cargaste en nuestro sitio.", "Es requisito que coincidan exactamente, para que te enviemos una nueva contraseña."]}) %>
+	</div>
+
+	<%- include("US-DatosPerennes") %>
+<% } %>
+
+<!-- Credenciales -->
+<%- include("US-CredencsInvs") %>

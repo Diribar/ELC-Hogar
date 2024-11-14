@@ -1,0 +1,43 @@
+#cuerpo {
+	/* General */
+	flex-direction: column; justify-content: center; align-items: center;
+	margin: 0; width: 100%; max-height: calc(100% - var(--altoFooter));
+
+	/* General del formulario */
+	#dataEntry {
+		display: flex; flex-direction: column; max-height: 95%; padding: 20px;
+		background: var(--usuarios); border-radius: 10px;
+		/* overflow: auto; */
+
+		/* Título principal */
+		#tituloPrincipal, h1 {align-self: center !important;}
+		h1 {margin: 0; margin-bottom: 10px; font-size: 1.5em; color: var(--amarillo-claro);}
+
+		/* Íconos y Mensajes de Error */
+		.inputError {
+			.input {width: 200px; height: 27px; border: none; border-radius: 15px; padding: 3px 10px; text-align: left;}
+		}
+		/* Input del formulario */
+		.labelInput {
+			justify-content: space-between; margin: 20px 10px 0px; align-items: center;
+			label {color: white; margin-right: 30px; text-align: left;}
+		}
+
+		/* Credenciales inválidas*/
+		#credenciales.errores .mensajeError {
+			display: block; position: static; translate: none;
+			margin: 10px auto 20px; text-align: center; width: 200px;
+			&::before {content: none;}
+		}
+
+		/* Iconos */
+		#sectorIconos {margin-block: 15px 5px;}
+	}
+}
+
+/* Acostado */
+@media (orientation: landscape) and (height <= 600px) {
+	#cuerpo #dataEntry {max-height: 100%;}
+	#dataEntry form .iconos {margin: 0 auto;}
+	#dataEntry form h1 {margin: 0;}
+}

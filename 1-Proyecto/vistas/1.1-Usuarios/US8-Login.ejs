@@ -1,0 +1,52 @@
+<h1>Login</h1>
+<!-- Datos -->
+<section id="datos">
+	<% for (let campo of campos) { %>
+		<% const nombre = campo.name %>
+		<div class="labelInput flexRow">
+			<label><%= campo.titulo %></label>
+			<div class="inputError">
+				<!-- Input -->
+				<input class="input"
+					value="<%= dataEntry[nombre] %>"
+					type="<%= campo.type %>"
+					name="<%= nombre %>"
+					placeholder="<%= campo.placeholder %>"
+					<% if (dataEntry[nombre]) { %>autocomplete='new-password'<% } %>
+					<% if (nombre == "contrasena" && dataEntry.email) { %>autofocus<% } %>
+				>
+				<% if (nombre == "contrasena") { %>
+					<!-- Ojito contraseña -->
+					<i id="eye" class="<%= iconos.faSolid %> fa-eye-slash"></i>
+				<% } %>
+				<!-- Error/OK -->
+				<%- include("MN-Errores", {nombre, ocultarOK: true}) %>
+			</div>
+		</div>
+	<% } %>
+</section>
+
+<!--Credenciales Inválidas-->
+<%- include("US-CredencsInvs") %>
+
+<!--Iconos-->
+<section id="sectorIconos">
+	<div class="iconos">
+		<!-- Salir -->
+		<a href="<%= urlSalir %>" tabindex="-1">
+			<i class="<%= iconos.faSolid %> <%= iconos.izquierda %>" title="Salir"></i>
+		</a>
+		<!-- Submit -->
+		<button type="submit" autofocus>
+			<i class="<%= iconos.faSolid %> <%= iconos.check %>" title="Login"></i>
+		</button>
+	</div>
+	<div class="iconos">
+		<!-- Olvido de contraseña -->
+		<i id="olvidoContr" class="<%= iconos.faSolid %> fa-key rojo" title="Olvidé mi contraseña"></i>
+		<!-- Nuevo usuario -->
+		<a href="/usuarios/alta-mail" tabindex="-1"  class="verde">
+			<i class="<%= iconos.faSolid %> fa-user-plus" title="Crear un usuario"></i>
+		</a>
+	</div>
+</section>

@@ -1,0 +1,58 @@
+<!-- Campos -->
+<div id="configFiltros" class="flexCol sectorConDesplV">
+	<nav class="startUp flexCol ocultar">
+		<!-- PRIORITARIOS -->
+		<!-- Tipos de Link -->
+		<%- include('CN-FL-Select', {campo: configsCons.filtros.tiposLink}) %>
+		<% if (locals.usuario) { %>
+			<!-- Preferencia por Película -->
+			<%- include('CN-FL-Select', {campo: configsCons.filtros.pppOpciones, eventual: true}) %>
+		<% } %>
+		<!-- Idioma -->
+		<%- include('CN-FL-Select', {campo: configsCons.filtros.idiomas, eventual: true}) %>
+		<!-- Público Recomendado -->
+		<%- include('CN-FL-Select', {campo: configsCons.filtros.publicos}) %>
+
+		<!-- RELACIONADO CON LA IGLESIA CATÓLICA -->
+		<!-- Relación con la Iglesia Católica -->
+		<%- include('CN-FL-Select', {campo: configsCons.filtros.cfc, eventual: true, color: 'cfc'}) %>
+		<!-- Proceso de Canonización -->
+		<%- include('CN-FL-Select', {campo: configsCons.filtros.canons, eventual: true, color: 'cfc'}) %>
+		<!-- Roles Iglesia -->
+		<%- include('CN-FL-Select', {campo: configsCons.filtros.rolesIgl, eventual: true, color: 'cfc'}) %>
+		<!-- Aparición Mariana -->
+		<%- include('CN-FL-Select', {campo: configsCons.filtros.apMar, eventual: true, color: 'cfc'}) %>
+
+		<!-- HECHOS REALES -->
+		<!-- Basado en Hechos Reales -->
+		<%- include('CN-FL-Select', {campo: configsCons.filtros.bhr, eventual: true, color: 'bhr'}) %>
+		<!-- Época de Ocurrencia -->
+		<%- include('CN-FL-Select', {campo: configsCons.filtros.epocasOcurrencia, color: 'bhr'}) %>
+
+		<!-- ATRIBUTOS DE LA PELÍCULA -->
+		<!-- Tema -->
+		<%- include('CN-FL-Select', {campo: configsCons.filtros.temas}) %>
+		<!-- Época de Estreno -->
+		<%- include('CN-FL-Select', {campo: configsCons.filtros.epocasEstreno}) %>
+		<!-- Tipo de Actuación -->
+		<%- include('CN-FL-Select', {campo: configsCons.filtros.tiposActuacion}) %>
+		<!-- Miscelaneas -->
+		<%- include('CN-FL-Select', {campo: configsCons.filtros.miscelaneas}) %>
+
+		<!-- Palabras Clave -->
+		<div id="palabrasClave" class="pref ocultaFiltro">
+			<input type="text" name="palabrasClave" class="prefSimple" placeholder="Buscar por palabras clave">
+			<i id="palClaveIcono" class="<%= iconos.faSolid %> scale" title="Aplicar las palabras"></i>
+		</div>
+	</nav>
+</div>
+
+<!-- Muestra / Oculta filtros -->
+<div id="toggleFiltros" class="flexCol">
+	<div id="muestraFiltros" class="pointer scale">
+		<em>Click</em> para <span>ver</span><br>más filtros
+	</div>
+	<div id="ocultaFiltros" class="pointer scale ocultaFiltros">
+		<em>Click</em> para <span>ocultar</span><br>los filtros sin usar
+	</div>
+</div>

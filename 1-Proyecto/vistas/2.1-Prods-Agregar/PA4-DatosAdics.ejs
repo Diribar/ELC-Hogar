@@ -1,0 +1,69 @@
+<%- include("PA9-TituloPrincipal") %>
+<form method="POST" id="dataEntry" class="flexCol">
+	<!-- Título y Ayuda -->
+	<div id="tituloSecundario">
+		<h2>Paso 4 de 5: Datos Adicionales</h2>
+		<%- include("MN-Ayuda", {mensajes: ayudas.tituloSecundario}) %>
+	</div>
+	<!-- Datos -->
+	<section id="datos">
+		<!--Primera columna-->
+		<div id="primeraColumna" class="columna">
+			<!-- Datos generales -->
+			<h3 id="tituloRCLV" class="">Datos Generales</h3>
+			<hr>
+
+			<!-- Campos radioBtn -->
+			<% for (let campo of camposDA.filter(n => n.radioBtn)) { %>
+				<%- include("P-RadioBtn", campo) %>
+			<% } %>
+			<hr>
+
+			<!-- Campos checkBox -->
+			<div id="checkBoxes">
+				<% for (let campo of camposChkBox) { %><%- include("P-CheckBox", campo) %><% } %>
+			</div>
+			<hr>
+
+			<!-- Tipo de Actuación -->
+			<%- include("PA4-DA3-TipoActuac", {nombre: "tipoActuacion_id"}) %>
+			<hr>
+		</div>
+		<!--Segunda columna - Relación con la vida -->
+		<div id="segundaColumna" class="columna flexCol ocultaCfc ocultaOcurrio">
+			<div class="flexRowAlign inputError">
+				<h3 id="tituloRCLV" class="">Relación con la Vida</h3>
+				<!-- Ayuda para un RCLV -->
+				<%- include("MN-Ayuda", {mensajes: ayudas.rclvs1, ayudaClass: "ayudaRclv"}) %>
+				<!-- Ayuda para más RCLVs -->
+				<%- include("MN-Ayuda", {mensaje: ayudas.rclv2, ayudaClass: "ayudaRclv"}) %>
+				<div id="errorRCLV" class="ocultar">
+					<%- include("MN-Errores", {ocultarOK: true, nombre: "RCLV"}) %>
+				</div>
+			</div>
+			<!--No lo voy a responder ahora-->
+			<%- include("PA4-DA4-RCLV_chkbx", {nombre: "sinRCLV", }) %>
+
+			<!-- Opciones -->
+			<div id="selectsRCLV" class="flexCol">
+				<hr>
+				<!--Personaje histórico-->
+				<%- include("PA4-DA4-RCLV_ph", {nombre: "personaje_id", grupos: gruposPers}) %>
+				<!--Hecho histórico-->
+				<%- include("PA4-DA4-RCLV_ph", {nombre: "hecho_id", grupos: gruposHechos}) %>
+				<!--Tema-->
+				<%- include("PA4-DA4-RCLV_val", {nombre: "tema_id"}) %>
+				<hr>
+			</div>
+		</div>
+	</section>
+	<!-- Iconos -->
+	<section id="sectorIconos">
+		<div class="iconos">
+			<a href="agregar-dd" tabindex="-1" title="Volver al paso anterior">
+				<i class="<%= iconos.faSolid %> <%= iconos.izquierda %>"></i>
+			</a>
+			<i id="submit" class="<%= iconos.faSolid %> <%= iconos.check %> inactivo" title="Avanzar" tabindex="0"></i>
+		</div>
+	</section>
+</form>

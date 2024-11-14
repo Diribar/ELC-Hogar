@@ -1,0 +1,47 @@
+/* Encabezado */
+#cuerpo #encabezado {
+	display: flex; flex-direction: row; justify-content: space-between; align-items: center;
+	padding: 10px 20px; color: snow; background: var(--azul-oscuro);
+	position: sticky; top: 0px;
+	z-index: 6;
+	button {background: transparent; border: none;}
+
+	&.inactivar, &.rechazar, &.eliminar, &.cambiarMotivo {
+		background: var(--rojo-oscuro);
+		select {color: var(--rojo-oscuro);}
+	}
+	&.recuperar, &.revisionRecuperar {
+		background: var(--verde-oscuro);
+		select {color: var(--verde-oscuro);}
+	}
+
+	/* &:has(#colCap) #nombres {max-width: 290px;} */
+	#nombres h3 {font-weight: normal; font-size: 1rem; margin-top: 3px;}
+	#colCap {
+		display: flex; flex-direction: column; align-items: flex-end;
+		#coleccion a button {
+			border-radius: 10px; padding: 5px 10px; text-align: center;
+			background: var(--gris-claro); color: var(--azul-oscuro);
+		}
+		#tempCapI {
+			margin-bottom: 2px; max-width: max-content; display: flex; flex-direction: row;
+			button {
+				margin-left: 3px; padding: 2px 5px; border-radius: 5px; border: none;
+				font-weight: bold; background: var(--gris-oscuro); color: snow;
+			}
+		}
+		#tempCapS {
+			display: flex; flex-direction: row; justify-content: flex-end; align-items: center;
+			.pack {
+				line-height: 1; margin-right: 5px; white-space: nowrap;
+				i {
+					font-size: 1.1rem; background-color: transparent;
+					&:first-child {margin-right: 3px;}
+				}
+			}
+			select:is(#temporada, #capitulo) {border-radius: 5px; color: fieldtext;}
+			#temporada {margin-right: 8px;}
+			select#capitulo {width: 20px;}
+		}
+	}
+}

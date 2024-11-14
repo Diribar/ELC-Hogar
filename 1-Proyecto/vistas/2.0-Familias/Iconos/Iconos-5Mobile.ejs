@@ -1,0 +1,13 @@
+<% if (locals.iconoDL && locals.iconoDB) { %>
+	<div id="mobile" class="iconos invisible">
+		<i id="iconoDL" class="<%= iconos.faSolid %> <%= iconoDL %> toggle"></i>
+		<i id="iconoDB" class="<%= iconos.faSolid %> <%= iconoDB %> toggle"></i>
+	</div>
+<% } %>
+
+<div id="href" class="iconos">
+	<%- include("Iconos-5MobileHref") %>
+	<% if (locals.interesDelUsuario) { %>
+		<i id="ppp" class="<%= interesDelUsuario.icono %>" title="<%= interesDelUsuario.nombre %>"></i>
+	<% } %>
+</div>

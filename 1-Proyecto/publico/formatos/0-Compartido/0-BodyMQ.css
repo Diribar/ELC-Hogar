@@ -1,0 +1,32 @@
+/* Laptop */
+@media (orientation: landscape) and (height > 600px) {
+	body {
+		--alturaViewPort: 100vh;
+		--altoFooter: 25.4px;
+	}
+}
+
+/* Tablet Acostada */
+@media (orientation: landscape) and (400px < height <= 600px) {
+	body {
+		--alturaViewPort: 100vh;
+		--altoFooter: 25.4px;
+	}
+}
+
+/* Mobile Acostado */
+@media (orientation: landscape) and (height <= 400px) {
+	body {
+		--alturaViewPort: 100vh;
+		--altoFooter: 0px;
+		#cuerpoFooterImgDer footer {display: none;}
+	}
+}
+
+/* Parado */
+@media (orientation: portrait) {
+	body {
+		--alturaViewPort: 100svh;
+		--altoFooter: 25.4px;
+	}
+}
