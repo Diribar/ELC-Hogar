@@ -93,7 +93,7 @@ const obtieneCamposNecesarios = (usuario) => {
 	const camposNecesarios = [
 		...["id", "cliente_id"], // identificación
 		"fechaUltNaveg", // para el 'contador de navegaciones'
-		...["diasNaveg", "visitaCreadaEn"], // para la tabla 'navegsAcum'
+		...["diasNaveg", "visitaCreadaEn"], // para la tabla 'navegsDiarias'
 		...["versionElc", "diasSinCartelBenefs"], // para mostrar carteles
 		"rolUsuario", // para mostrar carteles
 	];
