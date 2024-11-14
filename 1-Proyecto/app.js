@@ -6,9 +6,9 @@ for (let metodo in constantes) global[metodo] = constantes[metodo];
 global.path = require("path");
 const carpeta = global.path.basename(path.resolve());
 const produccion = carpeta == "1-Aplicacion";
-const prueba = carpeta == "Prueba";
-global.urlHost = produccion ? "https://elc.lat" : prueba ? "https://pruebas.elc.lat" : "http://localhost";
-global.entorno = produccion ? "production" : prueba ? "test" : "development";
+const pruebas = carpeta == "Pruebas";
+global.urlHost = produccion ? "https://elc.lat" : pruebas ? "https://pruebas.elc.lat" : "http://localhost";
+global.entorno = produccion ? "production" : pruebas ? "test" : "development";
 
 // Variables que toman valores de '.env'
 require("dotenv").config();
