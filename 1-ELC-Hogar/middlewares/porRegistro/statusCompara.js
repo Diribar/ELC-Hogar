@@ -1,5 +1,5 @@
 "use strict";
-const procsFM = require("../../rutas_y_contrs/2.0-Familias/FM-FN-Procesos");
+const procsFM = require("../../rutasContrs/2.0-Familias/FM-FN-Procesos");
 
 module.exports = async (req, res, next) => {
 	// Variables

@@ -1,6 +1,6 @@
 "use strict";
 // Requires
-const procesos = require("../../rutas_y_contrs/2.1-Prods-Agregar/PA-FN4-Procesos");
+const procesos = require("../../rutasContrs/2.1-Prods-Agregar/PA-FN4-Procesos");
 
 module.exports = (req, res, next) => {
 	// Variables - Acciones comunes entre las etapas de 'producto agregar'

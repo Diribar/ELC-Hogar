@@ -1,7 +1,7 @@
 "use strict";
 // Variables
-const procesos = require("../../rutas_y_contrs/1.1-Usuarios/US-FN-Procesos");
-const valida = require("../../rutas_y_contrs/1.1-Usuarios/US-FN-Validar");
+const procesos = require("../../rutasContrs/1.1-Usuarios/US-FN-Procesos");
+const valida = require("../../rutasContrs/1.1-Usuarios/US-FN-Validar");
 
 module.exports = async (req, res, next) => {
 	// Variables
