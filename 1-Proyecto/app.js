@@ -5,10 +5,10 @@ for (let metodo in constantes) global[metodo] = constantes[metodo];
 // Require 'path'
 global.path = require("path");
 const carpeta = global.path.basename(path.resolve());
-const desarrollo = carpeta == "1-Proyecto";
 const produccion = carpeta == "1-Aplicacion";
-global.urlHost = desarrollo ? "http://localhost" : produccion ? "https://elc.lat" : "https://pruebas.elc.lat";
-global.entorno = desarrollo ? "development" : produccion ? "production" : "test";
+const prueba = carpeta == "Prueba";
+global.urlHost = produccion ? "https://elc.lat" : prueba ? "https://pruebas.elc.lat" : "http://localhost";
+global.entorno = produccion ? "production" : prueba ? "test" : "development";
 
 // Variables que toman valores de '.env'
 require("dotenv").config();
@@ -133,7 +133,7 @@ app.set("views", [
 })();
 
 // Funciones
-const lecturaRutinasJSON= () => {
+const lecturaRutinasJSON = () => {
 	// Obtiene información del archivo 'json'
 	const rutaNombre = path.join(__dirname, "/rutinas/Rutinas.json");
 	const existe = comp.gestionArchivos.existe(rutaNombre);
@@ -142,4 +142,4 @@ const lecturaRutinasJSON= () => {
 
 	// Fin
 	return info;
-}
+};
