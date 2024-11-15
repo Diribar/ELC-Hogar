@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "cantClientesAcum"; // cantidad de clientes en BD
+	const alias = "cantClientesBdDia"; // cantidad de clientes en BD
 	const columns = {
 		fecha: {type: dt.STRING(10)},
 		anoMes: {type: dt.STRING(3)},
