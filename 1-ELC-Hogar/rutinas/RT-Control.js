@@ -20,7 +20,7 @@ module.exports = {
 		if (!info.RutinasDiarias || !Object.keys(info.RutinasDiarias).length) return;
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 
-		// await this.rutinas.urlsUsadas();
+		await this.rutinas.navegsDelDia();
 		// await obsoletas.actualizaCapEnCons()
 		// await this.RutinasSemanales();
 
@@ -417,7 +417,8 @@ module.exports = {
 			if (!navegsDia.length) return;
 
 			// Procesos
-			espera.push(procesos.urlsDelDia.rutasMasUsadas(navegsDia));
+			espera.push(procesos.urlsDelDia.rutasPorDia(navegsDia));
+			espera.push(procesos.urlsDelDia.navegsPorHora(navegsDia));
 
 			// Espera a que se completen los procesos
 			await Promise.all(espera);
