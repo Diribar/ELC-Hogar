@@ -1,6 +1,6 @@
 "use strict";
 // Requires
-const procesos = require("../../rutas_y_contrs/1.1-Usuarios/US-FN-Procesos");
+const procesos = require("../../rutasContrs/1.1-Usuarios/US-FN-Procesos");
 
 module.exports = (req, res, next) => {
 	// Variables
@@ -12,11 +12,11 @@ module.exports = (req, res, next) => {
 	if (usuario.statusRegistro_id != perennes_id) informacion = procesos.infoNoPerenne(req);
 
 	// Revisa si el usuario tiene el rol necesario
-	const usuarioSinRolDeRevisor = {
-		mensajes: ["Se requiere un permiso especial para ingresar a esta vista."],
-		iconos: [vistaAnterior],
-	};
-	if (!informacion && !usuario.rolUsuario.revisorUs) informacion = usuarioSinRolDeRevisor;
+	if (!informacion && !usuario.rolUsuario.revisorLinks)
+		informacion = {
+			mensajes: ["Se requiere un permiso especial para ingresar a esta vista."],
+			iconos: [vistaAnterior],
+		};
 
 	// Si corresponde, muestra el mensaje de error
 	if (informacion) return res.render("CMP-0Estructura", {informacion});

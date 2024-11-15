@@ -1,6 +1,6 @@
 "use strict";
 // Requires
-const procesos = require("../../rutas_y_contrs/1.1-Usuarios/US-FN-Procesos");
+const procesos = require("../../rutasContrs/1.1-Usuarios/US-FN-Procesos");
 
 module.exports = (req, res, next) => {
 	// Variables
@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
 	if (usuario.statusRegistro_id != perennes_id) informacion = procesos.infoNoPerenne(req);
 
 	// Revisa si el usuario tiene el rol necesario
-	if (!informacion && !usuario.rolUsuario.autTablEnts)
+	if (!informacion && !usuario.rolUsuario.revisorPERL)
 		informacion = {
 			mensajes: ["Se requiere un permiso especial para ingresar a esta vista."],
 			iconos: [vistaAnterior],

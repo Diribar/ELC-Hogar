@@ -108,25 +108,25 @@ app.set("views", [
 	app.use(require("./middlewares/transversales/urlsUsadas-BD")); // para guardar los url navegados
 
 	// Vistas - Antiguas
-	app.use("/producto", require("./rutas_y_contrs/2.1-Prods-RUD/PR-RutasAnt"));
-	app.use("/rclv", require("./rutas_y_contrs/2.2-RCLVs/RCLV-RutasAnt"));
-	app.use("/links", require("./rutas_y_contrs/2.3-Links/LK-RutasAnt"));
+	app.use("/producto", require("./rutasContrs/2.1-Prods-RUD/PR-RutasAnt"));
+	app.use("/rclv", require("./rutasContrs/2.2-RCLVs/RCLV-RutasAnt"));
+	app.use("/links", require("./rutasContrs/2.3-Links/LK-RutasAnt"));
 
 	// Vistas - Con base definida
-	app.use("/usuarios", require("./rutas_y_contrs/1.1-Usuarios/US-Rutas"));
-	app.use("/revision", require("./rutas_y_contrs/3-Rev-Entidades/RE-Rutas"));
-	app.use("/revision-us", require("./rutas_y_contrs/1.2-Rev-Usuarios/RU-Rutas")); // revisarlo el día que se use
-	app.use("/consultas", require("./rutas_y_contrs/5-Consultas/CN-Rutas"));
-	app.use("/graficos", require("./rutas_y_contrs/6-Graficos/GR-Rutas"));
-	app.use("/institucional", require("./rutas_y_contrs/7-Institucional/IN-Rutas"));
+	app.use("/usuarios", require("./rutasContrs/1.1-Usuarios/US-Rutas"));
+	app.use("/revision", require("./rutasContrs/3-Rev-Entidades/RE-Rutas"));
+	app.use("/revision-us", require("./rutasContrs/1.2-Rev-Usuarios/RU-Rutas")); // revisarlo el día que se use
+	app.use("/consultas", require("./rutasContrs/5-Consultas/CN-Rutas"));
+	app.use("/graficos", require("./rutasContrs/6-Graficos/GR-Rutas"));
+	app.use("/institucional", require("./rutasContrs/7-Institucional/IN-Rutas"));
 
 	// Vistas - Por entidad
-	app.use("/:entidad", require("./rutas_y_contrs/2.0-Familias/FM-Rutas")); // incluye algunas de 'revisión' y corrección
-	app.use("/:entidad", require("./rutas_y_contrs/2.1-Prods-Agregar/PA-Rutas")); // producto
-	app.use("/:entidad", require("./rutas_y_contrs/2.1-Prods-RUD/PR-Rutas")); // producto
-	app.use("/:entidad", require("./rutas_y_contrs/2.2-RCLVs/RCLV-Rutas")); // rclv
-	app.use("/:entidad", require("./rutas_y_contrs/2.3-Links/LK-Rutas")); // producto y link
-	app.use("/", require("./rutas_y_contrs/9-Miscelaneas/MS-Rutas"));
+	app.use("/:entidad", require("./rutasContrs/2.0-Familias/FM-Rutas")); // incluye algunas de 'revisión' y corrección
+	app.use("/:entidad", require("./rutasContrs/2.1-Prods-Agregar/PA-Rutas")); // producto
+	app.use("/:entidad", require("./rutasContrs/2.1-Prods-RUD/PR-Rutas")); // producto
+	app.use("/:entidad", require("./rutasContrs/2.2-RCLVs/RCLV-Rutas")); // rclv
+	app.use("/:entidad", require("./rutasContrs/2.3-Links/LK-Rutas")); // producto y link
+	app.use("/", require("./rutasContrs/9-Miscelaneas/MS-Rutas"));
 
 	// Middlewares transversales
 	app.use(require("./middlewares/transversales/urlDesconocida")); // Si no se reconoce el url - se debe informar después de los urls anteriores
