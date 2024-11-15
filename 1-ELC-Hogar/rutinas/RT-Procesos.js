@@ -568,7 +568,7 @@ module.exports = {
 		},
 		cantClientes: async () => {
 			// Variables
-			let revisar = await baseDeDatos.obtieneTodos("cantClientesBdDia");
+			let revisar = await baseDeDatos.obtieneTodos("persBdDiaCant");
 			if (!revisar.length) return;
 			const anoMesUlt = revisar[revisar.length - 1].anoMes;
 
@@ -586,10 +586,10 @@ module.exports = {
 				const regUltimo = regsParaProcesar[regsParaProcesar.length - 1];
 
 				// Quita el dato de la fecha de ese registro
-				await baseDeDatos.actualizaPorId("cantClientesBdDia", regUltimo.id, {fecha: null});
+				await baseDeDatos.actualizaPorId("persBdDiaCant", regUltimo.id, {fecha: null});
 
 				// Elimina los demás registros de ese mes
-				await baseDeDatos.eliminaPorCondicion("cantClientesBdDia", {fecha: {[Op.ne]: null}, anoMes: anoMesAntiguo});
+				await baseDeDatos.eliminaPorCondicion("persBdDiaCant", {fecha: {[Op.ne]: null}, anoMes: anoMesAntiguo});
 
 				// Fin
 				revisar = revisar.filter((n) => n.anoMes != anoMesAntiguo);

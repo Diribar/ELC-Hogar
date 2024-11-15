@@ -377,7 +377,7 @@ module.exports = {
 		},
 		cantClientes: async () => {
 			// Obtiene la última fecha del historial
-			const ultRegHistClientes = await baseDeDatos.obtienePorCondicionElUltimo("cantClientesBdDia");
+			const ultRegHistClientes = await baseDeDatos.obtienePorCondicionElUltimo("persBdDiaCant");
 			const ultFechaHistClientes = ultRegHistClientes ? ultRegHistClientes.fecha : "2024-10-03";
 			let fechaSig = procesos.sumaUnDia(ultFechaHistClientes); // le suma un día al último registro
 			if (fechaSig >= hoy) return;
@@ -397,7 +397,7 @@ module.exports = {
 				const frecPorCliente = procesos.clientes.frecPorCliente(clientes, fechaSig);
 
 				// Guarda el resultado
-				await baseDeDatos.agregaRegistro("cantClientesBdDia", {fecha: fechaSig, anoMes, ...frecPorCliente});
+				await baseDeDatos.agregaRegistro("persBdDiaCant", {fecha: fechaSig, anoMes, ...frecPorCliente});
 
 				// Obtiene la fecha siguiente
 				fechaSig = procesos.sumaUnDia(fechaSig);
@@ -776,7 +776,7 @@ module.exports = {
 			const tablas = [
 				...["histEdics", "statusHistorial"],
 				...["prodsEdicion", "rclvsEdicion", "linksEdicion"],
-				...["cantNavegsAcum", "cantNavegsDia", "cantClientesBdDia"],
+				...["cantNavegsAcum", "cantNavegsDia", "persBdDiaCant"],
 				...["prodsAzar", "capturas"],
 				...["calRegistros", "misConsultas", "consRegsPrefs", "pppRegistros"],
 				...["capsSinLink", "novedadesELC"],

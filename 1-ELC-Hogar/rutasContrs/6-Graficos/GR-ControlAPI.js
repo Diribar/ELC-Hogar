@@ -7,7 +7,7 @@ module.exports = {
 		return res.json(cantNavegsAcum);
 	},
 	cantClientes: async (req, res) => {
-		const datos = await baseDeDatos.obtieneTodosConOrden("cantClientesBdDia", "fecha");
+		const datos = await baseDeDatos.obtieneTodosConOrden("persBdDiaCant", "fecha");
 		return res.json(datos);
 	},
 

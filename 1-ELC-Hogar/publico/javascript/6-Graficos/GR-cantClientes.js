@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Obtiene datos del BE
-	const cantClientesBdDia = await fetch(ruta).then((n) => n.json());
+	const cantClientesDias = await fetch(ruta).then((n) => n.json());
 
 	// Variables
 	const DOM = {grafico: document.querySelector("#zonaDeGraficos #cuadro #grafico")};
@@ -19,7 +19,7 @@ window.addEventListener("load", async () => {
 
 	// Genera la información
 	const resultado = [["Fecha", ...grupos.map((grupo) => [grupo, {role: "style"}]).flat()]];
-	for (let cantClientesDia of cantClientesBdDia) {
+	for (let cantClientesDia of cantClientesDias) {
 		resultado.push([
 			cantClientesDia.fecha,
 			...grupos.map((grupo) => [cantClientesDia[grupo], "stroke-color: " + coloresBorde[grupo]]).flat(),
