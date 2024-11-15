@@ -1090,10 +1090,7 @@ module.exports = {
 			let ano = fecha.getUTCFullYear().toString().slice(-2);
 			return this.diaMes(fecha) + "/" + ano;
 		},
-		anoMesDia: (fecha) => {
-			fecha = new Date(fecha).toISOString().slice(0, 10);
-			return fecha;
-		},
+		anoMesDia: (fecha) => new Date(fecha).toISOString().slice(0, 10),
 		fechaHorario: (fecha) => {
 			const horario = fecha ? new Date(fecha) : FN.ahora();
 			return (
@@ -1117,7 +1114,6 @@ module.exports = {
 			// Fin
 			return datos;
 		},
-		fechaSinHora: (fecha) => new Date(fecha).toISOString().slice(0, 10),
 	},
 	gestionArchivos: {
 		existe: (rutaNombre) => {
