@@ -640,7 +640,7 @@ module.exports = {
 			return {tresDiez, onceTreinta, masDeTreinta, unoDos};
 		},
 	},
-	urlsDelDia: {
+	navegsDelDia: {
 		rutasPorDia: async (navegsDia) => {
 			// Elimina las rutas que correspondan
 			navegsDia = eliminaNavegsDelDia.rutasPorDia(navegsDia);

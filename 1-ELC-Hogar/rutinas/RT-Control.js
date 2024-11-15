@@ -417,8 +417,8 @@ module.exports = {
 			if (!navegsDia.length) return;
 
 			// Procesos
-			espera.push(procesos.urlsDelDia.rutasPorDia(navegsDia));
-			espera.push(procesos.urlsDelDia.navegsPorHora(navegsDia));
+			espera.push(procesos.navegsDelDia.rutasPorDia(navegsDia));
+			espera.push(procesos.navegsDelDia.navegsPorHora(navegsDia));
 
 			// Espera a que se completen los procesos
 			await Promise.all(espera);
