@@ -643,7 +643,7 @@ module.exports = {
 	navegsDelDia: {
 		rutasPorDia: async (navegsDia) => {
 			// Elimina las rutas que correspondan
-			navegsDia = eliminaNavegsDelDia.rutasPorDia(navegsDia);
+			let rutasPorDia = convsNavegsDelDia.rutasPorDia(navegsDia);
 
 			// Obtiene el último registro de rutas acumuladas
 			let ultRegRutasAcum = await baseDeDatos.obtienePorCondicionElUltimo("rutasAcum");
@@ -660,7 +660,7 @@ module.exports = {
 			// Variables
 			let fechaSig = ultRegRutasAcum.fecha
 				? new Date(new Date(ultRegRutasAcum.fecha).getTime() + unDia) // el día siguiente de la del último registro de 'ultRegRutasAcum'
-				: new Date(navegsDia[0].fecha); // la del primer registro de 'navegsDia'
+				: new Date(rutasPorDia[0].fecha); // la del primer registro de 'rutasPorDia'
 			fechaSig = new Date(comp.fechaHora.anoMesDia(fechaSig)); // sólo importa la fecha
 
 			// Rutina por fecha mientras la fecha sea menor al día vigente
@@ -669,7 +669,7 @@ module.exports = {
 				let fechaTope = new Date(fechaSig.getTime() + unDia);
 
 				// Obtiene las rutas visitadas en el día
-				let rutasFiltradas = navegsDia.filter((ruta) => ruta.fecha >= fechaSig && ruta.fecha < fechaTope);
+				let rutasFiltradas = rutasPorDia.filter((ruta) => ruta.fecha >= fechaSig && ruta.fecha < fechaTope);
 
 				// Si no hay rutasFiltradas, aumenta el día e interrumpe el ciclo
 				if (!rutasFiltradas.length) {
@@ -691,7 +691,7 @@ module.exports = {
 				await baseDeDatos.agregaRegistro("rutasAcum", rutaAgregar);
 
 				// Elimina las rutas visitadas en ese rango de fechas
-				navegsDia = navegsDia.filter((n) => n.fecha >= fechaTope);
+				rutasPorDia = rutasPorDia.filter((n) => n.fecha >= fechaTope);
 
 				// Fin
 				fechaSig = new Date(fechaSig.getTime() + unDia);
@@ -709,7 +709,7 @@ module.exports = {
 		prodsMasVistos: () => {},
 		navegsPorHora: (navegsDia) => {
 			// Elimina las rutas que correspondan
-			navegsDia = eliminaNavegsDelDia.navegsPorHora(navegsDia);
+			const navegsPorHora = convsNavegsDelDia.navegsPorHora(navegsDia);
 
 			// Fin
 			return
@@ -1079,7 +1079,7 @@ const nombresDeAvatarEnBD = async ({entidad, status_id, campoAvatar}) => {
 	// Fin
 	return registros;
 };
-const eliminaNavegsDelDia = {
+const convsNavegsDelDia = {
 	rutasPorDia: (navegsDia) => {
 		// Quita el horario de las fechas
 		navegsDia = navegsDia.map((n) => ({...n, fecha: comp.fechaHora.anoMesDia(n.fecha)}));
