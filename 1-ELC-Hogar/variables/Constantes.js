@@ -38,7 +38,7 @@ module.exports = {
 	// Gráficos
 	graficos: {
 		// Usuarios
-		navegsDiarias: {
+		cantNavegs: {
 			rubro: "clientes",
 			titulo: "Cant. de Navegaciones",
 			url: "cantidad-de-navegaciones",
