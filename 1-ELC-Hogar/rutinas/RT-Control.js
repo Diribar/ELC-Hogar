@@ -324,7 +324,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		navegsAcum: async () => {
+		navegsDiarias: async () => {
 			// Navegantes diarios, quitando los duplicados
 			const navegsDelDia = await baseDeDatos
 				.obtieneTodosPorCondicion("navegsDelDia", {fecha: {[Op.lt]: hoy}})
@@ -333,7 +333,7 @@ module.exports = {
 
 			// Variables
 			const primFechaDiarioNavegs = navegsDelDia[0].fecha;
-			const ultRegHistNavegs = await baseDeDatos.obtienePorCondicionElUltimo("navegsAcum");
+			const ultRegHistNavegs = await baseDeDatos.obtienePorCondicionElUltimo("navegsDiarias");
 			const ultFechaHistNavegs = ultRegHistNavegs && ultRegHistNavegs.fecha;
 
 			// Si hay una inconsistencia, termina
@@ -361,7 +361,7 @@ module.exports = {
 				const visitas = navegantes.filter((n) => !n.usuario_id && n.cliente_id.startsWith("V")).length;
 
 				// Guarda el resultado
-				await baseDeDatos.agregaRegistro("navegsAcum", {
+				await baseDeDatos.agregaRegistro("navegsDiarias", {
 					...{fecha: proximaFecha, anoMes},
 					...{logins, usSinLogin, visitas},
 				});
@@ -407,7 +407,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		urlsUsadas: async () => {
+		urlsDelDia: async () => {
 			// Establece la fecha mínima
 			const fechaMax = new Date().setHours(0, 0, 0);
 
@@ -523,7 +523,7 @@ module.exports = {
 		},
 		clientesMensualidad: async () => {
 			// Ejecuta las funciones de cada gráfico
-			await procesos.clientes.navegsAcum();
+			await procesos.clientes.navegsDiarias();
 			await procesos.clientes.clientesAcum();
 			await procesos.clientes.eliminaVisitasAntiguas();
 
@@ -823,7 +823,7 @@ module.exports = {
 			const tablas = [
 				...["histEdics", "statusHistorial"],
 				...["prodsEdicion", "rclvsEdicion", "linksEdicion"],
-				...["navegsAcum", "navegsDelDia", "clientesAcum"],
+				...["navegsDiarias", "navegsDelDia", "clientesAcum"],
 				...["prodsAzar", "capturas"],
 				...["calRegistros", "misConsultas", "consRegsPrefs", "pppRegistros"],
 				...["capsSinLink", "novedadesELC"],

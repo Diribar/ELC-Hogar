@@ -2,9 +2,9 @@
 
 module.exports = {
 	// Usuarios
-	cantNavegs: async (req, res) => {
-		const navegsAcum = await baseDeDatos.obtieneTodosConOrden("navegsAcum", "fecha");
-		return res.json(navegsAcum);
+	navegsDiarias: async (req, res) => {
+		const navegsDiarias = await baseDeDatos.obtieneTodosConOrden("navegsDiarias", "fecha");
+		return res.json(navegsDiarias);
 	},
 	cantClientes: async (req, res) => {
 		const datos = await baseDeDatos.obtieneTodosConOrden("clientesAcum", "fecha");
