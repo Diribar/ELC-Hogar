@@ -326,13 +326,13 @@ module.exports = {
 		},
 		cantNavegs: async () => {
 			// Navegantes diarios, quitando los duplicados
-			const cantNavegsDia = await baseDeDatos
-				.obtieneTodosPorCondicion("cantNavegsDia", {fecha: {[Op.lt]: hoy}})
+			const persWebDia = await baseDeDatos
+				.obtieneTodosPorCondicion("persWebDia", {fecha: {[Op.lt]: hoy}})
 				.then((n) => n.sort((a, b) => (a.fecha < b.fecha ? -1 : 1)));
-			if (!cantNavegsDia.length) return;
+			if (!persWebDia.length) return;
 
 			// Variables
-			const primFechaDiarioNavegs = cantNavegsDia[0].fecha;
+			const primFechaDiarioNavegs = persWebDia[0].fecha;
 			const ultRegHistNavegs = await baseDeDatos.obtienePorCondicionElUltimo("cantNavegsAcum");
 			const ultFechaHistNavegs = ultRegHistNavegs && ultRegHistNavegs.fecha;
 
@@ -352,7 +352,7 @@ module.exports = {
 			while (fechaSig < hoy) {
 				// Variables
 				const anoMes = fechaSig.slice(0, 7);
-				const navegantes = cantNavegsDia.filter((n) => n.fecha == fechaSig);
+				const navegantes = persWebDia.filter((n) => n.fecha == fechaSig);
 
 				// Cantidad y fidelidad de navegantes
 				const logins = navegantes.filter((n) => n.usuario_id).length;
@@ -369,8 +369,8 @@ module.exports = {
 				fechaSig = procesos.sumaUnDia(fechaSig);
 			}
 
-			// Elimina las 'cantNavegsDia' anteriores
-			baseDeDatos.eliminaPorCondicion("cantNavegsDia", {fecha: {[Op.lt]: hoy}});
+			// Elimina las 'persWebDia' anteriores
+			baseDeDatos.eliminaPorCondicion("persWebDia", {fecha: {[Op.lt]: hoy}});
 
 			// Fin
 			return;
@@ -776,7 +776,7 @@ module.exports = {
 			const tablas = [
 				...["histEdics", "statusHistorial"],
 				...["prodsEdicion", "rclvsEdicion", "linksEdicion"],
-				...["cantNavegsAcum", "cantNavegsDia", "persBdDiaCant"],
+				...["cantNavegsAcum", "persWebDia", "persBdDiaCant"],
 				...["prodsAzar", "capturas"],
 				...["calRegistros", "misConsultas", "consRegsPrefs", "pppRegistros"],
 				...["capsSinLink", "novedadesELC"],
