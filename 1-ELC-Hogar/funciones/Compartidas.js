@@ -1085,9 +1085,14 @@ module.exports = {
 		ahora: () => FN.ahora(),
 		nuevoHorario: (delay, horario) => FN.nuevoHorario(delay, horario),
 		diaMes: (fecha) => FN.diaMes(fecha),
+		diaSem: (fecha) => {
+			const numDiaSem = new Date(fecha).getUTCDay();
+			const diaSem = diasSemana[numDiaSem];
+			return diaSem;
+		},
 		diaMesAno: function (fecha) {
 			fecha = new Date(fecha);
-			let ano = fecha.getUTCFullYear().toString().slice(-2);
+			const ano = fecha.getUTCFullYear().toString().slice(-2);
 			return this.diaMes(fecha) + "/" + ano;
 		},
 		anoMesDia: (fecha) => new Date(fecha).toISOString().slice(0, 10),
@@ -1291,7 +1296,7 @@ module.exports = {
 		if (!distintivo) for (let caso of rutasClasicas.igual) if (url == caso[0]) distintivo = caso[1];
 		if (!distintivo) for (let caso of rutasClasicas.includes) if (url.includes(caso[0])) distintivo = caso[1];
 		if (!distintivo) for (let caso of rutasClasicas.startsWith) if (url.startsWith(caso[0])) distintivo = caso[1];
-		return distintivo
+		return distintivo;
 	},
 };
 
