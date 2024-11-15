@@ -710,7 +710,7 @@ module.exports = {
 			return;
 		},
 		prodsMasVistos: () => {},
-		navegsDiaHora: (navegsDia) => {
+		navegsDiaHora: async (navegsDia) => {
 			// Elimina las rutas que correspondan
 			const navegsPorHora = convsNavegsDelDia.navegsPorHora(navegsDia);
 
@@ -1120,6 +1120,14 @@ const convsNavegsDelDia = {
 			if (navegsDia.find((n) => n.cliente_id == cliente_id && n.fechaHora == fechaHora && n.id != id))
 				navegsDia.splice(i, 1);
 		}
+
+		// Terminación
+		navegsDia = navegsDia.map((n) => {
+			n.fecha = comp.fechaHora.anoMesDia(n.fecha);
+			n.diaSem = comp.fechaHora.diaSem(n.fechaHora)
+			n.hora = new Date(n.fechaHora).getUTCHours();
+			return n;
+		});
 
 		// Fin
 		return navegsDia;
