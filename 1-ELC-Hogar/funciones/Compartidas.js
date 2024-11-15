@@ -1094,8 +1094,8 @@ module.exports = {
 			fecha = new Date(fecha).toISOString().slice(0, 10);
 			return fecha;
 		},
-		fechaHorario: (horario) => {
-			horario = horario ? new Date(horario) : FN.ahora();
+		fechaHorario: (fecha) => {
+			const horario = fecha ? new Date(fecha) : FN.ahora();
 			return (
 				horario.getDate() +
 				"/" +
@@ -1107,16 +1107,17 @@ module.exports = {
 				"hs"
 			);
 		},
-		fechaDelAno: (dataEntry) => {
+		fechaDelAno: (fecha) => {
 			let datos = {};
-			if (dataEntry.fechaDelAno_id && dataEntry.fechaDelAno_id <= 366) {
-				let fechaDelAno = fechasDelAno.find((n) => n.id == dataEntry.fechaDelAno_id);
+			if (fecha.fechaDelAno_id && fecha.fechaDelAno_id <= 366) {
+				let fechaDelAno = fechasDelAno.find((n) => n.id == fecha.fechaDelAno_id);
 				datos.dia = fechaDelAno.dia;
 				datos.mes_id = fechaDelAno.mes_id;
 			}
 			// Fin
 			return datos;
 		},
+		fechaSinHora: (fecha) => new Date(fecha).toISOString().slice(0, 10),
 	},
 	gestionArchivos: {
 		existe: (rutaNombre) => {
