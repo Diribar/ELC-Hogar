@@ -641,7 +641,7 @@ module.exports = {
 		},
 	},
 	navegsDelDia: {
-		rutasPorDia: async (navegsDia) => {
+		navegsDiaRuta: async (navegsDia) => {
 			// Elimina las rutas que correspondan
 			let rutasPorDia = convsNavegsDelDia.rutasPorDia(navegsDia);
 
@@ -707,7 +707,7 @@ module.exports = {
 			return;
 		},
 		prodsMasVistos: () => {},
-		navegsPorHora: (navegsDia) => {
+		navegsDiaHora: (navegsDia) => {
 			// Elimina las rutas que correspondan
 			const navegsPorHora = convsNavegsDelDia.navegsPorHora(navegsDia);
 
