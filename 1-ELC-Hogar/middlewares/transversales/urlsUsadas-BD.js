@@ -20,15 +20,7 @@ module.exports = (req, res, next) => {
 	}
 
 	// Guarda el registro de navegación
-	const tieneQuery = ruta.includes("/?");
-	const condicion = {cliente_id, ruta};
-	tieneQuery
-		? baseDeDatos // si tiene query, se fija que no esté repetido
-				.obtienePorCondicion("rutasDelDia", condicion)
-				.then((n) => (!n ? baseDeDatos.agregaRegistro("rutasDelDia", condicion) : null))
-		: baseDeDatos // si no tiene query, se fija que no sea un 'refresh'
-				.obtienePorCondicionElUltimo("rutasDelDia", {cliente_id})
-				.then((n) => (!n || n.ruta != ruta ? baseDeDatos.agregaRegistro("rutasDelDia", condicion) : null));
+	baseDeDatos.agregaRegistro("navegsDia", {cliente_id, ruta})
 
 	// Fin
 	next();
