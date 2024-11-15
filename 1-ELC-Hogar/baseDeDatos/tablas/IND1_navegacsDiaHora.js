@@ -10,7 +10,7 @@ module.exports = (sequelize, dt) => {
 		visitas: {type: dt.INTEGER},
 	};
 	const config = {
-		tableName: "ind_navegacs_dia_hora",
+		tableName: "ind1_navegacs_dia_hora",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
