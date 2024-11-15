@@ -41,19 +41,19 @@ module.exports = (req, res, next) => {
 	return next();
 };
 
-let contadorDeClientes = async (usuario_id, cliente) => {
+const contadorDeClientes = async (usuario_id, cliente) => {
 	// Variables
 	const {cliente_id, diasNaveg, visitaCreadaEn} = cliente;
 
 	// Si ya existe un registro del 'cliente_id' en esta fecha, interrumpe la función
 	const condicion = {fecha: hoy, cliente_id};
-	const existe = await baseDeDatos.obtienePorCondicion("navegsDelDia", condicion);
+	const existe = await baseDeDatos.obtienePorCondicion("cantNavegsDia", condicion);
 	if (existe) return;
 
-	// Agrega un registro en la tabla 'navegsDelDia'
-	let datos = {...condicion, diasNaveg, visitaCreadaEn};
+	// Agrega un registro en la tabla 'cantNavegsDia'
+	const datos = {...condicion, diasNaveg, visitaCreadaEn};
 	if (usuario_id) datos.usuario_id = usuario_id;
-	baseDeDatos.agregaRegistro("navegsDelDia", datos);
+	baseDeDatos.agregaRegistro("cantNavegsDia", datos);
 
 	// Fin
 	return;

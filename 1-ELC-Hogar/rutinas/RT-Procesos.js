@@ -523,9 +523,9 @@ module.exports = {
 
 	// Clientes
 	clientes: {
-		navegsDiarias: async () => {
+		cantNavegs: async () => {
 			// Variables
-			let revisar = await baseDeDatos.obtieneTodos("navegsDiarias");
+			let revisar = await baseDeDatos.obtieneTodos("cantNavegsAcum");
 			if (!revisar.length) return;
 			const anoMesUlt = revisar[revisar.length - 1].anoMes;
 			let promedios = {};
@@ -554,10 +554,10 @@ module.exports = {
 				for (let metodo in totales) promedios[metodo] = Math.round(totales[metodo] / cantRegs);
 
 				// Elimina los registros de ese año-mes
-				await baseDeDatos.eliminaPorCondicion("navegsDiarias", {anoMes: anoMesAntiguo});
+				await baseDeDatos.eliminaPorCondicion("cantNavegsAcum", {anoMes: anoMesAntiguo});
 
 				// Agrega un registro con los promedios
-				await baseDeDatos.agregaRegistroIdCorrel("navegsDiarias", {anoMes: anoMesAntiguo, ...promedios});
+				await baseDeDatos.agregaRegistroIdCorrel("cantNavegsAcum", {anoMes: anoMesAntiguo, ...promedios});
 
 				// Fin
 				revisar = revisar.filter((n) => n.anoMes != anoMesAntiguo);
@@ -566,9 +566,9 @@ module.exports = {
 			// Fin
 			return;
 		},
-		clientesAcum: async () => {
+		cantClientes: async () => {
 			// Variables
-			let revisar = await baseDeDatos.obtieneTodos("clientesAcum");
+			let revisar = await baseDeDatos.obtieneTodos("cantClientesAcum");
 			if (!revisar.length) return;
 			const anoMesUlt = revisar[revisar.length - 1].anoMes;
 
@@ -586,10 +586,10 @@ module.exports = {
 				const regUltimo = regsParaProcesar[regsParaProcesar.length - 1];
 
 				// Quita el dato de la fecha de ese registro
-				await baseDeDatos.actualizaPorId("clientesAcum", regUltimo.id, {fecha: null});
+				await baseDeDatos.actualizaPorId("cantClientesAcum", regUltimo.id, {fecha: null});
 
 				// Elimina los demás registros de ese mes
-				await baseDeDatos.eliminaPorCondicion("clientesAcum", {fecha: {[Op.ne]: null}, anoMes: anoMesAntiguo});
+				await baseDeDatos.eliminaPorCondicion("cantClientesAcum", {fecha: {[Op.ne]: null}, anoMes: anoMesAntiguo});
 
 				// Fin
 				revisar = revisar.filter((n) => n.anoMes != anoMesAntiguo);
@@ -641,9 +641,9 @@ module.exports = {
 		},
 	},
 	urlsDelDia: {
-		rutasMasUsadas: async (rutasDelDia) => {
+		rutasMasUsadas: async (navegsDia) => {
 			// Elimina las rutas que correspondan
-			rutasDelDia = eliminaRutasDelDia.rutasUsadas(rutasDelDia);
+			navegsDia = eliminaNavegsDelDia.rutasUsadas(navegsDia);
 
 			// Obtiene el último registro de rutas acumuladas
 			let ultRegRutasAcum = await baseDeDatos.obtienePorCondicionElUltimo("rutasAcum");
@@ -660,7 +660,7 @@ module.exports = {
 			// Variables
 			let fechaSig = ultRegRutasAcum.fecha
 				? new Date(new Date(ultRegRutasAcum.fecha).getTime() + unDia) // el día siguiente de la del último registro de 'ultRegRutasAcum'
-				: new Date(rutasDelDia[0].fecha); // la del primer registro de 'rutasDelDia'
+				: new Date(navegsDia[0].fecha); // la del primer registro de 'navegsDia'
 			fechaSig = new Date(fechaSig.toISOString().slice(0, 10)); // sólo importa la fecha
 
 			// Rutina por fecha mientras la fecha sea menor al día vigente
@@ -669,7 +669,7 @@ module.exports = {
 				let fechaTope = new Date(fechaSig.getTime() + unDia);
 
 				// Obtiene las rutas visitadas en el día
-				let rutasFiltradas = rutasDelDia.filter((ruta) => ruta.fecha >= fechaSig && ruta.fecha < fechaTope);
+				let rutasFiltradas = navegsDia.filter((ruta) => ruta.fecha >= fechaSig && ruta.fecha < fechaTope);
 
 				// Si no hay rutasFiltradas, aumenta el día e interrumpe el ciclo
 				if (!rutasFiltradas.length) {
@@ -691,7 +691,7 @@ module.exports = {
 				await baseDeDatos.agregaRegistro("rutasAcum", rutaAgregar);
 
 				// Elimina las rutas visitadas en ese rango de fechas
-				rutasDelDia = rutasDelDia.filter((n) => n.fecha >= fechaTope);
+				navegsDia = navegsDia.filter((n) => n.fecha >= fechaTope);
 
 				// Fin
 				fechaSig = new Date(fechaSig.getTime() + unDia);
@@ -707,7 +707,9 @@ module.exports = {
 			return;
 		},
 		prodsMasVistos: () => {},
-		horarioDeUso: () => {},
+		horarioDeUso: (navegsDia) => {
+			// Variables
+		},
 	},
 
 	// Funciones - Otras
@@ -1073,25 +1075,25 @@ const nombresDeAvatarEnBD = async ({entidad, status_id, campoAvatar}) => {
 	// Fin
 	return registros;
 };
-const eliminaRutasDelDia = {
-	rutasUsadas: (rutasDelDia) => {
-		for (let i = rutasDelDia.length - 1; i > 0; i--) {
+const eliminaNavegsDelDia = {
+	rutasUsadas: (navegsDia) => {
+		for (let i = navegsDia.length - 1; i > 0; i--) {
 			// Variables
-			const {id, fecha, cliente_id, ruta} = rutasDelDia[i];
-			const rutaAnt = rutasDelDia[i - 1];
+			const {id, fecha, cliente_id, ruta} = navegsDia[i];
+			const rutaAnt = navegsDia[i - 1];
 			const tieneQuery = ruta.includes("/?");
 
 			// Revisa las rutas
 			if (
 				(tieneQuery &&
-					rutasDelDia.find((n) => n.ruta == ruta && n.cliente_id == cliente_id && n.fecha == fecha && n.id != id)) || // si tiene query, se fija que no esté repetido
+					navegsDia.find((n) => n.ruta == ruta && n.cliente_id == cliente_id && n.fecha == fecha && n.id != id)) || // si tiene query, se fija que no esté repetido
 				(!tieneQuery && rutaAnt.ruta == ruta && rutaAnt.cliente_id == cliente_id && rutaAnt.fecha == fecha) || // si no tiene query, se fija que no sea un 'refresh'
 				false
 			)
-				rutasDelDia.splice(i, 1);
+				navegsDia.splice(i, 1);
 		}
 
 		// Fin
-		return rutasDelDia;
+		return navegsDia;
 	},
 };
