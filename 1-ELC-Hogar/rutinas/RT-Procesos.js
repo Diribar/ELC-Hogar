@@ -654,17 +654,15 @@ module.exports = {
 				.flat()
 				.map((n) => n[1]);
 			let fechaSig = ultRegRutas.fecha
-				? new Date(new Date(ultRegRutas.fecha).getTime() + unDia) // el día siguiente de la del último registro de 'ultRegRutas'
-				: new Date(rutasPorDia[0].fecha); // la del primer registro de 'rutasPorDia'
-			fechaSig = new Date(comp.fechaHora.anoMesDia(fechaSig)); // sólo importa la fecha
+				? new Date(ultRegRutas.fecha).getTime() + unDia // el día siguiente de la del último registro de 'ultRegRutas'
+				: rutasPorDia[0].fecha; // la del primer registro de 'rutasPorDia'
+			fechaSig = comp.fechaHora.anoMesDia(fechaSig); // sólo importa la fecha
 
 			// Rutina por fecha mientras la fecha sea menor al día vigente
 			while (comp.fechaHora.anoMesDia(fechaSig) < hoy) {
 				// Variables
-				let fechaTope = new Date(fechaSig.getTime() + unDia);
-
-				// Obtiene las rutas visitadas en el día
-				let rutasFiltradas = rutasPorDia.filter((ruta) => ruta.fecha >= fechaSig && ruta.fecha < fechaTope);
+				const fechaTope = comp.fechaHora.anoMesDia(new Date(fechaSig).getTime() + unDia);
+				const rutasFiltradas = rutasPorDia.filter((ruta) => ruta.fecha >= fechaSig && ruta.fecha < fechaTope);
 
 				// Si no hay rutasFiltradas, aumenta el día e interrumpe el ciclo
 				if (!rutasFiltradas.length) {
@@ -694,7 +692,7 @@ module.exports = {
 				rutasPorDia = rutasPorDia.filter((n) => n.fecha >= fechaTope);
 
 				// Actualiza la fecha siguiente
-				fechaSig = new Date(fechaSig.getTime() + unDia);
+				fechaSig = comp.fechaHora.anoMesDia(new Date(fechaSig).getTime() + unDia);
 
 				// Fin
 				await Promise.all(espera);
