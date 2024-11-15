@@ -67,7 +67,7 @@ module.exports = {
 		await this.RutinasDiarias(); // ejecuta las rutinas diarias
 
 		// Verifica si se deben correr las rutinas horarias
-		if (minutos) await this.RutinasHorarias();
+		if (minutos > 1) await this.RutinasHorarias();
 
 		// Rutinas semanales
 		await this.SemanaUTC();
