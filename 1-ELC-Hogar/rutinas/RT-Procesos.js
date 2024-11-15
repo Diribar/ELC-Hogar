@@ -711,8 +711,35 @@ module.exports = {
 		},
 		prodsMasVistos: () => {},
 		navegsDiaHora: async (navegsDia) => {
-			// Elimina las rutas que correspondan
-			const navegsPorHora = convsNavegsDelDia.navegsPorHora(navegsDia);
+			// Variables
+			const diaSem_horas = convsNavegsDelDia.navegsPorHora(navegsDia);
+
+			// Obtiene los diaSem a completar
+			const diasSem = [...new Set(diaSem_horas.map((n) => n.diaSem))];
+
+			// Completa con null las cantidades de semAct para los diaSem a completar
+			for (const diaSem of diasSem) await baseDeDatos.actualizaPorCondicion("navegsDiaHoraCant", {diaSem}, {semAct: null});
+
+			for (const diaSem of diasSem) {
+				// Variables
+				const regsDiaSem = diaSem_horas.filter((n) => n.diaSem == diaSem);
+				const consolidado = {};
+
+				// Consolida la información
+				for (const regDiaSem of regsDiaSem)
+					consolidado[regDiaSem.hora] ? consolidado[regDiaSem.hora]++ : (consolidado[regDiaSem.hora] = 1);
+
+				// Completa la cantidad para los diaSem-hora con valor
+				let espera = [];
+				for (const hora in consolidado) {
+					const condicion = {diaSem, hora};
+					const semAct = consolidado[hora];
+					espera.push(baseDeDatos.actualizaPorCondicion("navegsDiaHoraCant", condicion, {semAct}));
+				}
+
+				// Fin
+				await Promise.all(espera)
+			}
 
 			// Fin
 			return;
@@ -1124,7 +1151,7 @@ const convsNavegsDelDia = {
 		// Terminación
 		navegsDia = navegsDia.map((n) => {
 			n.fecha = comp.fechaHora.anoMesDia(n.fecha);
-			n.diaSem = comp.fechaHora.diaSem(n.fechaHora)
+			n.diaSem = comp.fechaHora.diaSem(n.fechaHora);
 			n.hora = new Date(n.fechaHora).getUTCHours();
 			return n;
 		});
