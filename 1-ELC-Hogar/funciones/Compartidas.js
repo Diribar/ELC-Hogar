@@ -1286,46 +1286,13 @@ module.exports = {
 		// Fin
 		return {baseUrl, tarea, siglaFam, entidad, url};
 	},
-	distintivosDeRutas: (url) =>
-		false
-			? false
-			: url == "/" // inicio
-			? "inicio"
-			: url == "busqueda-rapida" // inicio
-			? "busquedaRapida"
-			: url.includes("/consultas") // consultas
-			? "consultas"
-			: url.includes("/detalle/p") // detalle
-			? "detalleDeProd"
-			: url.includes("/detalle/r")
-			? "detalleDeRclv"
-			: url.includes("/edicion/p") // edición
-			? "edicionDeProd"
-			: url.includes("/edicion/r")
-			? "edicionDeRclv"
-			: url.includes("/agregar-") // agregar
-			? "agregarProd"
-			: url.includes("/agregar/r")
-			? "agregarRclv"
-			: url.includes("/calificar/p") // calificar producto
-			? "calificarProd"
-			: url.startsWith("/links/mirar/l") // mirar links
-			? "mirarLinks"
-			: url.startsWith("/institucional/contactanos") // contactanos
-			? "contactanos"
-			: url.startsWith("/institucional") // institucional
-			? "institucional"
-			: url.startsWith("/revision/tablero") // revisión
-			? "revisionTablero"
-			: url.startsWith("/mantenimiento") // mantenimiento
-			? "mantenimiento"
-			: url.startsWith("/producto") // rutas antiguas
-			? "antiguaProd"
-			: url.startsWith("/rclv")
-			? "antiguaRclv"
-			: url.includes("/links")
-			? "antiguaLinks"
-			: null,
+	distintivosDeRutas: (url) => {
+		let distintivo;
+		if (!distintivo) for (let caso of rutasClasicas.igual) if (url == caso[0]) distintivo = caso[1];
+		if (!distintivo) for (let caso of rutasClasicas.includes) if (url.includes(caso[0])) distintivo = caso[1];
+		if (!distintivo) for (let caso of rutasClasicas.startsWith) if (url.startsWith(caso[0])) distintivo = caso[1];
+		return distintivo
+	},
 };
 
 // Funciones
