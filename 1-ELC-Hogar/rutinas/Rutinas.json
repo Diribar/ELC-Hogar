@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 14/nov",
-	"HoraUTC": "11:53",
+	"FechaUTC": "Vie. 15/nov",
+	"HoraUTC": "10:18",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 11/nov",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"12-nov-24": {},
 		"13-nov-24": {"leyenda": "Hoy recordamos a Pascalina Lehnert", "entidad": "personajes", "id": 80},
 		"14-nov-24": {},
 		"15-nov-24": {"leyenda": "Hoy recordamos a Helena Studler", "entidad": "personajes", "id": 155},
-		"16-nov-24": {}
+		"16-nov-24": {},
+		"17-nov-24": {"leyenda": "Hoy recordamos a la venerable Henriette DeLille", "entidad": "personajes", "id": 131}
 	}
 }
