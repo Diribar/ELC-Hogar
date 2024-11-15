@@ -245,7 +245,7 @@ module.exports = {
 			espera.push(baseDeDatos.actualizaPorId("usuarios", usuario.id, datosUs));
 			for (let dato in datosUs) usuario[dato] = datosUs[dato];
 
-			// Actualiza datos en la tabla 'navegsDelDia'
+			// Actualiza datos en la tabla 'cantNavegsDia'
 			const datosND = {
 				cliente_id: usuario.cliente_id,
 				usuario_id,
@@ -254,7 +254,7 @@ module.exports = {
 			};
 			espera.push(
 				baseDeDatos
-					.actualizaPorCondicion("navegsDelDia", {cliente_id, fecha: hoy}, datosND) // la variable 'cliente_id' puede diferir del 'usuario.cliente_id'
+					.actualizaPorCondicion("cantNavegsDia", {cliente_id, fecha: hoy}, datosND) // la variable 'cliente_id' puede diferir del 'usuario.cliente_id'
 					.then(() => procesos.eliminaDuplicados(usuario.id))
 			);
 
