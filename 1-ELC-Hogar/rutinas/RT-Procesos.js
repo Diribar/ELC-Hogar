@@ -525,7 +525,7 @@ module.exports = {
 	clientes: {
 		cantNavegs: async () => {
 			// Variables
-			let revisar = await baseDeDatos.obtieneTodos("cantNavegsAcum");
+			let revisar = await baseDeDatos.obtieneTodos("persWebDiaCant");
 			if (!revisar.length) return;
 			const anoMesUlt = revisar[revisar.length - 1].anoMes;
 			let promedios = {};
@@ -554,10 +554,10 @@ module.exports = {
 				for (let metodo in totales) promedios[metodo] = Math.round(totales[metodo] / cantRegs);
 
 				// Elimina los registros de ese año-mes
-				await baseDeDatos.eliminaPorCondicion("cantNavegsAcum", {anoMes: anoMesAntiguo});
+				await baseDeDatos.eliminaPorCondicion("persWebDiaCant", {anoMes: anoMesAntiguo});
 
 				// Agrega un registro con los promedios
-				await baseDeDatos.agregaRegistroIdCorrel("cantNavegsAcum", {anoMes: anoMesAntiguo, ...promedios});
+				await baseDeDatos.agregaRegistroIdCorrel("persWebDiaCant", {anoMes: anoMesAntiguo, ...promedios});
 
 				// Fin
 				revisar = revisar.filter((n) => n.anoMes != anoMesAntiguo);

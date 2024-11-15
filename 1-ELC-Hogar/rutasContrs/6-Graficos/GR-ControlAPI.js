@@ -3,8 +3,8 @@
 module.exports = {
 	// Usuarios
 	cantNavegs: async (req, res) => {
-		const cantNavegsAcum = await baseDeDatos.obtieneTodosConOrden("cantNavegsAcum", "fecha");
-		return res.json(cantNavegsAcum);
+		const persWebDiaCant = await baseDeDatos.obtieneTodosConOrden("persWebDiaCant", "fecha");
+		return res.json(persWebDiaCant);
 	},
 	cantClientes: async (req, res) => {
 		const datos = await baseDeDatos.obtieneTodosConOrden("persBdDiaCant", "fecha");

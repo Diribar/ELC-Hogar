@@ -333,7 +333,7 @@ module.exports = {
 
 			// Variables
 			const primFechaDiarioNavegs = persWebDia[0].fecha;
-			const ultRegHistNavegs = await baseDeDatos.obtienePorCondicionElUltimo("cantNavegsAcum");
+			const ultRegHistNavegs = await baseDeDatos.obtienePorCondicionElUltimo("persWebDiaCant");
 			const ultFechaHistNavegs = ultRegHistNavegs && ultRegHistNavegs.fecha;
 
 			// Si hay una inconsistencia, termina
@@ -360,7 +360,7 @@ module.exports = {
 				const visitas = navegantes.filter((n) => !n.usuario_id && n.cliente_id.startsWith("V")).length;
 
 				// Guarda el resultado
-				await baseDeDatos.agregaRegistro("cantNavegsAcum", {
+				await baseDeDatos.agregaRegistro("persWebDiaCant", {
 					...{fecha: fechaSig, anoMes},
 					...{logins, usSinLogin, visitas},
 				});
@@ -776,7 +776,7 @@ module.exports = {
 			const tablas = [
 				...["histEdics", "statusHistorial"],
 				...["prodsEdicion", "rclvsEdicion", "linksEdicion"],
-				...["cantNavegsAcum", "persWebDia", "persBdDiaCant"],
+				...["persWebDiaCant", "persWebDia", "persBdDiaCant"],
 				...["prodsAzar", "capturas"],
 				...["calRegistros", "misConsultas", "consRegsPrefs", "pppRegistros"],
 				...["capsSinLink", "novedadesELC"],
