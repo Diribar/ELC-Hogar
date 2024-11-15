@@ -1101,4 +1101,24 @@ const eliminaNavegsDelDia = {
 		// Fin
 		return navegsDia;
 	},
+	horarioDeUso: (navegsDia) => {
+		for (let i = navegsDia.length - 1; i > 0; i--) {
+			// Variables
+			const {id, fecha, cliente_id} = navegsDia[i];
+			const rutaAnt = navegsDia[i - 1];
+			const tieneQuery = ruta.includes("/?");
+
+			// Revisa las rutas
+			if (
+				(tieneQuery &&
+					navegsDia.find((n) => n.ruta == ruta && n.cliente_id == cliente_id && n.fecha == fecha && n.id != id)) || // si tiene query, se fija que no esté repetido
+				(!tieneQuery && rutaAnt.ruta == ruta && rutaAnt.cliente_id == cliente_id && rutaAnt.fecha == fecha) || // si no tiene query, se fija que no sea un 'refresh'
+				false
+			)
+				navegsDia.splice(i, 1);
+		}
+
+		// Fin
+		return navegsDia;
+	},
 };
