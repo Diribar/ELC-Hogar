@@ -18,8 +18,8 @@
 	"MotivoDiarias3": "Estadísticas que se necesita que se actualicen en forma diaria",
 	"RutinasDiarias": {
 		"imagenDerecha": "SI",
-		"navegsDiarias": "SI",
-		"clientesAcum": "SI",
+		"cantNavegs": "SI",
+		"cantClientes": "SI",
 		"actualizaUsuarios": "SI",
 		"clientesMensualidad": "SI",
 		"eliminaLinksInactivos": "SI",

@@ -324,16 +324,16 @@ module.exports = {
 			// Fin
 			return;
 		},
-		navegsDiarias: async () => {
+		cantNavegs: async () => {
 			// Navegantes diarios, quitando los duplicados
-			const navegsDelDia = await baseDeDatos
-				.obtieneTodosPorCondicion("navegsDelDia", {fecha: {[Op.lt]: hoy}})
+			const cantNavegsDia = await baseDeDatos
+				.obtieneTodosPorCondicion("cantNavegsDia", {fecha: {[Op.lt]: hoy}})
 				.then((n) => n.sort((a, b) => (a.fecha < b.fecha ? -1 : 1)));
-			if (!navegsDelDia.length) return;
+			if (!cantNavegsDia.length) return;
 
 			// Variables
-			const primFechaDiarioNavegs = navegsDelDia[0].fecha;
-			const ultRegHistNavegs = await baseDeDatos.obtienePorCondicionElUltimo("navegsDiarias");
+			const primFechaDiarioNavegs = cantNavegsDia[0].fecha;
+			const ultRegHistNavegs = await baseDeDatos.obtienePorCondicionElUltimo("cantNavegsAcum");
 			const ultFechaHistNavegs = ultRegHistNavegs && ultRegHistNavegs.fecha;
 
 			// Si hay una inconsistencia, termina
@@ -352,7 +352,7 @@ module.exports = {
 			while (fechaSig < hoy) {
 				// Variables
 				const anoMes = fechaSig.slice(0, 7);
-				const navegantes = navegsDelDia.filter((n) => n.fecha == fechaSig);
+				const navegantes = cantNavegsDia.filter((n) => n.fecha == fechaSig);
 
 				// Cantidad y fidelidad de navegantes
 				const logins = navegantes.filter((n) => n.usuario_id).length;
@@ -360,7 +360,7 @@ module.exports = {
 				const visitas = navegantes.filter((n) => !n.usuario_id && n.cliente_id.startsWith("V")).length;
 
 				// Guarda el resultado
-				await baseDeDatos.agregaRegistro("navegsDiarias", {
+				await baseDeDatos.agregaRegistro("cantNavegsAcum", {
 					...{fecha: fechaSig, anoMes},
 					...{logins, usSinLogin, visitas},
 				});
@@ -369,15 +369,15 @@ module.exports = {
 				fechaSig = procesos.sumaUnDia(fechaSig);
 			}
 
-			// Elimina las 'navegsDelDia' anteriores
-			baseDeDatos.eliminaPorCondicion("navegsDelDia", {fecha: {[Op.lt]: hoy}});
+			// Elimina las 'cantNavegsDia' anteriores
+			baseDeDatos.eliminaPorCondicion("cantNavegsDia", {fecha: {[Op.lt]: hoy}});
 
 			// Fin
 			return;
 		},
-		clientesAcum: async () => {
+		cantClientes: async () => {
 			// Obtiene la última fecha del historial
-			const ultRegHistClientes = await baseDeDatos.obtienePorCondicionElUltimo("clientesAcum");
+			const ultRegHistClientes = await baseDeDatos.obtienePorCondicionElUltimo("cantClientesAcum");
 			const ultFechaHistClientes = ultRegHistClientes ? ultRegHistClientes.fecha : "2024-10-03";
 			let fechaSig = procesos.sumaUnDia(ultFechaHistClientes); // le suma un día al último registro
 			if (fechaSig >= hoy) return;
@@ -397,7 +397,7 @@ module.exports = {
 				const frecPorCliente = procesos.clientes.frecPorCliente(clientes, fechaSig);
 
 				// Guarda el resultado
-				await baseDeDatos.agregaRegistro("clientesAcum", {fecha: fechaSig, anoMes, ...frecPorCliente});
+				await baseDeDatos.agregaRegistro("cantClientesAcum", {fecha: fechaSig, anoMes, ...frecPorCliente});
 
 				// Obtiene la fecha siguiente
 				fechaSig = procesos.sumaUnDia(fechaSig);
@@ -413,11 +413,11 @@ module.exports = {
 
 			// Obtiene las últimas rutas usadas
 			const condicion = {fecha: {[Op.lt]: fechaMax}};
-			const rutasDelDia = await baseDeDatos.obtieneTodosPorCondicion("rutasDelDia", condicion);
-			if (!rutasDelDia.length) return;
+			const navegsDia = await baseDeDatos.obtieneTodosPorCondicion("navegsDia", condicion);
+			if (!navegsDia.length) return;
 
 			// Procesos
-			espera.push(procesos.urlsDelDia.rutasMasUsadas(rutasDelDia));
+			espera.push(procesos.urlsDelDia.rutasMasUsadas(navegsDia));
 
 			// Espera a que se completen los procesos
 			await Promise.all(espera);
@@ -475,8 +475,8 @@ module.exports = {
 		},
 		clientesMensualidad: async () => {
 			// Ejecuta las funciones de cada gráfico
-			await procesos.clientes.navegsDiarias();
-			await procesos.clientes.clientesAcum();
+			await procesos.clientes.cantNavegs();
+			await procesos.clientes.cantClientes();
 			await procesos.clientes.eliminaVisitasAntiguas();
 
 			// Fin
@@ -775,7 +775,7 @@ module.exports = {
 			const tablas = [
 				...["histEdics", "statusHistorial"],
 				...["prodsEdicion", "rclvsEdicion", "linksEdicion"],
-				...["navegsDiarias", "navegsDelDia", "clientesAcum"],
+				...["cantNavegsAcum", "cantNavegsDia", "cantClientesAcum"],
 				...["prodsAzar", "capturas"],
 				...["calRegistros", "misConsultas", "consRegsPrefs", "pppRegistros"],
 				...["capsSinLink", "novedadesELC"],
