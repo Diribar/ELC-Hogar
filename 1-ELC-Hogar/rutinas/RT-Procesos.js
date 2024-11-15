@@ -641,9 +641,9 @@ module.exports = {
 		},
 	},
 	urlsDelDia: {
-		rutasMasUsadas: async (navegsDia) => {
+		rutasPorDia: async (navegsDia) => {
 			// Elimina las rutas que correspondan
-			navegsDia = eliminaNavegsDelDia.rutasUsadas(navegsDia);
+			navegsDia = eliminaNavegsDelDia.rutasPorDia(navegsDia);
 
 			// Obtiene el último registro de rutas acumuladas
 			let ultRegRutasAcum = await baseDeDatos.obtienePorCondicionElUltimo("rutasAcum");
@@ -707,9 +707,12 @@ module.exports = {
 			return;
 		},
 		prodsMasVistos: () => {},
-		horarioDeUso: (navegsDia) => {
+		navegsPorHora: (navegsDia) => {
 			// Elimina las rutas que correspondan
-			navegsDia = eliminaNavegsDelDia.horarioDeUso(navegsDia);
+			navegsDia = eliminaNavegsDelDia.navegsPorHora(navegsDia);
+
+			// Fin
+			return
 		},
 	},
 
@@ -1077,7 +1080,7 @@ const nombresDeAvatarEnBD = async ({entidad, status_id, campoAvatar}) => {
 	return registros;
 };
 const eliminaNavegsDelDia = {
-	rutasUsadas: (navegsDia) => {
+	rutasPorDia: (navegsDia) => {
 		// Quita el horario de las fechas
 		navegsDia = navegsDia.map((n) => ({...n, fecha: comp.fechaHora.anoMesDia(n.fecha)}));
 
@@ -1101,20 +1104,17 @@ const eliminaNavegsDelDia = {
 		// Fin
 		return navegsDia;
 	},
-	horarioDeUso: (navegsDia) => {
+	navegsPorHora: (navegsDia) => {
+		// Quita los minutos y segundos de las fechas
+		navegsDia = navegsDia.map((n) => ({...n, fechaHora: n.fecha.setMinutes(0, 0)}));
+
+		// Quita las navegaciones que correspondan
 		for (let i = navegsDia.length - 1; i > 0; i--) {
 			// Variables
-			const {id, fecha, cliente_id} = navegsDia[i];
-			const rutaAnt = navegsDia[i - 1];
-			const tieneQuery = ruta.includes("/?");
+			const {id, fechaHora, cliente_id} = navegsDia[i];
 
-			// Revisa las rutas
-			if (
-				(tieneQuery &&
-					navegsDia.find((n) => n.ruta == ruta && n.cliente_id == cliente_id && n.fecha == fecha && n.id != id)) || // si tiene query, se fija que no esté repetido
-				(!tieneQuery && rutaAnt.ruta == ruta && rutaAnt.cliente_id == cliente_id && rutaAnt.fecha == fecha) || // si no tiene query, se fija que no sea un 'refresh'
-				false
-			)
+			// Revisa las rutas - // elimina las repeticiones de las combinaciones cliente-fechaHora
+			if (navegsDia.find((n) => n.cliente_id == cliente_id && n.fechaHora == fechaHora && n.id != id))
 				navegsDia.splice(i, 1);
 		}
 
