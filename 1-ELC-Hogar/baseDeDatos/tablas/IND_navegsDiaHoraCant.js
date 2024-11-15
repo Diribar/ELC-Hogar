@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "cantDiaSemHora"; // cantidad de navegantes por hora de día de la semana
+	const alias = "navegsDiaHoraCant"; // cantidad de navegantes por hora de día de la semana
 	const columns = {
 	};
 	const config = {

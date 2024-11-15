@@ -646,11 +646,11 @@ module.exports = {
 			let rutasPorDia = convsNavegsDelDia.rutasPorDia(navegsDia);
 
 			// Obtiene el último registro de rutas acumuladas
-			let ultRegRutasAcum = await baseDeDatos.obtienePorCondicionElUltimo("rutasAcum");
+			let ultRegRutasAcum = await baseDeDatos.obtienePorCondicionElUltimo("navegsDiaRutaCant");
 			if (!ultRegRutasAcum) {
-				await baseDeDatos.agregaRegistro("rutasAcum", {});
-				ultRegRutasAcum = await baseDeDatos.obtienePorCondicionElUltimo("rutasAcum");
-				await baseDeDatos.eliminaPorId("rutasAcum", ultRegRutasAcum.id);
+				await baseDeDatos.agregaRegistro("navegsDiaRutaCant", {});
+				ultRegRutasAcum = await baseDeDatos.obtienePorCondicionElUltimo("navegsDiaRutaCant");
+				await baseDeDatos.eliminaPorId("navegsDiaRutaCant", ultRegRutasAcum.id);
 				ultRegRutasAcum.fecha = null;
 			}
 
@@ -688,7 +688,7 @@ module.exports = {
 				}
 
 				// Agrega un registro con los valores recogidos
-				await baseDeDatos.agregaRegistro("rutasAcum", rutaAgregar);
+				await baseDeDatos.agregaRegistro("navegsDiaRutaCant", rutaAgregar);
 
 				// Elimina las rutas visitadas en ese rango de fechas
 				rutasPorDia = rutasPorDia.filter((n) => n.fecha >= fechaTope);
@@ -698,10 +698,10 @@ module.exports = {
 			}
 
 			// Si se supera la cantidad máxima de registros acumulados, elimina el más antiguo
-			const rutasAcum = await baseDeDatos.obtieneTodos("rutasAcum");
-			const cantEliminar = rutasAcum.length - 30;
+			const navegsDiaRutaCant = await baseDeDatos.obtieneTodos("navegsDiaRutaCant");
+			const cantEliminar = navegsDiaRutaCant.length - 30;
 			if (cantEliminar > 0)
-				for (let i = 0; i < cantEliminar; i++) await baseDeDatos.eliminarPorId("rutasAcum", rutasAcum[i].id);
+				for (let i = 0; i < cantEliminar; i++) await baseDeDatos.eliminarPorId("navegsDiaRutaCant", navegsDiaRutaCant[i].id);
 
 			// Fin
 			return;
