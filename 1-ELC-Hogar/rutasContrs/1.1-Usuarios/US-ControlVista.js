@@ -249,7 +249,7 @@ module.exports = {
 			const datosND = {
 				cliente_id: usuario.cliente_id,
 				usuario_id,
-				visitaCreadaEn: usuario.visitaCreadaEn.toISOString().slice(0, 10),
+				visitaCreadaEn: comp.fechaHora.fechaSinHora(usuario.visitaCreadaEn),
 				diasNaveg: usuario.diasNaveg,
 			};
 			espera.push(

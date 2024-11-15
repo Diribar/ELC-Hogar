@@ -103,7 +103,7 @@ const obtieneCamposNecesarios = (usuario) => {
 	for (const campo of camposNecesarios) cliente[campo] = usuario[campo];
 
 	// Adecua el campo 'visitaCreadaEn'
-	cliente.visitaCreadaEn = cliente.visitaCreadaEn.toISOString().slice(0, 10);
+	cliente.visitaCreadaEn = comp.fechaHora.fechaSinHora(cliente.visitaCreadaEn);
 
 	// Fin
 	return cliente;
