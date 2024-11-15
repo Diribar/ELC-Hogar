@@ -38,7 +38,7 @@ module.exports = {
 	// Consolidados
 	FechaHoraUTC: async function () {
 		// Variables
-		hoy = new Date().toISOString().slice(0, 10);
+		hoy = comp.fechaHora.fechaSinHora(new Date());
 		const info = {...rutinasJson};
 		const minutos = new Date().getMinutes();
 
@@ -388,7 +388,7 @@ module.exports = {
 			const clientes = await Promise.all([usuarios, visitas])
 				.then((n) => n.flat())
 				.then((n) => n.filter((m) => m.diasNaveg))
-				.then((n) => n.map((m) => ({...m, visitaCreadaEn: m.visitaCreadaEn.toISOString().slice(0, 10)})));
+				.then((n) => n.map((m) => ({...m, visitaCreadaEn: comp.fechaHora.fechaSinHora(m.visitaCreadaEn)})));
 
 			// Loop mientras el día sea menor al actual
 			while (fechaSig < hoy) {
@@ -406,7 +406,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		urlsDelDia: async () => {
+		navegsDelDia: async () => {
 			// Variables
 			const fechaMax = new Date(hoy);
 			let espera = [];
