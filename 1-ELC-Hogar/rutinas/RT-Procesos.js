@@ -611,7 +611,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		tiposDeCliente: (registros, proximaFecha) => {
+		frecPorCliente: (registros, proximaFecha) => {
 			// Quita los clientes futuros
 			registros = registros.filter((n) => n.visitaCreadaEn <= proximaFecha);
 
@@ -639,46 +639,75 @@ module.exports = {
 
 			return {tresDiez, onceTreinta, masDeTreinta, unoDos};
 		},
-		rutasDistintivo: (url) =>
-			false
-				? false
-				: url == "/" // inicio
-				? "inicio"
-				: url == "busqueda-rapida" // inicio
-				? "busquedaRapida"
-				: url.includes("/consultas") // consultas
-				? "consultas"
-				: url.includes("/detalle/p") // detalle
-				? "detalleDeProd"
-				: url.includes("/detalle/r")
-				? "detalleDeRclv"
-				: url.includes("/edicion/p") // edición
-				? "edicionDeProd"
-				: url.includes("/edicion/r")
-				? "edicionDeRclv"
-				: url.includes("/agregar-") // agregar
-				? "agregarProd"
-				: url.includes("/agregar/r")
-				? "agregarRclv"
-				: url.includes("/calificar/p") // calificar producto
-				? "calificarProd"
-				: url.startsWith("/links/mirar/l") // mirar links
-				? "mirarLinks"
-				: url.startsWith("/institucional/contactanos") // contactanos
-				? "contactanos"
-				: url.startsWith("/institucional") // institucional
-				? "institucional"
-				: url.startsWith("/revision/tablero") // revisión
-				? "revisionTablero"
-				: url.startsWith("/mantenimiento") // mantenimiento
-				? "mantenimiento"
-				: url.startsWith("/producto") // rutas antiguas
-				? "antiguaProd"
-				: url.startsWith("/rclv")
-				? "antiguaRclv"
-				: url.includes("/links")
-				? "antiguaLinks"
-				: null,
+	},
+	urlsDelDia: {
+		rutasMasUsadas: async (rutasDelDia) => {
+			// Elimina las rutas que correspondan
+			rutasDelDia = eliminaRutasDelDia.rutasUsadas(rutasDelDia);
+
+			// Obtiene el último registro de rutas acumuladas
+			let ultRegRutasAcum = await baseDeDatos.obtienePorCondicionElUltimo("rutasAcum");
+			if (!ultRegRutasAcum) {
+				await baseDeDatos.agregaRegistro("rutasAcum", {});
+				ultRegRutasAcum = await baseDeDatos.obtienePorCondicionElUltimo("rutasAcum");
+				await baseDeDatos.eliminaPorId("rutasAcum", ultRegRutasAcum.id);
+				ultRegRutasAcum.fecha = null;
+			}
+
+			// Obtiene el distintivo de las rutas
+			const distintivos = Object.keys(ultRegRutasAcum).filter((n) => n != "id" && n != "fecha");
+
+			// Variables
+			let fechaSig = ultRegRutasAcum.fecha
+				? new Date(new Date(ultRegRutasAcum.fecha).getTime() + unDia) // el día siguiente de la del último registro de 'ultRegRutasAcum'
+				: new Date(rutasDelDia[0].fecha); // la del primer registro de 'rutasDelDia'
+			fechaSig = new Date(fechaSig.toISOString().slice(0, 10)); // sólo importa la fecha
+
+			// Rutina por fecha mientras la fecha sea menor al día vigente
+			while (fechaSig.toISOString().slice(0, 10) < hoy) {
+				// Variables
+				let fechaTope = new Date(fechaSig.getTime() + unDia);
+
+				// Obtiene las rutas visitadas en el día
+				let rutasFiltradas = rutasDelDia.filter((ruta) => ruta.fecha >= fechaSig && ruta.fecha < fechaTope);
+
+				// Si no hay rutasFiltradas, aumenta el día e interrumpe el ciclo
+				if (!rutasFiltradas.length) {
+					fechaSig = new Date(fechaSig.getTime() + unDia);
+					continue;
+				}
+
+				// Crea la variable consolidadora, con los métodos y valores iniciales cero
+				const rutaAgregar = {fecha: fechaSig};
+				for (const distintivo of distintivos) rutaAgregar[distintivo] = 0;
+
+				// Cuenta la frecuencia por distintivo
+				for (let rutaFiltrada of rutasFiltradas) {
+					const distintivo = comp.distintivosDeRutas(rutaFiltrada.ruta);
+					if (distintivo) rutaAgregar[distintivo]++;
+				}
+
+				// Agrega un registro con los valores recogidos
+				await baseDeDatos.agregaRegistro("rutasAcum", rutaAgregar);
+
+				// Elimina las rutas visitadas en ese rango de fechas
+				rutasDelDia = rutasDelDia.filter((n) => n.fecha >= fechaTope);
+
+				// Fin
+				fechaSig = new Date(fechaSig.getTime() + unDia);
+			}
+
+			// Si se supera la cantidad máxima de registros acumulados, elimina el más antiguo
+			const rutasAcum = await baseDeDatos.obtieneTodos("rutasAcum");
+			const cantEliminar = rutasAcum.length - 30;
+			if (cantEliminar > 0)
+				for (let i = 0; i < cantEliminar; i++) await baseDeDatos.eliminarPorId("rutasAcum", rutasAcum[i].id);
+
+			// Fin
+			return;
+		},
+		prodsMasVistos: () => {},
+		horarioDeUso: () => {},
 	},
 
 	// Funciones - Otras
@@ -1043,4 +1072,26 @@ const nombresDeAvatarEnBD = async ({entidad, status_id, campoAvatar}) => {
 
 	// Fin
 	return registros;
+};
+const eliminaRutasDelDia = {
+	rutasUsadas: (rutasDelDia) => {
+		for (let i = rutasDelDia.length - 1; i > 0; i--) {
+			// Variables
+			const {id, fecha, cliente_id, ruta} = rutasDelDia[i];
+			const rutaAnt = rutasDelDia[i - 1];
+			const tieneQuery = ruta.includes("/?");
+
+			// Revisa las rutas
+			if (
+				(tieneQuery &&
+					rutasDelDia.find((n) => n.ruta == ruta && n.cliente_id == cliente_id && n.fecha == fecha && n.id != id)) || // si tiene query, se fija que no esté repetido
+				(!tieneQuery && rutaAnt.ruta == ruta && rutaAnt.cliente_id == cliente_id && rutaAnt.fecha == fecha) || // si no tiene query, se fija que no sea un 'refresh'
+				false
+			)
+				rutasDelDia.splice(i, 1);
+		}
+
+		// Fin
+		return rutasDelDia;
+	},
 };
