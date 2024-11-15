@@ -19,7 +19,7 @@ module.exports = (sequelize, dt) => {
 		mantenimiento: {type: dt.INTEGER},
 	};
 	const config = {
-		tableName: "ind_rutas_acum",
+		tableName: "ind_navegacs_dia_rutas",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

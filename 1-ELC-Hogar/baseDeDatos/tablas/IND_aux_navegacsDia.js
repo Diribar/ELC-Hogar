@@ -6,7 +6,7 @@ module.exports = (sequelize, dt) => {
 		fecha: {type: dt.DATE},
 	};
 	const config = {
-		tableName: "ind_navegs_dia",
+		tableName: "ind_aux_navegacs_dia",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
