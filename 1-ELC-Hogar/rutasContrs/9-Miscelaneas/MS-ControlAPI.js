@@ -93,8 +93,8 @@ module.exports = {
 		// Si corresponde, guarda el registro
 		if (cliente_id)
 			baseDeDatos
-				.obtienePorCondicionElUltimo("rutasDelDia", {cliente_id})
-				.then((n) => (!n || n.ruta != ruta ? baseDeDatos.agregaRegistro("rutasDelDia", {ruta, cliente_id}) : null));
+				.obtienePorCondicionElUltimo("navegsDia", {cliente_id})
+				.then((n) => (!n || n.ruta != ruta ? baseDeDatos.agregaRegistro("navegsDia", {ruta, cliente_id}) : null));
 
 		// Fin
 		return res.json();
