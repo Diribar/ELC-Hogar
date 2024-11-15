@@ -600,7 +600,7 @@ module.exports = {
 		},
 		eliminaVisitasAntiguas: async () => {
 			// Variables
-			const haceUnMes = new Date(Date.now() - unDia * 31).toISOString().slice(0, 10);
+			const haceUnMes = comp.fechaHora.anoMesDia(Date.now() - unDia * 31);
 
 			// Condicion
 			const condicion = {fechaUltNaveg: {[Op.lt]: haceUnMes}, diasNaveg: {[Op.lte]: 2}};
@@ -661,10 +661,10 @@ module.exports = {
 			let fechaSig = ultRegRutasAcum.fecha
 				? new Date(new Date(ultRegRutasAcum.fecha).getTime() + unDia) // el día siguiente de la del último registro de 'ultRegRutasAcum'
 				: new Date(navegsDia[0].fecha); // la del primer registro de 'navegsDia'
-			fechaSig = new Date(fechaSig.toISOString().slice(0, 10)); // sólo importa la fecha
+			fechaSig = new Date(comp.fechaHora.anoMesDia(fechaSig)); // sólo importa la fecha
 
 			// Rutina por fecha mientras la fecha sea menor al día vigente
-			while (fechaSig.toISOString().slice(0, 10) < hoy) {
+			while (comp.fechaHora.anoMesDia(fechaSig) < hoy) {
 				// Variables
 				let fechaTope = new Date(fechaSig.getTime() + unDia);
 
@@ -708,7 +708,8 @@ module.exports = {
 		},
 		prodsMasVistos: () => {},
 		horarioDeUso: (navegsDia) => {
-			// Variables
+			// Elimina las rutas que correspondan
+			navegsDia = eliminaNavegsDelDia.horarioDeUso(navegsDia);
 		},
 	},
 
@@ -1077,6 +1078,10 @@ const nombresDeAvatarEnBD = async ({entidad, status_id, campoAvatar}) => {
 };
 const eliminaNavegsDelDia = {
 	rutasUsadas: (navegsDia) => {
+		// Quita el horario de las fechas
+		navegsDia = navegsDia.map((n) => ({...n, fecha: comp.fechaHora.anoMesDia(n.fecha)}));
+
+		// Quita las navegaciones que correspondan
 		for (let i = navegsDia.length - 1; i > 0; i--) {
 			// Variables
 			const {id, fecha, cliente_id, ruta} = navegsDia[i];
