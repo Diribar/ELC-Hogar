@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 15/nov",
-	"HoraUTC": "10:18",
+	"FechaUTC": "Lun. 18/nov",
+	"HoraUTC": "13:19",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 11/nov",
-	"HoraSemUTC": "0:00",
-	"semanaUTC": 46,
+	"FechaSemUTC": "Lun. 18/nov",
+	"HoraSemUTC": "13:19",
+	"semanaUTC": 47,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS HORARIAS ---------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario y no maduros",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"13-nov-24": {"leyenda": "Hoy recordamos a Pascalina Lehnert", "entidad": "personajes", "id": 80},
-		"14-nov-24": {},
-		"15-nov-24": {"leyenda": "Hoy recordamos a Helena Studler", "entidad": "personajes", "id": 155},
 		"16-nov-24": {},
-		"17-nov-24": {"leyenda": "Hoy recordamos a la venerable Henriette DeLille", "entidad": "personajes", "id": 131}
+		"17-nov-24": {"leyenda": "Hoy recordamos a la venerable Henriette DeLille", "entidad": "personajes", "id": 131},
+		"18-nov-24": {"leyenda": "Hoy recordamos a Noé, santo", "entidad": "personajes", "id": 228},
+		"19-nov-24": {},
+		"20-nov-24": {"leyenda": "Hoy recordamos a san José Sánchez del Río", "entidad": "personajes", "id": 204}
 	}
 }
