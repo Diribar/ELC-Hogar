@@ -20,7 +20,7 @@ module.exports = {
 		if (!info.RutinasDiarias || !Object.keys(info.RutinasDiarias).length) return;
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 
-		await this.rutinas.navegsDelDia();
+		// await this.rutinas.navegsDia();
 		// await obsoletas.actualizaCapEnCons()
 		// await this.RutinasSemanales();
 
@@ -406,7 +406,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		navegsDelDia: async () => {
+		navegsDia: async () => {
 			// Variables
 			const fechaMax = new Date(hoy);
 			let espera = [];
@@ -417,8 +417,8 @@ module.exports = {
 			if (!navegsDia.length) return;
 
 			// Procesos
-			espera.push(procesos.navegsDelDia.rutasPorDia(navegsDia));
-			espera.push(procesos.navegsDelDia.navegsPorHora(navegsDia));
+			espera.push(procesos.navegsDelDia.navegsDiaRuta(navegsDia));
+			espera.push(procesos.navegsDelDia.navegsDiaHora(navegsDia));
 
 			// Espera a que se completen los procesos
 			await Promise.all(espera);

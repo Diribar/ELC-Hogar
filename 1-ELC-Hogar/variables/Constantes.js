@@ -174,4 +174,30 @@ module.exports = {
 	],
 	eliminarCuandoSinEntidadId: ["statusHistorial", "histEdics", "misConsultas", "pppRegistros", "calRegistros"],
 	requestsTriviales: ["WhatsApp", "Postman", "TelegramBot", "Zabbix"],
+	rutasClasicas: {
+		igual: [
+			["/", "inicio"],
+			["busqueda-rapida", "busquedaRapida"],
+		],
+		includes:[
+			["/consultas","consultas"],
+			["/detalle/p","detalleDeProd"],
+			["/detalle/r", "detalleDeRclv"],
+			["/edicion/p","edicionDeProd"],
+			["/edicion/r","edicionDeRclv"],
+			["/agregar-","agregarProd"],
+			["/agregar/r", "agregarRclv"],
+			["/calificar/p","calificarProd"],
+		],
+		startsWith:[
+			["/links/mirar/l","mirarLinks"],
+			["/institucional/contactanos","contactanos"],
+			["/institucional","institucional"],
+			["/revision/tablero", "revisionTablero"],
+			["/mantenimiento", "mantenimiento"],
+			["/producto", "antiguaProd"],
+			["/rclv","antiguaRclv"],
+			["/links","antiguaLinks"],
+		],
+	},
 };
