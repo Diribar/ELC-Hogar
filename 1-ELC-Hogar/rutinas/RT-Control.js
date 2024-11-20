@@ -780,6 +780,7 @@ module.exports = {
 				...["prodsAzar", "capturas"],
 				...["calRegistros", "misConsultas", "consRegsPrefs", "pppRegistros"],
 				...["capsSinLink", "novedadesELC"],
+				...["navegsDia", "navegsDiaHoraCant", "navegsDiaRutaCant"],
 			];
 
 			// Actualiza los valores de ID
