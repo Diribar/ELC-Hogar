@@ -690,7 +690,18 @@ module.exports = {
 			// Fin
 			return;
 		},
-		prodsMasVistos: () => {},
+		navegsDiaProd: async (navegsDia) => {
+			// Variables
+			let navegsDiaProc = convsNavegsDelDia.navegsDiaRuta(navegsDia);
+			let fechaSig = navegsDelDia.fechaSig("navegsDiaProdCant", navegsDiaProc);
+
+
+			// Elimina los registros antiguos
+			await navegsDelDia.eliminaRegsAntiguos("navegsDiaProdCant");
+
+			// Fin
+			return;
+		},
 		navegsDiaHora: async (navegsDia) => {
 			// Variables
 			let navegsDiaProc = convsNavegsDelDia.navegsDiaHora(navegsDia);
@@ -703,12 +714,6 @@ module.exports = {
 				// Variables
 				const fechaTope = comp.fechaHora.anoMesDia(new Date(fechaSig).getTime() + unDia);
 				const navegsDeUnDia = navegsDiaProc.filter((ruta) => ruta.fecha >= fechaSig && ruta.fecha < fechaTope); // obtiene las rutas del día
-
-				// Si no hay navegsDeUnDia, aumenta el día e interrumpe el ciclo
-				if (!navegsDeUnDia.length) {
-					fechaSig = comp.fechaHora.anoMesDia(new Date(fechaSig).getTime() + unDia);
-					continue;
-				}
 
 				// Consolida la información
 				const consolidado = {};
