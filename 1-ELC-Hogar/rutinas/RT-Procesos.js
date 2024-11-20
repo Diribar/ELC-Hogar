@@ -645,15 +645,8 @@ module.exports = {
 			// Elimina las rutas que correspondan
 			let navegsDiaProc = convsNavegsDelDia.navegsDiaRuta(navegsDia);
 
-			// Obtiene el último registro de acumuladas
-			let ultRegistro1 = await baseDeDatos.obtienePorCondicionElUltimo("navegsDiaRutaCant");
-			if (!ultRegistro1) ultRegistro1 = {fecha: null};
-
-			// Variables
-			let fechaSig = ultRegistro1.fecha
-				? new Date(ultRegistro1.fecha).getTime() + unDia // el día siguiente de la del último registro de 'ultRegistro1'
-				: navegsDiaProc[0].fecha; // la del primer registro de 'navegsDiaProc'
-			fechaSig = comp.fechaHora.anoMesDia(fechaSig); // sólo importa la fecha
+			// Obtiene la fechaSig
+			let fechaSig = navegsDelDia.fechaSig("navegsDiaRutaCant", navegsDiaProc);
 
 			// Rutina por fecha mientras la fecha sea menor al día vigente
 			while (comp.fechaHora.anoMesDia(fechaSig) < hoy) {
@@ -692,10 +685,7 @@ module.exports = {
 			}
 
 			// Elimina los registros antiguos
-			const ultRegistro2 = await baseDeDatos.obtienePorCondicionElUltimo("navegsDiaRutaCant");
-			const ultFecha = ultRegistro2.fecha;
-			const fechaEliminar = new Date(new Date(ultFecha).getTime() - unMes);
-			await baseDeDatos.eliminaPorCondicion("navegsDiaRutaCant", {fecha: {[Op.lte]: fechaEliminar}});
+			await navegsDelDia.eliminaRegsAntiguos("navegsDiaRutaCant");
 
 			// Fin
 			return;
@@ -705,15 +695,8 @@ module.exports = {
 			// Variables
 			let navegsDiaProc = convsNavegsDelDia.navegsDiaHora(navegsDia);
 
-			// Obtiene el último registro de acumuladas
-			let ultRegistro1 = await baseDeDatos.obtienePorCondicionElUltimo("navegsDiaHoraCant");
-			if (!ultRegistro1) ultRegistro1 = {fecha: null};
-
-			// Variables
-			let fechaSig = ultRegistro1.fecha
-				? new Date(ultRegistro1.fecha).getTime() + unDia // el día siguiente de la del último registro de 'ultRegistro1'
-				: navegsDiaProc[0].fecha; // la del primer registro de 'navegsDiaProc'
-			fechaSig = comp.fechaHora.anoMesDia(fechaSig); // sólo importa la fecha
+			// Obtiene la fechaSig
+			let fechaSig = navegsDelDia.fechaSig("navegsDiaHoraCant", navegsDiaProc);
 
 			// Rutina por fecha mientras la fecha sea menor al día vigente
 			while (comp.fechaHora.anoMesDia(fechaSig) < hoy) {
@@ -738,7 +721,7 @@ module.exports = {
 					const diaSem = comp.fechaHora.diaSem(fechaSig);
 					const cant = consolidado[hora] ? consolidado[hora] : 0;
 					const datos = {fecha, diaSem, hora, cant};
-					await baseDeDatos.agregaRegistro("navegsDiaHoraCant", datos);// importa el orden en el que se guarda dentro del día
+					await baseDeDatos.agregaRegistro("navegsDiaHoraCant", datos); // importa el orden en el que se guarda dentro del día
 				}
 
 				// Elimina los registros en ese rango de fechas (deja las mayor o igual que la fecha tope)
@@ -747,6 +730,9 @@ module.exports = {
 				// Actualiza la fecha siguiente
 				fechaSig = comp.fechaHora.anoMesDia(new Date(fechaSig).getTime() + unDia);
 			}
+
+			// Elimina los registros antiguos
+			await navegsDelDia.eliminaRegsAntiguos("navegsDiaHoraCant");
 
 			// Fin
 			return;
@@ -1165,5 +1151,33 @@ const convsNavegsDelDia = {
 
 		// Fin
 		return navegsDia;
+	},
+};
+const navegsDelDia = {
+	fechaSig: async (tabla, navegsDiaProc) => {
+		// Obtiene el último registro de acumuladas
+		let ultRegistro = await baseDeDatos.obtienePorCondicionElUltimo(tabla);
+		if (!ultRegistro) ultRegistro = {fecha: null};
+
+		// Obtiene la fecha siguiente
+		let fechaSig = ultRegistro.fecha
+			? new Date(ultRegistro.fecha).getTime() + unDia // el día siguiente de la del último registro de 'ultRegistro'
+			: navegsDiaProc[0].fecha; // la del primer registro de 'navegsDiaProc'
+		fechaSig = comp.fechaHora.anoMesDia(fechaSig); // sólo importa la fecha
+
+		// Fin
+		return fechaSig;
+	},
+	eliminaRegsAntiguos: async (tabla) => {
+		// Variables
+		const ultRegistro = await baseDeDatos.obtienePorCondicionElUltimo(tabla);
+		const ultFecha = ultRegistro.fecha;
+		const fechaEliminar = new Date(new Date(ultFecha).getTime() - unMes);
+
+		// Elimina los registros antiguos
+		await baseDeDatos.eliminaPorCondicion(tabla, {fecha: {[Op.lte]: fechaEliminar}});
+
+		// Fin
+		return;
 	},
 };
