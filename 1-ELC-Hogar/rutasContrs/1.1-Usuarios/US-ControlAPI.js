@@ -68,7 +68,7 @@ module.exports = {
 			// Actualiza 'cliente_id' en la BD 'usuarios' y en la cookie 'cliente_id'
 			const cliente_id = "U" + String(usuario.id).padStart(10, "0");
 			await baseDeDatos.actualizaPorId("usuarios", usuario.id, {cliente_id}); // es necesario el 'await' para session
-			res.cookie("cliente_id", cliente_id, {maxAge: unDia * 30});
+			res.cookie("cliente_id", cliente_id, {maxAge: unMes});
 
 			// Guarda el mail en 'session'
 			req.session.login = {datos: {email}};
