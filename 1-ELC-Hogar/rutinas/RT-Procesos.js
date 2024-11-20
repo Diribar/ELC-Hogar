@@ -643,7 +643,7 @@ module.exports = {
 	navegsDelDia: {
 		navegsDiaRuta: async (navegsDia) => {
 			// Elimina las rutas que correspondan
-			let rutasPorDia = convsNavegsDelDia.rutasPorDia(navegsDia);
+			let navegsDiaRuta = convsNavegsDelDia.navegsDiaRuta(navegsDia);
 
 			// Obtiene el último registro de rutas acumuladas
 			let ultRegRutas1 = await baseDeDatos.obtienePorCondicionElUltimo("navegsDiaRutaCant");
@@ -655,14 +655,14 @@ module.exports = {
 				.map((n) => n[1]);
 			let fechaSig = ultRegRutas1.fecha
 				? new Date(ultRegRutas1.fecha).getTime() + unDia // el día siguiente de la del último registro de 'ultRegRutas1'
-				: rutasPorDia[0].fecha; // la del primer registro de 'rutasPorDia'
+				: navegsDiaRuta[0].fecha; // la del primer registro de 'navegsDiaRuta'
 			fechaSig = comp.fechaHora.anoMesDia(fechaSig); // sólo importa la fecha
 
 			// Rutina por fecha mientras la fecha sea menor al día vigente
 			while (comp.fechaHora.anoMesDia(fechaSig) < hoy) {
 				// Variables
 				const fechaTope = comp.fechaHora.anoMesDia(new Date(fechaSig).getTime() + unDia);
-				const rutasFiltradas = rutasPorDia.filter((ruta) => ruta.fecha >= fechaSig && ruta.fecha < fechaTope); // obtiene las rutas del día
+				const rutasFiltradas = navegsDiaRuta.filter((ruta) => ruta.fecha >= fechaSig && ruta.fecha < fechaTope); // obtiene las rutas del día
 
 				// Si no hay rutasFiltradas, aumenta el día e interrumpe el ciclo
 				if (!rutasFiltradas.length) {
@@ -683,7 +683,7 @@ module.exports = {
 					espera.push(baseDeDatos.agregaRegistro("navegsDiaRutaCant", {fecha: fechaSig, ruta, cant: consolida[ruta]}));
 
 				// Elimina las rutas visitadas en ese rango de fechas (deja las mayor o igual que la fecha tope)
-				rutasPorDia = rutasPorDia.filter((n) => n.fecha >= fechaTope);
+				navegsDiaRuta = navegsDiaRuta.filter((n) => n.fecha >= fechaTope);
 
 				// Actualiza la fecha siguiente
 				fechaSig = comp.fechaHora.anoMesDia(new Date(fechaSig).getTime() + unDia);
@@ -704,17 +704,14 @@ module.exports = {
 		prodsMasVistos: () => {},
 		navegsDiaHora: async (navegsDia) => {
 			// Variables
-			const diaSem_horas = convsNavegsDelDia.navegsPorHora(navegsDia);
-
-			// Obtiene los diaSem a completar
-			const diasSem = [...new Set(diaSem_horas.map((n) => n.diaSem))];
+			const navegsDiaHora = convsNavegsDelDia.navegsDiaHora(navegsDia);
 
 			// Completa con null las cantidades de semAct para los diaSem a completar
 			for (const diaSem of diasSem) await baseDeDatos.actualizaPorCondicion("navegsDiaHoraCant", {diaSem}, {semAct: null});
 
 			for (const diaSem of diasSem) {
 				// Variables
-				const regsDiaSem = diaSem_horas.filter((n) => n.diaSem == diaSem);
+				const regsDiaSem = navegsDiaHora.filter((n) => n.diaSem == diaSem);
 				const consolidado = {};
 
 				// Consolida la información
@@ -1102,7 +1099,7 @@ const nombresDeAvatarEnBD = async ({entidad, status_id, campoAvatar}) => {
 	return registros;
 };
 const convsNavegsDelDia = {
-	rutasPorDia: (navegsDia) => {
+	navegsDiaRuta: (navegsDia) => {
 		// Quita el horario de las fechas
 		navegsDia = navegsDia.map((n) => ({...n, fecha: comp.fechaHora.anoMesDia(n.fecha)}));
 
@@ -1126,16 +1123,16 @@ const convsNavegsDelDia = {
 		// Fin
 		return navegsDia;
 	},
-	navegsPorHora: (navegsDia) => {
+	navegsDiaHora: (navegsDia) => {
 		// Quita los minutos y segundos de las fechas
 		navegsDia = navegsDia.map((n) => ({...n, fechaHora: n.fecha.setMinutes(0, 0)}));
 
-		// Quita las navegaciones que correspondan
+		// Quita las navegaciones que correspondan - repeticiones de las combinaciones cliente-fechaHora
 		for (let i = navegsDia.length - 1; i > 0; i--) {
 			// Variables
 			const {id, fechaHora, cliente_id} = navegsDia[i];
 
-			// Revisa las rutas - // elimina las repeticiones de las combinaciones cliente-fechaHora
+			// Revisa las rutas
 			if (navegsDia.find((n) => n.cliente_id == cliente_id && n.fechaHora == fechaHora && n.id != id))
 				navegsDia.splice(i, 1);
 		}
