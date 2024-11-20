@@ -261,7 +261,7 @@ module.exports = {
 			// Acciones si el cliente estaba como visita
 			if (esVisita) {
 				baseDeDatos.eliminaPorCondicion("visitas", {cliente_id}); // elimina el registro de la tabla
-				res.cookie("cliente_id", usuario.cliente_id, {maxAge: unDia * 30}); // actualiza la cookie
+				res.cookie("cliente_id", usuario.cliente_id, {maxAge: unAno}); // actualiza la cookie
 			}
 
 			// Limpia la información obsoleta
