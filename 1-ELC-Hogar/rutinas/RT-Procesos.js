@@ -646,15 +646,15 @@ module.exports = {
 			let rutasPorDia = convsNavegsDelDia.rutasPorDia(navegsDia);
 
 			// Obtiene el último registro de rutas acumuladas
-			let ultRegRutas = await baseDeDatos.obtienePorCondicionElUltimo("navegsDiaRutaCant");
-			if (!ultRegRutas) ultRegRutas = {fecha: null};
+			let ultRegRutas1 = await baseDeDatos.obtienePorCondicionElUltimo("navegsDiaRutaCant");
+			if (!ultRegRutas1) ultRegRutas1 = {fecha: null};
 
 			// Variables
 			const rutas = Object.values(rutasClasicas)
 				.flat()
 				.map((n) => n[1]);
-			let fechaSig = ultRegRutas.fecha
-				? new Date(ultRegRutas.fecha).getTime() + unDia // el día siguiente de la del último registro de 'ultRegRutas'
+			let fechaSig = ultRegRutas1.fecha
+				? new Date(ultRegRutas1.fecha).getTime() + unDia // el día siguiente de la del último registro de 'ultRegRutas1'
 				: rutasPorDia[0].fecha; // la del primer registro de 'rutasPorDia'
 			fechaSig = comp.fechaHora.anoMesDia(fechaSig); // sólo importa la fecha
 
@@ -662,7 +662,7 @@ module.exports = {
 			while (comp.fechaHora.anoMesDia(fechaSig) < hoy) {
 				// Variables
 				const fechaTope = comp.fechaHora.anoMesDia(new Date(fechaSig).getTime() + unDia);
-				const rutasFiltradas = rutasPorDia.filter((ruta) => ruta.fecha >= fechaSig && ruta.fecha < fechaTope);
+				const rutasFiltradas = rutasPorDia.filter((ruta) => ruta.fecha >= fechaSig && ruta.fecha < fechaTope); // obtiene las rutas del día
 
 				// Si no hay rutasFiltradas, aumenta el día e interrumpe el ciclo
 				if (!rutasFiltradas.length) {
@@ -670,23 +670,17 @@ module.exports = {
 					continue;
 				}
 
-				// Crea la variable consolidadora, con los métodos y valores iniciales cero
-				let consolida = {};
-				for (const ruta of rutas) consolida[ruta] = 0;
-
 				// Cuenta la frecuencia por ruta
+				const consolida = {};
 				for (let rutaFiltrada of rutasFiltradas) {
 					const ruta = comp.distintivosDeRutas(rutaFiltrada.ruta);
-					if (ruta) consolida[ruta]++;
+					if (ruta) consolida[ruta] ? consolida[ruta]++ : (consolida[ruta] = 1);
 				}
 
 				// Agrega un registro con los valores recogidos
 				let espera = [];
-				for (let ruta of rutas)
-					if (consolida[ruta])
-						espera.push(
-							baseDeDatos.agregaRegistro("navegsDiaRutaCant", {fecha: fechaSig, ruta, cant: consolida[ruta]})
-						);
+				for (let ruta in consolida)
+					espera.push(baseDeDatos.agregaRegistro("navegsDiaRutaCant", {fecha: fechaSig, ruta, cant: consolida[ruta]}));
 
 				// Elimina las rutas visitadas en ese rango de fechas (deja las mayor o igual que la fecha tope)
 				rutasPorDia = rutasPorDia.filter((n) => n.fecha >= fechaTope);
@@ -698,13 +692,11 @@ module.exports = {
 				await Promise.all(espera);
 			}
 
-			// Si se supera la cantidad máxima de registros acumulados, elimina el más antiguo
-			const navegsDiaRutaCant = await baseDeDatos.obtieneTodos("navegsDiaRutaCant");
-			const cantEliminar = navegsDiaRutaCant.length - 30 * rutas.length; // cantidad de registros a eliminar
-			if (cantEliminar > 0) {
-				const fecha = navegsDiaRutaCant[cantEliminar - 1].fecha;
-				await baseDeDatos.eliminaPorCondicion("navegsDiaRutaCant", {fecha: {[Op.lte]: fecha}});
-			}
+			// Elimina los registros antiguos
+			const ultRegRutas2 = await baseDeDatos.obtienePorCondicionElUltimo("navegsDiaRutaCant");
+			const ultFecha = ultRegRutas2.fecha;
+			const fechaEliminar = new Date(new Date(ultFecha).getTime() - unMes);
+			await baseDeDatos.eliminaPorCondicion("navegsDiaRutaCant", {fecha: {[Op.lte]: fechaEliminar}});
 
 			// Fin
 			return;
@@ -738,7 +730,7 @@ module.exports = {
 				}
 
 				// Fin
-				await Promise.all(espera)
+				await Promise.all(espera);
 			}
 
 			// Fin
@@ -1124,7 +1116,7 @@ const convsNavegsDelDia = {
 			// Revisa las rutas
 			if (
 				(tieneQuery &&
-					navegsDia.find((n) => n.ruta == ruta && n.cliente_id == cliente_id && n.fecha == fecha && n.id != id)) || // si tiene query, se fija que no esté repetido
+					navegsDia.find((n) => n.ruta == ruta && n.cliente_id == cliente_id && n.fecha == fecha && n.id != id)) || // si tiene query, se fija que no esté repetido por el mismo cliente en el día
 				(!tieneQuery && rutaAnt.ruta == ruta && rutaAnt.cliente_id == cliente_id && rutaAnt.fecha == fecha) || // si no tiene query, se fija que no sea un 'refresh'
 				false
 			)
