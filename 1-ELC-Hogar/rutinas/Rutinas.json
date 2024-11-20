@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 18/nov",
-	"HoraUTC": "13:19",
+	"FechaUTC": "Mié. 20/nov",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 18/nov",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"16-nov-24": {},
-		"17-nov-24": {"leyenda": "Hoy recordamos a la venerable Henriette DeLille", "entidad": "personajes", "id": 131},
 		"18-nov-24": {"leyenda": "Hoy recordamos a Noé, santo", "entidad": "personajes", "id": 228},
 		"19-nov-24": {},
-		"20-nov-24": {"leyenda": "Hoy recordamos a san José Sánchez del Río", "entidad": "personajes", "id": 204}
+		"20-nov-24": {"leyenda": "Hoy recordamos a san José Sánchez del Río", "entidad": "personajes", "id": 204},
+		"21-nov-24": {},
+		"22-nov-24": {}
 	}
 }
