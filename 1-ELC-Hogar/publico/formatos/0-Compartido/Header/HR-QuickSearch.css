@@ -1,7 +1,6 @@
 /* Íconos de búsqueda rápida e inputMasResultados */
 #busquedaRapida {
 	:is(.menuForm input, #escribiMas) {width: 200px;}
-	muestraResultados a {min-width: 200px;}
 
 	.menuForm {
 		right: -7px; top: -3px; translate: 100%;
@@ -10,15 +9,16 @@
 
 		/* Opciones de #muestraResultados */
 		#muestraResultados {
-			border-top-left-radius: 0; overflow: hidden;
+			border-top-left-radius: 0; overflow: auto;
 			display: flex; flex-direction: column;
+			max-height: var(--altoCuerpo);
 			:is(p, a.prod:nth-of-type(odd)) {background: whitesmoke;}
 			a {
+				min-width: 200px; width: 100%; line-height: 1.5;
 				&.resaltar {background-color: var(--gris-intermedio) !important;}
 				&.prod:nth-of-type(even) {background: var(--celeste-claro);}
 				&.rclv:nth-of-type(odd) {background: var(--amarillo-oscuro);}
 				&.rclv:nth-of-type(even) {background: var(--amarillo-claro);}
-				width: 100%; line-height: 1.5;
 				* {padding-inline: 5px; align-content: center;}
 				.spanNombre {width: 100%; padding-inline: 5px;}
 				.spanEnt {

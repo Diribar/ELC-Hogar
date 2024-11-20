@@ -666,7 +666,7 @@ module.exports = {
 
 				// Si no hay rutasFiltradas, aumenta el día e interrumpe el ciclo
 				if (!rutasFiltradas.length) {
-					fechaSig = new Date(fechaSig.getTime() + unDia);
+					fechaSig = comp.fechaHora.anoMesDia(new Date(fechaSig).getTime() + unDia);
 					continue;
 				}
 
