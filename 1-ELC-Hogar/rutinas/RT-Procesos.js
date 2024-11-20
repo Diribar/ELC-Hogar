@@ -525,7 +525,7 @@ module.exports = {
 	clientes: {
 		cantNavegs: async () => {
 			// Variables
-			let revisar = await baseDeDatos.obtieneTodos("cantNavegsAcum");
+			let revisar = await baseDeDatos.obtieneTodos("persWebDiaCant");
 			if (!revisar.length) return;
 			const anoMesUlt = revisar[revisar.length - 1].anoMes;
 			let promedios = {};
@@ -554,10 +554,10 @@ module.exports = {
 				for (let metodo in totales) promedios[metodo] = Math.round(totales[metodo] / cantRegs);
 
 				// Elimina los registros de ese año-mes
-				await baseDeDatos.eliminaPorCondicion("cantNavegsAcum", {anoMes: anoMesAntiguo});
+				await baseDeDatos.eliminaPorCondicion("persWebDiaCant", {anoMes: anoMesAntiguo});
 
 				// Agrega un registro con los promedios
-				await baseDeDatos.agregaRegistroIdCorrel("cantNavegsAcum", {anoMes: anoMesAntiguo, ...promedios});
+				await baseDeDatos.agregaRegistroIdCorrel("persWebDiaCant", {anoMes: anoMesAntiguo, ...promedios});
 
 				// Fin
 				revisar = revisar.filter((n) => n.anoMes != anoMesAntiguo);
@@ -568,7 +568,7 @@ module.exports = {
 		},
 		cantClientes: async () => {
 			// Variables
-			let revisar = await baseDeDatos.obtieneTodos("cantClientesAcum");
+			let revisar = await baseDeDatos.obtieneTodos("persBdDiaCant");
 			if (!revisar.length) return;
 			const anoMesUlt = revisar[revisar.length - 1].anoMes;
 
@@ -586,10 +586,10 @@ module.exports = {
 				const regUltimo = regsParaProcesar[regsParaProcesar.length - 1];
 
 				// Quita el dato de la fecha de ese registro
-				await baseDeDatos.actualizaPorId("cantClientesAcum", regUltimo.id, {fecha: null});
+				await baseDeDatos.actualizaPorId("persBdDiaCant", regUltimo.id, {fecha: null});
 
 				// Elimina los demás registros de ese mes
-				await baseDeDatos.eliminaPorCondicion("cantClientesAcum", {fecha: {[Op.ne]: null}, anoMes: anoMesAntiguo});
+				await baseDeDatos.eliminaPorCondicion("persBdDiaCant", {fecha: {[Op.ne]: null}, anoMes: anoMesAntiguo});
 
 				// Fin
 				revisar = revisar.filter((n) => n.anoMes != anoMesAntiguo);
@@ -646,11 +646,11 @@ module.exports = {
 			let rutasPorDia = convsNavegsDelDia.rutasPorDia(navegsDia);
 
 			// Obtiene el último registro de rutas acumuladas
-			let ultRegRutasAcum = await baseDeDatos.obtienePorCondicionElUltimo("rutasAcum");
+			let ultRegRutasAcum = await baseDeDatos.obtienePorCondicionElUltimo("navegsDiaRutaCant");
 			if (!ultRegRutasAcum) {
-				await baseDeDatos.agregaRegistro("rutasAcum", {});
-				ultRegRutasAcum = await baseDeDatos.obtienePorCondicionElUltimo("rutasAcum");
-				await baseDeDatos.eliminaPorId("rutasAcum", ultRegRutasAcum.id);
+				await baseDeDatos.agregaRegistro("navegsDiaRutaCant", {});
+				ultRegRutasAcum = await baseDeDatos.obtienePorCondicionElUltimo("navegsDiaRutaCant");
+				await baseDeDatos.eliminaPorId("navegsDiaRutaCant", ultRegRutasAcum.id);
 				ultRegRutasAcum.fecha = null;
 			}
 
@@ -688,7 +688,7 @@ module.exports = {
 				}
 
 				// Agrega un registro con los valores recogidos
-				await baseDeDatos.agregaRegistro("rutasAcum", rutaAgregar);
+				await baseDeDatos.agregaRegistro("navegsDiaRutaCant", rutaAgregar);
 
 				// Elimina las rutas visitadas en ese rango de fechas
 				rutasPorDia = rutasPorDia.filter((n) => n.fecha >= fechaTope);
@@ -698,10 +698,10 @@ module.exports = {
 			}
 
 			// Si se supera la cantidad máxima de registros acumulados, elimina el más antiguo
-			const rutasAcum = await baseDeDatos.obtieneTodos("rutasAcum");
-			const cantEliminar = rutasAcum.length - 30;
+			const navegsDiaRutaCant = await baseDeDatos.obtieneTodos("navegsDiaRutaCant");
+			const cantEliminar = navegsDiaRutaCant.length - 30;
 			if (cantEliminar > 0)
-				for (let i = 0; i < cantEliminar; i++) await baseDeDatos.eliminarPorId("rutasAcum", rutasAcum[i].id);
+				for (let i = 0; i < cantEliminar; i++) await baseDeDatos.eliminarPorId("navegsDiaRutaCant", navegsDiaRutaCant[i].id);
 
 			// Fin
 			return;

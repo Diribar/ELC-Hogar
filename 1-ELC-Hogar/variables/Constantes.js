@@ -38,18 +38,18 @@ module.exports = {
 	// Gráficos
 	graficos: {
 		// Usuarios
-		cantNavegs: {
-			rubro: "clientes",
-			titulo: "Cant. de Navegaciones",
-			url: "cantidad-de-navegaciones",
-			icono: iconos.columnas,
-			resaltar: true,
-		},
-		cantClientes: {
+		persBdDia: {
 			rubro: "clientes",
 			titulo: "Cant. de Clientes",
 			url: "cantidad-de-clientes",
 			icono: iconos.area,
+			resaltar: true,
+		},
+		persWebDia: {
+			rubro: "clientes",
+			titulo: "Cant. de Navegaciones",
+			url: "cantidad-de-navegaciones",
+			icono: iconos.columnas,
 			resaltar: true,
 		},
 
