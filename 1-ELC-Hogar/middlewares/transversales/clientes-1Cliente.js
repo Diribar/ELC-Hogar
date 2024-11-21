@@ -93,7 +93,7 @@ const obtieneCamposNecesarios = (usuario) => {
 	const camposNecesarios = [
 		...["id", "cliente_id"], // identificación
 		"fechaUltNaveg", // para el 'contador de navegaciones'
-		...["diasNaveg", "visitaCreadaEn"], // para la tabla 'cantNavegsAcum'
+		...["diasNaveg", "visitaCreadaEn"], // para la tabla 'persWebDiaCant'
 		...["versionElc", "diasSinCartelBenefs"], // para mostrar carteles
 		"rolUsuario", // para mostrar carteles
 	];
@@ -103,7 +103,7 @@ const obtieneCamposNecesarios = (usuario) => {
 	for (const campo of camposNecesarios) cliente[campo] = usuario[campo];
 
 	// Adecua el campo 'visitaCreadaEn'
-	cliente.visitaCreadaEn = cliente.visitaCreadaEn.toISOString().slice(0, 10);
+	cliente.visitaCreadaEn = comp.fechaHora.anoMesDia(cliente.visitaCreadaEn);
 
 	// Fin
 	return cliente;

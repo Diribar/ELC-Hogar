@@ -245,23 +245,23 @@ module.exports = {
 			espera.push(baseDeDatos.actualizaPorId("usuarios", usuario.id, datosUs));
 			for (let dato in datosUs) usuario[dato] = datosUs[dato];
 
-			// Actualiza datos en la tabla 'cantNavegsDia'
+			// Actualiza datos en la tabla 'persWebDia'
 			const datosND = {
 				cliente_id: usuario.cliente_id,
 				usuario_id,
-				visitaCreadaEn: usuario.visitaCreadaEn.toISOString().slice(0, 10),
+				visitaCreadaEn: comp.fechaHora.anoMesDia(usuario.visitaCreadaEn),
 				diasNaveg: usuario.diasNaveg,
 			};
 			espera.push(
 				baseDeDatos
-					.actualizaPorCondicion("cantNavegsDia", {cliente_id, fecha: hoy}, datosND) // la variable 'cliente_id' puede diferir del 'usuario.cliente_id'
+					.actualizaPorCondicion("persWebDia", {cliente_id, fecha: hoy}, datosND) // la variable 'cliente_id' puede diferir del 'usuario.cliente_id'
 					.then(() => procesos.eliminaDuplicados(usuario.id))
 			);
 
 			// Acciones si el cliente estaba como visita
 			if (esVisita) {
 				baseDeDatos.eliminaPorCondicion("visitas", {cliente_id}); // elimina el registro de la tabla
-				res.cookie("cliente_id", usuario.cliente_id, {maxAge: unDia * 30}); // actualiza la cookie
+				res.cookie("cliente_id", usuario.cliente_id, {maxAge: unAno}); // actualiza la cookie
 			}
 
 			// Limpia la información obsoleta

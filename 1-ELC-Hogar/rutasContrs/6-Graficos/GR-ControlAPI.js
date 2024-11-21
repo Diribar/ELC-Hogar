@@ -2,13 +2,13 @@
 
 module.exports = {
 	// Usuarios
-	cantNavegs: async (req, res) => {
-		const cantNavegsAcum = await baseDeDatos.obtieneTodosConOrden("cantNavegsAcum", "fecha");
-		return res.json(cantNavegsAcum);
-	},
-	cantClientes: async (req, res) => {
-		const datos = await baseDeDatos.obtieneTodosConOrden("cantClientesAcum", "fecha");
+	persBdDia: async (req, res) => {
+		const datos = await baseDeDatos.obtieneTodosConOrden("persBdDiaCant", "fecha");
 		return res.json(datos);
+	},
+	persWebDia: async (req, res) => {
+		const persWebDiaCant = await baseDeDatos.obtieneTodosConOrden("persWebDiaCant", "fecha");
+		return res.json(persWebDiaCant);
 	},
 
 	// Productos

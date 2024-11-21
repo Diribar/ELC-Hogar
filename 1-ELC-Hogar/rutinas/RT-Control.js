@@ -20,7 +20,7 @@ module.exports = {
 		if (!info.RutinasDiarias || !Object.keys(info.RutinasDiarias).length) return;
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 
-		// await this.rutinas.urlsUsadas();
+		// await this.rutinas.navegsDia();
 		// await obsoletas.actualizaCapEnCons()
 		// await this.RutinasSemanales();
 
@@ -38,7 +38,7 @@ module.exports = {
 	// Consolidados
 	FechaHoraUTC: async function () {
 		// Variables
-		hoy = new Date().toISOString().slice(0, 10);
+		hoy = comp.fechaHora.anoMesDia(new Date());
 		const info = {...rutinasJson};
 		const minutos = new Date().getMinutes();
 
@@ -67,7 +67,7 @@ module.exports = {
 		await this.RutinasDiarias(); // ejecuta las rutinas diarias
 
 		// Verifica si se deben correr las rutinas horarias
-		if (minutos) await this.RutinasHorarias();
+		if (minutos > 1) await this.RutinasHorarias();
 
 		// Rutinas semanales
 		await this.SemanaUTC();
@@ -326,14 +326,14 @@ module.exports = {
 		},
 		cantNavegs: async () => {
 			// Navegantes diarios, quitando los duplicados
-			const cantNavegsDia = await baseDeDatos
-				.obtieneTodosPorCondicion("cantNavegsDia", {fecha: {[Op.lt]: hoy}})
+			const persWebDia = await baseDeDatos
+				.obtieneTodosPorCondicion("persWebDia", {fecha: {[Op.lt]: hoy}})
 				.then((n) => n.sort((a, b) => (a.fecha < b.fecha ? -1 : 1)));
-			if (!cantNavegsDia.length) return;
+			if (!persWebDia.length) return;
 
 			// Variables
-			const primFechaDiarioNavegs = cantNavegsDia[0].fecha;
-			const ultRegHistNavegs = await baseDeDatos.obtienePorCondicionElUltimo("cantNavegsAcum");
+			const primFechaDiarioNavegs = persWebDia[0].fecha;
+			const ultRegHistNavegs = await baseDeDatos.obtienePorCondicionElUltimo("persWebDiaCant");
 			const ultFechaHistNavegs = ultRegHistNavegs && ultRegHistNavegs.fecha;
 
 			// Si hay una inconsistencia, termina
@@ -352,7 +352,7 @@ module.exports = {
 			while (fechaSig < hoy) {
 				// Variables
 				const anoMes = fechaSig.slice(0, 7);
-				const navegantes = cantNavegsDia.filter((n) => n.fecha == fechaSig);
+				const navegantes = persWebDia.filter((n) => n.fecha == fechaSig);
 
 				// Cantidad y fidelidad de navegantes
 				const logins = navegantes.filter((n) => n.usuario_id).length;
@@ -360,7 +360,7 @@ module.exports = {
 				const visitas = navegantes.filter((n) => !n.usuario_id && n.cliente_id.startsWith("V")).length;
 
 				// Guarda el resultado
-				await baseDeDatos.agregaRegistro("cantNavegsAcum", {
+				await baseDeDatos.agregaRegistro("persWebDiaCant", {
 					...{fecha: fechaSig, anoMes},
 					...{logins, usSinLogin, visitas},
 				});
@@ -369,15 +369,15 @@ module.exports = {
 				fechaSig = procesos.sumaUnDia(fechaSig);
 			}
 
-			// Elimina las 'cantNavegsDia' anteriores
-			baseDeDatos.eliminaPorCondicion("cantNavegsDia", {fecha: {[Op.lt]: hoy}});
+			// Elimina las 'persWebDia' anteriores
+			baseDeDatos.eliminaPorCondicion("persWebDia", {fecha: {[Op.lt]: hoy}});
 
 			// Fin
 			return;
 		},
 		cantClientes: async () => {
 			// Obtiene la última fecha del historial
-			const ultRegHistClientes = await baseDeDatos.obtienePorCondicionElUltimo("cantClientesAcum");
+			const ultRegHistClientes = await baseDeDatos.obtienePorCondicionElUltimo("persBdDiaCant");
 			const ultFechaHistClientes = ultRegHistClientes ? ultRegHistClientes.fecha : "2024-10-03";
 			let fechaSig = procesos.sumaUnDia(ultFechaHistClientes); // le suma un día al último registro
 			if (fechaSig >= hoy) return;
@@ -388,7 +388,7 @@ module.exports = {
 			const clientes = await Promise.all([usuarios, visitas])
 				.then((n) => n.flat())
 				.then((n) => n.filter((m) => m.diasNaveg))
-				.then((n) => n.map((m) => ({...m, visitaCreadaEn: m.visitaCreadaEn.toISOString().slice(0, 10)})));
+				.then((n) => n.map((m) => ({...m, visitaCreadaEn: comp.fechaHora.anoMesDia(m.visitaCreadaEn)})));
 
 			// Loop mientras el día sea menor al actual
 			while (fechaSig < hoy) {
@@ -397,7 +397,7 @@ module.exports = {
 				const frecPorCliente = procesos.clientes.frecPorCliente(clientes, fechaSig);
 
 				// Guarda el resultado
-				await baseDeDatos.agregaRegistro("cantClientesAcum", {fecha: fechaSig, anoMes, ...frecPorCliente});
+				await baseDeDatos.agregaRegistro("persBdDiaCant", {fecha: fechaSig, anoMes, ...frecPorCliente});
 
 				// Obtiene la fecha siguiente
 				fechaSig = procesos.sumaUnDia(fechaSig);
@@ -406,7 +406,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		urlsDelDia: async () => {
+		navegsDia: async () => {
 			// Variables
 			const fechaMax = new Date(hoy);
 			let espera = [];
@@ -417,7 +417,8 @@ module.exports = {
 			if (!navegsDia.length) return;
 
 			// Procesos
-			espera.push(procesos.urlsDelDia.rutasMasUsadas(navegsDia));
+			espera.push(procesos.navegsDelDia.navegsDiaRuta(navegsDia));
+			espera.push(procesos.navegsDelDia.navegsDiaHora(navegsDia));
 
 			// Espera a que se completen los procesos
 			await Promise.all(espera);
@@ -775,10 +776,11 @@ module.exports = {
 			const tablas = [
 				...["histEdics", "statusHistorial"],
 				...["prodsEdicion", "rclvsEdicion", "linksEdicion"],
-				...["cantNavegsAcum", "cantNavegsDia", "cantClientesAcum"],
+				...["persWebDiaCant", "persWebDia", "persBdDiaCant"],
 				...["prodsAzar", "capturas"],
 				...["calRegistros", "misConsultas", "consRegsPrefs", "pppRegistros"],
 				...["capsSinLink", "novedadesELC"],
+				...["navegsDia", "navegsDiaHoraCant", "navegsDiaRutaCant"],
 			];
 
 			// Actualiza los valores de ID

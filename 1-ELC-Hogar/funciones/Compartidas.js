@@ -1085,17 +1085,19 @@ module.exports = {
 		ahora: () => FN.ahora(),
 		nuevoHorario: (delay, horario) => FN.nuevoHorario(delay, horario),
 		diaMes: (fecha) => FN.diaMes(fecha),
+		diaSem: (fecha) => {
+			const numDiaSem = new Date(fecha).getUTCDay();
+			const diaSem = diasSemana[numDiaSem];
+			return diaSem;
+		},
 		diaMesAno: function (fecha) {
 			fecha = new Date(fecha);
-			let ano = fecha.getUTCFullYear().toString().slice(-2);
+			const ano = fecha.getUTCFullYear().toString().slice(-2);
 			return this.diaMes(fecha) + "/" + ano;
 		},
-		anoMesDia: (fecha) => {
-			fecha = new Date(fecha).toISOString().slice(0, 10);
-			return fecha;
-		},
-		fechaHorario: (horario) => {
-			horario = horario ? new Date(horario) : FN.ahora();
+		anoMesDia: (fecha) => new Date(fecha).toISOString().slice(0, 10),
+		fechaHorario: (fecha) => {
+			const horario = fecha ? new Date(fecha) : FN.ahora();
 			return (
 				horario.getDate() +
 				"/" +
@@ -1107,10 +1109,10 @@ module.exports = {
 				"hs"
 			);
 		},
-		fechaDelAno: (dataEntry) => {
+		fechaDelAno: (fecha) => {
 			let datos = {};
-			if (dataEntry.fechaDelAno_id && dataEntry.fechaDelAno_id <= 366) {
-				let fechaDelAno = fechasDelAno.find((n) => n.id == dataEntry.fechaDelAno_id);
+			if (fecha.fechaDelAno_id && fecha.fechaDelAno_id <= 366) {
+				let fechaDelAno = fechasDelAno.find((n) => n.id == fecha.fechaDelAno_id);
 				datos.dia = fechaDelAno.dia;
 				datos.mes_id = fechaDelAno.mes_id;
 			}
@@ -1289,46 +1291,13 @@ module.exports = {
 		// Fin
 		return {baseUrl, tarea, siglaFam, entidad, url};
 	},
-	distintivosDeRutas: (url) =>
-		false
-			? false
-			: url == "/" // inicio
-			? "inicio"
-			: url == "busqueda-rapida" // inicio
-			? "busquedaRapida"
-			: url.includes("/consultas") // consultas
-			? "consultas"
-			: url.includes("/detalle/p") // detalle
-			? "detalleDeProd"
-			: url.includes("/detalle/r")
-			? "detalleDeRclv"
-			: url.includes("/edicion/p") // edición
-			? "edicionDeProd"
-			: url.includes("/edicion/r")
-			? "edicionDeRclv"
-			: url.includes("/agregar-") // agregar
-			? "agregarProd"
-			: url.includes("/agregar/r")
-			? "agregarRclv"
-			: url.includes("/calificar/p") // calificar producto
-			? "calificarProd"
-			: url.startsWith("/links/mirar/l") // mirar links
-			? "mirarLinks"
-			: url.startsWith("/institucional/contactanos") // contactanos
-			? "contactanos"
-			: url.startsWith("/institucional") // institucional
-			? "institucional"
-			: url.startsWith("/revision/tablero") // revisión
-			? "revisionTablero"
-			: url.startsWith("/mantenimiento") // mantenimiento
-			? "mantenimiento"
-			: url.startsWith("/producto") // rutas antiguas
-			? "antiguaProd"
-			: url.startsWith("/rclv")
-			? "antiguaRclv"
-			: url.includes("/links")
-			? "antiguaLinks"
-			: null,
+	distintivosDeRutas: (url) => {
+		let distintivo;
+		if (!distintivo) for (let caso of rutasClasicas.igual) if (url == caso[0]) distintivo = caso[1];
+		if (!distintivo) for (let caso of rutasClasicas.includes) if (url.includes(caso[0])) distintivo = caso[1];
+		if (!distintivo) for (let caso of rutasClasicas.startsWith) if (url.startsWith(caso[0])) distintivo = caso[1];
+		return distintivo;
+	},
 };
 
 // Funciones

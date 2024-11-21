@@ -62,8 +62,7 @@ module.exports = async (req, res, next) => {
 			};
 		informacion.mensajes = [
 			"Te permite marcar tus preferencias por película:<ul><li><em>la quiero ver</em></li><li><em>ya la vi</em></li><li><em>no me interesa</em></li></ul>",
-			"Ver tus preferencias en distintos dispositivos (ej: celular y laptop)",
-			"Ver tus últimas películas consultadas",
+			"También te permite entre otras cosas:<ul><li>Ver tus preferencias en distintos dispositivos (ej: celular y laptop)</li><li>Ver tus últimas películas consultadas</li></ul>",
 		];
 		informacion.trabajando = true;
 

@@ -525,7 +525,7 @@ module.exports = {
 	clientes: {
 		cantNavegs: async () => {
 			// Variables
-			let revisar = await baseDeDatos.obtieneTodos("cantNavegsAcum");
+			let revisar = await baseDeDatos.obtieneTodos("persWebDiaCant");
 			if (!revisar.length) return;
 			const anoMesUlt = revisar[revisar.length - 1].anoMes;
 			let promedios = {};
@@ -554,10 +554,10 @@ module.exports = {
 				for (let metodo in totales) promedios[metodo] = Math.round(totales[metodo] / cantRegs);
 
 				// Elimina los registros de ese año-mes
-				await baseDeDatos.eliminaPorCondicion("cantNavegsAcum", {anoMes: anoMesAntiguo});
+				await baseDeDatos.eliminaPorCondicion("persWebDiaCant", {anoMes: anoMesAntiguo});
 
 				// Agrega un registro con los promedios
-				await baseDeDatos.agregaRegistroIdCorrel("cantNavegsAcum", {anoMes: anoMesAntiguo, ...promedios});
+				await baseDeDatos.agregaRegistroIdCorrel("persWebDiaCant", {anoMes: anoMesAntiguo, ...promedios});
 
 				// Fin
 				revisar = revisar.filter((n) => n.anoMes != anoMesAntiguo);
@@ -568,7 +568,7 @@ module.exports = {
 		},
 		cantClientes: async () => {
 			// Variables
-			let revisar = await baseDeDatos.obtieneTodos("cantClientesAcum");
+			let revisar = await baseDeDatos.obtieneTodos("persBdDiaCant");
 			if (!revisar.length) return;
 			const anoMesUlt = revisar[revisar.length - 1].anoMes;
 
@@ -586,10 +586,10 @@ module.exports = {
 				const regUltimo = regsParaProcesar[regsParaProcesar.length - 1];
 
 				// Quita el dato de la fecha de ese registro
-				await baseDeDatos.actualizaPorId("cantClientesAcum", regUltimo.id, {fecha: null});
+				await baseDeDatos.actualizaPorId("persBdDiaCant", regUltimo.id, {fecha: null});
 
 				// Elimina los demás registros de ese mes
-				await baseDeDatos.eliminaPorCondicion("cantClientesAcum", {fecha: {[Op.ne]: null}, anoMes: anoMesAntiguo});
+				await baseDeDatos.eliminaPorCondicion("persBdDiaCant", {fecha: {[Op.ne]: null}, anoMes: anoMesAntiguo});
 
 				// Fin
 				revisar = revisar.filter((n) => n.anoMes != anoMesAntiguo);
@@ -600,7 +600,7 @@ module.exports = {
 		},
 		eliminaVisitasAntiguas: async () => {
 			// Variables
-			const haceUnMes = new Date(Date.now() - unDia * 31).toISOString().slice(0, 10);
+			const haceUnMes = comp.fechaHora.anoMesDia(Date.now() - unDia * 31);
 
 			// Condicion
 			const condicion = {fechaUltNaveg: {[Op.lt]: haceUnMes}, diasNaveg: {[Op.lte]: 2}};
@@ -640,75 +640,101 @@ module.exports = {
 			return {tresDiez, onceTreinta, masDeTreinta, unoDos};
 		},
 	},
-	urlsDelDia: {
-		rutasMasUsadas: async (navegsDia) => {
+	navegsDelDia: {
+		navegsDiaRuta: async (navegsDia) => {
 			// Elimina las rutas que correspondan
-			navegsDia = eliminaNavegsDelDia.rutasUsadas(navegsDia);
+			let rutasPorDia = convsNavegsDelDia.rutasPorDia(navegsDia);
 
 			// Obtiene el último registro de rutas acumuladas
-			let ultRegRutasAcum = await baseDeDatos.obtienePorCondicionElUltimo("rutasAcum");
-			if (!ultRegRutasAcum) {
-				await baseDeDatos.agregaRegistro("rutasAcum", {});
-				ultRegRutasAcum = await baseDeDatos.obtienePorCondicionElUltimo("rutasAcum");
-				await baseDeDatos.eliminaPorId("rutasAcum", ultRegRutasAcum.id);
-				ultRegRutasAcum.fecha = null;
-			}
-
-			// Obtiene el distintivo de las rutas
-			const distintivos = Object.keys(ultRegRutasAcum).filter((n) => n != "id" && n != "fecha");
+			let ultRegRutas1 = await baseDeDatos.obtienePorCondicionElUltimo("navegsDiaRutaCant");
+			if (!ultRegRutas1) ultRegRutas1 = {fecha: null};
 
 			// Variables
-			let fechaSig = ultRegRutasAcum.fecha
-				? new Date(new Date(ultRegRutasAcum.fecha).getTime() + unDia) // el día siguiente de la del último registro de 'ultRegRutasAcum'
-				: new Date(navegsDia[0].fecha); // la del primer registro de 'navegsDia'
-			fechaSig = new Date(fechaSig.toISOString().slice(0, 10)); // sólo importa la fecha
+			const rutas = Object.values(rutasClasicas)
+				.flat()
+				.map((n) => n[1]);
+			let fechaSig = ultRegRutas1.fecha
+				? new Date(ultRegRutas1.fecha).getTime() + unDia // el día siguiente de la del último registro de 'ultRegRutas1'
+				: rutasPorDia[0].fecha; // la del primer registro de 'rutasPorDia'
+			fechaSig = comp.fechaHora.anoMesDia(fechaSig); // sólo importa la fecha
 
 			// Rutina por fecha mientras la fecha sea menor al día vigente
-			while (fechaSig.toISOString().slice(0, 10) < hoy) {
+			while (comp.fechaHora.anoMesDia(fechaSig) < hoy) {
 				// Variables
-				let fechaTope = new Date(fechaSig.getTime() + unDia);
-
-				// Obtiene las rutas visitadas en el día
-				let rutasFiltradas = navegsDia.filter((ruta) => ruta.fecha >= fechaSig && ruta.fecha < fechaTope);
+				const fechaTope = comp.fechaHora.anoMesDia(new Date(fechaSig).getTime() + unDia);
+				const rutasFiltradas = rutasPorDia.filter((ruta) => ruta.fecha >= fechaSig && ruta.fecha < fechaTope); // obtiene las rutas del día
 
 				// Si no hay rutasFiltradas, aumenta el día e interrumpe el ciclo
 				if (!rutasFiltradas.length) {
-					fechaSig = new Date(fechaSig.getTime() + unDia);
+					fechaSig = comp.fechaHora.anoMesDia(new Date(fechaSig).getTime() + unDia);
 					continue;
 				}
 
-				// Crea la variable consolidadora, con los métodos y valores iniciales cero
-				const rutaAgregar = {fecha: fechaSig};
-				for (const distintivo of distintivos) rutaAgregar[distintivo] = 0;
-
-				// Cuenta la frecuencia por distintivo
+				// Cuenta la frecuencia por ruta
+				const consolida = {};
 				for (let rutaFiltrada of rutasFiltradas) {
-					const distintivo = comp.distintivosDeRutas(rutaFiltrada.ruta);
-					if (distintivo) rutaAgregar[distintivo]++;
+					const ruta = comp.distintivosDeRutas(rutaFiltrada.ruta);
+					if (ruta) consolida[ruta] ? consolida[ruta]++ : (consolida[ruta] = 1);
 				}
 
 				// Agrega un registro con los valores recogidos
-				await baseDeDatos.agregaRegistro("rutasAcum", rutaAgregar);
+				let espera = [];
+				for (let ruta in consolida)
+					espera.push(baseDeDatos.agregaRegistro("navegsDiaRutaCant", {fecha: fechaSig, ruta, cant: consolida[ruta]}));
 
-				// Elimina las rutas visitadas en ese rango de fechas
-				navegsDia = navegsDia.filter((n) => n.fecha >= fechaTope);
+				// Elimina las rutas visitadas en ese rango de fechas (deja las mayor o igual que la fecha tope)
+				rutasPorDia = rutasPorDia.filter((n) => n.fecha >= fechaTope);
+
+				// Actualiza la fecha siguiente
+				fechaSig = comp.fechaHora.anoMesDia(new Date(fechaSig).getTime() + unDia);
 
 				// Fin
-				fechaSig = new Date(fechaSig.getTime() + unDia);
+				await Promise.all(espera);
 			}
 
-			// Si se supera la cantidad máxima de registros acumulados, elimina el más antiguo
-			const rutasAcum = await baseDeDatos.obtieneTodos("rutasAcum");
-			const cantEliminar = rutasAcum.length - 30;
-			if (cantEliminar > 0)
-				for (let i = 0; i < cantEliminar; i++) await baseDeDatos.eliminarPorId("rutasAcum", rutasAcum[i].id);
+			// Elimina los registros antiguos
+			const ultRegRutas2 = await baseDeDatos.obtienePorCondicionElUltimo("navegsDiaRutaCant");
+			const ultFecha = ultRegRutas2.fecha;
+			const fechaEliminar = new Date(new Date(ultFecha).getTime() - unMes);
+			await baseDeDatos.eliminaPorCondicion("navegsDiaRutaCant", {fecha: {[Op.lte]: fechaEliminar}});
 
 			// Fin
 			return;
 		},
 		prodsMasVistos: () => {},
-		horarioDeUso: (navegsDia) => {
+		navegsDiaHora: async (navegsDia) => {
 			// Variables
+			const diaSem_horas = convsNavegsDelDia.navegsPorHora(navegsDia);
+
+			// Obtiene los diaSem a completar
+			const diasSem = [...new Set(diaSem_horas.map((n) => n.diaSem))];
+
+			// Completa con null las cantidades de semAct para los diaSem a completar
+			for (const diaSem of diasSem) await baseDeDatos.actualizaPorCondicion("navegsDiaHoraCant", {diaSem}, {semAct: null});
+
+			for (const diaSem of diasSem) {
+				// Variables
+				const regsDiaSem = diaSem_horas.filter((n) => n.diaSem == diaSem);
+				const consolidado = {};
+
+				// Consolida la información
+				for (const regDiaSem of regsDiaSem)
+					consolidado[regDiaSem.hora] ? consolidado[regDiaSem.hora]++ : (consolidado[regDiaSem.hora] = 1);
+
+				// Completa la cantidad para los diaSem-hora con valor
+				let espera = [];
+				for (const hora in consolidado) {
+					const condicion = {diaSem, hora};
+					const semAct = consolidado[hora];
+					espera.push(baseDeDatos.actualizaPorCondicion("navegsDiaHoraCant", condicion, {semAct}));
+				}
+
+				// Fin
+				await Promise.all(espera);
+			}
+
+			// Fin
+			return;
 		},
 	},
 
@@ -1075,8 +1101,12 @@ const nombresDeAvatarEnBD = async ({entidad, status_id, campoAvatar}) => {
 	// Fin
 	return registros;
 };
-const eliminaNavegsDelDia = {
-	rutasUsadas: (navegsDia) => {
+const convsNavegsDelDia = {
+	rutasPorDia: (navegsDia) => {
+		// Quita el horario de las fechas
+		navegsDia = navegsDia.map((n) => ({...n, fecha: comp.fechaHora.anoMesDia(n.fecha)}));
+
+		// Quita las navegaciones que correspondan
 		for (let i = navegsDia.length - 1; i > 0; i--) {
 			// Variables
 			const {id, fecha, cliente_id, ruta} = navegsDia[i];
@@ -1086,12 +1116,37 @@ const eliminaNavegsDelDia = {
 			// Revisa las rutas
 			if (
 				(tieneQuery &&
-					navegsDia.find((n) => n.ruta == ruta && n.cliente_id == cliente_id && n.fecha == fecha && n.id != id)) || // si tiene query, se fija que no esté repetido
+					navegsDia.find((n) => n.ruta == ruta && n.cliente_id == cliente_id && n.fecha == fecha && n.id != id)) || // si tiene query, se fija que no esté repetido por el mismo cliente en el día
 				(!tieneQuery && rutaAnt.ruta == ruta && rutaAnt.cliente_id == cliente_id && rutaAnt.fecha == fecha) || // si no tiene query, se fija que no sea un 'refresh'
 				false
 			)
 				navegsDia.splice(i, 1);
 		}
+
+		// Fin
+		return navegsDia;
+	},
+	navegsPorHora: (navegsDia) => {
+		// Quita los minutos y segundos de las fechas
+		navegsDia = navegsDia.map((n) => ({...n, fechaHora: n.fecha.setMinutes(0, 0)}));
+
+		// Quita las navegaciones que correspondan
+		for (let i = navegsDia.length - 1; i > 0; i--) {
+			// Variables
+			const {id, fechaHora, cliente_id} = navegsDia[i];
+
+			// Revisa las rutas - // elimina las repeticiones de las combinaciones cliente-fechaHora
+			if (navegsDia.find((n) => n.cliente_id == cliente_id && n.fechaHora == fechaHora && n.id != id))
+				navegsDia.splice(i, 1);
+		}
+
+		// Terminación
+		navegsDia = navegsDia.map((n) => {
+			n.fecha = comp.fechaHora.anoMesDia(n.fecha);
+			n.diaSem = comp.fechaHora.diaSem(n.fechaHora);
+			n.hora = new Date(n.fechaHora).getUTCHours();
+			return n;
+		});
 
 		// Fin
 		return navegsDia;

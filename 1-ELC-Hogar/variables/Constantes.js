@@ -3,6 +3,7 @@
 const unaHora = 60 * 60 * 1000;
 const unDia = unaHora * 24;
 const unaSemana = unDia * 7;
+const unMes = unDia * 30;
 const unAno = unDia * 365;
 
 const linksSemsPrimRev = 4;
@@ -38,18 +39,18 @@ module.exports = {
 	// Gráficos
 	graficos: {
 		// Usuarios
-		cantNavegs: {
-			rubro: "clientes",
-			titulo: "Cant. de Navegaciones",
-			url: "cantidad-de-navegaciones",
-			icono: iconos.columnas,
-			resaltar: true,
-		},
-		cantClientes: {
+		persBdDia: {
 			rubro: "clientes",
 			titulo: "Cant. de Clientes",
 			url: "cantidad-de-clientes",
 			icono: iconos.area,
+			resaltar: true,
+		},
+		persWebDia: {
+			rubro: "clientes",
+			titulo: "Cant. de Navegaciones",
+			url: "cantidad-de-navegaciones",
+			icono: iconos.columnas,
 			resaltar: true,
 		},
 
@@ -140,7 +141,7 @@ module.exports = {
 
 	// Tiempo
 	rutinasDeInicio: Date.now(),
-	...{unaHora, unDia, unaSemana, unAno},
+	...{unaHora, unDia, unaSemana, unMes, unAno},
 	diasSemana: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
 	hoy: new Date().toISOString().slice(0, 10),
 	...{primerLunesDelAno: null, semanaUTC: null, lunesDeEstaSemana: null, fechaDelAnoHoy_id: null, anoHoy: null},
@@ -174,4 +175,30 @@ module.exports = {
 	],
 	eliminarCuandoSinEntidadId: ["statusHistorial", "histEdics", "misConsultas", "pppRegistros", "calRegistros"],
 	requestsTriviales: ["WhatsApp", "Postman", "TelegramBot", "Zabbix"],
+	rutasClasicas: {
+		igual: [
+			["/", "inicio"],
+			["busqueda-rapida", "busquedaRapida"],
+		],
+		includes: [
+			["/consultas", "consultas"],
+			["/detalle/p", "detalleDeProd"],
+			["/detalle/r", "detalleDeRclv"],
+			["/edicion/p", "edicionDeProd"],
+			["/edicion/r", "edicionDeRclv"],
+			["/agregar-", "agregarProd"],
+			["/agregar/r", "agregarRclv"],
+			["/calificar/p", "calificarProd"],
+		],
+		startsWith: [
+			["/links/mirar/l", "mirarLinks"],
+			["/institucional/contactanos", "contactanos"],
+			["/institucional", "institucional"],
+			["/revision/tablero", "revisionTablero"],
+			["/mantenimiento", "mantenimiento"],
+			["/producto", "antiguaProd"],
+			["/rclv", "antiguaRclv"],
+			["/links", "antiguaLinks"],
+		],
+	},
 };
