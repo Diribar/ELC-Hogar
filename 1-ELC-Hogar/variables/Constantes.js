@@ -62,20 +62,20 @@ module.exports = {
 			icono: iconos.columnas,
 			select: true,
 		},
-		// navegsPorProd:{
-		// 	rubro: "navegantes",
-		// 	titulo: "Navegantes por producto",
-		// 	url: "navegantes-por-producto",
-		// 	icono: iconos.columnas,
-		// select: true,
-		// },
-		// navegsPorRuta:{
-		// 	rubro: "navegantes",
-		// 	titulo: "Navegantes por ruta",
-		// 	url: "navegantes-por-ruta",
-		// 	icono: iconos.columnas,
-		// select: true,
-		// },
+		navegsPorProd: {
+			rubro: "navegantes",
+			titulo: "Navegantes por producto",
+			url: "navegantes-por-producto",
+			icono: iconos.columnas,
+			select: true,
+		},
+		navegsPorRuta: {
+			rubro: "navegantes",
+			titulo: "Navegantes por ruta",
+			url: "navegantes-por-ruta",
+			icono: iconos.columnas,
+			select: true,
+		},
 
 		// Productos
 		prodsCfcVpc: {
