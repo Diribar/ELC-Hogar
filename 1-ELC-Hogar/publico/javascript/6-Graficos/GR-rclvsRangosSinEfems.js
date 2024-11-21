@@ -1,14 +1,14 @@
 "use strict";
 window.addEventListener("load", async () => {
-	// Obtiene registros del BE
-	const registros = await fetch(ruta).then((n) => n.json());
+	// Obtiene regsBD del BE
+	const regsBD = await fetch(ruta).then((n) => n.json());
 
 	// Variables
 	const DOM = {grafico: document.querySelector("#zonaDeGraficos #cuadro #grafico")};
 
 	// Genera el resultado
 	const resultado = [["Fecha", "Rango", {role: "annotation"}]];
-	for (let reg of registros) resultado.push([reg.nombre, reg.rango, ""]);
+	for (let reg of regsBD) resultado.push([reg.nombre, reg.rango, ""]);
 
 	const dibujarGrafico = () => {
 		// Opciones

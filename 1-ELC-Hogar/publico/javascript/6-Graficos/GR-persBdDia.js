@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Obtiene datos del BE
-	const registros = await fetch(ruta).then((n) => n.json());
+	const regsBD = await fetch(ruta).then((n) => n.json());
 
 	// Variables
 	const DOM = {grafico: document.querySelector("#zonaDeGraficos #cuadro #grafico")};
@@ -19,7 +19,7 @@ window.addEventListener("load", async () => {
 
 	// Genera la información
 	const resultado = [["Fecha", ...grupos.map((grupo) => [grupo, {role: "style"}]).flat()]];
-	for (let reg of registros) {
+	for (let reg of regsBD) {
 		resultado.push([
 			reg.fecha,
 			...grupos.map((grupo) => [reg[grupo], "stroke-color: " + coloresBorde[grupo]]).flat(),
