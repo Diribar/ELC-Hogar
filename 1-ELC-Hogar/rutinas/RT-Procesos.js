@@ -692,9 +692,45 @@ module.exports = {
 		},
 		navegsDiaProd: async (navegsDia) => {
 			// Variables
-			let navegsDiaProc = convsNavegsDelDia.navegsDiaRuta(navegsDia);
+			let navegsDiaProc = await convsNavegsDelDia.navegsDiaProd(navegsDia);
+			return;
 			let fechaSig = navegsDelDia.fechaSig("navegsDiaProdCant", navegsDiaProc);
 
+			// Rutina por fecha mientras la fecha sea menor al día vigente
+			while (comp.fechaHora.anoMesDia(fechaSig) < hoy) {
+				// Variables
+				const fechaTope = comp.fechaHora.anoMesDia(new Date(fechaSig).getTime() + unDia);
+				const navegsDeUnDia = navegsDiaProc.filter((ruta) => ruta.fecha >= fechaSig && ruta.fecha < fechaTope); // obtiene las rutas del día
+
+				// Si no hay navegsDeUnDia, aumenta el día e interrumpe el ciclo
+				if (!navegsDeUnDia.length) {
+					fechaSig = comp.fechaHora.anoMesDia(new Date(fechaSig).getTime() + unDia);
+					continue;
+				}
+
+				// Consolida la información
+				const consolidado = {};
+				for (let naveg of navegsDeUnDia) {
+					const ruta = comp.distintivosDeRutas(naveg.ruta);
+					if (ruta) consolidado[ruta] ? consolidado[ruta]++ : (consolidado[ruta] = 1);
+				}
+
+				// Agrega un registro con los valores recogidos
+				let espera = [];
+				for (let ruta in consolidado)
+					espera.push(
+						baseDeDatos.agregaRegistro("navegsDiaRutaCant", {fecha: fechaSig, ruta, cant: consolidado[ruta]})
+					); // no importa el orden en el que se guardan dentro del día
+
+				// Elimina los registros en ese rango de fechas (deja las mayor o igual que la fecha tope)
+				navegsDiaProc = navegsDiaProc.filter((n) => n.fecha >= fechaTope);
+
+				// Actualiza la fecha siguiente
+				fechaSig = comp.fechaHora.anoMesDia(new Date(fechaSig).getTime() + unDia);
+
+				// Fin
+				await Promise.all(espera);
+			}
 
 			// Elimina los registros antiguos
 			await navegsDelDia.eliminaRegsAntiguos("navegsDiaProdCant");
@@ -1128,6 +1164,42 @@ const convsNavegsDelDia = {
 			)
 				navegsDia.splice(i, 1);
 		}
+
+		// Fin
+		return navegsDia;
+	},
+	navegsDiaProd: async (navegsDia) => {
+		// Quita el horario de las fechas
+		navegsDia = navegsDia.map((n) => ({...n, fecha: comp.fechaHora.anoMesDia(n.fecha)}));
+
+		// Deja solamente las rutas 'mirar link'
+		navegsDia = navegsDia.filter((n) => n.ruta.startsWith("/links/mirar/l"));
+
+		// Quita las navegaciones que correspondan
+		for (let i = navegsDia.length - 1; i > 0; i--) {
+			// Variables
+			const {id, fecha, cliente_id, ruta} = navegsDia[i];
+
+			// Revisa las rutas - // se fija que no esté repetido por el mismo cliente en el día
+			if (navegsDia.find((n) => n.ruta == ruta && n.cliente_id == cliente_id && n.fecha == fecha && n.id != id))
+				navegsDia.splice(i, 1);
+		}
+
+		// Obtiene los datos de los productos
+		navegsDia = navegsDia.map(async (n) => {
+			// Obtiene el link con su producto
+			const linkId = parseFloat(n.ruta.split("id=")[1]);
+			const asocsProd = variables.entidades.asocsProd;
+			const link = await baseDeDatos.obtienePorId("links", linkId, asocsProd);
+
+			// Obtiene el producto
+			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
+			const producto = link[asocProd];
+
+			// Completa la info
+			const datos = {nombreCastellano: producto.nombreCastellano, entidad: asocProd, prodId: producto.id};
+			return {...n, ...datos};
+		});
 
 		// Fin
 		return navegsDia;
