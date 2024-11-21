@@ -88,13 +88,13 @@ module.exports = {
 		delete fechaDelAno.epocaDelAno; // quita el include
 
 		// Obtiene los RCLV
-		const rclvs = await obtieneLosRCLV(fechaDelAno);
+		const rclvs = await FN_obtieneImgDerecha.obtieneLosRCLV(fechaDelAno);
 
 		// Acciones si se encontraron varios rclvs
-		const resultado = reduceRCLVs(rclvs);
+		const resultado = FN_obtieneImgDerecha.reduceRCLVs(rclvs);
 
 		// Obtiene los datos de la imgDerecha
-		const imgDerecha = datosImgDerecha(resultado);
+		const imgDerecha = FN_obtieneImgDerecha.datosImgDerecha(resultado);
 
 		// Fin
 		return imgDerecha;
@@ -188,18 +188,18 @@ module.exports = {
 		let avatars = [];
 
 		// Revisa los avatars que están en las ediciones
-		if (entidadEdic) avatars.push(nombresDeAvatarEnBD({entidad: entidadEdic}));
+		if (entidadEdic) avatars.push(FN_eliminaImagenesSinRegistro.nombresDeAvatarEnBD({entidad: entidadEdic}));
 
 		// Revisa los avatars que están en los originales
 		if (status_id)
 			for (let entidad of variables.entidades[petitFamilias])
-				avatars.push(nombresDeAvatarEnBD({entidad, status_id, campoAvatar}));
+				avatars.push(FN_eliminaImagenesSinRegistro.nombresDeAvatarEnBD({entidad, status_id, campoAvatar}));
 
 		// Consolida los resultados
 		avatars = await Promise.all(avatars).then((n) => n.flat());
 
 		// Elimina los avatars
-		eliminaLasImagenes(avatars, carpeta);
+		FN_eliminaImagenesSinRegistro.eliminaLasImagenes(avatars, carpeta);
 
 		// Fin
 		return;
@@ -258,7 +258,7 @@ module.exports = {
 			for (let regStatus of regsStatus) {
 				// Variables
 				const familia = comp.obtieneDesdeEntidad.familia(regStatus.entidad);
-				const {nombre, anchor} = await nombres(regStatus);
+				const {nombre, anchor} = await FN_mailDeFeedback.nombres(regStatus);
 				if (!nombre) continue;
 
 				// Más variables
@@ -291,7 +291,7 @@ module.exports = {
 			resultados.sort((a, b) => (a.familia < b.familia ? -1 : a.familia > b.familia ? 1 : 0));
 
 			// Crea el mensaje
-			const mensajeGlobal = creaElMensajeStatus(resultados);
+			const mensajeGlobal = FN_mailDeFeedback.creaElMensajeStatus(resultados);
 
 			// Fin
 			return mensajeGlobal;
@@ -307,7 +307,7 @@ module.exports = {
 				// Variables
 				const aprobado = !regEdic.motivo_id;
 				const familia = comp.obtieneDesdeEntidad.familia(regEdic.entidad);
-				const {nombre, anchor} = await nombres(regEdic);
+				const {nombre, anchor} = await FN_mailDeFeedback.nombres(regEdic);
 				if (!nombre) continue;
 
 				// Alimenta el resultado
@@ -323,7 +323,7 @@ module.exports = {
 			}
 
 			// Ordena la información según los campos de mayor criterio, siendo el primero la familia y luego la entidad
-			resultados = ordenarEdic(resultados);
+			resultados = FN_mailDeFeedback.ordenarEdic(resultados);
 
 			// Crea el mensaje en formato texto para cada entidad, y sus campos
 			resultados.forEach((n, i) => {
@@ -343,8 +343,8 @@ module.exports = {
 				if (n.campo == "Avatar") {
 					// Variables
 					const texto = n.aprobado ? {aprob: "sugerida", desc: "anterior"} : {aprob: "vigente", desc: "sugerida"};
-					n.valorAprob = avatarConLink(n.familia, n.valorAprob, texto.aprob);
-					n.valorDesc = avatarConLink(n.familia, n.valorDesc, texto.desc);
+					n.valorAprob = FN_mailDeFeedback.avatarConLink(n.familia, n.valorAprob, texto.aprob);
+					n.valorDesc = FN_mailDeFeedback.avatarConLink(n.familia, n.valorDesc, texto.desc);
 				}
 
 				// Dots + campo
@@ -641,18 +641,18 @@ module.exports = {
 		},
 	},
 	navegsDia: {
-		navegsDiaRuta: async (navegsDia) => {
+		porRuta: async (navegsDia) => {
 			// Elimina las rutas que correspondan
-			let navegsDiaProc = convsNavegsDelDia.navegsDiaRuta(navegsDia);
+			let navegsDiaPulido = FN_navegsDia.porRuta(navegsDia);
 
 			// Obtiene la fechaSig
-			let fechaSig = navegsDia.fechaSig("navegsDiaRutaCant", navegsDiaProc);
+			let fechaSig = await FN_navegsDia.fechaSig("navegsDiaRutaCant", navegsDiaPulido);
 
 			// Rutina por fecha mientras la fecha sea menor al día vigente
-			while (comp.fechaHora.anoMesDia(fechaSig) < hoy) {
+			while (fechaSig < hoy) {
 				// Variables
 				const fechaTope = comp.fechaHora.anoMesDia(new Date(fechaSig).getTime() + unDia);
-				const navegsDeUnDia = navegsDiaProc.filter((ruta) => ruta.fecha >= fechaSig && ruta.fecha < fechaTope); // obtiene las rutas del día
+				const navegsDeUnDia = navegsDiaPulido.filter((ruta) => ruta.fecha >= fechaSig && ruta.fecha < fechaTope); // obtiene las rutas del día
 
 				// Si no hay navegsDeUnDia, aumenta el día e interrumpe el ciclo
 				if (!navegsDeUnDia.length) {
@@ -675,7 +675,7 @@ module.exports = {
 					); // no importa el orden en el que se guardan dentro del día
 
 				// Elimina los registros en ese rango de fechas (deja las mayor o igual que la fecha tope)
-				navegsDiaProc = navegsDiaProc.filter((n) => n.fecha >= fechaTope);
+				navegsDiaPulido = navegsDiaPulido.filter((n) => n.fecha >= fechaTope);
 
 				// Actualiza la fecha siguiente
 				fechaSig = comp.fechaHora.anoMesDia(new Date(fechaSig).getTime() + unDia);
@@ -685,22 +685,25 @@ module.exports = {
 			}
 
 			// Elimina los registros antiguos
-			await navegsDia.eliminaRegsAntiguos("navegsDiaRutaCant");
+			await FN_navegsDia.eliminaRegsAntiguos("navegsDiaRutaCant");
 
 			// Fin
 			return;
 		},
-		navegsDiaProd: async (navegsDia) => {
+		porProd: async (navegsDia) => {
 			// Variables
-			let navegsDiaProc = await convsNavegsDelDia.navegsDiaProd(navegsDia);
+			let navegsDiaPulido = await FN_navegsDia.porProd(navegsDia);
+			let fechaSig = await FN_navegsDia.fechaSig("navegsDiaProdCant", navegsDiaPulido);
+			console.log(696, navegsDiaPulido);
+			console.log(698, fechaSig);
 			return;
-			let fechaSig = navegsDia.fechaSig("navegsDiaProdCant", navegsDiaProc);
 
 			// Rutina por fecha mientras la fecha sea menor al día vigente
-			while (comp.fechaHora.anoMesDia(fechaSig) < hoy) {
+			while (fechaSig < hoy) {
 				// Variables
+				console.log(704, fechaSig);
 				const fechaTope = comp.fechaHora.anoMesDia(new Date(fechaSig).getTime() + unDia);
-				const navegsDeUnDia = navegsDiaProc.filter((ruta) => ruta.fecha >= fechaSig && ruta.fecha < fechaTope); // obtiene las rutas del día
+				const navegsDeUnDia = navegsDiaPulido.filter((ruta) => ruta.fecha >= fechaSig && ruta.fecha < fechaTope); // obtiene las rutas del día
 
 				// Si no hay navegsDeUnDia, aumenta el día e interrumpe el ciclo
 				if (!navegsDeUnDia.length) {
@@ -723,7 +726,7 @@ module.exports = {
 					); // no importa el orden en el que se guardan dentro del día
 
 				// Elimina los registros en ese rango de fechas (deja las mayor o igual que la fecha tope)
-				navegsDiaProc = navegsDiaProc.filter((n) => n.fecha >= fechaTope);
+				navegsDiaPulido = navegsDiaPulido.filter((n) => n.fecha >= fechaTope);
 
 				// Actualiza la fecha siguiente
 				fechaSig = comp.fechaHora.anoMesDia(new Date(fechaSig).getTime() + unDia);
@@ -733,23 +736,23 @@ module.exports = {
 			}
 
 			// Elimina los registros antiguos
-			await navegsDia.eliminaRegsAntiguos("navegsDiaProdCant");
+			await FN_navegsDia.eliminaRegsAntiguos("navegsDiaProdCant");
 
 			// Fin
 			return;
 		},
-		navegsDiaHora: async (navegsDia) => {
+		porHora: async (navegsDia) => {
 			// Variables
-			let navegsDiaProc = convsNavegsDelDia.navegsDiaHora(navegsDia);
+			let navegsDiaPulido = FN_navegsDia.porHora(navegsDia);
 
 			// Obtiene la fechaSig
-			let fechaSig = navegsDia.fechaSig("navegsDiaHoraCant", navegsDiaProc);
+			let fechaSig = await FN_navegsDia.fechaSig("navegsDiaHoraCant", navegsDiaPulido);
 
 			// Rutina por fecha mientras la fecha sea menor al día vigente
-			while (comp.fechaHora.anoMesDia(fechaSig) < hoy) {
+			while (fechaSig < hoy) {
 				// Variables
 				const fechaTope = comp.fechaHora.anoMesDia(new Date(fechaSig).getTime() + unDia);
-				const navegsDeUnDia = navegsDiaProc.filter((ruta) => ruta.fecha >= fechaSig && ruta.fecha < fechaTope); // obtiene las rutas del día
+				const navegsDeUnDia = navegsDiaPulido.filter((ruta) => ruta.fecha >= fechaSig && ruta.fecha < fechaTope); // obtiene las rutas del día
 
 				// Consolida la información
 				const consolidado = {};
@@ -766,14 +769,14 @@ module.exports = {
 				}
 
 				// Elimina los registros en ese rango de fechas (deja las mayor o igual que la fecha tope)
-				navegsDiaProc = navegsDiaProc.filter((n) => n.fecha >= fechaTope);
+				navegsDiaPulido = navegsDiaPulido.filter((n) => n.fecha >= fechaTope);
 
 				// Actualiza la fecha siguiente
 				fechaSig = comp.fechaHora.anoMesDia(new Date(fechaSig).getTime() + unDia);
 			}
 
 			// Elimina los registros antiguos
-			await navegsDia.eliminaRegsAntiguos("navegsDiaHoraCant");
+			await FN_navegsDia.eliminaRegsAntiguos("navegsDiaHoraCant");
 
 			// Fin
 			return;
@@ -845,100 +848,140 @@ module.exports = {
 const normalize = "style='font-family: Calibri; line-height 1; color: rgb(37,64,97); ";
 
 // Funciones
-const creaElMensajeStatus = (resultados) => {
-	// Variables
-	let mensajesAcum = "";
-	let mensajesAltas = "";
-	let mensajesAprob = "";
-	let mensajesRech = "";
-	let color;
+const FN_mailDeFeedback = {
+	creaElMensajeStatus: (resultados) => {
+		// Variables
+		let mensajesAcum = "";
+		let mensajesAltas = "";
+		let mensajesAprob = "";
+		let mensajesRech = "";
+		let color;
 
-	// Crea el mensaje en formato texto para cada registro de status, y se lo asigna a mensajesAprob o mensajesRech
-	resultados.map((n) => {
-		// Crea el mensaje
-		let mensaje = n.entidadNombre + ": <b>" + n.anchor + "</b>";
+		// Crea el mensaje en formato texto para cada registro de status, y se lo asigna a mensajesAprob o mensajesRech
+		resultados.map((n) => {
+			// Crea el mensaje
+			let mensaje = n.entidadNombre + ": <b>" + n.anchor + "</b>";
 
-		if (!n.altaAprob) {
-			// Mensaje adicional
-			mensaje += ", de status <em>" + n.statusOrigNombre.toLowerCase() + "</em>";
-			mensaje += " a status <em>" + n.statusFinalNombre.toLowerCase() + "</em>";
+			if (!n.altaAprob) {
+				// Mensaje adicional
+				mensaje += ", de status <em>" + n.statusOrigNombre.toLowerCase() + "</em>";
+				mensaje += " a status <em>" + n.statusFinalNombre.toLowerCase() + "</em>";
 
-			// Mensaje adicional si hay un motivo
-			if (n.motivo) mensaje += ". <u>Motivo</u>: " + n.motivo;
+				// Mensaje adicional si hay un motivo
+				if (n.motivo) mensaje += ". <u>Motivo</u>: " + n.motivo;
+			}
+
+			// Le asigna un color
+			color = n.aprobado ? "green" : "firebrick";
+			mensaje = formatos.li(mensaje, color);
+
+			// Agrega el mensaje al sector que corresponda
+			n.altaAprob
+				? (mensajesAltas += mensaje) // altas aprobadas
+				: n.aprobado
+				? (mensajesAprob += mensaje) // otros cambios aprobados
+				: (mensajesRech += mensaje); // rechazados
+		});
+
+		// Crea el mensajeGlobal, siendo primero los aprobados y luego los rechazados
+		if (mensajesAltas) mensajesAcum += formatos.h2("Altas APROBADAS") + formatos.ol(mensajesAltas);
+		if (mensajesAprob) mensajesAcum += formatos.h2("Status - Cambios APROBADOS") + formatos.ol(mensajesAprob);
+		if (mensajesRech) mensajesAcum += formatos.h2("Status - Cambios RECHAZADOS") + formatos.ol(mensajesRech);
+
+		// Fin
+		return mensajesAcum;
+	},
+	ordenarEdic: (resultados) => {
+		return resultados.sort((a, b) =>
+			false
+				? false
+				: // Familia
+				a.familia < b.familia
+				? -1
+				: a.familia > b.familia
+				? 1
+				: // Entidad
+				a.entidadNombre < b.entidadNombre
+				? -1
+				: a.entidadNombre > b.entidadNombre
+				? 1
+				: // Nombre del Producto o RCLV, o url del Link
+				a.nombre < b.nombre
+				? -1
+				: a.nombre > b.nombre
+				? 1
+				: // Para nombres iguales, separa por id
+				a.entidad_id < b.entidad_id
+				? -1
+				: a.entidad_id > b.entidad_id
+				? 1
+				: // Primero los campos aprobados
+				a.aprobado > b.aprobado
+				? -1
+				: a.aprobado < b.aprobado
+				? 1
+				: // Orden alfabético de los campos
+				a.campo < b.campo
+				? -1
+				: a.campo > b.campo
+				? 1
+				: 0
+		);
+	},
+	avatarConLink: (familia, valor, texto) => {
+		// Variables
+		texto = "la imagen " + texto;
+		const terminacion = '" style="color: inherit; text-decoration: none"><u>' + texto + "</u></a>";
+		const carpeta = familia == "producto" ? "2-Productos" : "3-RCLVs";
+		const rutaArchivo = carpeta + "/Final/" + valor;
+
+		// Fin
+		return !valor
+			? "" // si no tiene un valor
+			: valor.includes("/")
+			? '<a href="' + valor + terminacion // si es una imagen Externa
+			: comp.gestionArchivos.existe(carpetaExterna + rutaArchivo)
+			? '<a href="' + urlHost + "/Externa/" + rutaArchivo + terminacion // si se encuentra el archivo
+			: texto; // si no se encuentra el archivo
+	},
+	nombres: async (reg) => {
+		// Variables
+		const {entidad, entidad_id} = reg;
+		const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
+		let nombre, anchor;
+
+		// Fórmulas
+		if (reg.entidad != "links") {
+			// Obtiene el registro
+			const prodRclv = await baseDeDatos.obtienePorId(reg.entidad, reg.entidad_id);
+			if (!prodRclv) return {};
+
+			// Obtiene los nombres
+			nombre = comp.nombresPosibles(prodRclv);
+			anchor =
+				"<a " +
+				("href='" + urlHost + "/" + entidad + "/detalle/" + siglaFam + "/") +
+				("?id=" + entidad_id) +
+				"' style='color: inherit; text-decoration: none'" +
+				(">" + nombre + "</a>");
+		} else {
+			// Obtiene el registro
+			const asocs = variables.entidades.asocsProd;
+			const link = await baseDeDatos.obtienePorId("links", reg.entidad_id, [...asocs, "prov"]);
+			if (!link.id) return {};
+
+			// Obtiene el nombre
+			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
+			nombre = comp.nombresPosibles(link[asocProd]);
+
+			// Obtiene el anchor
+			link.href = link.prov.embededPoner ? urlHost + "/links/mirar/l/?id=" + link.id : "//" + link.url;
+			anchor = "<a href='" + link.href + "' style='color: inherit; text-decoration: none'>" + nombre + "</a>";
 		}
 
-		// Le asigna un color
-		color = n.aprobado ? "green" : "firebrick";
-		mensaje = formatos.li(mensaje, color);
-
-		// Agrega el mensaje al sector que corresponda
-		n.altaAprob
-			? (mensajesAltas += mensaje) // altas aprobadas
-			: n.aprobado
-			? (mensajesAprob += mensaje) // otros cambios aprobados
-			: (mensajesRech += mensaje); // rechazados
-	});
-
-	// Crea el mensajeGlobal, siendo primero los aprobados y luego los rechazados
-	if (mensajesAltas) mensajesAcum += formatos.h2("Altas APROBADAS") + formatos.ol(mensajesAltas);
-	if (mensajesAprob) mensajesAcum += formatos.h2("Status - Cambios APROBADOS") + formatos.ol(mensajesAprob);
-	if (mensajesRech) mensajesAcum += formatos.h2("Status - Cambios RECHAZADOS") + formatos.ol(mensajesRech);
-
-	// Fin
-	return mensajesAcum;
-};
-const ordenarEdic = (resultados) => {
-	return resultados.sort((a, b) =>
-		false
-			? false
-			: // Familia
-			a.familia < b.familia
-			? -1
-			: a.familia > b.familia
-			? 1
-			: // Entidad
-			a.entidadNombre < b.entidadNombre
-			? -1
-			: a.entidadNombre > b.entidadNombre
-			? 1
-			: // Nombre del Producto o RCLV, o url del Link
-			a.nombre < b.nombre
-			? -1
-			: a.nombre > b.nombre
-			? 1
-			: // Para nombres iguales, separa por id
-			a.entidad_id < b.entidad_id
-			? -1
-			: a.entidad_id > b.entidad_id
-			? 1
-			: // Primero los campos aprobados
-			a.aprobado > b.aprobado
-			? -1
-			: a.aprobado < b.aprobado
-			? 1
-			: // Orden alfabético de los campos
-			a.campo < b.campo
-			? -1
-			: a.campo > b.campo
-			? 1
-			: 0
-	);
-};
-const avatarConLink = (familia, valor, texto) => {
-	// Variables
-	texto = "la imagen " + texto;
-	const terminacion = '" style="color: inherit; text-decoration: none"><u>' + texto + "</u></a>";
-	const carpeta = familia == "producto" ? "2-Productos" : "3-RCLVs";
-	const rutaArchivo = carpeta + "/Final/" + valor;
-
-	// Fin
-	return !valor
-		? "" // si no tiene un valor
-		: valor.includes("/")
-		? '<a href="' + valor + terminacion // si es una imagen Externa
-		: comp.gestionArchivos.existe(carpetaExterna + rutaArchivo)
-		? '<a href="' + urlHost + "/Externa/" + rutaArchivo + terminacion // si se encuentra el archivo
-		: texto; // si no se encuentra el archivo
+		// Fin
+		return {nombre, anchor};
+	},
 };
 const formatos = {
 	h2: (texto) => "<h2 " + normalize + "font-size: 18px'>" + texto + "</h2>",
@@ -966,185 +1009,154 @@ const formatos = {
 		return respuesta;
 	},
 };
-const nombres = async (reg) => {
-	// Variables
-	const {entidad, entidad_id} = reg;
-	const siglaFam = comp.obtieneDesdeEntidad.siglaFam(entidad);
-	let nombre, anchor;
+const FN_obtieneImgDerecha = {
+	obtieneLosRCLV: async (fechaDelAno) => {
+		// Variables
+		let rclvs = [];
 
-	// Fórmulas
-	if (reg.entidad != "links") {
-		// Obtiene el registro
-		const prodRclv = await baseDeDatos.obtienePorId(reg.entidad, reg.entidad_id);
-		if (!prodRclv) return {};
+		// Obtiene los RCLV
+		for (const entidad of variables.entidades.rclvs) {
+			// Si corresponde, saltea la rutina
+			if (entidad == "epocasDelAno" && fechaDelAno.epocaDelAno_id == ninguno_id) continue;
 
-		// Obtiene los nombres
-		nombre = comp.nombresPosibles(prodRclv);
-		anchor =
-			"<a " +
-			("href='" + urlHost + "/" + entidad + "/detalle/" + siglaFam + "/") +
-			("?id=" + entidad_id) +
-			"' style='color: inherit; text-decoration: none'" +
-			(">" + nombre + "</a>");
-	} else {
-		// Obtiene el registro
-		const asocs = variables.entidades.asocsProd;
-		const link = await baseDeDatos.obtienePorId("links", reg.entidad_id, [...asocs, "prov"]);
-		if (!link.id) return {};
+			// Condicion genérica
+			const condicion = {statusRegistro_id: aprobado_id, avatar: {[Op.ne]: null}, anoFM: {[Op.or]: [null, anoHoy]}}; // es necesario escribir anoFM de esa manera, para que funcione
 
-		// Obtiene el nombre
-		const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
-		nombre = comp.nombresPosibles(link[asocProd]);
+			// Condiciones particulares
+			entidad != "epocasDelAno" ? (condicion.fechaDelAno_id = fechaDelAno.id) : (condicion.id = fechaDelAno.epocaDelAno_id);
+			if (entidad == "personajes") condicion.categoria_id = "CFC"; // para personajes, sólo los relacionados con nuestra Iglesia
 
-		// Obtiene el anchor
-		link.href = link.prov.embededPoner ? urlHost + "/links/mirar/l/?id=" + link.id : "//" + link.url;
-		anchor = "<a href='" + link.href + "' style='color: inherit; text-decoration: none'>" + nombre + "</a>";
-	}
-
-	// Fin
-	return {nombre, anchor};
-};
-const obtieneLosRCLV = async (fechaDelAno) => {
-	// Variables
-	let rclvs = [];
-
-	// Obtiene los RCLV
-	for (const entidad of variables.entidades.rclvs) {
-		// Si corresponde, saltea la rutina
-		if (entidad == "epocasDelAno" && fechaDelAno.epocaDelAno_id == ninguno_id) continue;
-
-		// Condicion genérica
-		const condicion = {statusRegistro_id: aprobado_id, avatar: {[Op.ne]: null}, anoFM: {[Op.or]: [null, anoHoy]}}; // es necesario escribir anoFM de esa manera, para que funcione
-
-		// Condiciones particulares
-		entidad != "epocasDelAno" ? (condicion.fechaDelAno_id = fechaDelAno.id) : (condicion.id = fechaDelAno.epocaDelAno_id);
-		if (entidad == "personajes") condicion.categoria_id = "CFC"; // para personajes, sólo los relacionados con nuestra Iglesia
-
-		// Obtiene los RCLVs
-		const registros = baseDeDatos.obtieneTodosPorCondicion(entidad, condicion).then((n) => n.map((m) => ({...m, entidad})));
-		rclvs.push(registros);
-	}
-	rclvs = await Promise.all(rclvs).then((n) => n.flat());
-
-	// Fin
-	return rclvs;
-};
-const reduceRCLVs = (rclvs) => {
-	// Variables
-	let resultado;
-
-	if (rclvs.length > 1) {
-		// Obtiene la máxima prioridad
-		const prioridades_id = rclvs.map((n) => n.prioridad_id);
-		const prioridad_id = Math.max(...prioridades_id);
-
-		// Filtra por los que tienen la máxima prioridad_id
-		rclvs = rclvs.filter((n) => n.prioridad_id == prioridad_id);
-
-		// Prioriza por los de mayor avance de proceso de canonización
-		if (rclvs.length > 1)
-			rclvs = rclvs.find((n) => n.canon_id && n.canon_id.startsWith("ST"))
-				? rclvs.filter((n) => n.canon_id && n.canon_id.startsWith("ST"))
-				: rclvs.find((n) => n.canon_id && n.canon_id.startsWith("BT"))
-				? rclvs.filter((n) => n.canon_id && n.canon_id.startsWith("BT"))
-				: rclvs.find((n) => n.canon_id && n.canon_id.startsWith("VN"))
-				? rclvs.filter((n) => n.canon_id && n.canon_id.startsWith("VN"))
-				: rclvs.find((n) => n.canon_id && n.canon_id.startsWith("SD"))
-				? rclvs.filter((n) => n.canon_id && n.canon_id.startsWith("SD"))
-				: rclvs;
-
-		// Elige al azar de entre los que tienen la máxima prioridad
-		const indice = rclvs.length > 1 ? parseInt(Math.random() * rclvs.length) : 0;
-		resultado = rclvs[indice];
-	}
-	// Si se encontró un solo resultado, lo asigna
-	else if (rclvs.length == 1) resultado = rclvs[0];
-
-	// Fin
-	return resultado;
-};
-const datosImgDerecha = (resultado) => {
-	// Variables
-	let imgDerecha;
-
-	// Acciones si se obtuvo un resultado
-	if (resultado) {
-		// Datos iniciales
-		const {entidad, id, hoyEstamos_id, leyNombre, nombre} = resultado;
-		imgDerecha = {entidad, id};
-
-		// hoyEstamos
-		const hoyEstamosFinal = hoyEstamos_id
-			? hoyEstamos.find((n) => n.id == hoyEstamos_id).nombre
-			: hoyEstamos.find((n) => n.entidad == entidad || !n.entidad).nombre;
-
-		// leyNombre
-		const leyNombreFinal = leyNombre ? leyNombre : nombre;
-
-		// Nombre de la imagen
-		imgDerecha.leyenda = hoyEstamosFinal + " " + leyNombreFinal;
-
-		// Datos del archivo, dependiendo de la entidad
-		if (!resultado.carpetaAvatars) {
-			imgDerecha.carpeta = "3-RCLVs/Final/";
-			imgDerecha.nombreArchivo = resultado.avatar;
-		} else {
-			imgDerecha.carpeta = "4-EpocasDelAno/" + resultado.carpetaAvatars + "/";
-			imgDerecha.nombreArchivo = comp.gestionArchivos.imagenAlAzar(carpetaExterna + imgDerecha.carpeta);
+			// Obtiene los RCLVs
+			const registros = baseDeDatos
+				.obtieneTodosPorCondicion(entidad, condicion)
+				.then((n) => n.map((m) => ({...m, entidad})));
+			rclvs.push(registros);
 		}
-	}
-	// Acciones si no encontró una imagen para la fecha
-	else
-		imgDerecha = {
-			titulo: "ELC - Películas",
-			carpeta: "./publico/imagenes/Varios/",
-			nombreArchivo: "Institucional.jpg",
-		};
+		rclvs = await Promise.all(rclvs).then((n) => n.flat());
 
-	// Fin
-	return imgDerecha;
+		// Fin
+		return rclvs;
+	},
+	reduceRCLVs: (rclvs) => {
+		// Variables
+		let resultado;
+
+		if (rclvs.length > 1) {
+			// Obtiene la máxima prioridad
+			const prioridades_id = rclvs.map((n) => n.prioridad_id);
+			const prioridad_id = Math.max(...prioridades_id);
+
+			// Filtra por los que tienen la máxima prioridad_id
+			rclvs = rclvs.filter((n) => n.prioridad_id == prioridad_id);
+
+			// Prioriza por los de mayor avance de proceso de canonización
+			if (rclvs.length > 1)
+				rclvs = rclvs.find((n) => n.canon_id && n.canon_id.startsWith("ST"))
+					? rclvs.filter((n) => n.canon_id && n.canon_id.startsWith("ST"))
+					: rclvs.find((n) => n.canon_id && n.canon_id.startsWith("BT"))
+					? rclvs.filter((n) => n.canon_id && n.canon_id.startsWith("BT"))
+					: rclvs.find((n) => n.canon_id && n.canon_id.startsWith("VN"))
+					? rclvs.filter((n) => n.canon_id && n.canon_id.startsWith("VN"))
+					: rclvs.find((n) => n.canon_id && n.canon_id.startsWith("SD"))
+					? rclvs.filter((n) => n.canon_id && n.canon_id.startsWith("SD"))
+					: rclvs;
+
+			// Elige al azar de entre los que tienen la máxima prioridad
+			const indice = rclvs.length > 1 ? parseInt(Math.random() * rclvs.length) : 0;
+			resultado = rclvs[indice];
+		}
+		// Si se encontró un solo resultado, lo asigna
+		else if (rclvs.length == 1) resultado = rclvs[0];
+
+		// Fin
+		return resultado;
+	},
+	datosImgDerecha: (resultado) => {
+		// Variables
+		let imgDerecha;
+
+		// Acciones si se obtuvo un resultado
+		if (resultado) {
+			// Datos iniciales
+			const {entidad, id, hoyEstamos_id, leyNombre, nombre} = resultado;
+			imgDerecha = {entidad, id};
+
+			// hoyEstamos
+			const hoyEstamosFinal = hoyEstamos_id
+				? hoyEstamos.find((n) => n.id == hoyEstamos_id).nombre
+				: hoyEstamos.find((n) => n.entidad == entidad || !n.entidad).nombre;
+
+			// leyNombre
+			const leyNombreFinal = leyNombre ? leyNombre : nombre;
+
+			// Nombre de la imagen
+			imgDerecha.leyenda = hoyEstamosFinal + " " + leyNombreFinal;
+
+			// Datos del archivo, dependiendo de la entidad
+			if (!resultado.carpetaAvatars) {
+				imgDerecha.carpeta = "3-RCLVs/Final/";
+				imgDerecha.nombreArchivo = resultado.avatar;
+			} else {
+				imgDerecha.carpeta = "4-EpocasDelAno/" + resultado.carpetaAvatars + "/";
+				imgDerecha.nombreArchivo = comp.gestionArchivos.imagenAlAzar(carpetaExterna + imgDerecha.carpeta);
+			}
+		}
+		// Acciones si no encontró una imagen para la fecha
+		else
+			imgDerecha = {
+				titulo: "ELC - Películas",
+				carpeta: "./publico/imagenes/Varios/",
+				nombreArchivo: "Institucional.jpg",
+			};
+
+		// Fin
+		return imgDerecha;
+	},
 };
-const eliminaLasImagenes = (avatars, carpeta) => {
-	// Obtiene el nombre de todas las imagenes de los archivos de la carpeta
-	const archivos = fs.readdirSync(carpetaExterna + carpeta);
-	const imagenes = avatars.map((n) => n.imagen);
+const FN_eliminaImagenesSinRegistro = {
+	eliminaLasImagenes: (avatars, carpeta) => {
+		// Obtiene el nombre de todas las imagenes de los archivos de la carpeta
+		const archivos = fs.readdirSync(carpetaExterna + carpeta);
+		const imagenes = avatars.map((n) => n.imagen);
 
-	// Rutina para borrar archivos
-	for (let archivo of archivos)
-		if (!imagenes.includes(archivo)) comp.gestionArchivos.elimina(carpetaExterna + carpeta, archivo);
+		// Rutina para borrar archivos
+		for (let archivo of archivos)
+			if (!imagenes.includes(archivo)) comp.gestionArchivos.elimina(carpetaExterna + carpeta, archivo);
 
-	// Rutina para detectar nombres sin archivo
-	for (let avatar of avatars)
-		if (!archivos.includes(avatar.imagen))
-			console.log(
-				"Archivo no encontrado:",
-				carpeta + "/" + avatar.imagen,
-				"(" + avatar.nombre + " - " + avatar.entidad + ")"
-			);
+		// Rutina para detectar nombres sin archivo
+		for (let avatar of avatars)
+			if (!archivos.includes(avatar.imagen))
+				console.log(
+					"Archivo no encontrado:",
+					carpeta + "/" + avatar.imagen,
+					"(" + avatar.nombre + " - " + avatar.entidad + ")"
+				);
 
-	// Fin
-	return;
+		// Fin
+		return;
+	},
+	nombresDeAvatarEnBD: async ({entidad, status_id, campoAvatar}) => {
+		// Variables
+		campoAvatar = campoAvatar ? campoAvatar : "avatar";
+		const condicion = {[campoAvatar]: {[Op.and]: [{[Op.ne]: null}, {[Op.notLike]: "%/%"}]}};
+		if (status_id) condicion.statusRegistro_id = status_id;
+
+		// Obtiene los registros
+		const registros = await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion).then((n) =>
+			n.map((m) => ({
+				imagen: m[campoAvatar],
+				nombre: m.nombre ? m.nombre : m.nombreCastellano ? m.nombreCastellano : m.nombreOriginal,
+				entidad,
+			}))
+		);
+
+		// Fin
+		return registros;
+	},
 };
-const nombresDeAvatarEnBD = async ({entidad, status_id, campoAvatar}) => {
-	// Variables
-	campoAvatar = campoAvatar ? campoAvatar : "avatar";
-	const condicion = {[campoAvatar]: {[Op.and]: [{[Op.ne]: null}, {[Op.notLike]: "%/%"}]}};
-	if (status_id) condicion.statusRegistro_id = status_id;
-
-	// Obtiene los registros
-	const registros = await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion).then((n) =>
-		n.map((m) => ({
-			imagen: m[campoAvatar],
-			nombre: m.nombre ? m.nombre : m.nombreCastellano ? m.nombreCastellano : m.nombreOriginal,
-			entidad,
-		}))
-	);
-
-	// Fin
-	return registros;
-};
-const convsNavegsDelDia = {
-	navegsDiaRuta: (navegsDia) => {
+const FN_navegsDia = {
+	// Pulido
+	porRuta: (navegsDia) => {
 		// Quita el horario de las fechas
 		navegsDia = navegsDia.map((n) => ({...n, fecha: comp.fechaHora.anoMesDia(n.fecha)}));
 
@@ -1168,19 +1180,16 @@ const convsNavegsDelDia = {
 		// Fin
 		return navegsDia;
 	},
-	navegsDiaProd: async (navegsDia) => {
+	porProd: async (navegsDia) => {
 		// Quita el horario de las fechas
 		navegsDia = navegsDia.map((n) => ({...n, fecha: comp.fechaHora.anoMesDia(n.fecha)}));
 
 		// Deja solamente las rutas 'mirar link'
 		navegsDia = navegsDia.filter((n) => n.ruta.startsWith("/links/mirar/l"));
 
-		// Quita las navegaciones que correspondan
+		// Quita las navegaciones que estén repetidas por el mismo cliente en el día
 		for (let i = navegsDia.length - 1; i > 0; i--) {
-			// Variables
 			const {id, fecha, cliente_id, ruta} = navegsDia[i];
-
-			// Revisa las rutas - // se fija que no esté repetido por el mismo cliente en el día
 			if (navegsDia.find((n) => n.ruta == ruta && n.cliente_id == cliente_id && n.fecha == fecha && n.id != id))
 				navegsDia.splice(i, 1);
 		}
@@ -1205,7 +1214,7 @@ const convsNavegsDelDia = {
 		// Fin
 		return navegsDia;
 	},
-	navegsDiaHora: (navegsDia) => {
+	porHora: (navegsDia) => {
 		// Quita los minutos y segundos de las fechas
 		navegsDia = navegsDia.map((n) => ({...n, fechaHora: n.fecha.setMinutes(0, 0)}));
 
@@ -1230,9 +1239,9 @@ const convsNavegsDelDia = {
 		// Fin
 		return navegsDia;
 	},
-};
-const navegsDia = {
-	fechaSig: async (tabla, navegsDiaProc) => {
+
+	// Auxiliares
+	fechaSig: async (tabla, navegsDiaPulido) => {
 		// Obtiene el último registro de acumuladas
 		let ultRegistro = await baseDeDatos.obtienePorCondicionElUltimo(tabla);
 		if (!ultRegistro) ultRegistro = {fecha: null};
@@ -1240,7 +1249,7 @@ const navegsDia = {
 		// Obtiene la fecha siguiente
 		let fechaSig = ultRegistro.fecha
 			? new Date(ultRegistro.fecha).getTime() + unDia // el día siguiente de la del último registro de 'ultRegistro'
-			: navegsDiaProc[0].fecha; // la del primer registro de 'navegsDiaProc'
+			: navegsDiaPulido[0].fecha; // la del primer registro de 'navegsDiaPulido'
 		fechaSig = comp.fechaHora.anoMesDia(fechaSig); // sólo importa la fecha
 
 		// Fin
