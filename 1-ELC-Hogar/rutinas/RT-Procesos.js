@@ -646,7 +646,7 @@ module.exports = {
 			let navegsDiaPulido = FN_navegsDia.porRuta(navegsDia);
 
 			// Obtiene la fechaSig
-			let fechaSig = await FN_navegsDia.fechaSig("navegsDiaRutaCant", navegsDiaPulido);
+			let fechaSig = await FN_navegsDia.fechaSig("navegsDiaRutaAcum", navegsDiaPulido);
 
 			// Rutina por fecha mientras la fecha sea menor al día vigente
 			while (fechaSig < hoy) {
@@ -671,7 +671,7 @@ module.exports = {
 				let espera = [];
 				const fecha = fechaSig;
 				for (let ruta in consolidado)
-					espera.push(baseDeDatos.agregaRegistro("navegsDiaRutaCant", {fecha, ruta, cant: consolidado[ruta]})); // no importa el orden en el que se guardan dentro del día
+					espera.push(baseDeDatos.agregaRegistro("navegsDiaRutaAcum", {fecha, ruta, cant: consolidado[ruta]})); // no importa el orden en el que se guardan dentro del día
 				await Promise.all(espera);
 
 				// Actualiza la fecha siguiente
@@ -679,7 +679,7 @@ module.exports = {
 			}
 
 			// Elimina los registros antiguos
-			await FN_navegsDia.eliminaRegsAntiguos("navegsDiaRutaCant");
+			await FN_navegsDia.eliminaRegsAntiguos("navegsDiaRutaAcum");
 
 			// Fin
 			return;
@@ -687,7 +687,7 @@ module.exports = {
 		porProd: async (navegsDia) => {
 			// Variables
 			let navegsDiaPulido = await FN_navegsDia.porProd(navegsDia);
-			let fechaSig = await FN_navegsDia.fechaSig("navegsDiaProdCant", navegsDiaPulido);
+			let fechaSig = await FN_navegsDia.fechaSig("navegsDiaProdAcum", navegsDiaPulido);
 
 			// Rutina por fecha mientras la fecha sea menor al día vigente
 			while (fechaSig < hoy) {
@@ -713,7 +713,7 @@ module.exports = {
 				let espera = [];
 				const fecha = fechaSig;
 				for (let producto in consolidado)
-					espera.push(baseDeDatos.agregaRegistro("navegsDiaProdCant", {fecha, producto, cant: consolidado[producto]})); // no importa el orden en el que se guardan dentro del día
+					espera.push(baseDeDatos.agregaRegistro("navegsDiaProdAcum", {fecha, producto, cant: consolidado[producto]})); // no importa el orden en el que se guardan dentro del día
 				await Promise.all(espera);
 
 				// Actualiza la fecha siguiente
@@ -721,7 +721,7 @@ module.exports = {
 			}
 
 			// Elimina los registros antiguos
-			await FN_navegsDia.eliminaRegsAntiguos("navegsDiaProdCant");
+			await FN_navegsDia.eliminaRegsAntiguos("navegsDiaProdAcum");
 
 			// Fin
 			return;
@@ -731,7 +731,7 @@ module.exports = {
 			let navegsDiaPulido = FN_navegsDia.porHora(navegsDia);
 
 			// Obtiene la fechaSig
-			let fechaSig = await FN_navegsDia.fechaSig("navegsDiaHoraCant", navegsDiaPulido);
+			let fechaSig = await FN_navegsDia.fechaSig("navegsDiaHoraAcum", navegsDiaPulido);
 
 			// Rutina por fecha mientras la fecha sea menor al día vigente
 			while (fechaSig < hoy) {
@@ -750,7 +750,7 @@ module.exports = {
 					const diaSem = comp.fechaHora.diaSem(fechaSig);
 					const cant = consolidado[hora] ? consolidado[hora] : 0;
 					const datos = {fecha, diaSem, hora, cant};
-					await baseDeDatos.agregaRegistro("navegsDiaHoraCant", datos); // importa el orden en el que se guarda dentro del día
+					await baseDeDatos.agregaRegistro("navegsDiaHoraAcum", datos); // importa el orden en el que se guarda dentro del día
 				}
 
 				// Actualiza la fecha siguiente
@@ -758,7 +758,7 @@ module.exports = {
 			}
 
 			// Elimina los registros antiguos
-			await FN_navegsDia.eliminaRegsAntiguos("navegsDiaHoraCant");
+			await FN_navegsDia.eliminaRegsAntiguos("navegsDiaHoraAcum");
 
 			// Fin
 			return;
