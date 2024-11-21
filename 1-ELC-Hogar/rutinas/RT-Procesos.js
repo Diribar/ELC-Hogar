@@ -640,13 +640,13 @@ module.exports = {
 			return {tresDiez, onceTreinta, masDeTreinta, unoDos};
 		},
 	},
-	navegsDelDia: {
+	navegsDia: {
 		navegsDiaRuta: async (navegsDia) => {
 			// Elimina las rutas que correspondan
 			let navegsDiaProc = convsNavegsDelDia.navegsDiaRuta(navegsDia);
 
 			// Obtiene la fechaSig
-			let fechaSig = navegsDelDia.fechaSig("navegsDiaRutaCant", navegsDiaProc);
+			let fechaSig = navegsDia.fechaSig("navegsDiaRutaCant", navegsDiaProc);
 
 			// Rutina por fecha mientras la fecha sea menor al día vigente
 			while (comp.fechaHora.anoMesDia(fechaSig) < hoy) {
@@ -685,7 +685,7 @@ module.exports = {
 			}
 
 			// Elimina los registros antiguos
-			await navegsDelDia.eliminaRegsAntiguos("navegsDiaRutaCant");
+			await navegsDia.eliminaRegsAntiguos("navegsDiaRutaCant");
 
 			// Fin
 			return;
@@ -694,7 +694,7 @@ module.exports = {
 			// Variables
 			let navegsDiaProc = await convsNavegsDelDia.navegsDiaProd(navegsDia);
 			return;
-			let fechaSig = navegsDelDia.fechaSig("navegsDiaProdCant", navegsDiaProc);
+			let fechaSig = navegsDia.fechaSig("navegsDiaProdCant", navegsDiaProc);
 
 			// Rutina por fecha mientras la fecha sea menor al día vigente
 			while (comp.fechaHora.anoMesDia(fechaSig) < hoy) {
@@ -733,7 +733,7 @@ module.exports = {
 			}
 
 			// Elimina los registros antiguos
-			await navegsDelDia.eliminaRegsAntiguos("navegsDiaProdCant");
+			await navegsDia.eliminaRegsAntiguos("navegsDiaProdCant");
 
 			// Fin
 			return;
@@ -743,7 +743,7 @@ module.exports = {
 			let navegsDiaProc = convsNavegsDelDia.navegsDiaHora(navegsDia);
 
 			// Obtiene la fechaSig
-			let fechaSig = navegsDelDia.fechaSig("navegsDiaHoraCant", navegsDiaProc);
+			let fechaSig = navegsDia.fechaSig("navegsDiaHoraCant", navegsDiaProc);
 
 			// Rutina por fecha mientras la fecha sea menor al día vigente
 			while (comp.fechaHora.anoMesDia(fechaSig) < hoy) {
@@ -773,7 +773,7 @@ module.exports = {
 			}
 
 			// Elimina los registros antiguos
-			await navegsDelDia.eliminaRegsAntiguos("navegsDiaHoraCant");
+			await navegsDia.eliminaRegsAntiguos("navegsDiaHoraCant");
 
 			// Fin
 			return;
@@ -1197,9 +1197,10 @@ const convsNavegsDelDia = {
 			const producto = link[asocProd];
 
 			// Completa la info
-			const datos = {nombreCastellano: producto.nombreCastellano, entidad: asocProd, prodId: producto.id};
-			return {...n, ...datos};
+			const datos = {fecha: n.fecha, entidad: asocProd, id: producto.id, nombreCastellano: producto.nombreCastellano};
+			return datos;
 		});
+		navegsDia = await Promise.all(navegsDia);
 
 		// Fin
 		return navegsDia;
@@ -1230,7 +1231,7 @@ const convsNavegsDelDia = {
 		return navegsDia;
 	},
 };
-const navegsDelDia = {
+const navegsDia = {
 	fechaSig: async (tabla, navegsDiaProc) => {
 		// Obtiene el último registro de acumuladas
 		let ultRegistro = await baseDeDatos.obtienePorCondicionElUltimo(tabla);
