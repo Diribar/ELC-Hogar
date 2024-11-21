@@ -600,7 +600,7 @@ module.exports = {
 		},
 		eliminaVisitasAntiguas: async () => {
 			// Variables
-			const haceUnMes = comp.fechaHora.anoMesDia(Date.now() - unDia * 31);
+			const haceUnMes = comp.fechaHora.anoMesDia(Date.now() - unMes);
 
 			// Condicion
 			const condicion = {fechaUltNaveg: {[Op.lt]: haceUnMes}, diasNaveg: {[Op.lte]: 2}};
