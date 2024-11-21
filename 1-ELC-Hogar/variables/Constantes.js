@@ -38,7 +38,7 @@ module.exports = {
 
 	// Gráficos
 	graficos: {
-		// Usuarios
+		// Clientes
 		persBdDia: {
 			rubro: "clientes",
 			titulo: "Cant. de Clientes",
@@ -46,13 +46,36 @@ module.exports = {
 			icono: iconos.area,
 			resaltar: true,
 		},
+
+		// Navegaciones
 		persWebDia: {
-			rubro: "clientes",
-			titulo: "Cant. de Navegaciones",
-			url: "cantidad-de-navegaciones",
+			rubro: "navegantes",
+			titulo: "Navegantes por día",
+			url: "navegantes-por-dia",
 			icono: iconos.columnas,
 			resaltar: true,
 		},
+		navegsPorHora: {
+			rubro: "navegantes",
+			titulo: "Navegantes por hora",
+			url: "navegantes-por-hora",
+			icono: iconos.columnas,
+			select: true,
+		},
+		// navegsPorProd:{
+		// 	rubro: "navegantes",
+		// 	titulo: "Navegantes por producto",
+		// 	url: "navegantes-por-producto",
+		// 	icono: iconos.columnas,
+		// select: true,
+		// },
+		// navegsPorRuta:{
+		// 	rubro: "navegantes",
+		// 	titulo: "Navegantes por ruta",
+		// 	url: "navegantes-por-ruta",
+		// 	icono: iconos.columnas,
+		// select: true,
+		// },
 
 		// Productos
 		prodsCfcVpc: {
