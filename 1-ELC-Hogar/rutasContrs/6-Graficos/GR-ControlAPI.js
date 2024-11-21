@@ -1,14 +1,16 @@
 "use strict";
 
-module.exports = {
-	// Usuarios
+const exportar = {
+	// Clientes
 	persBdDia: async (req, res) => {
-		const datos = await baseDeDatos.obtieneTodosConOrden("persBdDiaCant", "fecha");
+		const datos = await baseDeDatos.obtieneTodosConOrden("persBdDiaAcum", "fecha");
 		return res.json(datos);
 	},
+
+	// Navegantes
 	persWebDia: async (req, res) => {
-		const persWebDiaCant = await baseDeDatos.obtieneTodosConOrden("persWebDiaCant", "fecha");
-		return res.json(persWebDiaCant);
+		const registros = await baseDeDatos.obtieneTodosConOrden("persWebDiaAcum", "fecha");
+		return res.json(registros);
 	},
 
 	// Productos
@@ -115,6 +117,15 @@ module.exports = {
 		return res.json(provs);
 	},
 };
+
+for (let tema of ["Hora", "Prod", "Ruta"]) {
+	exportar["navegsPor" + tema] = async (req, res) => {
+		const registros = await baseDeDatos.obtieneTodosConOrden("navegsPor" + tema, "fecha");
+		return res.json(registros);
+	};
+}
+
+module.exports = exportar;
 
 // Funciones
 const obtieneEfemerides = async () => {
