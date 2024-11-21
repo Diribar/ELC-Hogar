@@ -8,7 +8,7 @@ header {
 		/* Opciones */
 		.menuOpcion {
 			display: flex; flex-direction: row; align-items: center; padding: 4px 16px;
-			&.resaltar {background-color: var(--celeste-oscuro);}
+			&.resaltar {background: var(--gris-intermedio); font-weight: bold;}
 			&:hover {background-color: var(--gris-intermedio);}
 
 			/* Íconos que acompañan al menú */
