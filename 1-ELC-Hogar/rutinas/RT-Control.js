@@ -333,7 +333,7 @@ module.exports = {
 
 			// Variables
 			const primFechaDiarioNavegs = persWebDia[0].fecha;
-			const ultRegHistNavegs = await baseDeDatos.obtienePorCondicionElUltimo("persWebDiaCant");
+			const ultRegHistNavegs = await baseDeDatos.obtienePorCondicionElUltimo("persWebDiaAcum");
 			const ultFechaHistNavegs = ultRegHistNavegs && ultRegHistNavegs.fecha;
 
 			// Si hay una inconsistencia, termina
@@ -360,7 +360,7 @@ module.exports = {
 				const visitas = navegantes.filter((n) => !n.usuario_id && n.cliente_id.startsWith("V")).length;
 
 				// Guarda el resultado
-				await baseDeDatos.agregaRegistro("persWebDiaCant", {
+				await baseDeDatos.agregaRegistro("persWebDiaAcum", {
 					...{fecha: fechaSig, anoMes},
 					...{logins, usSinLogin, visitas},
 				});
@@ -377,7 +377,7 @@ module.exports = {
 		},
 		cantClientes: async () => {
 			// Obtiene la última fecha del historial
-			const ultRegHistClientes = await baseDeDatos.obtienePorCondicionElUltimo("persBdDiaCant");
+			const ultRegHistClientes = await baseDeDatos.obtienePorCondicionElUltimo("persBdDiaAcum");
 			const ultFechaHistClientes = ultRegHistClientes ? ultRegHistClientes.fecha : "2024-10-03";
 			let fechaSig = procesos.sumaUnDia(ultFechaHistClientes); // le suma un día al último registro
 			if (fechaSig >= hoy) return;
@@ -397,7 +397,7 @@ module.exports = {
 				const frecPorCliente = procesos.clientes.frecPorCliente(clientes, fechaSig);
 
 				// Guarda el resultado
-				await baseDeDatos.agregaRegistro("persBdDiaCant", {fecha: fechaSig, anoMes, ...frecPorCliente});
+				await baseDeDatos.agregaRegistro("persBdDiaAcum", {fecha: fechaSig, anoMes, ...frecPorCliente});
 
 				// Obtiene la fecha siguiente
 				fechaSig = procesos.sumaUnDia(fechaSig);
@@ -777,7 +777,7 @@ module.exports = {
 			const tablas = [
 				...["histEdics", "statusHistorial"],
 				...["prodsEdicion", "rclvsEdicion", "linksEdicion"],
-				...["persWebDiaCant", "persWebDia", "persBdDiaCant"],
+				...["persWebDiaAcum", "persWebDia", "persBdDiaAcum"],
 				...["prodsAzar", "capturas"],
 				...["calRegistros", "misConsultas", "consRegsPrefs", "pppRegistros"],
 				...["capsSinLink", "novedadesELC"],

@@ -525,7 +525,7 @@ module.exports = {
 	clientes: {
 		cantNavegs: async () => {
 			// Variables
-			let revisar = await baseDeDatos.obtieneTodos("persWebDiaCant");
+			let revisar = await baseDeDatos.obtieneTodos("persWebDiaAcum");
 			if (!revisar.length) return;
 			const anoMesUlt = revisar[revisar.length - 1].anoMes;
 			let promedios = {};
@@ -554,10 +554,10 @@ module.exports = {
 				for (let metodo in totales) promedios[metodo] = Math.round(totales[metodo] / cantRegs);
 
 				// Elimina los registros de ese año-mes
-				await baseDeDatos.eliminaPorCondicion("persWebDiaCant", {anoMes: anoMesAntiguo});
+				await baseDeDatos.eliminaPorCondicion("persWebDiaAcum", {anoMes: anoMesAntiguo});
 
 				// Agrega un registro con los promedios
-				await baseDeDatos.agregaRegistroIdCorrel("persWebDiaCant", {anoMes: anoMesAntiguo, ...promedios});
+				await baseDeDatos.agregaRegistroIdCorrel("persWebDiaAcum", {anoMes: anoMesAntiguo, ...promedios});
 
 				// Fin
 				revisar = revisar.filter((n) => n.anoMes != anoMesAntiguo);
@@ -568,7 +568,7 @@ module.exports = {
 		},
 		cantClientes: async () => {
 			// Variables
-			let revisar = await baseDeDatos.obtieneTodos("persBdDiaCant");
+			let revisar = await baseDeDatos.obtieneTodos("persBdDiaAcum");
 			if (!revisar.length) return;
 			const anoMesUlt = revisar[revisar.length - 1].anoMes;
 
@@ -586,10 +586,10 @@ module.exports = {
 				const regUltimo = regsParaProcesar[regsParaProcesar.length - 1];
 
 				// Quita el dato de la fecha de ese registro
-				await baseDeDatos.actualizaPorId("persBdDiaCant", regUltimo.id, {fecha: null});
+				await baseDeDatos.actualizaPorId("persBdDiaAcum", regUltimo.id, {fecha: null});
 
 				// Elimina los demás registros de ese mes
-				await baseDeDatos.eliminaPorCondicion("persBdDiaCant", {fecha: {[Op.ne]: null}, anoMes: anoMesAntiguo});
+				await baseDeDatos.eliminaPorCondicion("persBdDiaAcum", {fecha: {[Op.ne]: null}, anoMes: anoMesAntiguo});
 
 				// Fin
 				revisar = revisar.filter((n) => n.anoMes != anoMesAntiguo);
