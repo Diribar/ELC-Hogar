@@ -411,7 +411,7 @@ module.exports = {
 			const fechaMax = new Date(hoy);
 			let espera = [];
 
-			// Obtiene las últimas rutas usadas
+			// Obtiene los registros de días anteriores
 			const condicion = {fecha: {[Op.lt]: fechaMax}};
 			const navegsDia = await baseDeDatos.obtieneTodosPorCondicion("navegsDia", condicion);
 			if (!navegsDia.length) return;
@@ -420,9 +420,10 @@ module.exports = {
 			espera.push(procesos.navegsDia.porRuta(navegsDia));
 			espera.push(procesos.navegsDia.porProd(navegsDia));
 			espera.push(procesos.navegsDia.porHora(navegsDia));
-
-			// Espera a que se completen los procesos
 			await Promise.all(espera);
+
+			// Elimina los registros de días anteriores
+			await baseDeDatos.eliminaPorCondicion("navegsDia", condicion);
 
 			// Fin
 			return;
