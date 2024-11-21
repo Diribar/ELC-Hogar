@@ -1,12 +1,13 @@
 module.exports = (sequelize, dt) => {
-	const alias = "navegsDiaProdCant"; // rutas navegadas por día
+	const alias = "navegsDiaHoraAcum"; // cantidad de navegantes por hora de día de la semana
 	const columns = {
 		fecha: {type: dt.DATE},
-		producto: {type: dt.STRING(80)},
+		diaSem: {type: dt.STRING(3)},
+		hora: {type: dt.INTEGER},
 		cant: {type: dt.INTEGER},
 	};
 	const config = {
-		tableName: "ind_navegs_dia_prod_cant",
+		tableName: "ind_navegs_dia_hora_cant",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

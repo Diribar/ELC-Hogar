@@ -38,21 +38,44 @@ module.exports = {
 
 	// Gráficos
 	graficos: {
-		// Usuarios
+		// Clientes
 		persBdDia: {
 			rubro: "clientes",
-			titulo: "Cant. de Clientes",
+			titulo: "Cant. de Clientes en BD",
 			url: "cantidad-de-clientes",
 			icono: iconos.area,
 			resaltar: true,
 		},
+
+		// Navegaciones
 		persWebDia: {
-			rubro: "clientes",
-			titulo: "Cant. de Navegaciones",
-			url: "cantidad-de-navegaciones",
+			rubro: "navegantes",
+			titulo: "Navegantes por día",
+			url: "navegantes-por-dia",
 			icono: iconos.columnas,
 			resaltar: true,
 		},
+		navegsPorHora: {
+			rubro: "navegantes",
+			titulo: "Navegantes por hora",
+			url: "navegantes-por-hora",
+			icono: iconos.columnas,
+			select: true,
+		},
+		// navegsPorProd:{
+		// 	rubro: "navegantes",
+		// 	titulo: "Navegantes por producto",
+		// 	url: "navegantes-por-producto",
+		// 	icono: iconos.columnas,
+		// select: true,
+		// },
+		// navegsPorRuta:{
+		// 	rubro: "navegantes",
+		// 	titulo: "Navegantes por ruta",
+		// 	url: "navegantes-por-ruta",
+		// 	icono: iconos.columnas,
+		// select: true,
+		// },
 
 		// Productos
 		prodsCfcVpc: {
@@ -72,7 +95,6 @@ module.exports = {
 			titulo: "Películas - Época de estreno",
 			url: "peliculas-por-epoca-de-estreno",
 			icono: iconos.columnas,
-			hr: true,
 		},
 
 		// RCLVs
@@ -90,7 +112,6 @@ module.exports = {
 			url: "vencimiento-de-links",
 			icono: iconos.columnas,
 			resaltar: true,
-			hr: true,
 		},
 		linksPorProv: {
 			rubro: "links",
