@@ -41,7 +41,7 @@ module.exports = {
 		// Clientes
 		persBdDia: {
 			rubro: "clientes",
-			titulo: "Cant. de Clientes",
+			titulo: "Cant. de Clientes en BD",
 			url: "cantidad-de-clientes",
 			icono: iconos.area,
 			resaltar: true,
@@ -95,7 +95,6 @@ module.exports = {
 			titulo: "Películas - Época de estreno",
 			url: "peliculas-por-epoca-de-estreno",
 			icono: iconos.columnas,
-			hr: true,
 		},
 
 		// RCLVs
@@ -113,7 +112,6 @@ module.exports = {
 			url: "vencimiento-de-links",
 			icono: iconos.columnas,
 			resaltar: true,
-			hr: true,
 		},
 		linksPorProv: {
 			rubro: "links",
