@@ -2,9 +2,7 @@ module.exports = (sequelize, dt) => {
 	const alias = "navegsDiaProdCant"; // rutas navegadas por día
 	const columns = {
 		fecha: {type: dt.DATE},
-		nombreCastellano: {type: dt.STRING(80)},
-		entidad: {type: dt.STRING(11)},
-		prodId: {type: dt.INTEGER},
+		producto: {type: dt.STRING(80)},
 		cant: {type: dt.INTEGER},
 	};
 	const config = {
