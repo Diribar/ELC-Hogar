@@ -7,7 +7,7 @@ module.exports = (sequelize, dt) => {
 		cant: {type: dt.INTEGER},
 	};
 	const config = {
-		tableName: "ind_navegs_dia_hora_cant",
+		tableName: "ind_navegs_dia_hora_acum",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);

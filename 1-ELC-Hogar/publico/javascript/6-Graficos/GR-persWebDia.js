@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Obtiene datos del BE
-	const cantPersWebDias = await fetch(ruta).then((n) => n.json());
+	const regsBD = await fetch(ruta).then((n) => n.json());
 
 	// Variables
 	const DOM = {grafico: document.querySelector("#zonaDeGraficos #cuadro #grafico")};
@@ -20,9 +20,9 @@ window.addEventListener("load", async () => {
 	// Genera la información
 	const resultado = [["Fecha", ...grupos.map((grupo) => [grupo, {role: "style"}]).flat()]];
 	const cantidades = {logins: 0, usSinLogin: 0, visitas: 0};
-	for (let cantPersWebDia of cantPersWebDias) {
+	for (let reg of regsBD) {
 		// Alimenta los datos del gráfico
-		const {fecha, anoMes, logins, usSinLogin, visitas} = cantPersWebDia;
+		const {fecha, anoMes, logins, usSinLogin, visitas} = reg;
 		const valorX = fecha || anoMes;
 		resultado.push([
 			" " + valorX + " ",
@@ -40,7 +40,7 @@ window.addEventListener("load", async () => {
 	}
 
 	// Obtiene los promedios
-	const cantConFecha = cantPersWebDias.filter((n) => n.fecha).length;
+	const cantConFecha = regsBD.filter((n) => n.fecha).length;
 	for (let metodo of Object.keys(cantidades)) promedio[metodo] = Math.round((cantidades[metodo] / cantConFecha) * 10) / 10;
 	promedio.total = Object.values(promedio).reduce((acum, n) => acum + n);
 	resultado[0].push("Promedio");

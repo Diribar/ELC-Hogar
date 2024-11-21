@@ -1,12 +1,12 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Obtiene datos del BE
-	const linksPorProv = await fetch(ruta).then((n) => n.json());
+	const regsBD = await fetch(ruta).then((n) => n.json());
 
 	// Variables
 	const DOM = {grafico: document.querySelector("#zonaDeGraficos #cuadro #grafico")};
-	let ejeX = linksPorProv.map((n) => n.nombre);
-	const ejeY = linksPorProv.map((n) => n.links);
+	let ejeX = regsBD.map((n) => n.nombre);
+	const ejeY = regsBD.map((n) => n.links);
 
 	// Consolida el resultado
 	const resultado = [["Prov.", "Cant. de Links"]];
