@@ -10,7 +10,6 @@ const linkIdValidoAnt = require("../../middlewares/porRegistro/linkIdValidoAnt.j
 const entId = [entValidaAnt, idValidoAnt];
 
 // Vistas
-router.get("/abm", entId, vistaMS.redirecciona.rutasAntiguas);
 router.get("/visualizacion", linkIdValidoAnt, vistaMS.redirecciona.rutasAntiguas);
 
 // Fin
