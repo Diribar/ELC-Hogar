@@ -21,7 +21,7 @@ header {
 			/* Ícono ELC */
 			.icono#ELC {background: var(--azul-oscuro); color: var(--celeste-claro); border-radius: 3px; font-size: .6rem; padding: 1px;}
 		}
-		hr:last-of-type {display: none;}
+		hr:last-child {display: none;}
 	}
 
 	/* Específico del Menú de Usuario */
