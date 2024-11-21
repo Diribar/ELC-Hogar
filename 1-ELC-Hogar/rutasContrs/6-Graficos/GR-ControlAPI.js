@@ -1,6 +1,6 @@
 "use strict";
 
-const exportar = {
+let exportar = {
 	// Clientes
 	persBdDia: async (req, res) => {
 		const datos = await baseDeDatos.obtieneTodosConOrden("persBdDiaAcum", "fecha");
@@ -118,12 +118,14 @@ const exportar = {
 	},
 };
 
-for (let tema of ["Hora", "Prod", "Ruta"]) {
-	exportar["navegsPor" + tema] = async (req, res) => {
-		const registros = await baseDeDatos.obtieneTodosConOrden("navegsPor" + tema, "fecha");
-		return res.json(registros);
+for (let tema of ["Hora", "Prod", "Ruta"])
+	exportar = {
+		...exportar,
+		["navegsPor" + tema]: async (req, res) => {
+			const registros = await baseDeDatos.obtieneTodosConOrden("navegsDia" + tema + "Acum", "fecha");
+			return res.json(registros);
+		},
 	};
-}
 
 module.exports = exportar;
 
