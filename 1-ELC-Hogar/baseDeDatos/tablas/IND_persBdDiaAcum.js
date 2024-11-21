@@ -11,7 +11,7 @@ module.exports = (sequelize, dt) => {
 		unoDos: {type: dt.INTEGER},
 	};
 	const config = {
-		tableName: "ind_pers_bd_dia_cant",
+		tableName: "ind_pers_bd_dia_acum",
 		timestamps: false,
 	};
 	const entidad = sequelize.define(alias, columns, config);
