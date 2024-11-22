@@ -1,3 +1,4 @@
+"use strict";
 // Variable 'global'
 const constantes = require("./variables/Constantes.js");
 for (let metodo in constantes) global[metodo] = constantes[metodo];
@@ -53,11 +54,11 @@ app.use(cookies());
 // morgan.token("custom", ":method :url => Tiempo: :total-time[0]ms / :response-time[0]ms (:status)") //Create a new named format
 // app.use(morgan("custom")) // use the new format by name
 
-// *********** Para conectarse con el servidor ********************
+// Para conectarse con el servidor
 const PORT = entorno == "development" ? "80" : process.env.PORT;
 app.listen(PORT, () => console.log("Servidor funcionando..."));
 
-// ******** Todas las carpetas donde se almacenan vistas **********
+// Todas las carpetas donde se almacenan vistas
 app.set("view engine", "ejs"); // Terminación de los archivos de vista
 app.set("views", [
 	...["./vistas/0-Compartido", "./vistas/0-Compartido/Header", "./vistas/0-Compartido/Main"],
