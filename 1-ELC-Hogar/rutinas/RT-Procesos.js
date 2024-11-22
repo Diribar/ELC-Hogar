@@ -599,13 +599,8 @@ module.exports = {
 			return;
 		},
 		eliminaVisitasAntiguas: async () => {
-			// Variables
 			const haceUnMes = comp.fechaHora.anoMesDia(Date.now() - unMes);
-
-			// Condicion
-			const condicion = {fechaUltNaveg: {[Op.lt]: haceUnMes}, diasNaveg: {[Op.lte]: 2}};
-
-			// Elimina los registros
+			const condicion = {fechaUltNaveg: {[Op.lt]: haceUnMes}, diasNaveg: 1};
 			await baseDeDatos.eliminaPorCondicion("visitas", condicion);
 
 			// Fin
