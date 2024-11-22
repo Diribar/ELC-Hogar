@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 21/nov",
-	"HoraUTC": "9:26",
+	"FechaUTC": "Vie. 22/nov",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 18/nov",
@@ -50,10 +50,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"19-nov-24": {},
 		"20-nov-24": {"leyenda": "Hoy recordamos a san José Sánchez del Río", "entidad": "personajes", "id": 204},
 		"21-nov-24": {},
 		"22-nov-24": {},
-		"23-nov-24": {"leyenda": "Hoy recordamos al padre Miguel Pro, beato", "entidad": "personajes", "id": 177}
+		"23-nov-24": {"leyenda": "Hoy recordamos al padre Miguel Pro, beato", "entidad": "personajes", "id": 177},
+		"24-nov-24": {}
 	}
 }
