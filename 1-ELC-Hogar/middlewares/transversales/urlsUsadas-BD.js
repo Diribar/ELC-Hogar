@@ -20,7 +20,7 @@ module.exports = (req, res, next) => {
 	}
 
 	// Guarda el registro de navegación
-	baseDeDatos.agregaRegistro("navegsDia", {cliente_id, ruta})
+	baseDeDatos.agregaRegistro("navegsDia", {cliente_id, ruta});
 
 	// Fin
 	next();
