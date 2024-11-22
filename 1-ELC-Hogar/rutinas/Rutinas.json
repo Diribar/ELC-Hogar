@@ -20,6 +20,7 @@
 		"imagenDerecha": "SI",
 		"cantNavegs": "SI",
 		"cantClientes": "SI",
+		"navegsDia": "SI",
 		"actualizaUsuarios": "SI",
 		"clientesMensualidad": "SI",
 		"eliminaLinksInactivos": "SI",
