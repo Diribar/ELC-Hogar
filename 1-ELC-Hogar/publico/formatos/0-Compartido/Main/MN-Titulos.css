@@ -5,7 +5,7 @@
 #tituloPrincipal {
 	/* &:has(#secundario) {display: flex; flex-direction: column;} */
 	#titulo, #secundario {
-		font-family: var(--Arial); line-height: 1;
+		font-family: 'Arial', 'Helvetica', 'sans-serif'; line-height: 1;
 		border-bottom-right-radius: 10px;
 	}
 	#titulo {

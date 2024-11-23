@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 22/nov",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Sáb. 23/nov",
+	"HoraUTC": "9:44",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 18/nov",
@@ -20,11 +20,11 @@
 		"imagenDerecha": "SI",
 		"cantNavegs": "SI",
 		"cantClientes": "SI",
-		"navegsDia": "SI",
 		"actualizaUsuarios": "SI",
 		"clientesMensualidad": "SI",
 		"eliminaLinksInactivos": "SI",
-		"ABM_noRevisores": "SI"
+		"ABM_noRevisores": "SI",
+		"navegsDia": "SI"
 	},
 	"Subtitulo5": "-------------- RUTINAS SEMANALES ---------------",
 	"MotivoSemanales1": "Actualizaciones que se necesita que sean semanales",
@@ -51,10 +51,14 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"20-nov-24": {"leyenda": "Hoy recordamos a san José Sánchez del Río", "entidad": "personajes", "id": 204},
 		"21-nov-24": {},
 		"22-nov-24": {},
 		"23-nov-24": {"leyenda": "Hoy recordamos al padre Miguel Pro, beato", "entidad": "personajes", "id": 177},
-		"24-nov-24": {}
+		"24-nov-24": {},
+		"25-nov-24": {
+			"leyenda": "Hoy recordamos a los beatos Luis y María Beltrame Quattrocchi",
+			"entidad": "personajes",
+			"id": 149
+		}
 	}
 }

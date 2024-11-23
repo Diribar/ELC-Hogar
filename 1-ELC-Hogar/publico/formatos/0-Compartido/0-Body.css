@@ -62,8 +62,6 @@ body {
 
 	/* Otros */
 	--datosBreves: 220px;
-	--Calibri: 'Calibri', 'Trebuchet MS', 'sans-serif';
-	--Arial: 'Arial', 'Helvetica', 'sans-serif';
 }
 
 /* Formatos */
@@ -77,6 +75,6 @@ body, * {
 	margin: 0px; padding: 0; box-sizing: border-box;
 }
 body * {
-	font-family: var(--Calibri); color: inherit;
+	font-family: 'Calibri', 'Trebuchet MS', 'sans-serif'; color: inherit;
 	&:focus {outline-color: black;}
 }
