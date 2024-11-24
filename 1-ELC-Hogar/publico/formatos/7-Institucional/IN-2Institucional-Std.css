@@ -7,17 +7,22 @@
 		border: 2px solid var(--azul-frances); border-radius: 20px; box-shadow: 0px 0px 20px var(--azul-oscuro);
 		display: flex; flex-direction: column; background: var(--gris-claro);
 		margin: auto; padding: 30px;
-		width: max-content;  max-height: 90%;
+		width: max-content; max-width: 80%; max-height: 90%;
 		&:not(:has(form)) {padding-right: 15px;}
 		#contenido {
 			overflow-y: auto; padding-right: 15px; padding-bottom: 1px;
+			/* CUADRO DE TEXTO - TEXTO */
+			.bloque:nth-child(n+2) {margin-top: 15px;}
+			.bloque :where(p, ul li) {margin-top: 8px; font-size: 1.1rem; color: var(--marron);}
+			.bloque > ul {
+				/* max-width: 300px; */
+				ul li {margin-top: 2px;}
+			}
+
+			/* Íconos del contenido */
 			.iconos {margin: 20px 0 0; display: none;}
 		}
 
-		/* CUADRO DE TEXTO - TEXTO */
-		.bloque:nth-child(n+2) {margin-top: 15px;}
-		.bloque :where(p, ul li) {margin-top: 8px; font-size: 1.1rem; color: var(--marron);}
-		.bloque ul ul li {margin-top: 2px;}
 
 		/* Iconos */
 		& > .iconos {margin: 30px 0 10px; padding-right: 15px;} /* Iconos en 'cuadro de texto' */
