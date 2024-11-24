@@ -6,7 +6,7 @@
 	<% for (campo of camposARevisar) { %>
 		<td class="<%= campo %>">
 			<% if (edicion[campo]!==null) { %>
-				<div class="inputError ancho<%= comp.inicialMayus(campo) %>">
+				<div class="inputError ancho<%= comp.letras.inicialMayus(campo) %>">
 					<% let valor = campo == "tipo_id" ? (edicion[campo] == 1 ? "Trailer" : "Película") : ["castellano", "subtitulos", "gratuito", "completo"].includes(campo) ? (edicion[campo] ? "SI" : "NO") : edicion[campo] %>
 					<input class="inputs" name="<%= campo %>" type="text" value="<%= valor %>" disabled>
 					<!-- Errores -->
