@@ -1098,16 +1098,9 @@ module.exports = {
 		anoMesDia: (fecha) => new Date(fecha).toISOString().slice(0, 10),
 		fechaHorario: (fecha) => {
 			const horario = fecha ? new Date(fecha) : FN.ahora();
-			return (
-				horario.getDate() +
-				"/" +
-				mesesAbrev[horario.getMonth()] +
-				" a las " +
-				horario.getUTCHours() +
-				":" +
-				String(horario.getUTCMinutes()).padStart(2, "0") +
-				"hs (UTC)"
-			);
+			const fechaResp = horario.getUTCDate() + "/" + mesesAbrev[horario.getUTCMonth()];
+			const horaResp = " a las " + horario.getUTCHours() + ":" + String(horario.getUTCMinutes()).padStart(2, "0") + "hs (UTC)";
+			return fechaResp + horaResp;
 		},
 		fechaDelAno: (fecha) => {
 			let datos = {};
