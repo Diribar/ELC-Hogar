@@ -226,10 +226,9 @@ module.exports = {
 	otrasRutasAceptadas: {
 		includes: ["/historial", "/inactivar", "/recuperar", "/correccion-del-"],
 		startsWith: [
-			...["/usuarios", "/graficos"],
-			...["/cookies", "/session"],
-			...["/eliminado"],
-			...["/productos-por-registro/r", "/listados/links"],
+			...["/cookies", "/session", "/movimientos-del-dia"], // Miscelaneas
+			...["/eliminado", "/productos-por-registro/r", "/listados/links"], // Familias
+			...["/usuarios", "/graficos"], // Varios
 		],
 	},
 };
