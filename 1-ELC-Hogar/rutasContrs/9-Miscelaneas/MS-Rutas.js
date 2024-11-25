@@ -5,9 +5,10 @@ const API = require("./MS-ControlAPI");
 const vista = require("./MS-ControlVista");
 
 // Middlewares de usuarios
-const usAltaTerm= require("../../middlewares/porUsuario/usAltaTerm");
-const usAptoInput= require("../../middlewares/porUsuario/usAptoInput");
-const usPenalizaciones= require("../../middlewares/porUsuario/usPenalizaciones");
+const usAltaTerm = require("../../middlewares/porUsuario/usAltaTerm");
+const usAptoInput = require("../../middlewares/porUsuario/usAptoInput");
+const usRolRevPERL = require("../../middlewares/porUsuario/usRolRevPERL");
+const usPenalizaciones = require("../../middlewares/porUsuario/usPenalizaciones");
 
 // Middlewares - Varios
 const entValida = require("../../middlewares/porRegistro/entidadValida");
@@ -24,6 +25,7 @@ router.get("/api/cmp-agregar-url-br/", API.agregarUrlBR);
 // Vista
 router.get("/", vista.inicio);
 router.get("/mantenimiento", aptoUsuario, vista.mantenim);
+router.get("/movimientos-del-dia", aptoUsuario, usRolRevPERL, vista.movimsDelDia);
 
 // Redireciona
 router.get("/inicio", vista.redirecciona.inicio);
