@@ -7,7 +7,7 @@
 		border: 2px solid var(--azul-frances); border-radius: 20px; box-shadow: 0px 0px 20px var(--azul-oscuro);
 		display: flex; flex-direction: column; background: var(--gris-claro);
 		margin: auto; padding: 30px;
-		width: max-content; max-width: 80%; max-height: 90%;
+		width: max-content; max-height: 90%;
 		&:not(:has(form)) {padding-right: 15px;}
 		#contenido {
 			overflow-y: auto; padding-right: 15px; padding-bottom: 1px;
