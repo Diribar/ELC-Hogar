@@ -205,10 +205,11 @@ module.exports = {
 			["/detalle/p", "detalleDeProd"],
 			["/detalle/r", "detalleDeRclv"],
 			["/edicion/p", "edicionDeProd"],
+			["/calificar/p", "calificarProd"],
 			["/edicion/r", "edicionDeRclv"],
 			["/agregar-", "agregarProd"],
 			["/agregar/r", "agregarRclv"],
-			["/calificar/p", "calificarProd"],
+			["/abm-links/p", "abmLinks"],
 		],
 		startsWith: [
 			["/consultas", "consultas"],
@@ -223,7 +224,12 @@ module.exports = {
 		],
 	},
 	otrasRutasAceptadas: {
-		includes: ["/historial", "/inactivar", "/recuperar", "/eliminado-por-creador"],
-		startsWith: ["/usuarios", "/graficos", "/cookies", "/session", "/productos-por-registro/r", "/listados/links"],
+		includes: ["/historial", "/inactivar", "/recuperar", "/correccion-del-"],
+		startsWith: [
+			...["/usuarios", "/graficos"],
+			...["/cookies", "/session"],
+			...["/eliminado"],
+			...["/productos-por-registro/r", "/listados/links"],
+		],
 	},
 };
