@@ -215,11 +215,15 @@ module.exports = {
 			["/links/mirar/l", "mirarLinks"],
 			["/institucional/contactanos", "contactanos"],
 			["/institucional", "institucional"],
-			["/revision/tablero", "revisionTablero"],
+			["/revision", "revision"],
 			["/mantenimiento", "mantenimiento"],
 			["/producto", "antiguaProd"],
 			["/rclv", "antiguaRclv"],
 			["/links", "antiguaLinks"],
 		],
+	},
+	otrasRutasAceptadas: {
+		includes: ["/historial", "/inactivar", "/recuperar", "/eliminado-por-creador"],
+		startsWith: ["/usuarios", "/graficos", "/cookies", "/session", "/productos-por-registro/r", "/listados/links"],
 	},
 };
