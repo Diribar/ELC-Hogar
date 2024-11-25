@@ -53,7 +53,7 @@ module.exports = {
 		navegsDia.forEach((navegDia, i) => {
 			if (navegDia.cliente_id.startsWith("U")) {
 				const usuario = usuarios.find((n) => n.cliente_id == navegDia.cliente_id);
-				if (usuario) navegsDia[i].cliente_id = usuario.apodo;
+				if (usuario) navegsDia[i].usuario = usuario.apodo;
 			}
 		});
 
