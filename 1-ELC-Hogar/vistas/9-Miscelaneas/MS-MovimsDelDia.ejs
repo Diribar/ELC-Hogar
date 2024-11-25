@@ -1,17 +1,17 @@
 <table>
 	<thead>
 		<tr>
-			<th>Cliente</th>
-			<th>Fecha</th>
-			<th>Ruta</th>
+			<th class="cliente">Cliente</th>
+			<th class="fecha">Fecha</th>
+			<th class="ruta">Ruta</th>
 		</tr>
 	</thead>
 	<tbody>
 		<% for (let navegDia of navegsDia) { %>
 		<tr>
-			<td><%= navegDia.usuario || navegDia.cliente_id %></td>
-			<td><%= comp.fechaHora.fechaHorario(navegDia.fecha) %></td>
-			<td><%= navegDia.ruta %></td>
+			<td class="cliente"><%= navegDia.usuario || navegDia.cliente_id %></td>
+			<td class="fecha"><%= comp.fechaHora.fechaHorario(navegDia.fecha) %></td>
+			<td class="ruta"><%= navegDia.ruta %></td>
 		</tr>
 		<% } %>
 	</tbody>
