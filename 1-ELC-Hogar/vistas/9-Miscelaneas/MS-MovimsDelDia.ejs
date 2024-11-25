@@ -1,1 +1,18 @@
-aca
+<table>
+	<thead>
+		<tr>
+			<th>Fecha</th>
+			<th>Cliente</th>
+			<th>Ruta</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% for (let navegDia of navegsDia) { %>
+		<tr>
+			<td><%= navegDia.fecha %></td>
+			<td><%= navegDia.usuario || navegDia.cliente_id %></td>
+			<td><%= navegDia.ruta %></td>
+		</tr>
+		<% } %>
+	</tbody>
+</table>
