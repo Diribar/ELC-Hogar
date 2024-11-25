@@ -73,6 +73,7 @@ app.set("views", [
 	...["./vistas/5-Consultas", "./vistas/5-Consultas/Includes"],
 	...["./vistas/6-Graficos"],
 	...["./vistas/7-Institucional", "./vistas/7-Institucional/Includes"],
+	"./vistas/9-Miscelaneas",
 ]);
 
 // Procesos que requieren de 'async' y 'await'
