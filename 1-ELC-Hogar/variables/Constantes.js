@@ -202,7 +202,6 @@ module.exports = {
 			["busqueda-rapida", "busquedaRapida"],
 		],
 		includes: [
-			["/consultas", "consultas"],
 			["/detalle/p", "detalleDeProd"],
 			["/detalle/r", "detalleDeRclv"],
 			["/edicion/p", "edicionDeProd"],
@@ -212,6 +211,7 @@ module.exports = {
 			["/calificar/p", "calificarProd"],
 		],
 		startsWith: [
+			["/consultas", "consultas"],
 			["/links/mirar/l", "mirarLinks"],
 			["/institucional/contactanos", "contactanos"],
 			["/institucional", "institucional"],
