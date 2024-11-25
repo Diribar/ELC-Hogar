@@ -33,7 +33,7 @@ module.exports = (req, res, next) => {
 	}
 
 	if (!informacion && !siglaFam) {
-		const entidades = variables.entidades.prodsRclvs;
+		const entidades = variables.entidades.todos;
 		if (!entidades.includes(entidad))
 			informacion = {mensajes: ["La entidad ingresada es inválida."], iconos: [vistaAnterior]};
 	}
