@@ -1103,10 +1103,10 @@ module.exports = {
 				"/" +
 				mesesAbrev[horario.getMonth()] +
 				" a las " +
-				horario.getHours() +
+				horario.getUTCHours() +
 				":" +
-				String(horario.getMinutes()).padStart(2, "0") +
-				"hs"
+				String(horario.getUTCMinutes()).padStart(2, "0") +
+				"hs (UTC)"
 			);
 		},
 		fechaDelAno: (fecha) => {
@@ -1307,7 +1307,7 @@ module.exports = {
 };
 
 // Funciones
-let FN = {
+const FN = {
 	// Fecha y hora
 	ahora: () => new Date(new Date().toUTCString()), // <-- para convertir en 'horario local'
 	nuevoHorario: function (delay, horario) {
@@ -1426,7 +1426,7 @@ let FN = {
 			: "";
 	},
 };
-let FN_links = {
+const FN_links = {
 	obtieneCantPorSem: function (links) {
 		// Elimina los datos anteriores
 		cantLinksVencPorSem = {};
