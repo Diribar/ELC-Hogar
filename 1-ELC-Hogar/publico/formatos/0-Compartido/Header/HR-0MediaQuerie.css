@@ -1,5 +1,5 @@
 /* Laptop */
-@media (orientation: landscape) and (height > 600px) {
+@media (orientation: landscape) and (height > 600px) and (width > 1250px) {
     header #mostrarMenuMobile {display: none;}
 }
 
@@ -12,7 +12,7 @@
 }
 
 /* Parado */
-@media (orientation: portrait) {
+@media (orientation: portrait) or (width <= 1250px) {
     header {
         :is(.ocultarEnMobile, .ocultoMobileParado) {display: none !important;}
         #menuMobile {
