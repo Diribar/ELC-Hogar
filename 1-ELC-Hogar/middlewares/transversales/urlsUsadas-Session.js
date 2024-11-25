@@ -89,18 +89,23 @@ module.exports = (req, res, next) => {
 // Función
 const FN_rutaAceptada = (urlActual, urlAnterior) => {
 	// Variables
-	const rutasAceptadas = [
-		...["/producto", "/rclv", "/links", "/usuarios"],
-		...["/institucional", "/revision", "/mantenimiento", "/consultas", "/graficos", "/correccion"],
-		...["/cookies", "/session"],
+	const rutasIncludes = [
+		...["/historial", "/inactivar", "/recuperar", "/eliminado", "/correccion"], // Familia
+		...["/agregar", "/detalle/", "/edicion", "/calificar", "/productos-por-registro/r", "/abm-links/p", "/mirar/l"], // Productos, RCLV y Links
+	];
+
+	const rutasStartsWith = [
+		...["/usuarios", "/revision", "/consultas", "/graficos", "/institucional"],
+		...["/mantenimiento", "/movimientos-del-dia", "/cookies", "/session", "/listados/links"], // Miscelaneas
 	];
 	const ciertasRutas = ["/usuarios/garantiza-login-y-completo", "/usuarios/logout", "/api/"];
 
 	// Validaciones
 	const diferenteRutaAnterior = urlActual != urlAnterior; // Es diferente a la ruta urlAnterior
-	const perteneceRutasAceptadas = rutasAceptadas.some((n) => urlActual.startsWith(n)) || urlActual == "/"; // Pertenece a las rutas aceptadas
+	const perteneceRutasIN = rutasIncludes.some((n) => urlActual.includes(n)); // Pertenece a las rutas aceptadas
+	const perteneceRutasSW = rutasStartsWith.some((n) => urlActual.startsWith(n)) || urlActual == "/"; // Pertenece a las rutas aceptadas
 	const noContieneCiertasRutas = !ciertasRutas.some((n) => urlActual.includes(n));
 
 	// Fin
-	return diferenteRutaAnterior && perteneceRutasAceptadas && noContieneCiertasRutas;
+	return diferenteRutaAnterior && (perteneceRutasIN || perteneceRutasSW) && noContieneCiertasRutas;
 };
