@@ -45,7 +45,7 @@ module.exports = {
 		const codigo = "movimsDelDia";
 
 		// Obtiene información de la BD
-		let navegsDia = baseDeDatos.obtieneTodosConOrden("navegsDia", "fecha");
+		let navegsDia = baseDeDatos.obtieneTodosConOrden("navegsDia", "fecha", true);
 		let usuarios = baseDeDatos.obtieneTodos("usuarios");
 		[navegsDia, usuarios] = await Promise.all([navegsDia, usuarios]);
 

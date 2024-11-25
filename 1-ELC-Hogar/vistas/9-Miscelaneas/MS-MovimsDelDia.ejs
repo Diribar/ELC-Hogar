@@ -1,16 +1,16 @@
 <table>
 	<thead>
 		<tr>
-			<th>Fecha</th>
 			<th>Cliente</th>
+			<th>Fecha</th>
 			<th>Ruta</th>
 		</tr>
 	</thead>
 	<tbody>
 		<% for (let navegDia of navegsDia) { %>
 		<tr>
-			<td><%= navegDia.fecha %></td>
 			<td><%= navegDia.usuario || navegDia.cliente_id %></td>
+			<td><%= comp.fechaHora.fechaHorario(navegDia.fecha) %></td>
 			<td><%= navegDia.ruta %></td>
 		</tr>
 		<% } %>

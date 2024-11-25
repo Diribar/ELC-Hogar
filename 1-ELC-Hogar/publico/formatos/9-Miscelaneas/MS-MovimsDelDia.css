@@ -1,0 +1,7 @@
+#cuerpo {
+	/* display: flex; flex-direction: column; align-items: center; */
+	table {
+		height: min-content; border-spacing: 10px 5px; margin: auto;
+
+	}
+}
