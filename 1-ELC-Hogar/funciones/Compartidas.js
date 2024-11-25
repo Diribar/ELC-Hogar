@@ -1298,6 +1298,12 @@ module.exports = {
 		if (!distintivo) for (let caso of rutasClasicas.startsWith) if (url.startsWith(caso[0])) distintivo = caso[1];
 		return distintivo;
 	},
+	otrasRutasAceptadas: (url) => {
+		let aceptado;
+		if (!aceptado) if (otrasRutasAceptadas.includes.some((n) => url.includes(n))) aceptado = true;
+		if (!aceptado) if (otrasRutasAceptadas.startsWith.some((n) => url.startsWith(n))) aceptado = true;
+		return aceptado;
+	},
 };
 
 // Funciones
