@@ -2,9 +2,20 @@
 
 module.exports = (req, res, next) => {
 	// Si corresponde, interrumpe la función
-	if (req.originalUrl.includes("/api/")) return next();
+	if (comp.omitirMiddlewsTransv(req)) return next();
 	if (req.originalUrl.includes("/inactivar-captura/")) return next();
 	if (req.originalMethod != "GET") return next();
+
+	// Si desconoce el url, muestra el cartel de error
+	const distintivo = comp.distintivosDeRutas(req.originalUrl);
+	if (!distintivo) {
+		console.log("¡Atención! - Ruta sin distintivo:", req.originalUrl);
+		const informacion = {
+			mensajes: ["No tenemos esa dirección en nuestro sistema"],
+			iconos: [variables.vistaEntendido(), variables.vistaInicio],
+		};
+		return res.render("CMP-0Estructura", {informacion});
+	}
 
 	// 'urlActual' y 'urlAnterior'
 	const urlActual = req.originalUrl;

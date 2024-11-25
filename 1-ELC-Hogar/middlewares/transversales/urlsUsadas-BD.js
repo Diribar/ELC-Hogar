@@ -12,13 +12,8 @@ module.exports = (req, res, next) => {
 
 	// Obtiene la ruta
 	let {originalUrl: ruta} = req;
-	if (ruta.includes("&")) ruta = ruta.split("&")[0];
 	if (ruta.startsWith("/consultas")) ruta = "/consultas";
-	const distintivo = comp.distintivosDeRutas(ruta);
-	if (!distintivo) {
-		console.log("¡Atención! - Ruta sin distintivo:", ruta);
-		return next();
-	}
+	if (ruta.includes("&")) ruta = ruta.split("&")[0];
 
 	// Guarda el registro de navegación
 	baseDeDatos.agregaRegistro("navegsDia", {cliente_id, ruta});
