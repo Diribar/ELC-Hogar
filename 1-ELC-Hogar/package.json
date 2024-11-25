@@ -18,7 +18,6 @@
 		"ejs": "^3.1.7",
 		"express": "^4.21.1",
 		"express-session": "^1.18.1",
-		"express-validator": "^6.10.0",
 		"internet-available": "^1.0.0",
 		"method-override": "^3.0.0",
 		"morgan": "^1.10.0",
@@ -37,6 +36,6 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "//github.com/Diribar/ELC-Peliculas"
+		"url": "//github.com/Diribar/ELC-Hogar"
 	}
 }
