@@ -39,7 +39,27 @@ module.exports = {
 			dataEntry,
 		});
 	},
-	movimsDelDia: async (req, res) => {},
+	movimsDelDia: async (req, res) => {
+		// Variables
+		const tema = "infoDeGestion";
+		const codigo = "movimsDelDia";
+
+		// Obtiene información de la BD
+		let navegsDia = baseDeDatos.obtieneTodosConOrden("navegsDia", "fecha");
+		let usuarios = baseDeDatos.obtieneTodos("usuarios");
+		[navegsDia, usuarios] = await Promise.all([navegsDia, usuarios]);
+
+		// Les agrega el nombre de usuario
+		navegsDia.forEach((navegDia, i) => {
+			if (navegDia.cliente_id.startsWith("U")) {
+				const usuario = usuarios.find((n) => n.cliente_id == navegDia.cliente_id);
+				if (usuario) navegsDia[i].cliente_id = usuario.apodo;
+			}
+		});
+
+		// Fin
+		return res.render("CMP-0Estructura", {tema, codigo, titulo: "Movimientos del día", navegsDia});
+	},
 
 	// Listados
 	listados: {
