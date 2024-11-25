@@ -101,7 +101,7 @@ app.set("views", [
 	await rutinas.startupMasConfiguracion();
 
 	// Middlewares transversales
-	app.use(require("./middlewares/transversales/urlsUsadas-Session")); // para tener los últimos url
+	app.use(require("./middlewares/transversales/urlsUsadas-Session")); // tiene que estar antes de 'bienvenido', porque esa vista usa un url de session
 	app.use(require("./middlewares/transversales/clientes-0Bienvenido")); // para filtrar los 'bots'
 	app.use(require("./middlewares/transversales/clientes-1Cliente")); // para obtener el cliente y usuario
 	app.use(require("./middlewares/transversales/clientes-2Contador")); // para contar la cantidad de días de navegación
