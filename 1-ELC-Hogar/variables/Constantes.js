@@ -220,9 +220,6 @@ module.exports = {
 			["/producto", "antiguaProd"],
 			["/rclv", "antiguaRclv"],
 			["/links", "antiguaLinks"],
-			["/graficos", "graficos"],
-			["/cookies", "cookies"],
-			["/session", "session"],
 		],
 	},
 };

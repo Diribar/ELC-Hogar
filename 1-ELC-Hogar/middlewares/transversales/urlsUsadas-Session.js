@@ -8,7 +8,8 @@ module.exports = (req, res, next) => {
 
 	// Si desconoce el url, muestra el cartel de error
 	const distintivo = comp.distintivosDeRutas(req.originalUrl);
-	if (!distintivo) {
+	const otrasRutasAceptadas = ["/usuarios", "/graficos", "/cookies", "/session"].some((n) => req.originalUrl.startsWith(n));
+	if (!distintivo && !otrasRutasAceptadas) {
 		console.log("¡Atención! - Ruta sin distintivo:", req.originalUrl);
 		const informacion = {
 			mensajes: ["No tenemos esa dirección en nuestro sistema"],
