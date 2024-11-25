@@ -195,7 +195,7 @@ module.exports = {
 		{descripcion: "Otro motivo", codigo: "varios"},
 	],
 	eliminarCuandoSinEntidadId: ["statusHistorial", "histEdics", "misConsultas", "pppRegistros", "calRegistros"],
-	requestsTriviales: ["WhatsApp", "Postman", "TelegramBot", "Zabbix"],
+	requestsTriviales: ["WhatsApp", "Postman", "TelegramBot", "Zabbix"], // evita que se cuenten como visitas
 	rutasClasicas: {
 		igual: [
 			["/", "inicio"],
@@ -220,6 +220,9 @@ module.exports = {
 			["/producto", "antiguaProd"],
 			["/rclv", "antiguaRclv"],
 			["/links", "antiguaLinks"],
+			["/graficos", "graficos"],
+			["/cookies", "cookies"],
+			["/session", "session"],
 		],
 	},
 };
