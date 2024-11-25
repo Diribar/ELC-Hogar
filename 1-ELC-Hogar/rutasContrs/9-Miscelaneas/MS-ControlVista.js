@@ -3,6 +3,7 @@ const procsRE = require("../3-Rev-Entidades/RE-Procesos");
 const procesos = require("./MS-Procesos");
 
 module.exports = {
+	// Vistas
 	inicio: (req, res) => {
 		const vistaActual = vistasInstitucs.inicio;
 		return res.render("CMP-0Estructura", {
@@ -10,7 +11,6 @@ module.exports = {
 			...vistaActual,
 		});
 	},
-	// Tablero de mantenimiento
 	mantenim: async (req, res) => {
 		// Variables
 		const tema = "mantenimiento";
@@ -39,6 +39,7 @@ module.exports = {
 			dataEntry,
 		});
 	},
+	movimsDelDia: async (req, res) => {},
 
 	// Listados
 	listados: {
