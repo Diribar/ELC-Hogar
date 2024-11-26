@@ -51,7 +51,7 @@ module.exports = {
 		// Guarda la información actualizada
 		const rutaNombre = path.join(__dirname, "Rutinas.json");
 		rutinasJson = {...info};
-		fs.writeFileSync(rutaNombre, JSON.stringify(info), function writeJSON(err) {
+		fs.writeFileSync(rutaNombre, JSON.stringify(info), (err) => {
 			if (err) console.log("Actualiza Rutinas JSON:", err, datos);
 			return;
 		});
