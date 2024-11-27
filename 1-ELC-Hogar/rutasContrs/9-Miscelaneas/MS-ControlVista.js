@@ -21,7 +21,9 @@ module.exports = {
 		// Productos
 		let prods = procesos.mantenim.obtieneProds(usuario_id).then((n) => procsRE.procesaCampos.prods(n));
 		let rclvs = procesos.mantenim.obtieneRCLVs(usuario_id).then((n) => procsRE.procesaCampos.rclvs(n));
-		let prodsConLinksInactivos = procesos.mantenim.obtieneLinksInactivos(usuario_id).then((n) => procsRE.procesaCampos.prods(n));
+		let prodsConLinksInactivos = procesos.mantenim
+			.obtieneLinksInactivos(usuario_id)
+			.then((n) => procsRE.procesaCampos.prods(n));
 
 		// RCLVs
 		[prods, rclvs, prodsConLinksInactivos] = await Promise.all([prods, rclvs, prodsConLinksInactivos]);
@@ -45,17 +47,30 @@ module.exports = {
 		const codigo = "navegsDia";
 
 		// Obtiene información de la BD
-		let navegsDia = procesos.navegsDia.obtieneNavegsDia()
+		let navegsDia = procesos.navegsDia.obtieneNavegsDia();
 		let usuarios = baseDeDatos.obtieneTodos("usuarios");
 		[navegsDia, usuarios] = await Promise.all([navegsDia, usuarios]);
 
 		// Rutina por registro
 		navegsDia.forEach((navegDia, i) => {
-			// Les agrega el nombre de usuario
+			// Persona
+			let persona = navegDia.cliente_id;
 			if (navegDia.cliente_id.startsWith("U")) {
 				const usuario = usuarios.find((n) => n.cliente_id == navegDia.cliente_id);
 				if (usuario) navegsDia[i].usuario = usuario.apodo;
+			} else {
+				persona = persona.slice(1);
+				persona=Number(persona)
 			}
+
+			// Hora
+			const hora = comp.fechaHora.horarioUTC(navegDia.fecha).split("hs")[0];
+
+			// Ruta
+			const ruta = navegDia.ruta;
+
+			// Fin
+			navegsDia[i] = {persona, hora, ruta};
 		});
 
 		// Fin

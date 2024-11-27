@@ -11,8 +11,8 @@
 		<tbody>
 			<% for (let navegDia of navegsDia) { %>
 			<tr>
-				<td class="cliente"><%= navegDia.usuario || navegDia.cliente_id %></td>
-				<td class="fecha"><%= comp.fechaHora.fechaHorario(navegDia.fecha) %></td>
+				<td class="cliente"><%= navegDia.persona %></td>
+				<td class="fecha"><%= navegDia.hora %></td>
 				<td class="ruta"><%= navegDia.ruta %></td>
 			</tr>
 			<% } %>

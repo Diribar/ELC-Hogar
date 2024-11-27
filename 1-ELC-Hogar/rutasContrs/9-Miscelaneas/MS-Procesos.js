@@ -139,18 +139,11 @@ module.exports = {
 				navegsDia = navegsDia.filter((n) => n.cliente_id != cliente_id);
 			}
 
-			// Cambia sus valores
-			respuesta = respuesta.map((n) => {
-				const cliente_id = n.cliente_id;
-				const fecha = comp.fechaHora.horarioUTC(n.fecha).split("hs")[0];
-				const ruta = n.ruta;
-
-				return {cliente_id, fecha, ruta};
-			});
-
 			// Fin
 			return respuesta;
 		},
+		persona: () => {},
+		ruta: () => {},
 	},
 	redirecciona: {
 		urlsOrigenDestino: (entidad) => {
