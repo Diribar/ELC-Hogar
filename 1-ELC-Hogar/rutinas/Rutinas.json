@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 21/nov",
-	"HoraUTC": "9:26",
+	"FechaUTC": "Lun. 25/nov",
+	"HoraUTC": "0:37",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 18/nov",
-	"HoraSemUTC": "13:19",
-	"semanaUTC": 47,
+	"FechaSemUTC": "Lun. 25/nov",
+	"HoraSemUTC": "0:37",
+	"semanaUTC": 48,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS HORARIAS ---------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario y no maduros",
@@ -23,7 +23,8 @@
 		"actualizaUsuarios": "SI",
 		"clientesMensualidad": "SI",
 		"eliminaLinksInactivos": "SI",
-		"ABM_noRevisores": "SI"
+		"ABM_noRevisores": "SI",
+		"navegsDia": "SI"
 	},
 	"Subtitulo5": "-------------- RUTINAS SEMANALES ---------------",
 	"MotivoSemanales1": "Actualizaciones que se necesita que sean semanales",
@@ -50,10 +51,14 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"19-nov-24": {},
-		"20-nov-24": {"leyenda": "Hoy recordamos a san José Sánchez del Río", "entidad": "personajes", "id": 204},
-		"21-nov-24": {},
-		"22-nov-24": {},
-		"23-nov-24": {"leyenda": "Hoy recordamos al padre Miguel Pro, beato", "entidad": "personajes", "id": 177}
+		"23-nov-24": {"leyenda": "Hoy recordamos al padre Miguel Pro, beato", "entidad": "personajes", "id": 177},
+		"24-nov-24": {},
+		"25-nov-24": {
+			"leyenda": "Hoy recordamos a los beatos Luis y María Beltrame Quattrocchi",
+			"entidad": "personajes",
+			"id": 149
+		},
+		"26-nov-24": {"leyenda": "Hoy recordamos a La familia Von Trapp", "entidad": "personajes", "id": 72},
+		"27-nov-24": {"leyenda": "Hoy recordamos las Apariciones de la Medalla Milagrosa", "entidad": "hechos", "id": 69}
 	}
 }

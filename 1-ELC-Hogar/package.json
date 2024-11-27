@@ -1,7 +1,6 @@
 {
 	"name": "elc-peliculas",
-	"version": "1.09",
-	"description": "Recomendación de películas",
+	"description": "Recomendación de películas afines a la Iglesia Católica",
 	"main": "app.js",
 	"scripts": {
 		"start": "nodemon -e js app.js"

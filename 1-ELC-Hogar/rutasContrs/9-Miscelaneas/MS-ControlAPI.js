@@ -91,10 +91,7 @@ module.exports = {
 		const ruta = "busqueda-rapida";
 
 		// Si corresponde, guarda el registro
-		if (cliente_id)
-			baseDeDatos
-				.obtienePorCondicionElUltimo("navegsDia", {cliente_id})
-				.then((n) => (!n || n.ruta != ruta ? baseDeDatos.agregaRegistro("navegsDia", {ruta, cliente_id}) : null));
+		if (cliente_id && cliente_id != "U0000000011") baseDeDatos.agregaRegistro("navegsDia", {ruta, cliente_id});
 
 		// Fin
 		return res.json();
