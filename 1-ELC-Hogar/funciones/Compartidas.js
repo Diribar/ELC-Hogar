@@ -1292,11 +1292,11 @@ module.exports = {
 		return {baseUrl, tarea, siglaFam, entidad, url};
 	},
 	rutasConHistorial: (url) => {
-		let aceptado;
-		if (!aceptado) for (let caso of rutasConHistorial.igual) if (url == caso[0]) aceptado = caso[1];
-		if (!aceptado) for (let caso of rutasConHistorial.includes) if (url.includes(caso[0])) aceptado = caso[1];
-		if (!aceptado) for (let caso of rutasConHistorial.startsWith) if (url.startsWith(caso[0])) aceptado = caso[1];
-		return aceptado;
+		let resultado;
+		if (!resultado) for (let caso of rutasConHistorial.igual) if (url == caso[0]) resultado = caso[1];
+		if (!resultado) for (let caso of rutasConHistorial.includes) if (url.includes(caso[0])) resultado = caso[1];
+		if (!resultado) for (let caso of rutasConHistorial.startsWith) if (url.startsWith(caso[0])) resultado = caso[1];
+		return resultado;
 	},
 	rutasSinHistorial: (url) => {
 		let aceptado;
