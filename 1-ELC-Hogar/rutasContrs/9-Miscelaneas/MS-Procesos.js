@@ -135,6 +135,7 @@ module.exports = {
 			while (navegsDia.length) {
 				const {cliente_id} = navegsDia[0];
 				const registros = navegsDia.filter((n) => n.cliente_id == cliente_id);
+				registros[0].cantPorPers = registros.length;
 				respuesta.push(...registros);
 				navegsDia = navegsDia.filter((n) => n.cliente_id != cliente_id);
 			}
@@ -169,7 +170,7 @@ module.exports = {
 
 			// Genera el HTML de íconos
 			let iconosHTML = [];
-			for (let icono of iconos) iconosHTML.unshift("<i class='fa-solid " + icono + "'></i>");
+			for (let icono of iconos) iconosHTML.unshift("<i class='fa-solid " + icono + "' title='" + distintivo + "'></i>");
 
 			// Fin
 			return iconosHTML.join(" ");

@@ -231,7 +231,7 @@ module.exports = {
 			["/consultas", "consultas", "fa-film"],
 			["/links/mirar/l", "mirarLinks", "fa-couch", iconos.prod],
 			["/institucional/contactanos", "contactanos", "fa-cross", iconos.mail],
-			["/institucional", "institucional"],
+			["/institucional", "institucional", "fa-building-columns"],
 			["/revision", "revision", iconos.revision],
 			["/mantenimiento", "mantenimiento", iconos.mantenim],
 			["/graficos", "graficos", iconos.graficos],
