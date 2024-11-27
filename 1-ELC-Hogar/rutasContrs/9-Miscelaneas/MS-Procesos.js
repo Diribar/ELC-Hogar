@@ -146,20 +146,36 @@ module.exports = {
 		ruta: (url) => {
 			// Averigua si es una ruta que puede tener una abreviatura
 			const distintivo = comp.rutasConHistorial(url);
-			if (!distintivo) return url;
+			if (!distintivo) return {};
 
 			// Averigua si tiene íconos
 			const posibilidades = Object.values(rutasConHistorial).flat();
 			const ruta = posibilidades.find((n) => distintivo == n[1]);
 			const iconos = ruta.slice(2);
-			if (!iconos.length) return distintivo;
+			if (!iconos.length) return {distintivo};
 
 			// Genera el HTML de íconos
 			let iconosHTML = [];
-			for (let icono of iconos) iconosHTML.unshift("<i class='fa-solid " + icono + "' title='" + distintivo + "'></i>");
+			for (let icono of iconos) iconosHTML.push("<i class='fa-solid " + icono + "' title='" + distintivo + "'></i>");
 
 			// Fin
-			return iconosHTML.join(" ");
+			return {iconosHTML};
+		},
+		registroResumen: (navegsDia) => {
+			// Obtiene las personas
+			const personas = navegsDia.filter((n) => n.cantPorPers);
+
+			// Agrega un registro resumen
+			for (let persona of personas) {
+				// Obtiene datos para la cabecera
+				const registros = navegsDia.filter((n) => n.cliente_id == cliente_id);
+				const {cantPorPers}=registros[0]
+				const iconosProd=registros.filter(n=>n.iconosHTML[0].includes())
+
+				// Agrega un registro de cabecera
+				const indice=navegsDia.findIndex(n=>n.cliente_id==findIndex)
+				// const cabecera=
+			}
 		},
 	},
 	redirecciona: {
