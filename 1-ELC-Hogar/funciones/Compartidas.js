@@ -1284,17 +1284,17 @@ module.exports = {
 		// Fin
 		return {baseUrl, tarea, siglaFam, entidad, url};
 	},
-	distintivosDeRutas: (url) => {
-		let distintivo;
-		if (!distintivo) for (let caso of rutasClasicas.igual) if (url == caso[0]) distintivo = caso[1];
-		if (!distintivo) for (let caso of rutasClasicas.includes) if (url.includes(caso[0])) distintivo = caso[1];
-		if (!distintivo) for (let caso of rutasClasicas.startsWith) if (url.startsWith(caso[0])) distintivo = caso[1];
-		return distintivo;
-	},
-	otrasRutasAceptadas: (url) => {
+	rutasConHistorial: (url) => {
 		let aceptado;
-		if (!aceptado) if (otrasRutasAceptadas.includes.some((n) => url.includes(n))) aceptado = true;
-		if (!aceptado) if (otrasRutasAceptadas.startsWith.some((n) => url.startsWith(n))) aceptado = true;
+		if (!aceptado) for (let caso of rutasConHistorial.igual) if (url == caso[0]) aceptado = caso[1];
+		if (!aceptado) for (let caso of rutasConHistorial.includes) if (url.includes(caso[0])) aceptado = caso[1];
+		if (!aceptado) for (let caso of rutasConHistorial.startsWith) if (url.startsWith(caso[0])) aceptado = caso[1];
+		return aceptado;
+	},
+	rutasSinHistorial: (url) => {
+		let aceptado;
+		if (!aceptado) if (rutasSinHistorial.includes.some((n) => url.includes(n))) aceptado = true;
+		if (!aceptado) if (rutasSinHistorial.startsWith.some((n) => url.startsWith(n))) aceptado = true;
 		return aceptado;
 	},
 };

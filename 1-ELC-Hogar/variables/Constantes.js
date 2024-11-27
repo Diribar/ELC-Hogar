@@ -196,7 +196,7 @@ module.exports = {
 	],
 	eliminarCuandoSinEntidadId: ["statusHistorial", "histEdics", "misConsultas", "pppRegistros", "calRegistros"],
 	requestsTriviales: ["WhatsApp", "Postman", "TelegramBot", "Zabbix"], // evita que se cuenten como visitas
-	rutasClasicas: {
+	rutasConHistorial: {
 		igual: [
 			["/", "inicio"],
 			["busqueda-rapida", "busquedaRapida"],
@@ -223,7 +223,7 @@ module.exports = {
 			["/links", "antiguaLinks"],
 		],
 	},
-	otrasRutasAceptadas: {
+	rutasSinHistorial: {
 		includes: ["/historial", "/inactivar", "/recuperar", "/correccion-del-"],
 		startsWith: [
 			...["/cookies", "/session", "/movimientos-del-dia"], // Miscelaneas
