@@ -199,7 +199,7 @@ module.exports = {
 	eliminarCuandoSinEntidadId: ["statusHistorial", "histEdics", "misConsultas", "pppRegistros", "calRegistros"],
 	requestsTriviales: ["WhatsApp", "Postman", "TelegramBot", "Zabbix"], // evita que se cuenten como visitas
 	rutasConHistorial: {
-		igual: [
+		iguales: [
 			["/", "inicio"],
 			["/institucional/inicio", "inicio"],
 			["busqueda-rapida", "busquedaRapida"],
