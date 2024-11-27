@@ -200,9 +200,9 @@ module.exports = {
 	requestsTriviales: ["WhatsApp", "Postman", "TelegramBot", "Zabbix"], // evita que se cuenten como visitas
 	rutasConHistorial: {
 		iguales: [
-			["/", "inicio"],
-			["/institucional/inicio", "inicio"],
-			["busqueda-rapida", "busquedaRapida"],
+			["/", "inicio", iconos.inicio],
+			["/institucional/inicio", "inicio", iconos.inicio],
+			["busqueda-rapida", "busquedaRapida", "fa-magnifying-glass"],
 		],
 		includes: [
 			["/detalle/p", "detalleProd", iconos.detalle, iconos.prod],
@@ -220,7 +220,7 @@ module.exports = {
 		],
 		startsWith: [
 			// Usuarios
-			["/usuarios/login", "login"],
+			["/usuarios/login", "login", "fa-circle-user"],
 			["/usuarios/alta-mail", "altaDeMail"],
 			["/usuarios/editables", "altaDeMail"],
 			["/usuarios/editables-bienvenido", "altaDeMail"],
@@ -228,8 +228,8 @@ module.exports = {
 			["/usuarios/perennes-bienvenido", "perennes"],
 
 			// Otros
-			["/consultas", "consultas"],
-			["/links/mirar/l", "mirarLinks", iconos.link, iconos.prod],
+			["/consultas", "consultas", "fa-film"],
+			["/links/mirar/l", "mirarLinks", "fa-couch", iconos.prod],
 			["/institucional/contactanos", "contactanos", "fa-cross", iconos.mail],
 			["/institucional", "institucional"],
 			["/revision", "revision", iconos.revision],
