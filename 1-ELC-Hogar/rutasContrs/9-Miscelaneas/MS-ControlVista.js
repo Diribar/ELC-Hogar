@@ -49,8 +49,9 @@ module.exports = {
 		let usuarios = baseDeDatos.obtieneTodos("usuarios");
 		[navegsDia, usuarios] = await Promise.all([navegsDia, usuarios]);
 
-		// Les agrega el nombre de usuario
+		// Rutina por registro
 		navegsDia.forEach((navegDia, i) => {
+			// Les agrega el nombre de usuario
 			if (navegDia.cliente_id.startsWith("U")) {
 				const usuario = usuarios.find((n) => n.cliente_id == navegDia.cliente_id);
 				if (usuario) navegsDia[i].usuario = usuario.apodo;
