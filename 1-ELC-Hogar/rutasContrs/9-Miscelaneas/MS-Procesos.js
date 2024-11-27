@@ -155,11 +155,11 @@ module.exports = {
 			if (!iconos.length) return distintivo;
 
 			// Genera el HTML de íconos
-			let iconosHTML = "";
-			for (let icono of iconos) iconosHTML += "<i class='fa-solid " + icono + "'></i> ";
+			let iconosHTML = [];
+			for (let icono of iconos) iconosHTML.unshift("<i class='fa-solid " + icono + "'></i>");
 
 			// Fin
-			return iconosHTML;
+			return iconosHTML.join(" ");
 		},
 	},
 	redirecciona: {
