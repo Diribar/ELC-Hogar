@@ -19,9 +19,9 @@ module.exports = {
 		const omnipotente = req.session.usuario.rolUsuario_id == rolOmnipotente_id;
 
 		// Productos
-		let prods = procesos.obtieneProds(usuario_id).then((n) => procsRE.procesaCampos.prods(n));
-		let rclvs = procesos.obtieneRCLVs(usuario_id).then((n) => procsRE.procesaCampos.rclvs(n));
-		let prodsConLinksInactivos = procesos.obtieneLinksInactivos(usuario_id).then((n) => procsRE.procesaCampos.prods(n));
+		let prods = procesos.mantenim.obtieneProds(usuario_id).then((n) => procsRE.procesaCampos.prods(n));
+		let rclvs = procesos.mantenim.obtieneRCLVs(usuario_id).then((n) => procsRE.procesaCampos.rclvs(n));
+		let prodsConLinksInactivos = procesos.mantenim.obtieneLinksInactivos(usuario_id).then((n) => procsRE.procesaCampos.prods(n));
 
 		// RCLVs
 		[prods, rclvs, prodsConLinksInactivos] = await Promise.all([prods, rclvs, prodsConLinksInactivos]);
@@ -39,13 +39,13 @@ module.exports = {
 			dataEntry,
 		});
 	},
-	movimsDelDia: async (req, res) => {
+	navegsDia: async (req, res) => {
 		// Variables
 		const tema = "infoDeGestion";
-		const codigo = "movimsDelDia";
+		const codigo = "navegsDia";
 
 		// Obtiene información de la BD
-		let navegsDia = baseDeDatos.obtieneTodosConOrden("navegsDia", "fecha", true);
+		let navegsDia = procesos.navegsDia.obtieneNavegsDia()
 		let usuarios = baseDeDatos.obtieneTodos("usuarios");
 		[navegsDia, usuarios] = await Promise.all([navegsDia, usuarios]);
 
@@ -118,7 +118,7 @@ module.exports = {
 
 			// Rutina para encontrar el destino en base al 'codOrigen'
 			if (codOrigen) {
-				const urls = procesos.urlsOrigenDestino(prodEntidad || entidad);
+				const urls = procesos.redirecciona.urlsOrigenDestino(prodEntidad || entidad);
 				const url = urls.find((n) => codOrigen == n.codOrigen);
 				if (url) {
 					destino = url.destino;
@@ -140,7 +140,7 @@ module.exports = {
 			let {entidad} = req.query; // debe ser 'req.query', porque así son las antiguas
 			if (!entidad) entidad = comp.obtieneEntidadDesdeUrl(req);
 			const {originalUrl} = req;
-			const ruta = procesos.obtieneRuta(entidad, originalUrl);
+			const ruta = procesos.redirecciona.obtieneRuta(entidad, originalUrl);
 
 			// Si no se obtiene la nueva ruta => vista de dirección desconocida
 			if (!ruta) {
