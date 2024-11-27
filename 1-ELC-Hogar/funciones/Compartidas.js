@@ -1292,10 +1292,14 @@ module.exports = {
 		return {baseUrl, tarea, siglaFam, entidad, url};
 	},
 	rutasConHistorial: (url) => {
+		// Busca la ruta
 		let resultado;
-		if (!resultado) for (let caso of rutasConHistorial.igual) if (url == caso[0]) resultado = caso[1];
-		if (!resultado) for (let caso of rutasConHistorial.includes) if (url.includes(caso[0])) resultado = caso[1];
-		if (!resultado) for (let caso of rutasConHistorial.startsWith) if (url.startsWith(caso[0])) resultado = caso[1];
+		if (!resultado) resultado = rutasConHistorial.iguales.find((n) => url == n[0]);
+		if (!resultado) resultado = rutasConHistorial.includes.find((n) => url.includes(n[0]));
+		if (!resultado) resultado = rutasConHistorial.startsWith.find((n) => url.startsWith(n[0]));
+
+		// Fin
+		if (resultado) resultado = resultado[1];
 		return resultado;
 	},
 	rutasSinHistorial: (url) => {
