@@ -55,12 +55,12 @@ module.exports = {
 		navegsDia.forEach((navegDia, i) => {
 			// Persona
 			let persona = navegDia.cliente_id;
-			if (navegDia.cliente_id.startsWith("U")) {
-				const usuario = usuarios.find((n) => n.cliente_id == navegDia.cliente_id);
+			if (persona.startsWith("U")) {
+				const usuario = usuarios.find((n) => n.cliente_id == persona);
 				if (usuario) navegsDia[i].usuario = usuario.apodo;
 			} else {
 				persona = persona.slice(1);
-				persona=Number(persona)
+				persona = Number(persona);
 			}
 
 			// Hora
