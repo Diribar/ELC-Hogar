@@ -1096,11 +1096,18 @@ module.exports = {
 			return this.diaMes(fecha) + "/" + ano;
 		},
 		anoMesDia: (fecha) => new Date(fecha).toISOString().slice(0, 10),
-		fechaHorario: (fecha) => {
+		fechaHorario: function (fecha) {
 			const horario = fecha ? new Date(fecha) : FN.ahora();
 			const fechaResp = horario.getUTCDate() + "/" + mesesAbrev[horario.getUTCMonth()];
-			const horaResp = " a las " + horario.getUTCHours() + ":" + String(horario.getUTCMinutes()).padStart(2, "0") + "hs (UTC)";
+			const horaResp = " a las " + this.horarioUTC(horario);
 			return fechaResp + horaResp;
+		},
+		horarioUTC: (fecha) => {
+			const horario = fecha ? new Date(fecha) : FN.ahora();
+			const hora = horario.getUTCHours();
+			const minutos = String(horario.getUTCMinutes()).padStart(2, "0");
+			const horaResp = hora + ":" + minutos + "hs (UTC)";
+			return horaResp;
 		},
 		fechaDelAno: (fecha) => {
 			let datos = {};
