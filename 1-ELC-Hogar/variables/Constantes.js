@@ -201,6 +201,7 @@ module.exports = {
 	rutasConHistorial: {
 		igual: [
 			["/", "inicio"],
+			["/institucional/inicio", "inicio"],
 			["busqueda-rapida", "busquedaRapida"],
 		],
 		includes: [
@@ -227,7 +228,7 @@ module.exports = {
 			["/usuarios/perennes-bienvenido", "perennes"],
 
 			// Otros
-			["/consultas", "consultas",],
+			["/consultas", "consultas"],
 			["/links/mirar/l", "mirarLinks", iconos.link, iconos.prod],
 			["/institucional/contactanos", "contactanos", "fa-cross", iconos.mail],
 			["/institucional", "institucional"],
