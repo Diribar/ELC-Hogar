@@ -51,22 +51,11 @@ module.exports = {
 		let usuarios = baseDeDatos.obtieneTodos("usuarios");
 		[navegsDia, usuarios] = await Promise.all([navegsDia, usuarios]);
 
-		// Rutina por registro
+		// Procesa los datos
 		navegsDia.forEach((navegDia, i) => {
-			// Persona
-			let persona = navegDia.cliente_id;
-			if (persona.startsWith("U")) {
-				const usuario = usuarios.find((n) => n.cliente_id == persona);
-				if (usuario) navegsDia[i].usuario = usuario.apodo;
-			} else {
-				persona = persona.slice(1);
-				persona = Number(persona);
-			}
-
-			// Hora
+			// Variables
+			let persona = procesos.navegsDia.persona(navegDia, usuarios);
 			const hora = comp.fechaHora.horarioUTC(navegDia.fecha).split("hs")[0];
-
-			// Ruta
 			const ruta = procesos.navegsDia.ruta(navegDia.ruta);
 
 			// Fin
@@ -74,7 +63,6 @@ module.exports = {
 		});
 
 		// Fin
-		// return res.send(navegsDia)
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Movimientos del día", navegsDia},
 			...{omitirFooter: true},
