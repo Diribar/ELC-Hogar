@@ -60,7 +60,10 @@ module.exports = {
 
 		// Fin
 		// return res.send(navegsDia)
-		return res.render("CMP-0Estructura", {tema, codigo, titulo: "Movimientos del día", navegsDia});
+		return res.render("CMP-0Estructura", {
+			...{tema, codigo, titulo: "Movimientos del día", navegsDia},
+			...{omitirFooter: true},
+		});
 	},
 
 	// Listados
