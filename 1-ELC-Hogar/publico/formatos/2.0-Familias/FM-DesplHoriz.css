@@ -1,7 +1,10 @@
 /* Cuadro de Resultados */
 #cuadroDeResultados {
 	/* flechas en los extremos */
-	.mover {position: absolute; font-size: 3rem; cursor: pointer; top: 50%;}
+	.mover {
+		position: absolute; font-size: 3rem; cursor: pointer; top: 50%;
+		&.inactivo {display: none;}
+	}
 	.mover.fa-caret-left {translate: -100% -50%; left: 0;}
 	.mover.fa-caret-right {translate: 100% -50%; right: 0;}
 
@@ -12,15 +15,15 @@
 			list-style-type: none; padding-inline: 10px; /* tiene que se 'padding', por el 'offsetWidth' de js */
 			&.prodsNuevos button {
 				background: var(--verde-intermedio);
-				&:hover {background: var(--verde-oscuro); color: var(--amarillo-claro);}
+				&:hover {background-color: var(--verde-oscuro); color: var(--amarillo-claro);}
 			}
 			&#ingrManual button, button.rojo {
-				background: var(--rojo-claro);
-				&:hover {background: var(--rojo-oscuro); color: var(--amarillo-claro);}
+				background-color: var(--rojo-claro);
+				&:hover {background-color: var(--rojo-oscuro); color: var(--amarillo-claro);}
 			}
 			&.prodsYaEnBD button {
-				background: var(--celeste-oscuro);
-				&:hover {background: var(--azul-oscuro); color: var(--celeste-oscuro);}
+				background-color: var(--celeste-oscuro);
+				&:hover {background-color: var(--azul-oscuro); color: var(--celeste-oscuro);}
 			}
 			button {
 				padding: 0; border-radius: 15px; overflow: hidden; height: 200px;
