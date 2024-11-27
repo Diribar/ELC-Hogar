@@ -67,7 +67,7 @@ module.exports = {
 			const hora = comp.fechaHora.horarioUTC(navegDia.fecha).split("hs")[0];
 
 			// Ruta
-			const ruta = navegDia.ruta;
+			const ruta = procesos.navegsDia.ruta(navegDia.ruta);
 
 			// Fin
 			navegsDia[i] = {persona, hora, ruta};
