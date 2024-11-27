@@ -205,14 +205,21 @@ module.exports = {
 			["busqueda-rapida", "busquedaRapida", "fa-magnifying-glass"],
 		],
 		includes: [
-			["/detalle/p", "detalleProd", iconos.detalle, iconos.prod],
-			["/detalle/r", "detalleRclv", iconos.detalle, iconos.rclv],
-			["/edicion/p", "edicionProd", iconos.edicion, iconos.prod],
-			["/calificar/p", "calificarProd", iconos.calificar],
-			["/edicion/r", "edicionDeRclv", iconos.edicion, iconos.rclv],
+			// Productos
+			["/detalle/p", "detalleProd", iconos.prod, iconos.detalle],
+			["/edicion/p", "edicionProd", iconos.prod, iconos.edicion],
+			["/calificar/p", "calificarProd", iconos.prod, iconos.calificar],
+
+			// RCLVs
+			["/detalle/r", "detalleRclv", iconos.rclv, iconos.detalle],
+			["/edicion/r", "edicionDeRclv", iconos.rclv, iconos.edicion],
+
+			// Apto Input
 			["/agregar-", "agregarProd", iconos.agregar, iconos.prod],
 			["/agregar/r", "agregarRclv", iconos.agregar, iconos.rclv],
 			["/abm-links/p", "abmLinks", iconos.agregar, iconos.link],
+
+			// Familia
 			["/historial", "historial"],
 			["/inactivar", "inactivar"],
 			["/recuperar", "recuperar"],
@@ -229,9 +236,9 @@ module.exports = {
 
 			// Otros
 			["/consultas", "consultas", "fa-film"],
-			["/links/mirar/l", "mirarLinks", "fa-couch", iconos.prod],
+			["/links/mirar/l", "mirarLinks", iconos.prod, "fa-couch"],
 			["/institucional/contactanos", "contactanos", "fa-cross", iconos.mail],
-			["/institucional", "institucional", "fa-building-columns"],
+			["/institucional", "institucional", "fa-cross", "fa-building-columns"],
 			["/revision", "revision", iconos.revision],
 			["/mantenimiento", "mantenimiento", iconos.mantenim],
 			["/graficos", "graficos", iconos.graficos],
