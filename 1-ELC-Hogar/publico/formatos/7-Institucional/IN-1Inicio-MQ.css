@@ -6,7 +6,7 @@
 @media (width <= 550px) and (orientation: portrait) {#zonaDeBienvenida #sectorIconos {flex-direction: column; height: 100%;}}
 
 /* Altura */
-@media (height > 700px) {#zonaDeBienvenida #cartelBienvenida {scale: 1.25;}}
+@media (height > 700px) {#zonaDeBienvenida #cartelBienvenida {scale: 1.1;}}
 @media (height <= 600px) {#zonaDeBienvenida #cartelBienvenida {display: none;}}
 @media (height <= 490px) and (orientation: portrait) {#zonaDeBienvenida #sectorIconos a button p {display: none;}}
 

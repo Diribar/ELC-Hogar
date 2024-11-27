@@ -98,7 +98,7 @@ module.exports = {
 
 			// 4. Públicos
 			mayores_ids: publicos.filter((n) => n.mayores).map((n) => n.id),
-			familia_ids: publicos.find((n) => n.familia).id,
+			familia_ids: publicos.filter((n) => n.familia).map((n) => n.id),
 			menores_ids: publicos.filter((n) => n.menores).map((n) => n.id),
 
 			// Otros - Productos

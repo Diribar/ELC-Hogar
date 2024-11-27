@@ -17,18 +17,20 @@ window.addEventListener("load", async () => {
 		prodsPerennes: document.querySelectorAll("#cuadroDeResultados li.prodsNuevos:not(.fueraDeConsulta)"),
 	};
 
-	// Si no existen 'prodsFueraCons' o 'prodsPerennes' termina la función
-	if (!DOM.prodsFueraCons.length || !DOM.prodsPerennes.length) return;
-
 	// Variables
 	const cantPerenne = DOM.prodsPerennes.length;
-	const cantTotal = DOM.prodsFueraCons.length + cantPerenne;
+	const cantFueraCons = DOM.prodsFueraCons.length;
+	const cantTotal = cantFueraCons + cantPerenne;
+
+	// Si no existen 'prodsFueraCons' o 'prodsPerennes' termina la función
+	if (!cantFueraCons || !cantPerenne) return desplazamHoriz();
 
 	// Funciones
 	const quitaProdsFueraCons = () => {
-		for (const prod of DOM.prodsFueraCons) prod.parentNode.removeChild(prod);
+		if (cantFueraCons) for (const prod of DOM.prodsFueraCons) prod.parentNode.removeChild(prod);
 	};
 	const agregaProdsFueraCons = () => {
+		// Rutina por cada producto del total
 		DOM.productos.forEach((producto, i) => {
 			// Si es un producto perenne, interrumpe la función
 			if (!producto.className.includes("fueraDeConsulta")) return;
@@ -41,6 +43,9 @@ window.addEventListener("load", async () => {
 			// Acciones para los demás productos
 			else DOM.listado.children[i - 1].after(producto);
 		});
+
+		// Fin
+		return;
 	};
 
 	// Evento - Quita filtros
@@ -94,9 +99,11 @@ window.addEventListener("load", async () => {
 	});
 
 	// Startup
-	quitaProdsFueraCons();
-	desplazamHoriz()
-	for (let i = 0; i < DOM.productos.length; i++) DOM.productos[i].classList.remove("ocultar");
+	if (cantFueraCons) {
+		quitaProdsFueraCons();
+		for (let i = 0; i < DOM.productos.length; i++) DOM.productos[i].classList.remove("ocultar"); // quita el 'ocultar' de los productos de la variable, para que cuando se quite el filtro sean visibles
+	}
+	desplazamHoriz();
 
 	// Fin
 	return;

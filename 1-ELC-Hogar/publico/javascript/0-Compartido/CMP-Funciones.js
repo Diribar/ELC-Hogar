@@ -78,7 +78,6 @@ const amplio = {
 		return !caractsAmplio.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
 	},
 };
-
 const basico = {
 	restringeCaracteres: (e, respetarMinusc) => {
 		// Primeras tareas
@@ -121,7 +120,6 @@ const basico = {
 		return !caractsBasico.test(dato) ? "Sólo se admiten letras del abecedario castellano" : "";
 	},
 };
-
 const desplazamHoriz = () => {
 	// Variables
 	const DOM = {
@@ -222,7 +220,6 @@ const desplazamHoriz = () => {
 	// Statup
 	inactivaIconosMovim();
 };
-
 const pierdeTiempo = (ms) => new Promise((n) => setTimeout(n, ms));
 const revisaAvatar = async ({DOM, v, FN, version, indice}) => {
 	// 1. Acciones si se omitió ingresar un archivo
@@ -287,7 +284,6 @@ const revisaAvatar = async ({DOM, v, FN, version, indice}) => {
 		};
 	};
 };
-
 const contenidoDelCartelGenerico = ({DOM, mensajes, clase, titulo, link}) => {
 	// Mensajes - crea el sector
 	DOM.mensajes = document.createElement("ul");
@@ -325,7 +321,6 @@ const contenidoDelCartelGenerico = ({DOM, mensajes, clase, titulo, link}) => {
 	// Fin
 	return;
 };
-
 const obtieneSiglaFam = () =>
 	["peliculas", "colecciones", "capitulos", "prodsEdicion"].includes(entidad)
 		? "p"
@@ -336,9 +331,7 @@ const obtieneSiglaFam = () =>
 		: entidad == "usuarios"
 		? "u"
 		: "";
-
 const siglaFam = obtieneSiglaFam();
-
 const barraProgreso = async (pre, APIs) => {
 	// Variables
 	const DOM = {

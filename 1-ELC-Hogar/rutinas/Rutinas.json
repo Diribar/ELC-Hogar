@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 25/nov",
-	"HoraUTC": "0:37",
+	"FechaUTC": "Mié. 27/nov",
+	"HoraUTC": "12:40",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 25/nov",
@@ -51,14 +51,18 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"23-nov-24": {"leyenda": "Hoy recordamos al padre Miguel Pro, beato", "entidad": "personajes", "id": 177},
-		"24-nov-24": {},
 		"25-nov-24": {
 			"leyenda": "Hoy recordamos a los beatos Luis y María Beltrame Quattrocchi",
 			"entidad": "personajes",
 			"id": 149
 		},
 		"26-nov-24": {"leyenda": "Hoy recordamos a La familia Von Trapp", "entidad": "personajes", "id": 72},
-		"27-nov-24": {"leyenda": "Hoy recordamos las Apariciones de la Medalla Milagrosa", "entidad": "hechos", "id": 69}
+		"27-nov-24": {"leyenda": "Hoy recordamos las Apariciones de la Medalla Milagrosa", "entidad": "hechos", "id": 69},
+		"28-nov-24": {"leyenda": "Hoy recordamos a santa Catalina Labouré", "entidad": "personajes", "id": 208},
+		"29-nov-24": {
+			"leyenda": "Hoy recordamos a la beata María Magdalena de la Encarnación",
+			"entidad": "personajes",
+			"id": 186
+		}
 	}
 }
