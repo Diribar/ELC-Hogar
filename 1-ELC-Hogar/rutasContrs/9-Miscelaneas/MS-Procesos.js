@@ -143,7 +143,24 @@ module.exports = {
 			return respuesta;
 		},
 		persona: () => {},
-		ruta: () => {},
+		ruta: (url) => {
+			// Averigua si es una ruta que puede tener una abreviatura
+			const distintivo = comp.rutasConHistorial(url);
+			if (!distintivo) return url;
+
+			// Averigua si tiene íconos
+			const posibilidades = Object.values(rutasConHistorial).flat();
+			const ruta = posibilidades.find((n) => distintivo == n[1]);
+			const iconos = ruta.slice(2);
+			if (!iconos.length) return distintivo;
+
+			// Genera el HTML de íconos
+			let iconosHTML = "";
+			for (let icono of iconos) iconosHTML += "<i class='fa-solid " + icono + "'></i> ";
+
+			// Fin
+			return iconosHTML;
+		},
 	},
 	redirecciona: {
 		urlsOrigenDestino: (entidad) => {
