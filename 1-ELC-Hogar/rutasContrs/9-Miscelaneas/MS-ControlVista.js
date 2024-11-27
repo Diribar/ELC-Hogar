@@ -56,17 +56,17 @@ module.exports = {
 			// Variables
 			const cliente_id = navegDia.cliente_id;
 			const persona = Number(navegDia.cliente_id.slice(1));
-			const cantPorPers = navegDia.cantPorPers;
 			const esUser = navegDia.cliente_id.startsWith("U");
 			const hora = comp.fechaHora.horarioUTC(navegDia.fecha).split("hs")[0];
 			const {iconosHTML, distintivo} = procesos.navegsDia.ruta(navegDia.ruta);
 			const ruta = iconosHTML ? iconosHTML.join(" ") : distintivo ? distintivo : navegDia.ruta;
 
 			// Fin
-			navegsDia[i] = {cliente_id, persona, cantPorPers, esUser, hora, ruta, iconosHTML};
+			navegsDia[i] = {cliente_id, persona, esUser, hora, ruta, iconosHTML};
 		});
 
 		// Agrega un registro resumen por usuario
+		navegsDia = procesos.navegsDia.resumen(navegsDia);
 
 		// Fin
 		// return res.send(navegsDia);
