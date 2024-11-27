@@ -13,12 +13,15 @@
 	<!-- Consultas -->
 	<a href="/consultas" tabindex="-1" class="grupos ocultarEnMobile">
 		<div id="imagenConsultas" class="scale">
-			<img src="/publico/imagenes/Varios/Consultas.jpg" title="Quiero elegir una película">
+			<img src="/publico/imagenes/Varios/Consultas.jpg" title="Quiero elegir una película" />
 		</div>
 	</a>
 	<!-- Búsqueda rápida -->
 	<div id="busquedaRapida" class="grupos">
-		<i class="<%= iconos.faSolid %> fa-magnifying-glass scale clickIcono iconoHeader ocultoMobileParado" title="Búsqueda rápida"></i>
+		<i
+			class="<%= iconos.faSolid %> fa-magnifying-glass scale clickIcono iconoHeader ocultoMobileParado"
+			title="Búsqueda rápida"
+		></i>
 		<%- include("HR-BusqRapida") %>
 	</div>
 	<!-- Agregar un Producto -->
@@ -31,33 +34,35 @@
 
 	<!-- Tablero de Revisión -->
 	<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.autTablEnts) { %>
-		<a href="/revision/tablero" tabindex="-1" class="grupos ocultarEnMobile">
-			<i class="<%= iconos.faSolid %> scale iconoHeader revision fa-user-graduate" title="Tablero de Revisión"></i>
-		</a>
+	<a href="/revision/tablero" tabindex="-1" class="grupos ocultarEnMobile">
+		<i class="<%= iconos.faSolid %> <%= iconos.revision %> scale iconoHeader revision" title="Tablero de Revisión"></i>
+	</a>
 	<% } %>
 
 	<!-- Mantenimiento (sólo rol 'permInputs') -->
 	<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.permInputs) { %>
-		<a href="/mantenimiento" tabindex="-1" class="grupos ocultarEnMobile">
-			<i class="<%= iconos.faSolid %> fa-tools scale iconoHeader revision" title="Mantenimiento"></i>
-		</a>
+	<a href="/mantenimiento" tabindex="-1" class="grupos ocultarEnMobile">
+		<i class="<%= iconos.faSolid %> <%= iconos.mantenim %> scale iconoHeader revision" title="Mantenimiento"></i>
+	</a>
 	<% } %>
 
 	<!-- Gráficos -->
 	<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisorEnts) { %>
-		<div class="grupos ocultarEnMobile">
-			<i class="<%= iconos.faSolid %> fa-chart-line scale clickIcono iconoHeader revision" title="Menú de Gráficos"></i>
-			<%- include("HR3-MenuGraficos") %>
-		</div>
+	<div class="grupos ocultarEnMobile">
+		<i
+			class="<%= iconos.faSolid %> <%= iconos.graficos %> scale clickIcono iconoHeader revision"
+			title="Menú de Gráficos"
+		></i>
+		<%- include("HR3-MenuGraficos") %>
+	</div>
 	<% } %>
 
-		<!-- Información de gestión -->
+	<!-- Información de gestión -->
 	<% if (locals.usuario && usuario.rolUsuario && usuario.rolUsuario.revisorEnts) { %>
-		<a href="/movimientos-del-dia" tabindex="-1" class="grupos ocultarEnMobile">
-			<i class="<%= iconos.faSolid %> <%= iconos.detalle %> scale iconoHeader revision" title="Movimientos del Día"></i>
-		</a>
+	<a href="/movimientos-del-dia" tabindex="-1" class="grupos ocultarEnMobile">
+		<i class="<%= iconos.faSolid %> <%= iconos.detalle %> scale iconoHeader revision" title="Movimientos del Día"></i>
+	</a>
 	<% } %>
-
 </section>
 <!-- Título del Encabezado -->
 <a href="/" id="tituloHeader" tabindex="-1" class="scaleCh">
@@ -71,8 +76,5 @@
 		<%- include("HR6-MenuCapacitac") %>
 	</div>
 	<!-- Usuario -->
-	<div class="grupos">
-		<%- include("HR5-IconoUsuario") %>
-		<%- include("HR5-MenuUsuario") %>
-	</div>
+	<div class="grupos"><%- include("HR5-IconoUsuario") %> <%- include("HR5-MenuUsuario") %></div>
 </section>

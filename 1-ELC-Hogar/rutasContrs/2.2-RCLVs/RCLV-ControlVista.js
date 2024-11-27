@@ -66,8 +66,8 @@ module.exports = {
 		const creadoPor_id = rclv.creadoPor_id;
 		const tituloDetalle = "Detalle" + delLa + entidadNombre;
 		const titulo = entidadNombre + " - " + canonNombre + " " + rclv.nombre;
-		const iconoDL = "fa-video";
-		const iconoDB = "fa-child";
+		const iconoDL = iconos.prod;
+		const iconoDB = iconos.rclv;
 		const ea = comp.obtieneDesdeEntidad.ea(entidad);
 		const {statusAlineado} = await procsFM.statusAlineado({entidad, prodRclv: rclv});
 

@@ -45,10 +45,6 @@ router.get("/perennes", validarIdentidad, vista.perennes.form);
 router.post("/perennes", validarIdentidad, multer.single("avatar"), vista.perennes.guardar);
 router.get("/perennes-bienvenido", validarIdentidad, vista.perennes.bienvenido);
 
-// Vistas - Rutas RUD
-router.get("/edicion", usAltaTerm, vista.edicion.form);
-router.put("/edicion", usAltaTerm, multer.single("avatar"), vista.edicion.guardar);
-
 // Vistas - Login
 router.get("/login", intentosLogin, vista.login.form);
 router.post("/login", intentosLogin, validaLogin, visitas, vista.login.guardar);
@@ -63,3 +59,7 @@ router.post("/login/alta-mail", visitas, vista.miscelaneas.altaMail); // obtiene
 
 // Fin
 module.exports = router;
+
+// Vistas - Rutas RUD
+router.get("/edicion", usAltaTerm, vista.edicion.form);
+router.put("/edicion", usAltaTerm, multer.single("avatar"), vista.edicion.guardar);

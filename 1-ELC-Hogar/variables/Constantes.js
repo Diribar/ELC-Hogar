@@ -15,9 +15,11 @@ const iconos = {
 	...{izquierda: "fa-circle-left", derecha: "fa-circle-right", check: "fa-circle-check", xMark: "fa-circle-xmark"}, // Formularios
 
 	// Ocasionales
-	...{agregar: "fa-circle-plus", calificar: "fa-chart-simple", eliminar: "fa-trash-can", link: "fa-link"},
+	...{agregar: "fa-circle-plus", calificar: "fa-chart-simple", eliminar: "fa-trash-can"},
 	...{detalle: "fa-circle-info", edicion: "fa-pen", edicionCambiada: "fa-arrow-right-long", rotar: "fa-rotate-90"},
 	...{graficos: "fa-chart-line", chart: "fa-chart-pie", columnas: "fa-chart-simple", area: "fa-chart-area"},
+	...{prod: "fa-video", rclv: "fa-child", link: "fa-link"},
+	...{mail: "fa-envelope", mantenim: "fa-tools", revision: "fa-user-graduate"},
 };
 
 module.exports = {
@@ -202,33 +204,49 @@ module.exports = {
 			["busqueda-rapida", "busquedaRapida"],
 		],
 		includes: [
-			["/detalle/p", "detalleDeProd"],
-			["/detalle/r", "detalleDeRclv"],
-			["/edicion/p", "edicionDeProd"],
-			["/calificar/p", "calificarProd"],
-			["/edicion/r", "edicionDeRclv"],
-			["/agregar-", "agregarProd"],
-			["/agregar/r", "agregarRclv"],
-			["/abm-links/p", "abmLinks"],
+			["/detalle/p", "detalleProd", iconos.detalle, iconos.prod],
+			["/detalle/r", "detalleRclv", iconos.detalle, iconos.rclv],
+			["/edicion/p", "edicionProd", iconos.edicion, iconos.prod],
+			["/calificar/p", "calificarProd", iconos.calificar],
+			["/edicion/r", "edicionDeRclv", iconos.edicion, iconos.rclv],
+			["/agregar-", "agregarProd", iconos.agregar, iconos.prod],
+			["/agregar/r", "agregarRclv", iconos.agregar, iconos.rclv],
+			["/abm-links/p", "abmLinks", iconos.agregar, iconos.link],
+			["/historial", "historial"],
+			["/inactivar", "inactivar"],
+			["/recuperar", "recuperar"],
+			["/correccion-del-", "correccion"],
 		],
 		startsWith: [
-			["/consultas", "consultas"],
-			["/links/mirar/l", "mirarLinks"],
-			["/institucional/contactanos", "contactanos"],
+			// Usuarios
+			["/usuarios/login", "login"],
+			["/usuarios/alta-mail", "altaDeMail"],
+			["/usuarios/editables", "altaDeMail"],
+			["/usuarios/editables-bienvenido", "altaDeMail"],
+			["/usuarios/perennes", "perennes"],
+			["/usuarios/perennes-bienvenido", "perennes"],
+
+			// Otros
+			["/consultas", "consultas",],
+			["/links/mirar/l", "mirarLinks", iconos.link, iconos.prod],
+			["/institucional/contactanos", "contactanos", "fa-cross", iconos.mail],
 			["/institucional", "institucional"],
-			["/revision", "revision"],
-			["/mantenimiento", "mantenimiento"],
+			["/revision", "revision", iconos.revision],
+			["/mantenimiento", "mantenimiento", iconos.mantenim],
+			["/graficos", "graficos", iconos.graficos],
+
+			// Discontinuados
 			["/producto", "antiguaProd"],
 			["/rclv", "antiguaRclv"],
 			["/links", "antiguaLinks"],
 		],
 	},
 	rutasSinHistorial: {
-		includes: ["/historial", "/inactivar", "/recuperar", "/correccion-del-"],
+		includes: [],
 		startsWith: [
 			...["/cookies", "/session", "/movimientos-del-dia"], // Miscelaneas
 			...["/eliminado", "/productos-por-registro/r", "/listados/links"], // Familias
-			...["/usuarios", "/graficos"], // Varios
+			"/usuarios",
 		],
 	},
 };
