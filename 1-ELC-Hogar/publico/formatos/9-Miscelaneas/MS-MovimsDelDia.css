@@ -1,0 +1,12 @@
+#cuerpoFooter {
+	height: 100%; z-index: 1;
+	#cuerpo {
+		/* display: flex; flex-direction: column; align-items: center; */
+		table {
+			height: min-content; border-spacing: 10px 5px; margin: auto; border-radius: 10px;
+			background-color: var(--celeste-claro);
+			.cliente, .ruta {text-align: left;}
+			.fecha {text-align: center;}
+		}
+	}
+}

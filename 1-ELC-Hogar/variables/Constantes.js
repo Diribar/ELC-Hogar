@@ -23,7 +23,7 @@ const iconos = {
 module.exports = {
 	// Institucional
 	vistasInstitucs: {
-		inicio: {titulo: "Películas con Valores afines a la Iglesia Católica", codigo: "inicio", icono: iconos.inicio, hr: true}, // 'hr' significa que pone una línea divisoria en el menú del header
+		inicio: {titulo: "Inicio", codigo: "inicio", icono: iconos.inicio, hr: true}, // 'hr' significa que pone una línea divisoria en el menú del header
 		"quienes-somos": {titulo: "Quiénes somos", codigo: "quienesSomos", icono: "fa-people-group"},
 		"mision-y-vision": {titulo: "Nuestra Misión y Visión", codigo: "misionVision", icono: "fa-heart", hr: true},
 		"en-que-consiste-este-sitio": {titulo: "En qué consiste este sitio", codigo: "enQueConsiste", icono: "fa-question"},
@@ -195,7 +195,7 @@ module.exports = {
 		{descripcion: "Otro motivo", codigo: "varios"},
 	],
 	eliminarCuandoSinEntidadId: ["statusHistorial", "histEdics", "misConsultas", "pppRegistros", "calRegistros"],
-	requestsTriviales: ["WhatsApp", "Postman", "TelegramBot", "Zabbix"],
+	requestsTriviales: ["WhatsApp", "Postman", "TelegramBot", "Zabbix"], // evita que se cuenten como visitas
 	rutasClasicas: {
 		igual: [
 			["/", "inicio"],
@@ -205,21 +205,30 @@ module.exports = {
 			["/detalle/p", "detalleDeProd"],
 			["/detalle/r", "detalleDeRclv"],
 			["/edicion/p", "edicionDeProd"],
+			["/calificar/p", "calificarProd"],
 			["/edicion/r", "edicionDeRclv"],
 			["/agregar-", "agregarProd"],
 			["/agregar/r", "agregarRclv"],
-			["/calificar/p", "calificarProd"],
+			["/abm-links/p", "abmLinks"],
 		],
 		startsWith: [
 			["/consultas", "consultas"],
 			["/links/mirar/l", "mirarLinks"],
 			["/institucional/contactanos", "contactanos"],
 			["/institucional", "institucional"],
-			["/revision/tablero", "revisionTablero"],
+			["/revision", "revision"],
 			["/mantenimiento", "mantenimiento"],
 			["/producto", "antiguaProd"],
 			["/rclv", "antiguaRclv"],
 			["/links", "antiguaLinks"],
+		],
+	},
+	otrasRutasAceptadas: {
+		includes: ["/historial", "/inactivar", "/recuperar", "/correccion-del-"],
+		startsWith: [
+			...["/cookies", "/session", "/movimientos-del-dia"], // Miscelaneas
+			...["/eliminado", "/productos-por-registro/r", "/listados/links"], // Familias
+			...["/usuarios", "/graficos"], // Varios
 		],
 	},
 };

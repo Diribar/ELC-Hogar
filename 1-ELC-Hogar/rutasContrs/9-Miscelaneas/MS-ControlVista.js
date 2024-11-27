@@ -3,6 +3,7 @@ const procsRE = require("../3-Rev-Entidades/RE-Procesos");
 const procesos = require("./MS-Procesos");
 
 module.exports = {
+	// Vistas
 	inicio: (req, res) => {
 		const vistaActual = vistasInstitucs.inicio;
 		return res.render("CMP-0Estructura", {
@@ -10,7 +11,6 @@ module.exports = {
 			...vistaActual,
 		});
 	},
-	// Tablero de mantenimiento
 	mantenim: async (req, res) => {
 		// Variables
 		const tema = "mantenimiento";
@@ -38,6 +38,28 @@ module.exports = {
 			...{prods, rclvs, omnipotente},
 			dataEntry,
 		});
+	},
+	movimsDelDia: async (req, res) => {
+		// Variables
+		const tema = "infoDeGestion";
+		const codigo = "movimsDelDia";
+
+		// Obtiene información de la BD
+		let navegsDia = baseDeDatos.obtieneTodosConOrden("navegsDia", "fecha", true);
+		let usuarios = baseDeDatos.obtieneTodos("usuarios");
+		[navegsDia, usuarios] = await Promise.all([navegsDia, usuarios]);
+
+		// Les agrega el nombre de usuario
+		navegsDia.forEach((navegDia, i) => {
+			if (navegDia.cliente_id.startsWith("U")) {
+				const usuario = usuarios.find((n) => n.cliente_id == navegDia.cliente_id);
+				if (usuario) navegsDia[i].usuario = usuario.apodo;
+			}
+		});
+
+		// Fin
+		// return res.send(navegsDia)
+		return res.render("CMP-0Estructura", {tema, codigo, titulo: "Movimientos del día", navegsDia});
 	},
 
 	// Listados
