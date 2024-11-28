@@ -55,14 +55,16 @@ module.exports = {
 		navegsDia.forEach((navegDia, i) => {
 			// Variables
 			let persona = procesos.navegsDia.persona(navegDia, usuarios);
+			const cantPorPers = navegDia.cantPorPers;
 			const hora = comp.fechaHora.horarioUTC(navegDia.fecha).split("hs")[0];
 			const ruta = procesos.navegsDia.ruta(navegDia.ruta);
 
 			// Fin
-			navegsDia[i] = {persona, hora, ruta};
+			navegsDia[i] = {persona, cantPorPers, hora, ruta};
 		});
 
 		// Fin
+		// return res.send(navegsDia);
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, titulo: "Movimientos del día", navegsDia},
 			...{omitirFooter: true},

@@ -4,14 +4,20 @@
 		<thead>
 			<tr>
 				<th class="cliente">Cliente</th>
-				<th class="fecha">Fecha</th>
+				<th class="fecha">Hora</th>
 				<th class="ruta">Ruta</th>
 			</tr>
 		</thead>
 		<tbody>
 			<% for (let navegDia of navegsDia) { %>
-			<tr>
-				<td class="cliente"><%= navegDia.persona %></td>
+			<tr <% if (!navegDia.cantPorPers) { %>class="ocultar"<% } %>>
+				<td class="cliente">
+					<span <% if (!navegDia.cantPorPers) { %>class="invisible"<% } %>>
+						<i class="fa-solid fa-circle-plus"></i>
+					</span>
+					<%= navegDia.persona %>
+					<% if (navegDia.cantPorPers) { %><%= ' x ' + navegDia.cantPorPers %><% } %>
+				</td>
 				<td class="fecha"><%= navegDia.hora %></td>
 				<td class="ruta"><%- navegDia.ruta %></td>
 			</tr>
