@@ -25,7 +25,7 @@ router.get("/api/cmp-agregar-url-br/", API.agregarUrlBR);
 // Vista
 router.get("/", vista.inicio);
 router.get("/mantenimiento", aptoUsuario, vista.mantenim);
-router.get("/movimientos-del-dia", aptoUsuario, usRolRevPERL, vista.movimsDelDia);
+router.get("/movimientos-del-dia", aptoUsuario, usRolRevPERL, vista.navegsDia);
 
 // Redireciona
 router.get("/inicio", vista.redirecciona.inicio);

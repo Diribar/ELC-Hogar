@@ -1,18 +1,21 @@
-<table>
-	<thead>
-		<tr>
-			<th class="cliente">Cliente</th>
-			<th class="fecha">Fecha</th>
-			<th class="ruta">Ruta</th>
-		</tr>
-	</thead>
-	<tbody>
-		<% for (let navegDia of navegsDia) { %>
-		<tr>
-			<td class="cliente"><%= navegDia.usuario || navegDia.cliente_id %></td>
-			<td class="fecha"><%= comp.fechaHora.fechaHorario(navegDia.fecha) %></td>
-			<td class="ruta"><%= navegDia.ruta %></td>
-		</tr>
-		<% } %>
-	</tbody>
-</table>
+<%- include("FM-0-TituloPrincipal") %>
+<section id="tabla">
+	<table>
+		<thead>
+			<tr>
+				<th class="cliente">Cliente</th>
+				<th class="fecha">Fecha</th>
+				<th class="ruta">Ruta</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% for (let navegDia of navegsDia) { %>
+			<tr>
+				<td class="cliente"><%= navegDia.persona %></td>
+				<td class="fecha"><%= navegDia.hora %></td>
+				<td class="ruta"><%- navegDia.ruta %></td>
+			</tr>
+			<% } %>
+		</tbody>
+	</table>
+</section>

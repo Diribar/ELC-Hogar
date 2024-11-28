@@ -1096,11 +1096,18 @@ module.exports = {
 			return this.diaMes(fecha) + "/" + ano;
 		},
 		anoMesDia: (fecha) => new Date(fecha).toISOString().slice(0, 10),
-		fechaHorario: (fecha) => {
+		fechaHorario: function (fecha) {
 			const horario = fecha ? new Date(fecha) : FN.ahora();
 			const fechaResp = horario.getUTCDate() + "/" + mesesAbrev[horario.getUTCMonth()];
-			const horaResp = " a las " + horario.getUTCHours() + ":" + String(horario.getUTCMinutes()).padStart(2, "0") + "hs (UTC)";
+			const horaResp = " a las " + this.horarioUTC(horario);
 			return fechaResp + horaResp;
+		},
+		horarioUTC: (fecha) => {
+			const horario = fecha ? new Date(fecha) : FN.ahora();
+			const hora = horario.getUTCHours();
+			const minutos = String(horario.getUTCMinutes()).padStart(2, "0");
+			const horaResp = hora + ":" + minutos + "hs (UTC)";
+			return horaResp;
 		},
 		fechaDelAno: (fecha) => {
 			let datos = {};
@@ -1284,17 +1291,21 @@ module.exports = {
 		// Fin
 		return {baseUrl, tarea, siglaFam, entidad, url};
 	},
-	distintivosDeRutas: (url) => {
-		let distintivo;
-		if (!distintivo) for (let caso of rutasClasicas.igual) if (url == caso[0]) distintivo = caso[1];
-		if (!distintivo) for (let caso of rutasClasicas.includes) if (url.includes(caso[0])) distintivo = caso[1];
-		if (!distintivo) for (let caso of rutasClasicas.startsWith) if (url.startsWith(caso[0])) distintivo = caso[1];
-		return distintivo;
+	rutasConHistorial: (url) => {
+		// Busca la ruta
+		let resultado;
+		if (!resultado) resultado = rutasConHistorial.iguales.find((n) => url == n[0]);
+		if (!resultado) resultado = rutasConHistorial.includes.find((n) => url.includes(n[0]));
+		if (!resultado) resultado = rutasConHistorial.startsWith.find((n) => url.startsWith(n[0]));
+
+		// Fin
+		if (resultado) resultado = resultado[1];
+		return resultado;
 	},
-	otrasRutasAceptadas: (url) => {
+	rutasSinHistorial: (url) => {
 		let aceptado;
-		if (!aceptado) if (otrasRutasAceptadas.includes.some((n) => url.includes(n))) aceptado = true;
-		if (!aceptado) if (otrasRutasAceptadas.startsWith.some((n) => url.startsWith(n))) aceptado = true;
+		if (!aceptado) if (rutasSinHistorial.includes.some((n) => url.includes(n))) aceptado = true;
+		if (!aceptado) if (rutasSinHistorial.startsWith.some((n) => url.startsWith(n))) aceptado = true;
 		return aceptado;
 	},
 };

@@ -737,7 +737,7 @@ module.exports = {
 				// Consolida la información
 				const consolidado = {};
 				for (let naveg of navegsDeUnDia) {
-					const ruta = comp.distintivosDeRutas(naveg.ruta);
+					const ruta = comp.rutasConHistorial(naveg.ruta);
 					if (ruta) consolidado[ruta] ? consolidado[ruta]++ : (consolidado[ruta] = 1);
 				}
 

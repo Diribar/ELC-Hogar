@@ -12,6 +12,7 @@ module.exports = (req, res, next) => {
 
 	// Obtiene la ruta
 	let {originalUrl: ruta} = req;
+	if (ruta == "/institucional/inicio") return next();
 	if (ruta.startsWith("/consultas")) ruta = "/consultas";
 	if (ruta.includes("&")) ruta = ruta.split("&")[0];
 
