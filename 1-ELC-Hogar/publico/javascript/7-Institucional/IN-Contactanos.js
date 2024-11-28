@@ -15,6 +15,10 @@ window.addEventListener("load", async () => {
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 		iconosOK: document.querySelectorAll(".inputError .fa-circle-check"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
+
+		// Cartel genérico
+		cartelGenerico: document.querySelector("#todoElMain #cartelGenerico"),
+		continuar: document.querySelector("#cartelGenerico #iconosCartel #continuar"),
 	};
 
 	// Funciones
@@ -96,6 +100,7 @@ window.addEventListener("load", async () => {
 	};
 
 	// Eventos - inputs en el form
+	DOM.continuar.addEventListener("click", () => DOM.cartelGenerico.classList.add("ocultar"));
 	DOM.inputs.forEach((input, i) => {
 		input.addEventListener("input", (e) => {
 			// Acciones
