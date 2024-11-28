@@ -139,6 +139,13 @@ module.exports = {
 				navegsDia = navegsDia.filter((n) => n.cliente_id != cliente_id);
 			}
 
+			// Elimina duplicados
+			for (let i = respuesta.length - 1; i > 0; i--) {
+				const actual = respuesta[i];
+				const anterior = respuesta[i - 1];
+				if (actual.cliente_id == anterior.cliente_id && actual.ruta == anterior.ruta) respuesta.splice(i, 1);
+			}
+
 			// Fin
 			return respuesta;
 		},
@@ -394,7 +401,6 @@ const FN_navegsDia = {
 			if (!registrosConIcono.length) continue;
 
 			// Obtiene el ícono principal
-			console.log(373, registrosConIcono[0]);
 			const iconoFamilia = registrosConIcono[0].iconosArray[0];
 
 			// Obtiene los íconos secundarios
