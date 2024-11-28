@@ -135,9 +135,12 @@ window.addEventListener("load", async () => {
 		// Si el botón está inactivo interrumpe la función
 		if (DOM.submit.className.includes("inactivo") || v.errores.hay) return;
 
+		// Genera los datos para el envío del mail
+		const APIs = [{ruta: v.datos.email, duracion: 9000}];
+
 		// Envío de mail más cartel de progreso
 		DOM.submit.classList.add("inactivo");
-		const mailEnviado = await enviaMail({ruta: rutas.envia + v.datos.email});
+		const mailEnviado = await barraProgreso(rutas.envia, APIs);
 
 		// Redirige
 		location.href = mailEnviado ? v.urlExitoso : v.urlFallido;
@@ -150,9 +153,12 @@ window.addEventListener("load", async () => {
 	if (olvidoContr && !v.datosDeSession.validarDatosPerennes) {
 		v.datos.email = v.datosDeSession.datos.email;
 
+		// Genera los datos para el envío del mail
+		const APIs = [{ruta: v.datos.email, duracion: 9000}];
+
 		// Envío de mail más cartel de progreso
 		DOM.submit.classList.add("inactivo");
-		const mailEnviado = await enviaMail({ruta: rutas.envia + v.datos.email});
+		const mailEnviado = await barraProgreso(rutas.envia, APIs);
 
 		// Redirige
 		location.href = mailEnviado ? v.urlExitoso : v.urlFallido;
