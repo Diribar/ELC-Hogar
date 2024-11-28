@@ -103,7 +103,7 @@ window.addEventListener("load", async () => {
 
 			// Envío de mail más cartel de progreso
 			DOM.submit.classList.add("inactivo");
-			v.mailEnviado = await barraProgreso(rutas.envia, APIs);
+			const mailEnviado = await barraProgreso(rutas.envia, APIs);
 
 			// Redirige
 			location.href = mailEnviado ? v.urlExitoso : v.urlFallido;
