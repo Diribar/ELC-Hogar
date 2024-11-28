@@ -179,6 +179,7 @@ module.exports = {
 			// Fin
 			return {iconosArray};
 		},
+		prodRclv:()=>{},
 		resumen: (navegsDia) => {
 			// Obtiene las personas
 			const clientes_id = [...new Set(navegsDia.map((n) => n.cliente_id))];
