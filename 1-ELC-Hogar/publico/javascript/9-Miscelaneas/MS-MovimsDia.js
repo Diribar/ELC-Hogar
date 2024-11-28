@@ -10,7 +10,6 @@ window.addEventListener("load", async () => {
 		mostrarOcultar.addEventListener("click", () => {
 			// Obtiene las filas a mostrar/ocultar
 			const id = DOM.trsResumen[i].id;
-			console.log(id,i);
 			const filasMostrarOcultar = document.querySelectorAll("tbody tr#" + id + ":not(.resumen)");
 
 			// Acciones de ocultar o mostrar
