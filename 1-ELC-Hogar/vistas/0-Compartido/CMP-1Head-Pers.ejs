@@ -1,4 +1,5 @@
 <!-- Heads personalizados -->
+<% const {tema} = locals %>
 <% if (locals.informacion) { %>
 	<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-Detalle.css">
 	<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-0MediaQuery.css">
@@ -14,7 +15,8 @@
 <% } else if (tema == "consultas") { %><%- include("CN-1Head") %>
 <% } else if (tema == "gráficos") { %><%- include("GR-1Head") %>
 <% } else if (tema == "infoDeGestion") { %><%- include("MS-1Head") %>
+<% } %>
 
 <!-- Independientes de los anteriores -->
-<% } if (tema == "institucional") { %><%- include("IN-1Head") %>
+<% if (tema == "institucional") { %><%- include("IN-1Head") %>
 <% } %>
