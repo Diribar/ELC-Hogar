@@ -49,7 +49,7 @@ module.exports = async (req, res, next) => {
 			informacion = {
 				iconos: [
 					{...variables.vistaEntendido(req.session.urlActual), autofocus: true},
-					{clase: "fa-circle-user amarillo", link: "/usuarios/login", titulo: "Ir a login"},
+					{clase: iconos.login + " amarillo", link: "/usuarios/login", titulo: "Ir a login"},
 				],
 				titulo: "Beneficios de loguearte",
 			};
