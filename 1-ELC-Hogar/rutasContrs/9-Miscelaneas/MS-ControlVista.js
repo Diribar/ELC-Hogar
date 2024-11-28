@@ -54,13 +54,14 @@ module.exports = {
 		// Procesa los datos
 		navegsDia.forEach((navegDia, i) => {
 			// Variables
-			let persona = procesos.navegsDia.persona(navegDia, usuarios);
+			const persona = Number(navegDia.cliente_id.slice(1));
 			const cantPorPers = navegDia.cantPorPers;
+			const esUser = navegDia.cliente_id.startsWith("U");
 			const hora = comp.fechaHora.horarioUTC(navegDia.fecha).split("hs")[0];
 			const ruta = procesos.navegsDia.ruta(navegDia.ruta);
 
 			// Fin
-			navegsDia[i] = {persona, cantPorPers, hora, ruta};
+			navegsDia[i] = {persona, cantPorPers, esUser, hora, ruta};
 		});
 
 		// Fin

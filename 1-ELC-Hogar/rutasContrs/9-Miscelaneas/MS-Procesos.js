@@ -143,20 +143,6 @@ module.exports = {
 			// Fin
 			return respuesta;
 		},
-		persona: (navegDia, usuarios) => {
-			// Convierte la información
-			let persona = navegDia.cliente_id;
-			if (persona.startsWith("U")) {
-				const usuario = usuarios.find((n) => n.cliente_id == persona);
-				if (usuario) navegsDia[i].usuario = usuario.apodo;
-			} else {
-				persona = persona.slice(1);
-				persona = Number(persona);
-			}
-
-			// Fin
-			return persona;
-		},
 		ruta: (url) => {
 			// Averigua si es una ruta que puede tener una abreviatura
 			const distintivo = comp.rutasConHistorial(url);
