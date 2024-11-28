@@ -184,6 +184,10 @@ module.exports = {
 			"<i class='" + iconos.faSolid + " fa-circle elegi'></i> <b>elegí</b> el idioma",
 		],
 	},
+	beneficiosLogin:[
+		"Te permite marcar tus preferencias por película: la quiero ver, ya la vi, no me interesa.",
+		"También te permite entre otras cosas:<ul><li>Ver tus mismas preferencias en distintos dispositivos.</li><li>Ver el listado de tus últimas películas consultadas.</li><li>Dar de alta contenido en nuestro sitio.</li></ul>",
+	],
 
 	// Otras
 	tamMaxImagen: 1024000, // 1Mb
@@ -200,8 +204,8 @@ module.exports = {
 	requestsTriviales: ["WhatsApp", "Postman", "TelegramBot", "Zabbix"], // evita que se cuenten como visitas
 	rutasConHistorial: {
 		iguales: [
-			["/", "inicio", iconos.inicio],
-			["/institucional/inicio", "inicio", iconos.inicio],
+			["/", "inicio", iconos.instituc, iconos.inicio],
+			["/institucional/inicio", "inicio", iconos.instituc, iconos.inicio],
 			["busqueda-rapida", "busquedaRapida", "fa-magnifying-glass"],
 		],
 		includes: [
@@ -259,8 +263,4 @@ module.exports = {
 			"/usuarios",
 		],
 	},
-	beneficiosLogin:[
-		"Te permite marcar tus preferencias por película: la quiero ver, ya la vi, no me interesa.",
-		"También te permite entre otras cosas:<ul><li>Ver tus mismas preferencias en distintos dispositivos.</li><li>Ver el listado de tus últimas películas consultadas.</li><li>Dar de alta contenido en nuestro sitio.</li></ul>",
-	]
 };
