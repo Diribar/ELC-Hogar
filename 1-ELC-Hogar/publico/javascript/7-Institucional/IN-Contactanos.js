@@ -95,25 +95,20 @@ window.addEventListener("load", async () => {
 		},
 	};
 
-	// Eventos
+	// Eventos - inputs en el form
 	DOM.inputs.forEach((input, i) => {
 		input.addEventListener("input", (e) => {
 			// Acciones
 			amplio.restringeCaracteres(e); // restringe caracteres indeseados
 			DOM.iconosError[i].classList.add("ocultar"); // oculta los íconos de error
 			FN.contador(); // actualiza el contador
-			if (!input.value) FN.actualizaVarios(); // busca el mensaje de error
+			FN.actualizaVarios(); // busca el mensaje de error
 
 			// Fin
 			return;
 		});
 	});
-
-	DOM.form.addEventListener("input", async (e) => {
-		FN.actualizaVarios();
-	});
-
-	// Submit
+	// Eventos - submit
 	DOM.form.addEventListener("submit", async (e) => FN.submit(e));
 	DOM.submit.addEventListener("click", async (e) => FN.submit(e));
 
