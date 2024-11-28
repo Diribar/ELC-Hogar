@@ -135,7 +135,6 @@ module.exports = {
 			while (navegsDia.length) {
 				const {cliente_id} = navegsDia[0];
 				const registros = navegsDia.filter((n) => n.cliente_id == cliente_id);
-				registros[0].cantPorPers = registros.length;
 				respuesta.push(...registros);
 				navegsDia = navegsDia.filter((n) => n.cliente_id != cliente_id);
 			}
@@ -144,6 +143,14 @@ module.exports = {
 			return respuesta;
 		},
 		ruta: (url) => {
+			// Variables
+			const familias = {
+				[iconos.instituc]: "institucional",
+				[iconos.prod]: "producto",
+				[iconos.rclv]: "rclv",
+				[iconos.agregar]: "agregar",
+			};
+
 			// Averigua si es una ruta que puede tener una abreviatura
 			const distintivo = comp.rutasConHistorial(url);
 			if (!distintivo) return {};
@@ -151,31 +158,47 @@ module.exports = {
 			// Averigua si tiene íconos
 			const posibilidades = Object.values(rutasConHistorial).flat();
 			const ruta = posibilidades.find((n) => distintivo == n[1]);
-			const iconos = ruta.slice(2);
-			if (!iconos.length) return {distintivo};
+			const iconosDistintivo = ruta.slice(2);
+			if (!iconosDistintivo.length) return {distintivo};
 
 			// Genera el HTML de íconos
-			let iconosHTML = [];
-			for (let icono of iconos) iconosHTML.push("<i class='fa-solid " + icono + "' title='" + distintivo + "'></i>");
+			let iconosArray = [];
+			let familia;
+			for (let icono of iconosDistintivo) {
+				// Genera el ícono
+				familia = familias[icono] || familia;
+				const titulo = familias[icono] || distintivo;
+				let iconoHTML = "<i class='fa-solid " + icono;
+				if (familia) iconoHTML += " " + familia;
+				iconoHTML += "' title='" + titulo + "'></i>";
+
+				// Agrega el ícono
+				iconosArray.push(iconoHTML);
+			}
 
 			// Fin
-			return {iconosHTML};
+			return {iconosArray};
 		},
-		registroResumen: (navegsDia) => {
+		resumen: (navegsDia) => {
 			// Obtiene las personas
-			const personas = navegsDia.filter((n) => n.cantPorPers);
+			const clientes_id = [...new Set(navegsDia.map((n) => n.cliente_id))];
 
 			// Agrega un registro resumen
-			for (let persona of personas) {
+			for (let cliente_id of clientes_id) {
 				// Obtiene datos para la cabecera
-				const registros = navegsDia.filter((n) => n.cliente_id == cliente_id);
-				const {cantPorPers}=registros[0]
-				const iconosProd=registros.filter(n=>n.iconosHTML[0].includes())
+				const regsCliente = navegsDia.filter((n) => n.cliente_id == cliente_id);
+				const cantPers = regsCliente.length;
+				const {persona, esUser, hora} = regsCliente[0];
+				const iconosHTML = FN_navegsDia.obtieneIconosPorFamilia(regsCliente);
 
 				// Agrega un registro de cabecera
-				const indice=navegsDia.findIndex(n=>n.cliente_id==findIndex)
-				// const cabecera=
+				const indice = navegsDia.findIndex((n) => n.cliente_id == cliente_id);
+				const cabecera = {persona, cantPers, esUser, hora, iconosHTML};
+				navegsDia.splice(indice, 0, cabecera);
 			}
+
+			// Fin
+			return navegsDia;
 		},
 	},
 	redirecciona: {
@@ -353,5 +376,49 @@ const FN_tablManten = {
 
 		// Fin
 		return {LI};
+	},
+};
+const FN_navegsDia = {
+	obtieneIconosPorFamilia: (regsCliente) => {
+		// Variables
+		const familias = ["instituc", "prod", "rclv", "agregar"];
+
+		let iconosCons = [];
+
+		// Obtiene los iconos por familia
+		for (let familia of familias) {
+			// Obtiene los regsCliente con ese ícono
+			const registrosConIcono = regsCliente.filter((n) => n.iconosArray[0].includes(iconos[familia]));
+			regsCliente = regsCliente.filter((n) => !n.iconosArray[0].includes(iconos[familia]));
+			if (!registrosConIcono.length) continue;
+
+			// Obtiene el ícono principal
+			console.log(373, registrosConIcono[0]);
+			const iconoFamilia = registrosConIcono[0].iconosArray[0];
+
+			// Obtiene los íconos secundarios
+			let iconosSecun = registrosConIcono.map((n) => n.iconosArray[1]);
+			iconosSecun = [...new Set(iconosSecun)];
+			iconosSecun.sort((a, b) => (a < b ? -1 : 1));
+
+			// Consolida los íconos
+			const iconosConsFamilia = [iconoFamilia, ...iconosSecun].join(" ");
+			iconosCons.push(iconosConsFamilia);
+		}
+
+		// Obtiene los íconos que no fueron incluidos
+		let iconosResto = regsCliente.map((n) => n.iconosArray[0]);
+		if (iconosResto.length) {
+			iconosResto = [...new Set(iconosResto)];
+			iconosResto.sort((a, b) => (a < b ? -1 : 1));
+			const iconosConsFamilia = iconosResto.join(" ");
+			iconosCons.push(iconosConsFamilia);
+		} else iconosCons.slice(0, -3);
+
+		// Convierte los íconos a texto
+		iconosCons = iconosCons.join("<span class'separador'> / </span>");
+
+		// Fin
+		return iconosCons;
 	},
 };
