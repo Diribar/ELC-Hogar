@@ -35,48 +35,19 @@ window.addEventListener("load", async () => {
 	};
 
 	// Funciones
-	const mail = {
-		valida: async () => {
-			// Variables
-			const email = olvidoContr // toma el mail dependiendo de la ruta
-				? v.datosDeSession.datos.email // lo toma del BE, no de la vista
-				: DOM.email.value;
-			v.datos = {email};
+	const validaMail = async () => {
+		// Variables
+		const email = olvidoContr // toma el mail dependiendo de la ruta
+			? v.datosDeSession.datos.email // lo toma del BE, no de la vista
+			: DOM.email.value;
+		v.datos = {email};
 
-			// Obtiene la información de los datos perennes
-			if (olvidoContr && v.datosDeSession.validarDatosPerennes)
-				for (const campo of camposPerennes) if (DOM[campo]) v.datos[campo] = DOM[campo].value;
+		// Obtiene la información de los datos perennes
+		if (olvidoContr && v.datosDeSession.validarDatosPerennes)
+			for (const campo of camposPerennes) if (DOM[campo]) v.datos[campo] = DOM[campo].value;
 
-			// Averigua si hay errores
-			v.errores = await fetch(rutas.valida + JSON.stringify(v.datos)).then((n) => n.json());
-
-			// Fin
-			return;
-		},
-	};
-	const cartelProgreso = async () => {
-		// Muestra el cartel
-		DOM.cartelProgreso.classList.remove("ocultar");
-		DOM.cartelProgreso.classList.remove("disminuye");
-		DOM.cartelProgreso.classList.add("aumenta");
-
-		// Progreso
-		const pausa = 200;
-		const tiempoEstimado = 9 * 1000;
-		let duracionAcum = 0;
-
-		// Evoluciona el progreso
-		for (let repeticion = 0; repeticion < parseInt(tiempoEstimado / pausa); repeticion++) {
-			duracionAcum += pausa;
-			DOM.progreso.style.width = parseInt((duracionAcum / tiempoEstimado) * 100) + "%";
-			if (v.pendiente) await pierdeTiempo(pausa);
-		}
-		DOM.progreso.style.width = "100%";
-
-		// Oculta el cartelProgreso
-		await pierdeTiempo(pausa);
-		DOM.cartelProgreso.classList.remove("aumenta");
-		DOM.cartelProgreso.classList.add("disminuye");
+		// Averigua si hay errores
+		v.errores = await fetch(rutas.valida + JSON.stringify(v.datos)).then((n) => n.json());
 
 		// Fin
 		return;
@@ -158,7 +129,7 @@ window.addEventListener("load", async () => {
 		e.preventDefault();
 
 		// Averigua si hay errores
-		await mail.valida();
+		await validaMail();
 		actualizaLosErrores();
 
 		// Si el botón está inactivo interrumpe la función
@@ -204,4 +175,4 @@ const rutas = {
 	valida: rutaInicio + "/validaciones/?datos=",
 	envia: rutaInicio + "/envio-de-mail/?email=",
 };
-let v
+let v;
