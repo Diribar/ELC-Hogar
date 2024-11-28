@@ -19,7 +19,7 @@ const iconos = {
 	...{detalle: "fa-circle-info", edicion: "fa-pen", edicionCambiada: "fa-arrow-right-long", rotar: "fa-rotate-90"},
 	...{graficos: "fa-chart-line", chart: "fa-chart-pie", columnas: "fa-chart-simple", area: "fa-chart-area"},
 	...{prod: "fa-video", rclv: "fa-child", link: "fa-link", instituc: "fa-building-columns", mail: "fa-envelope", mantenim: "fa-tools"},
-	...{altaUser: "fa-user-plus", revision: "fa-user-graduate"},
+	...{login:"fa-circle-user", altaUser: "fa-user-plus", revision: "fa-user-graduate"},
 };
 
 module.exports = {
@@ -228,7 +228,7 @@ module.exports = {
 		],
 		startsWith: [
 			// Usuarios
-			["/usuarios/login", "login", "fa-circle-user"],
+			["/usuarios/login", "login", iconos.login],
 			["/usuarios/alta-mail", "altaDeMail", iconos.altaUser],
 			["/usuarios/editables", "altaDeMail", iconos.altaUser],
 			["/usuarios/editables-bienvenido", "altaDeMail", iconos.altaUser],
