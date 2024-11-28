@@ -45,10 +45,10 @@ window.addEventListener("load", async () => {
 		},
 		actualizaLosErrores: async () => {
 			// Obtiene los errores
-			errores = await fetch(v.validaDatos + v.datosUrl).then((n) => n.json());
+			errores = await fetch(rutas.inicioAPI + rutas.validaDatos + v.datosUrl).then((n) => n.json());
 
 			// Acciones en función de si hay errores o no
-			v.campos.forEach((campo, indice) => {
+			campos.forEach((campo, indice) => {
 				// Actualiza los mensajes de error
 				DOM.mensajesError[indice].innerHTML = errores[campo];
 
