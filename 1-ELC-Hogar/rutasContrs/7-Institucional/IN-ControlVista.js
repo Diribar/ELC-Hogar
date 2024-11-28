@@ -35,7 +35,7 @@ module.exports = {
 			const dataEntry = req.session.contactanos || {};
 
 			// Información para el cartel genérico
-			if (!req.session.usuario) {
+			if (!req.session.usuario)
 				informacion = {
 					mensajes: [
 						"Si vas a querer que te respondamos, necesitamos saber quién sos.",
@@ -43,11 +43,10 @@ module.exports = {
 					],
 					iconos: [
 						{clase: iconos.login, link: "/usuarios/login", titulo: "Ir a 'Login'"},
-						{clase: iconos.derecha, link: "", titulo: "Continuar a 'Contactanos'"},
+						{clase: iconos.derecha, titulo: "Continuar a 'Contactanos'", id: "continuar"},
 					],
 					trabajando: true,
 				};
-			}
 
 			// Va a la vista
 			return res.render("CMP-0Estructura", {tema, codigo, titulo, dataEntry, urlAnterior, informacion});
