@@ -17,7 +17,7 @@ const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
 router.get("/api/in-valida-contactanos", API.validaContactanos);
 
 // Vistas - se quitó el 'aptoUsuario', para probar la experiencia
-router.get("/contactanos", aptoUsuario, vista.contactanos.form);
+// router.get("/contactanos", aptoUsuario, vista.contactanos.form);
 router.get("/contactanos", vista.contactanos.form);
 router.post("/contactanos", vista.contactanos.guardar);
 router.get("/contactanos/envio-exitoso", vista.contactanos.envioExitoso);
