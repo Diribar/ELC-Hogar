@@ -58,7 +58,7 @@ module.exports = async (req, res, next) => {
 			informacion = {
 				iconos: [
 					{...variables.vistaEntendido(req.session.urlActual), autofocus: true},
-					{clase: "fa-user-plus amarillo", link: "/usuarios/alta-mail", titulo: "Crear un usuario"},
+					{clase: iconos.altaUser + " amarillo", link: "/usuarios/alta-mail", titulo: "Crear un usuario"},
 				],
 				titulo: "Beneficios de crear un usuario",
 			};
