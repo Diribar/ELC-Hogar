@@ -21,7 +21,7 @@ window.addEventListener("load", async () => {
 	};
 
 	for (const input of DOM.inputs) DOM[input.name] = document.querySelector(".inputError .input[name='" + input.name + "']");
-	v = {
+	const v = {
 		// Envío de mail
 		urlExitoso: pathname.slice(0, indice) + "/envio-exitoso-de-mail/?codigo=" + codigo,
 		urlFallido: pathname.slice(0, indice) + "/envio-fallido-de-mail/?codigo=" + codigo,
@@ -135,12 +135,12 @@ window.addEventListener("load", async () => {
 		// Si el botón está inactivo interrumpe la función
 		if (DOM.submit.className.includes("inactivo") || v.errores.hay) return;
 
-		// Cartel mientras se recibe la respuesta
+		// Envío de mail más cartel de progreso
 		DOM.submit.classList.add("inactivo");
-		await enviaMail();
+		const mailEnviado = await enviaMail({ruta: rutas.envia + v.datos.email});
 
 		// Redirige
-		location.href = v.mailEnviado ? v.urlExitoso : v.urlFallido;
+		location.href = mailEnviado ? v.urlExitoso : v.urlFallido;
 
 		// Fin
 		return;
@@ -150,10 +150,12 @@ window.addEventListener("load", async () => {
 	if (olvidoContr && !v.datosDeSession.validarDatosPerennes) {
 		v.datos.email = v.datosDeSession.datos.email;
 
-		// Redirige
+		// Envío de mail más cartel de progreso
 		DOM.submit.classList.add("inactivo");
-		await enviaMail();
-		location.href = v.mailEnviado ? v.urlExitoso : v.urlFallido;
+		const mailEnviado = await enviaMail({ruta: rutas.envia + v.datos.email});
+
+		// Redirige
+		location.href = mailEnviado ? v.urlExitoso : v.urlFallido;
 	}
 
 	// Inactiva 'submit' si hay algún error
@@ -175,4 +177,3 @@ const rutas = {
 	valida: rutaInicio + "/validaciones/?datos=",
 	envia: rutaInicio + "/envio-de-mail/?email=",
 };
-let v;
