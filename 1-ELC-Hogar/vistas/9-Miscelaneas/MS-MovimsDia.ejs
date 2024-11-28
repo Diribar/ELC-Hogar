@@ -14,7 +14,7 @@
 				<!-- Persona -->
 				<td class="cliente <%= navegDia.esUser ? 'esU' : 'esV' %>">
 					<!-- Ícono ver / ocultar -->
-					<span <% if (!navegDia.cantPers) { %>class="invisible"<% } %>><i class="fa-solid fa-circle-plus"></i></span>
+					<span class="ver<% if (!navegDia.cantPers) { %> ocultar<% } %>"><i class="fa-solid fa-circle-plus"></i></span>
 
 					<!-- Código de cliente -->
 					<span class="codigo"><% if (!navegDia.cantPers) { %><%= navegDia.persona %><% } %></span>
