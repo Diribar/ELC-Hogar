@@ -35,7 +35,7 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		obtieneLosValores: () => {
-			v.datosUrl = "";
+			v.datosUrl = "/?";
 			DOM.inputs.forEach((input, i) => {
 				if (i) v.datosUrl += "&";
 				v.datosUrl += input.name + "=" + encodeURIComponent(input.value);
@@ -82,15 +82,15 @@ window.addEventListener("load", async () => {
 			if (DOM.submit.className.includes("inactivo")) return this.actualizaVarios();
 
 			// Genera los datos para el envío del mail
-			// const APIs = [{ruta: , duracion: 9000}];
+			const ruta = rutas.inicioAPI + rutas.enviaMail;
+			const APIs = [{ruta: v.datosUrl, duracion: 9000}];
 
 			// Envío de mail más cartel de progreso
 			DOM.submit.classList.add("inactivo");
 			const mailEnviado = await barraProgreso(ruta, APIs);
 
 			// Redirige
-			location.href = mailEnviado ? v.urlExitoso : v.urlFallido;
-
+			location.href = rutas.inicioVista + (mailEnviado ? rutas.envioExitoso : rutas.envioFallido);
 			return;
 		},
 	};
@@ -124,8 +124,11 @@ window.addEventListener("load", async () => {
 // Variables
 const campos = ["asunto", "comentario"];
 const rutas = {
-	inicio: "/institucional/api/in-contactanos-",
-	validaDatos: "valida/?",
-	enviaMail: "envia-mail/?",
+	inicioAPI: "/institucional/api/in-contactanos-",
+	validaDatos: "valida",
+	enviaMail: "envia-mail",
+	inicioVista: "/institucional/contactanos/",
+	envioExitoso: "envio-exitoso",
+	envioFallido: "envio-fallido",
 };
 let v = {};
