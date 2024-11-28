@@ -9,10 +9,14 @@ body {
 				margin-top: var(--margen); max-height: calc(var(--altoCuerpoMenosTitulo) - var(--margen) * 2);
 				overflow: auto; border-radius: 10px;
 				table {
-					border-spacing: 10px 5px; margin: auto;
+					border-spacing: 10px 7px; margin: auto;
 					background-color: var(--gris-claro);
 					.cliente, .ruta {text-align: left;}
 					.fecha {text-align: center;}
+					tr {
+						font-size: 1.2rem;
+						i {font-size: 1rem;}
+					}
 				}
 			}
 		}
