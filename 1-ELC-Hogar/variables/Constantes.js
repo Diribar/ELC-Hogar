@@ -260,7 +260,7 @@ module.exports = {
 		],
 	},
 	beneficiosLogin:[
-		"Te permite marcar tus preferencias por película.<ul><li><em>La quiero ver</em></li><li><em>Ya la vi</em></li><li><em>No me interesa</em></li></ul>",
-		"También te permite entre otras cosas:<ul><li>Ver tus mismas preferencias en distintos dispositivos</li><li>Ver tus últimas películas consultadas</li><li>Dar de alta contenido en nuestra base de datos</li></ul>",
+		"Te permite marcar tus preferencias por película: la quiero ver, ya la vi, no me interesa.",
+		"También te permite entre otras cosas:<ul><li>Ver tus mismas preferencias en distintos dispositivos.</li><li>Ver el listado de tus últimas películas consultadas.</li><li>Dar de alta contenido en nuestro sitio.</li></ul>",
 	]
 };
