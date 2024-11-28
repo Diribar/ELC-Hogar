@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let DOM = {
+	const DOM = {
 		// General
 		form: document.querySelector("form"),
 		button: document.querySelector("form button[type='submit']"),
@@ -20,8 +20,8 @@ window.addEventListener("load", async () => {
 		progreso: document.querySelector("#cartelProgreso #progreso"),
 	};
 
-	for (let input of DOM.inputs) DOM[input.name] = document.querySelector(".inputError .input[name='" + input.name + "']");
-	let v = {
+	for (const input of DOM.inputs) DOM[input.name] = document.querySelector(".inputError .input[name='" + input.name + "']");
+	const v = {
 		// Envío de mail
 		urlExitoso: pathname.slice(0, indice) + "/envio-exitoso-de-mail/?codigo=" + codigo,
 		urlFallido: pathname.slice(0, indice) + "/envio-fallido-de-mail/?codigo=" + codigo,
@@ -35,7 +35,7 @@ window.addEventListener("load", async () => {
 	};
 
 	// Funciones -----------------------------
-	let mail = {
+	const mail = {
 		valida: async () => {
 			// Variables
 			const email = olvidoContr // toma el mail dependiendo de la ruta
@@ -45,7 +45,7 @@ window.addEventListener("load", async () => {
 
 			// Obtiene la información de los datos perennes
 			if (olvidoContr && v.datosDeSession.validarDatosPerennes)
-				for (let campo of camposPerennes) if (DOM[campo]) v.datos[campo] = DOM[campo].value;
+				for (const campo of camposPerennes) if (DOM[campo]) v.datos[campo] = DOM[campo].value;
 
 			// Averigua si hay errores
 			v.errores = await fetch(rutas.valida + JSON.stringify(v.datos)).then((n) => n.json());
@@ -64,7 +64,7 @@ window.addEventListener("load", async () => {
 			return;
 		},
 	};
-	let cartelProgreso = async () => {
+	const cartelProgreso = async () => {
 		// Muestra el cartel
 		DOM.cartelProgreso.classList.remove("ocultar");
 		DOM.cartelProgreso.classList.remove("disminuye");
@@ -91,7 +91,7 @@ window.addEventListener("load", async () => {
 		// Fin
 		return;
 	};
-	let muestraErrores = () => {
+	const muestraErrores = () => {
 		// Campos con 'fa-solid'
 		v.inputs.forEach((campo, indice) => {
 			// Si no se revisó el campo, interrumpe la función
@@ -121,12 +121,12 @@ window.addEventListener("load", async () => {
 		// Fin
 		return;
 	};
-	let botonSubmit = () => {
+	const botonSubmit = () => {
 		// Variables
-		let OK = Array.from(DOM.iconosOK)
+		const OK = Array.from(DOM.iconosOK)
 			.map((n) => n.className)
 			.every((n) => !n.includes("ocultar"));
-		let error = Array.from(DOM.iconosError)
+		const error = Array.from(DOM.iconosError)
 			.map((n) => n.className)
 			.every((n) => n.includes("ocultar"));
 
