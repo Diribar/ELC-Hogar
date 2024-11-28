@@ -2,7 +2,7 @@
 // Variables
 const valida = require("./IN-FN-Validar");
 
-// *********** Controlador ***********
+// Controlador
 module.exports = {
 	institucional: (req, res) => {
 		// Variables
@@ -31,7 +31,7 @@ module.exports = {
 			const urlAnterior = req.session.urlAnterior;
 
 			// Obtiene información para la vista
-			const dataEntry = req.session.contactanos ? req.session.contactanos : {};
+			const dataEntry = req.session.contactanos || {};
 
 			// Va a la vista
 			return res.render("CMP-0Estructura", {tema, codigo, titulo, dataEntry, urlAnterior});
@@ -91,18 +91,20 @@ module.exports = {
 			// Variables
 			const direccion = req.session.urlFueraDeContactanos;
 			if (!req.session.contactanos) return res.redirect(direccion);
-			const {asunto, comentario} = req.session.contactanos;
+			const {asunto} = req.session.contactanos;
 			const asuntoMail = asuntosContactanos.find((n) => n.codigo == asunto).descripcion;
 			delete req.session.contactanos;
 
 			// Información
+			const primerMensaje = ["Le hemos enviado tu mensaje a nuestro equipo, con el asunto <em>" + asuntoMail + "</em>."];
+			const segundoMensaje = req.session.usuario
+				? "Incluimos tu nombre y dirección de mail, para que puedas recibir una respuesta."
+				: "Tené en cuenta que como no estabas logueado, no podremos responderte.";
+
 			const informacion = {
-				mensajes: [
-					"Hemos enviado tu mensaje al equipo de ELC, con el asunto '" + asuntoMail + "'",
-					"Incluimos tu nombre y dirección de mail, para que puedas recibir una respuesta",
-				],
-				iconos: [{...variables.vistaEntendido(direccion), titulo: "Entendido"}],
 				titulo: "Envío exitoso de mail",
+				mensajes: [primerMensaje, segundoMensaje],
+				iconos: [{...variables.vistaEntendido(direccion), titulo: "Entendido"}],
 				check: true,
 			};
 
