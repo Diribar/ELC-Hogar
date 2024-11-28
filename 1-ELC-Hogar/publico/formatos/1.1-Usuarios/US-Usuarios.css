@@ -10,7 +10,7 @@
 		/* overflow: auto; */
 
 		/* Título principal */
-		#tituloPrincipal, h1 {align-self: center !important;}
+		#tituloPrincipal, h1 {align-self: center !important; text-align: center;}
 		h1 {margin: 0; margin-bottom: 10px; font-size: 1.5em; color: var(--amarillo-claro);}
 
 		/* Íconos y Mensajes de Error */

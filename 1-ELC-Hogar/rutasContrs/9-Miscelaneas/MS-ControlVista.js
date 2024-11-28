@@ -51,18 +51,24 @@ module.exports = {
 		let usuarios = baseDeDatos.obtieneTodos("usuarios");
 		[navegsDia, usuarios] = await Promise.all([navegsDia, usuarios]);
 
-		// Procesa los datos
+		// Modifica los datos
 		navegsDia.forEach((navegDia, i) => {
 			// Variables
+			const cliente_id = navegDia.cliente_id;
 			const persona = Number(navegDia.cliente_id.slice(1));
-			const cantPorPers = navegDia.cantPorPers;
 			const esUser = navegDia.cliente_id.startsWith("U");
 			const hora = comp.fechaHora.horarioUTC(navegDia.fecha).split("hs")[0];
-			const ruta = procesos.navegsDia.ruta(navegDia.ruta);
+			const {iconosArray, distintivo} = procesos.navegsDia.ruta(navegDia.ruta);
+			const iconosHTML = iconosArray ? iconosArray.join(" ") : null;
+			const ruta = navegDia.ruta;
 
 			// Fin
-			navegsDia[i] = {persona, cantPorPers, esUser, hora, ruta};
+			navegsDia[i] = {cliente_id, persona, esUser, hora, ruta, iconosHTML, iconosArray, distintivo};
 		});
+		navegsDia = navegsDia.filter((n) => n.distintivo || n.iconosArray);
+
+		// Agrega un registro resumen por usuario
+		navegsDia = procesos.navegsDia.resumen(navegsDia);
 
 		// Fin
 		// return res.send(navegsDia);

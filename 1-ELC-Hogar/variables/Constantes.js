@@ -18,8 +18,8 @@ const iconos = {
 	...{agregar: "fa-circle-plus", calificar: "fa-chart-simple", eliminar: "fa-trash-can"},
 	...{detalle: "fa-circle-info", edicion: "fa-pen", edicionCambiada: "fa-arrow-right-long", rotar: "fa-rotate-90"},
 	...{graficos: "fa-chart-line", chart: "fa-chart-pie", columnas: "fa-chart-simple", area: "fa-chart-area"},
-	...{prod: "fa-video", rclv: "fa-child", link: "fa-link"},
-	...{mail: "fa-envelope", mantenim: "fa-tools", revision: "fa-user-graduate"},
+	...{prod: "fa-video", rclv: "fa-child", link: "fa-link", instituc: "fa-building-columns", mail: "fa-envelope", mantenim: "fa-tools"},
+	...{login:"fa-circle-user", altaUser: "fa-user-plus", revision: "fa-user-graduate"},
 };
 
 module.exports = {
@@ -205,14 +205,22 @@ module.exports = {
 			["busqueda-rapida", "busquedaRapida", "fa-magnifying-glass"],
 		],
 		includes: [
-			["/detalle/p", "detalleProd", iconos.detalle, iconos.prod],
-			["/detalle/r", "detalleRclv", iconos.detalle, iconos.rclv],
-			["/edicion/p", "edicionProd", iconos.edicion, iconos.prod],
-			["/calificar/p", "calificarProd", iconos.calificar],
-			["/edicion/r", "edicionDeRclv", iconos.edicion, iconos.rclv],
+			// Productos
+			["/detalle/p", "detalleProd", iconos.prod, iconos.detalle],
+			["/edicion/p", "edicionProd", iconos.prod, iconos.edicion],
+			["/calificar/p", "calificarProd", iconos.prod, iconos.calificar],
+			["/links/mirar/l", "mirarLink", iconos.prod, "fa-couch"],
+
+			// RCLVs
+			["/detalle/r", "detalleRclv", iconos.rclv, iconos.detalle],
+			["/edicion/r", "edicionDeRclv", iconos.rclv, iconos.edicion],
+
+			// Apto Input
 			["/agregar-", "agregarProd", iconos.agregar, iconos.prod],
 			["/agregar/r", "agregarRclv", iconos.agregar, iconos.rclv],
 			["/abm-links/p", "abmLinks", iconos.agregar, iconos.link],
+
+			// Familia
 			["/historial", "historial"],
 			["/inactivar", "inactivar"],
 			["/recuperar", "recuperar"],
@@ -220,18 +228,19 @@ module.exports = {
 		],
 		startsWith: [
 			// Usuarios
-			["/usuarios/login", "login", "fa-circle-user"],
-			["/usuarios/alta-mail", "altaDeMail"],
-			["/usuarios/editables", "altaDeMail"],
-			["/usuarios/editables-bienvenido", "altaDeMail"],
-			["/usuarios/perennes", "perennes"],
-			["/usuarios/perennes-bienvenido", "perennes"],
+			["/usuarios/login", "login", iconos.login],
+			["/usuarios/alta-mail", "altaDeMail", iconos.altaUser],
+			["/usuarios/editables", "altaDeMail", iconos.altaUser],
+			["/usuarios/editables-bienvenido", "altaDeMail", iconos.altaUser],
+			["/usuarios/perennes", "perennes", iconos.altaUser],
+			["/usuarios/perennes-bienvenido", "perennes", iconos.altaUser],
+
+			// Institucional
+			["/institucional/contactanos", "contactanos", iconos.instituc, iconos.mail],
+			["/institucional", "institucional", iconos.instituc, "fa-question"],
 
 			// Otros
 			["/consultas", "consultas", "fa-film"],
-			["/links/mirar/l", "mirarLinks", "fa-couch", iconos.prod],
-			["/institucional/contactanos", "contactanos", "fa-cross", iconos.mail],
-			["/institucional", "institucional", "fa-building-columns"],
 			["/revision", "revision", iconos.revision],
 			["/mantenimiento", "mantenimiento", iconos.mantenim],
 			["/graficos", "graficos", iconos.graficos],
@@ -250,4 +259,8 @@ module.exports = {
 			"/usuarios",
 		],
 	},
+	beneficiosLogin:[
+		"Te permite marcar tus preferencias por película.<ul><li><em>La quiero ver</em></li><li><em>Ya la vi</em></li><li><em>No me interesa</em></li></ul>",
+		"También te permite entre otras cosas:<ul><li>Ver tus mismas preferencias en distintos dispositivos</li><li>Ver tus últimas películas consultadas</li><li>Dar de alta contenido en nuestra base de datos</li></ul>",
+	]
 };

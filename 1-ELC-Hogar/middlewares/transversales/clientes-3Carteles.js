@@ -49,7 +49,7 @@ module.exports = async (req, res, next) => {
 			informacion = {
 				iconos: [
 					{...variables.vistaEntendido(req.session.urlActual), autofocus: true},
-					{clase: "fa-circle-user amarillo", link: "/usuarios/login", titulo: "Ir a login"},
+					{clase: iconos.login + " amarillo", link: "/usuarios/login", titulo: "Ir a login"},
 				],
 				titulo: "Beneficios de loguearte",
 			};
@@ -58,14 +58,11 @@ module.exports = async (req, res, next) => {
 			informacion = {
 				iconos: [
 					{...variables.vistaEntendido(req.session.urlActual), autofocus: true},
-					{clase: "fa-user-plus amarillo", link: "/usuarios/alta-mail", titulo: "Crear un usuario"},
+					{clase: iconos.altaUser + " amarillo", link: "/usuarios/alta-mail", titulo: "Crear un usuario"},
 				],
-				titulo: "Beneficios de crear un usuario",
+				titulo: "Beneficios de crearte un usuario",
 			};
-		informacion.mensajes = [
-			"Te permite marcar tus preferencias por película:<ul><li><em>la quiero ver</em></li><li><em>ya la vi</em></li><li><em>no me interesa</em></li></ul>",
-			"También te permite entre otras cosas:<ul><li>Ver tus preferencias en distintos dispositivos (ej: celular y laptop)</li><li>Ver tus últimas películas consultadas</li></ul>",
-		];
+		informacion.mensajes = beneficiosLogin;
 		informacion.trabajando = true;
 
 		// Actualiza la tabla usuario/visita y la variable cliente

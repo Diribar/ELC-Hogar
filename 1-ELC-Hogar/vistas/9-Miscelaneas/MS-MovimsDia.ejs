@@ -10,24 +10,24 @@
 		</thead>
 		<tbody>
 			<% for (let navegDia of navegsDia) { %>
-			<tr <% if (!navegDia.cantPorPers) { %>class="ocultar"<% } %>>
+			<tr id="<%= navegDia.cliente_id %>" class="<%- navegDia.cantPers ? 'resumen' : 'ocultar' %>">
 				<!-- Persona -->
 				<td class="cliente <%= navegDia.esUser ? 'esU' : 'esV' %>">
 					<!-- Ícono ver / ocultar -->
-					<span <% if (!navegDia.cantPorPers) { %>class="invisible"<% } %>><i class="fa-solid fa-circle-plus"></i></span>
+					<span class="mostrar<% if (!navegDia.cantPers) { %> ocultar<% } %>"><i class="fa-solid fa-circle-plus"></i></span>
 
 					<!-- Código de cliente -->
-					<span class="codigo"><% if (!navegDia.cantPorPers) { %><%= navegDia.persona %><% } %></span>
+					<span class="codigo"><% if (!navegDia.cantPers) { %><%= navegDia.persona %><% } %></span>
 
 					<!-- Cantidad de navegaciones -->
-					<span class="cantNavegs"><% if (navegDia.cantPorPers) { %><%= navegDia.cantPorPers %><% } %></span>
+					<span class="cantNavegs"><% if (navegDia.cantPers) { %><%= navegDia.cantPers %><% } %></span>
 				</td>
 
 				<!-- Fecha -->
 				<td class="fecha"><%= navegDia.hora %></td>
 
 				<!-- Ruta -->
-				<td class="ruta"><%- navegDia.ruta %></td>
+				<td class="ruta"><%- navegDia.iconosHTML || navegsDia.distintivo %><%- navegDia.nombre %></td>
 			</tr>
 			<% } %>
 		</tbody>

@@ -12,7 +12,7 @@ module.exports = {
 		const codigo = tarea.slice(1) == "alta-mail" ? "altaMail" : "olvidoContr";
 		const altaMail = codigo == "altaMail";
 		const olvidoContr = codigo == "olvidoContr";
-		const titulo = altaMail ? "Creación de Usuario - Mail" : olvidoContr ? "Olvido de Contraseña" : "";
+		const titulo = altaMail ? "Alta de Usuario - Mail" : olvidoContr ? "Olvido de Contraseña" : "";
 		const datosGrales = altaMail ? req.session.altaMail : olvidoContr ? req.session.olvidoContr : {};
 
 		// Info para la vista
@@ -43,7 +43,7 @@ module.exports = {
 
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
-				...{tema, codigo, titulo: "Creación de Usuario - Datos Editables"},
+				...{tema, codigo, titulo: "Alta de Usuario - Datos Editables"},
 				...{dataEntry, errores, avatar, hablaHispana, hablaNoHispana, generos},
 				urlSalir: req.session.urlSinLogin,
 			});
@@ -120,7 +120,7 @@ module.exports = {
 			// Vista
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, dataEntry, errores, hablaHispana, hablaNoHispana},
-				titulo: "Creación de Usuario - Datos Perennes",
+				titulo: "Alta de Usuario - Datos Perennes",
 				urlSalir: req.session.urlSinLogin,
 			});
 		},
@@ -170,7 +170,33 @@ module.exports = {
 	// Varios
 	loginCompleto: async (req, res) => {
 		// Envía a Login si no está logueado
-		if (!req.session.usuario) return res.redirect("/usuarios/login");
+		if (!req.session.usuario) {
+			// Si es un usuario sin login, redirige a login
+
+			if (req.session.cliente.cliente_id.startsWith("U")) return res.redirect("/usuarios/login");
+
+			// Crea sub-mensajes
+			let mensajesBeneficiosLogin = "<ul>";
+			for (let mensaje of beneficiosLogin) mensajesBeneficiosLogin += "<li>" + mensaje + "</li>";
+			mensajesBeneficiosLogin += "</ul>";
+
+			// Muestra cartel de aviso
+			const informacion = {
+				titulo: "Login necesario",
+				mensajes: [
+					"Ciertas tareas requieren un compromiso de tu parte.",
+					"Para acceder a ellas, necesitamos que te crees un usuario.",
+					"Nos comprometemos a no enviarte mensajes no solicitados por vos.",
+					"Beneficios de crearte un usuario y loguearte:" + mensajesBeneficiosLogin,
+				],
+				iconos: [
+					variables.vistaAnterior(req.session.urlSinLogin), // retroceder
+					{clase: iconos.login, link: "/usuarios/login", titulo: "Ir al Login / Alta de usuario"},
+				],
+				trabajando: true,
+			};
+			return res.render("CMP-0Estructura", {informacion});
+		}
 
 		// Variables
 		const statusUsuario_id = req.session.usuario.statusRegistro_id;
@@ -385,7 +411,7 @@ module.exports = {
 					"Con el ícono de abajo regresás a la vista anterior.",
 				],
 				iconos: [{...variables.vistaEntendido("/usuarios/alta-mail"), titulo: "Entendido e ir a la vista anterior"}],
-				titulo: altaMail ? "Creación de Usuario - Falla" : olvidoContr ? "Actualización de Contraseña fallida" : "",
+				titulo: altaMail ? "Alta de Usuario - Falla" : olvidoContr ? "Actualización de Contraseña fallida" : "",
 			};
 
 			// Vista
