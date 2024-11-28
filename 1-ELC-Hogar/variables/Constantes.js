@@ -18,7 +18,7 @@ const iconos = {
 	...{agregar: "fa-circle-plus", calificar: "fa-chart-simple", eliminar: "fa-trash-can"},
 	...{detalle: "fa-circle-info", edicion: "fa-pen", edicionCambiada: "fa-arrow-right-long", rotar: "fa-rotate-90"},
 	...{graficos: "fa-chart-line", chart: "fa-chart-pie", columnas: "fa-chart-simple", area: "fa-chart-area"},
-	...{prod: "fa-video", rclv: "fa-child", link: "fa-link", instituc: "fa-cross", mail: "fa-envelope", mantenim: "fa-tools"},
+	...{prod: "fa-video", rclv: "fa-child", link: "fa-link", instituc: "fa-building-columns", mail: "fa-envelope", mantenim: "fa-tools"},
 	...{altaUser: "fa-user-plus", revision: "fa-user-graduate"},
 };
 
@@ -209,7 +209,7 @@ module.exports = {
 			["/detalle/p", "detalleProd", iconos.prod, iconos.detalle],
 			["/edicion/p", "edicionProd", iconos.prod, iconos.edicion],
 			["/calificar/p", "calificarProd", iconos.prod, iconos.calificar],
-			["/links/mirar/l", "mirarLinks", iconos.prod, "fa-couch"],
+			["/links/mirar/l", "mirarLink", iconos.prod, "fa-couch"],
 
 			// RCLVs
 			["/detalle/r", "detalleRclv", iconos.rclv, iconos.detalle],
@@ -237,7 +237,7 @@ module.exports = {
 
 			// Institucional
 			["/institucional/contactanos", "contactanos", iconos.instituc, iconos.mail],
-			["/institucional", "institucional", iconos.instituc, "fa-building-columns"],
+			["/institucional", "institucional", iconos.instituc, "fa-question"],
 
 			// Otros
 			["/consultas", "consultas", "fa-film"],
