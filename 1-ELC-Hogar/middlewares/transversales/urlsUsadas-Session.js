@@ -38,14 +38,15 @@ module.exports = (req, res, next) => {
 	// Condiciones - urlSinLogin
 	const noAgregar = !urlAnterior.includes("/agregar");
 	const noGrafico = !urlAnterior.includes("/graficos/");
-	const urlSinLogin = urlFueraDeUsuarios && urlSinCaptura && noAgregar && noGrafico;
+	const noContactanos = !urlAnterior.includes("/contactanos");
+	const urlSinLogin = urlFueraDeUsuarios && urlSinCaptura && noAgregar && noGrafico && noContactanos;
 
 	// urlsGuardadas
 	const urlsGuardadas = {
 		// Temas de usuario
 		urlFueraDeUsuarios,
 		urlSinLogin,
-		urlFueraDeContactanos: urlFueraDeUsuarios && !urlAnterior.includes("/contactanos"),
+		urlFueraDeContactanos: urlFueraDeUsuarios && noContactanos,
 
 		// Temas de captura
 		urlSinParametros,
