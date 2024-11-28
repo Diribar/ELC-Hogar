@@ -19,7 +19,6 @@ window.addEventListener("load", async () => {
 		cartelProgreso: document.querySelector("#cartelProgreso"),
 		progreso: document.querySelector("#cartelProgreso #progreso"),
 	};
-
 	for (const input of DOM.inputs) DOM[input.name] = document.querySelector(".inputError .input[name='" + input.name + "']");
 	const v = {
 		// Envío de mail
@@ -35,65 +34,83 @@ window.addEventListener("load", async () => {
 	};
 
 	// Funciones
-	const validaMail = async () => {
-		// Variables
-		const email = olvidoContr // toma el mail dependiendo de la ruta
-			? v.datosDeSession.datos.email // lo toma del BE, no de la vista
-			: DOM.email.value;
-		v.datos = {email};
+	const FN = {
+		validaMail: async () => {
+			// Variables
+			const email = olvidoContr // toma el mail dependiendo de la ruta
+				? v.datosDeSession.datos.email // lo toma del BE, no de la vista
+				: DOM.email.value;
+			v.datos = {email};
 
-		// Obtiene la información de los datos perennes
-		if (olvidoContr && v.datosDeSession.validarDatosPerennes)
-			for (const campo of camposPerennes) if (DOM[campo]) v.datos[campo] = DOM[campo].value;
+			// Obtiene la información de los datos perennes
+			if (olvidoContr && v.datosDeSession.validarDatosPerennes)
+				for (const campo of camposPerennes) if (DOM[campo]) v.datos[campo] = DOM[campo].value;
 
-		// Averigua si hay errores
-		v.errores = await fetch(rutas.valida + JSON.stringify(v.datos)).then((n) => n.json());
+			// Averigua si hay errores
+			v.errores = await fetch(rutas.valida + JSON.stringify(v.datos)).then((n) => n.json());
 
-		// Fin
-		return;
-	};
-	const actualizaLosErrores = () => {
-		// Campos con 'fa-solid'
-		v.inputs.forEach((campo, indice) => {
-			// Si no se revisó el campo, interrumpe la función
-			if (!Object.keys(v.errores).includes(campo)) return;
+			// Fin
+			return;
+		},
+		actualizaLosErrores: function () {
+			// Campos con 'fa-solid'
+			v.inputs.forEach((campo, indice) => {
+				// Si no se revisó el campo, interrumpe la función
+				if (!Object.keys(v.errores).includes(campo)) return;
 
-			// Actualiza el mensaje de error
-			DOM.mensajesError[indice].innerHTML = v.errores[campo];
+				// Actualiza el mensaje de error
+				DOM.mensajesError[indice].innerHTML = v.errores[campo];
 
-			// Muestra los íconos de OK y Error
-			v.errores[campo]
-				? DOM.iconosError[indice].classList.remove("ocultar")
-				: DOM.iconosError[indice].classList.add("ocultar");
-			v.errores[campo] ? DOM.iconosOK[indice].classList.add("ocultar") : DOM.iconosOK[indice].classList.remove("ocultar");
-		});
+				// Muestra los íconos de OK y Error
+				v.errores[campo]
+					? DOM.iconosError[indice].classList.remove("ocultar")
+					: DOM.iconosError[indice].classList.add("ocultar");
+				v.errores[campo]
+					? DOM.iconosOK[indice].classList.add("ocultar")
+					: DOM.iconosOK[indice].classList.remove("ocultar");
+			});
 
-		// Credenciales
-		if (Object.keys(v.errores).includes("credenciales")) {
-			DOM.mensajeErrorCreds.innerHTML = v.errores.credenciales;
-			v.errores.credenciales
-				? DOM.mensajeErrorCreds.classList.remove("ocultar")
-				: DOM.mensajeErrorCreds.classList.add("ocultar");
-		}
+			// Credenciales
+			if (Object.keys(v.errores).includes("credenciales")) {
+				DOM.mensajeErrorCreds.innerHTML = v.errores.credenciales;
+				v.errores.credenciales
+					? DOM.mensajeErrorCreds.classList.remove("ocultar")
+					: DOM.mensajeErrorCreds.classList.add("ocultar");
+			}
 
-		// Botón Submit
-		actualizaBotonSubmit();
+			// Botón Submit
+			this.actualizaBotonSubmit();
 
-		// Fin
-		return;
-	};
-	const actualizaBotonSubmit = () => {
-		// Variables
-		const OK = Array.from(DOM.iconosOK)
-			.map((n) => n.className)
-			.every((n) => !n.includes("ocultar"));
-		const error = Array.from(DOM.iconosError)
-			.map((n) => n.className)
-			.every((n) => n.includes("ocultar"));
+			// Fin
+			return;
+		},
+		actualizaBotonSubmit: () => {
+			// Variables
+			const OK = Array.from(DOM.iconosOK)
+				.map((n) => n.className)
+				.every((n) => !n.includes("ocultar"));
+			const error = Array.from(DOM.iconosError)
+				.map((n) => n.className)
+				.every((n) => n.includes("ocultar"));
 
-		// Fin
-		OK && error ? DOM.submit.classList.remove("inactivo") : DOM.submit.classList.add("inactivo");
-		return;
+			// Fin
+			OK && error ? DOM.submit.classList.remove("inactivo") : DOM.submit.classList.add("inactivo");
+			return;
+		},
+		submit: async () => {
+			// Genera los datos para el envío del mail
+			const APIs = [{ruta: v.datos.email, duracion: 9000}];
+
+			// Envío de mail más cartel de progreso
+			DOM.submit.classList.add("inactivo");
+			v.mailEnviado = await barraProgreso(rutas.envia, APIs);
+
+			// Redirige
+			location.href = mailEnviado ? v.urlExitoso : v.urlFallido;
+
+			// Fin
+			return;
+		},
 	};
 
 	// Acciones 'input'
@@ -118,7 +135,7 @@ window.addEventListener("load", async () => {
 
 		// Actualiza los errores
 		v.errores.hay = Object.values(v.errores).some((n) => !!n);
-		actualizaLosErrores();
+		FN.actualizaLosErrores();
 
 		// Fin
 		return;
@@ -129,21 +146,11 @@ window.addEventListener("load", async () => {
 		e.preventDefault();
 
 		// Averigua si hay errores
-		await validaMail();
-		actualizaLosErrores();
+		await FN.validaMail();
+		FN.actualizaLosErrores();
 
 		// Si el botón está inactivo interrumpe la función
-		if (DOM.submit.className.includes("inactivo") || v.errores.hay) return;
-
-		// Genera los datos para el envío del mail
-		const APIs = [{ruta: v.datos.email, duracion: 9000}];
-
-		// Envío de mail más cartel de progreso
-		DOM.submit.classList.add("inactivo");
-		const mailEnviado = await barraProgreso(rutas.envia, APIs);
-
-		// Redirige
-		location.href = mailEnviado ? v.urlExitoso : v.urlFallido;
+		if (!DOM.submit.className.includes("inactivo") && !v.errores.hay) return submit();
 
 		// Fin
 		return;
@@ -152,20 +159,12 @@ window.addEventListener("load", async () => {
 	// Start-up - Si se olvidó la contraseña y no se deben validar los datos perennes, redirige automáticamente
 	if (olvidoContr && !v.datosDeSession.validarDatosPerennes) {
 		v.datos.email = v.datosDeSession.datos.email;
-
-		// Genera los datos para el envío del mail
-		const APIs = [{ruta: v.datos.email, duracion: 9000}];
-
-		// Envío de mail más cartel de progreso
-		DOM.submit.classList.add("inactivo");
-		const mailEnviado = await barraProgreso(rutas.envia, APIs);
-
-		// Redirige
-		location.href = mailEnviado ? v.urlExitoso : v.urlFallido;
+		submit();
+		return
 	}
 
 	// Inactiva 'submit' si hay algún error
-	actualizaBotonSubmit();
+	FN.actualizaBotonSubmit();
 });
 
 // Variables
