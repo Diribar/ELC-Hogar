@@ -14,7 +14,7 @@ module.exports = {
 		},
 		enviaMail: async (req, res) => {
 			// Variables
-			const datosForm = req.body;
+			const datosForm = req.query;
 
 			// Si hubo errores, interrumpe la función
 			const errores = await valida.contactanos(datosForm);
