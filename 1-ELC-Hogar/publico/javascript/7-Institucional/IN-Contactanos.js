@@ -79,18 +79,18 @@ window.addEventListener("load", async () => {
 			// Consecuencias
 			hayErrores ? DOM.submit.classList.add("inactivo") : DOM.submit.classList.remove("inactivo");
 		},
-		submitForm: async function (e) {
+		submit: async function (e) {
 			e.preventDefault();
 
 			// Si el botón submit está inactivo, interrumpe la función
 			if (DOM.submit.className.includes("inactivo")) return this.actualizaVarios();
 
-			// Cartel mientras se recibe la respuesta
+			// Envío de mail más cartel de progreso
 			DOM.submit.classList.add("inactivo");
-			await enviaMail();
+			const mailEnviado = await barraProgreso(ruta, APIs);
 
 			// Redirige
-			location.href = v.mailEnviado ? v.urlExitoso : v.urlFallido;
+			location.href = mailEnviado ? v.urlExitoso : v.urlFallido;
 
 			return;
 		},
@@ -115,8 +115,8 @@ window.addEventListener("load", async () => {
 	});
 
 	// Submit
-	DOM.form.addEventListener("submit", async (e) => FN.submitForm(e));
-	DOM.submit.addEventListener("click", async (e) => FN.submitForm(e));
+	DOM.form.addEventListener("submit", async (e) => FN.submit(e));
+	DOM.submit.addEventListener("click", async (e) => FN.submit(e));
 
 	// Status inicial
 	if (Array.from(DOM.inputs).some((n) => n.value)) await FN.actualizaVarios();

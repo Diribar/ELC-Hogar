@@ -14,12 +14,12 @@ const usAptoInput = require("../../middlewares/porUsuario/usAptoInput");
 const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
 
 // API
-router.get("/api/in-valida-contactanos", API.validaContactanos);
+router.get("/api/in-valida-contactanos", API.contactanos.valida);
+router.get("/api/contactanos", API.contactanos.enviaMail);
 
 // Vistas - se quitó el 'aptoUsuario', para probar la experiencia
 // router.get("/contactanos", aptoUsuario, vista.contactanos.form);
 router.get("/contactanos", vista.contactanos.form);
-router.post("/contactanos", vista.contactanos.guardar);
 router.get("/contactanos/envio-exitoso", vista.contactanos.envioExitoso);
 router.get("/contactanos/envio-fallido", vista.contactanos.envioFallido);
 
