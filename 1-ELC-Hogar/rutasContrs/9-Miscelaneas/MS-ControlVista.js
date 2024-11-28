@@ -65,6 +65,7 @@ module.exports = {
 			// Fin
 			navegsDia[i] = {cliente_id, persona, esUser, hora, ruta, iconosHTML, iconosArray, distintivo};
 		});
+		navegsDia = navegsDia.filter((n) => n.distintivo || n.iconosArray);
 
 		// Agrega un registro resumen por usuario
 		navegsDia = procesos.navegsDia.resumen(navegsDia);
