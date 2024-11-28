@@ -5,9 +5,8 @@ body {
 		#cuerpo {
 			flex-direction: column; align-items: center;
 			#tabla {
-				--margen: 10px;
-				margin-top: var(--margen); max-height: calc(var(--altoCuerpoMenosTitulo) - var(--margen) * 2);
-				overflow: auto; border-radius: 10px;
+				position: absolute; translate: 0 -50%; top: calc(50% + var(--altoTituloPrincipal) / 2);
+				max-height: calc(var(--altoCuerpoMenosTitulo) - 20px); overflow: auto; border-radius: 10px;
 				table {
 					border-spacing: 10px 7px; margin: auto;
 					background-color: var(--gris-claro);
