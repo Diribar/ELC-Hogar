@@ -58,11 +58,12 @@ module.exports = {
 			const persona = Number(navegDia.cliente_id.slice(1));
 			const esUser = navegDia.cliente_id.startsWith("U");
 			const hora = comp.fechaHora.horarioUTC(navegDia.fecha).split("hs")[0];
-			const {iconosHTML, distintivo} = procesos.navegsDia.ruta(navegDia.ruta);
-			const ruta = iconosHTML ? iconosHTML.join(" ") : distintivo ? distintivo : navegDia.ruta;
+			const {iconosArray, distintivo} = procesos.navegsDia.ruta(navegDia.ruta);
+			const iconosHTML = iconosArray ? iconosArray.join("") : null;
+			const ruta = navegDia.ruta;
 
 			// Fin
-			navegsDia[i] = {cliente_id, persona, esUser, hora, ruta, iconosHTML};
+			navegsDia[i] = {cliente_id, persona, esUser, hora, ruta, iconosHTML, iconosArray, distintivo};
 		});
 
 		// Agrega un registro resumen por usuario
