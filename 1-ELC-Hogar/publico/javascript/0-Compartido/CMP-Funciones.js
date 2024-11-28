@@ -352,7 +352,7 @@ const barraProgreso = async (pre, APIs) => {
 	DOM.cartelProgreso.classList.add("aparece");
 	DOM.cartelProgreso.classList.remove("ocultar");
 
-	// Acciones si no hay productos en 'session' - Variables
+	// Averigua la duración total
 	for (let API of APIs) duracTotal += API.duracion;
 
 	// Ejecuta las APIs
@@ -395,8 +395,8 @@ const barraProgreso = async (pre, APIs) => {
 	await pierdeTiempo(pausa);
 
 	// Oculta el cartelProgreso
-	DOM.cartelProgreso.classList.add("ocultar");
 	DOM.cartelProgreso.classList.remove("aparece");
+	DOM.cartelProgreso.classList.add("ocultar");
 
 	// Fin
 	return respuesta.json();
