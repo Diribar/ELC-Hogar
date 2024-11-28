@@ -10,11 +10,11 @@
 		</thead>
 		<tbody>
 			<% for (let navegDia of navegsDia) { %>
-			<tr <% if (!navegDia.cantPers) { %>class="ocultar"<% } %>>
+			<tr id="<%= navegDia.cliente_id %>" class="<% if (!navegDia.cantPers) { %> ocultar<% } %>">
 				<!-- Persona -->
 				<td class="cliente <%= navegDia.esUser ? 'esU' : 'esV' %>">
 					<!-- Ícono ver / ocultar -->
-					<span class="ver<% if (!navegDia.cantPers) { %> ocultar<% } %>"><i class="fa-solid fa-circle-plus"></i></span>
+					<span class="mostrar<% if (!navegDia.cantPers) { %> ocultar<% } %>"><i class="fa-solid fa-circle-plus"></i></span>
 
 					<!-- Código de cliente -->
 					<span class="codigo"><% if (!navegDia.cantPers) { %><%= navegDia.persona %><% } %></span>
