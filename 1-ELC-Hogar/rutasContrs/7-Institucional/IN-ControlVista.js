@@ -34,7 +34,7 @@ module.exports = {
 			const dataEntry = req.session.contactanos || {};
 
 			// Va a la vista
-			return res.render("CMP-0Estructura", {tema, codigo, titulo, dataEntry, urlAnterior});
+			return res.render("CMP-0Estructura", {tema, codigo, titulo, dataEntry, urlAnterior, cartelGenerico: true});
 		},
 		envioExitoso: (req, res) => {
 			// Variables
