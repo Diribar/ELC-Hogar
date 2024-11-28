@@ -4,7 +4,7 @@ window.addEventListener("load", async () => {
 	const DOM = {
 		// General
 		form: document.querySelector("form"),
-		button: document.querySelector("form button[type='submit']"),
+		submit: document.querySelector("form button[type='submit']"),
 
 		// Inputs del formulario
 		inputs: document.querySelectorAll(".inputError .input"),
@@ -121,7 +121,7 @@ window.addEventListener("load", async () => {
 			.every((n) => n.includes("ocultar"));
 
 		// Fin
-		OK && error ? DOM.button.classList.remove("inactivo") : DOM.button.classList.add("inactivo");
+		OK && error ? DOM.submit.classList.remove("inactivo") : DOM.submit.classList.add("inactivo");
 		return;
 	};
 
@@ -162,10 +162,10 @@ window.addEventListener("load", async () => {
 		actualizaLosErrores();
 
 		// Si el botón está inactivo interrumpe la función
-		if (DOM.button.className.includes("inactivo") || v.errores.hay) return;
+		if (DOM.submit.className.includes("inactivo") || v.errores.hay) return;
 
 		// Redirige
-		DOM.button.classList.add("inactivo");
+		DOM.submit.classList.add("inactivo");
 		await enviaMail();
 		location.href = v.mailEnviado ? v.urlExitoso : v.urlFallido;
 
@@ -178,7 +178,7 @@ window.addEventListener("load", async () => {
 		v.datos.email = v.datosDeSession.datos.email;
 
 		// Redirige
-		DOM.button.classList.add("inactivo");
+		DOM.submit.classList.add("inactivo");
 		await enviaMail();
 		location.href = v.mailEnviado ? v.urlExitoso : v.urlFallido;
 	}
