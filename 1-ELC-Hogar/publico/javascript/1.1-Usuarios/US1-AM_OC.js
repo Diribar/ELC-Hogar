@@ -164,9 +164,11 @@ window.addEventListener("load", async () => {
 		// Si el botón está inactivo interrumpe la función
 		if (DOM.submit.className.includes("inactivo") || v.errores.hay) return;
 
-		// Redirige
+		// Cartel mientras se recibe la respuesta
 		DOM.submit.classList.add("inactivo");
 		await enviaMail();
+
+		// Redirige
 		location.href = v.mailEnviado ? v.urlExitoso : v.urlFallido;
 
 		// Fin

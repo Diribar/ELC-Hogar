@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let DOM = {
+	const DOM = {
 		// Variables generales
 		form: document.querySelector("form"),
 		submit: document.querySelector("form #submit"),
@@ -16,17 +16,17 @@ window.addEventListener("load", async () => {
 		iconosOK: document.querySelectorAll(".inputError .fa-circle-check"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
 	};
-	let v = {
+	v = {
 		campos: ["asunto", "comentario"],
 		validaDatos: "/institucional/api/in-valida-contactanos/?",
 	};
 
 	// Funciones
-	let FN = {
+	const FN = {
 		actualizaVarios: async function () {
 			this.contador();
 			this.obtieneLosValores();
-			await this.averiguaMuestraLosErrores();
+			await this.actualizaLosErrores();
 			this.actualizaBotonSubmit();
 
 			// Fin
@@ -47,7 +47,7 @@ window.addEventListener("load", async () => {
 
 			return;
 		},
-		averiguaMuestraLosErrores: async () => {
+		actualizaLosErrores: async () => {
 			// Obtiene los errores
 			errores = await fetch(v.validaDatos + v.datosUrl).then((n) => n.json());
 
@@ -81,7 +81,18 @@ window.addEventListener("load", async () => {
 		},
 		submitForm: async function (e) {
 			e.preventDefault();
-			return DOM.submit.className.includes("inactivo") ? this.actualizaVarios() : DOM.form.submit();
+
+			// Si el botón submit está inactivo, interrumpe la función
+			if (DOM.submit.className.includes("inactivo")) return this.actualizaVarios();
+
+			// Cartel mientras se recibe la respuesta
+			DOM.submit.classList.add("inactivo");
+			await enviaMail();
+
+			// Redirige
+			location.href = v.mailEnviado ? v.urlExitoso : v.urlFallido;
+
+			return;
 		},
 	};
 
@@ -99,7 +110,7 @@ window.addEventListener("load", async () => {
 		});
 	});
 
-	DOM.form.addEventListener("change", async (e) => {
+	DOM.form.addEventListener("input", async (e) => {
 		FN.actualizaVarios();
 	});
 
@@ -110,3 +121,5 @@ window.addEventListener("load", async () => {
 	// Status inicial
 	if (Array.from(DOM.inputs).some((n) => n.value)) await FN.actualizaVarios();
 });
+
+let v
