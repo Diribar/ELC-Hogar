@@ -150,7 +150,7 @@ window.addEventListener("load", async () => {
 		FN.actualizaLosErrores();
 
 		// Si el botón está inactivo interrumpe la función
-		if (!DOM.submit.className.includes("inactivo") && !v.errores.hay) return submit();
+		if (!DOM.submit.className.includes("inactivo") && !v.errores.hay) submit();
 
 		// Fin
 		return;
@@ -160,7 +160,7 @@ window.addEventListener("load", async () => {
 	if (olvidoContr && !v.datosDeSession.validarDatosPerennes) {
 		v.datos.email = v.datosDeSession.datos.email;
 		submit();
-		return
+		return;
 	}
 
 	// Inactiva 'submit' si hay algún error
