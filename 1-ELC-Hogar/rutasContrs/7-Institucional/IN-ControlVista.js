@@ -55,18 +55,21 @@ module.exports = {
 			const usuario = req.session.usuario;
 			const emailELC = "sp2015w@gmail.com";
 			const asuntoMail = asuntosContactanos.find((n) => n.codigo == asunto).descripcion;
-			let mailEnviado, destino, datos;
+			const comentAdic =
+				"<br><br><br>" +
+				(usuario ? usuario.nombre + " " + usuario.apellido + "<br>" + usuario.email : "La persona no estaba logueada");
+			let mailEnviado, datos;
 
 			// Envía el mail a ELC
 			datos = {
 				email: emailELC,
 				asunto: asuntoMail,
-				comentario: comentario + "<br><br><br>" + usuario.nombre + " " + usuario.apellido + "<br>" + usuario.email,
+				comentario: comentario + comentAdic,
 			};
 			mailEnviado = await comp.enviaMail(datos);
-			if (!mailEnviado) destino = "/institucional/contactanos/envio-fallido";
-			// Envía el email al usuario
-			else {
+
+			// Si el envío fue exitoso y la persona está logueada, le envía un email de confirmación
+			if (mailEnviado && usuario) {
 				datos = {
 					email: usuario.email,
 					asunto: "Mail enviado a ELC",
@@ -78,11 +81,11 @@ module.exports = {
 						"</em>",
 				};
 				comp.enviaMail(datos);
-				destino = "/institucional/contactanos/envio-exitoso";
 			}
 
 			// Fin
-			return res.redirect(destino);
+			const destino = mailEnviado ? "envio-exitoso" : "envio-fallido";
+			return res.redirect("/institucional/contactanos/" + destino);
 		},
 		envioExitoso: (req, res) => {
 			// Variables
