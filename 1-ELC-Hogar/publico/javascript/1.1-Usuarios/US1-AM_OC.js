@@ -150,7 +150,7 @@ window.addEventListener("load", async () => {
 		FN.actualizaLosErrores();
 
 		// Si el botón está inactivo interrumpe la función
-		if (!DOM.submit.className.includes("inactivo") && !v.errores.hay) submit();
+		if (!DOM.submit.className.includes("inactivo") && !v.errores.hay) FN.submit();
 
 		// Fin
 		return;
@@ -159,7 +159,7 @@ window.addEventListener("load", async () => {
 	// Start-up - Si se olvidó la contraseña y no se deben validar los datos perennes, redirige automáticamente
 	if (olvidoContr && !v.datosDeSession.validarDatosPerennes) {
 		v.datos.email = v.datosDeSession.datos.email;
-		submit();
+		FN.submit();
 		return;
 	}
 
