@@ -13,40 +13,34 @@ module.exports = {
 			return res.json(errores);
 		},
 		enviaMail: async (req, res) => {
-			// Revisa errores
-			const errores = await valida.contactanos(req.body);
-			req.session.contactanos = req.body; // actualiza el contenido del formulario en 'session'
+			// Variables
+			const datosForm = req.body;
 
-			// Si hay errores, redirige a la vista de errores
-			if (errores.hay) {
-				const informacion = {
-					mensajes: [Object.values(errores)[0]],
-					iconos: [variables.vistaEntendido("/institucional/contactanos")],
-				};
-				return res.render("CMP-0Estructura", {informacion});
-			}
+			// Si hubo errores, interrumpe la función
+			const errores = await valida.contactanos(datosForm);
+			req.session.contactanos = datosForm; // actualiza el contenido del formulario en 'session'
+			if (errores.hay) return res.json(false);
 
 			// Variables
-			const {asunto, comentario} = req.body;
+			const {asunto, comentario} = datosForm;
 			const usuario = req.session.usuario;
 			const emailELC = "sp2015w@gmail.com";
 			const asuntoMail = asuntosContactanos.find((n) => n.codigo == asunto).descripcion;
 			const comentAdic =
 				"<br><br><br>" +
 				(usuario ? usuario.nombre + " " + usuario.apellido + "<br>" + usuario.email : "La persona no estaba logueada");
-			let mailEnviado, datos;
 
 			// Envía el mail a ELC
-			datos = {
+			const datosMail = {
 				email: emailELC,
 				asunto: asuntoMail,
 				comentario: comentario + comentAdic,
 			};
-			mailEnviado = await comp.enviaMail(datos);
+			const mailEnviado = await comp.enviaMail(datosMail);
 
 			// Si el envío fue exitoso y la persona está logueada, le envía un email de confirmación
 			if (mailEnviado && usuario) {
-				datos = {
+				const datosMail = {
 					email: usuario.email,
 					asunto: "Mail enviado a ELC",
 					comentario:
@@ -56,12 +50,11 @@ module.exports = {
 						comentario +
 						"</em>",
 				};
-				comp.enviaMail(datos);
+				comp.enviaMail(datosMail);
 			}
 
-			// Fin
-			const destino = mailEnviado ? "envio-exitoso" : "envio-fallido";
-			return res.redirect("/institucional/contactanos/" + destino);
+			// Devuelve la info
+			return res.json(mailEnviado);
 		},
 	},
 };
