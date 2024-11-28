@@ -14,8 +14,8 @@ const usAptoInput = require("../../middlewares/porUsuario/usAptoInput");
 const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
 
 // API
-router.get("/api/in-valida-contactanos", API.contactanos.valida);
-router.get("/api/contactanos", API.contactanos.enviaMail);
+router.get("/api/in-contactanos-valida", API.contactanos.valida);
+router.get("/api/in-contactanos-envia-mail", API.contactanos.enviaMail);
 
 // Vistas - se quitó el 'aptoUsuario', para probar la experiencia
 // router.get("/contactanos", aptoUsuario, vista.contactanos.form);
