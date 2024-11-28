@@ -21,7 +21,7 @@ window.addEventListener("load", async () => {
 	};
 
 	for (const input of DOM.inputs) DOM[input.name] = document.querySelector(".inputError .input[name='" + input.name + "']");
-	const v = {
+	v = {
 		// Envío de mail
 		urlExitoso: pathname.slice(0, indice) + "/envio-exitoso-de-mail/?codigo=" + codigo,
 		urlFallido: pathname.slice(0, indice) + "/envio-fallido-de-mail/?codigo=" + codigo,
@@ -34,7 +34,7 @@ window.addEventListener("load", async () => {
 		datos: {},
 	};
 
-	// Funciones -----------------------------
+	// Funciones
 	const mail = {
 		valida: async () => {
 			// Variables
@@ -49,16 +49,6 @@ window.addEventListener("load", async () => {
 
 			// Averigua si hay errores
 			v.errores = await fetch(rutas.valida + JSON.stringify(v.datos)).then((n) => n.json());
-
-			// Fin
-			return;
-		},
-		envia: async () => {
-			// Cartel mientras se recibe la respuesta
-			cartelProgreso();
-
-			// Envía la información al BE
-			v.mailEnviado = await fetch(rutas.envia + v.datos.email).then((n) => n.json());
 
 			// Fin
 			return;
@@ -91,7 +81,7 @@ window.addEventListener("load", async () => {
 		// Fin
 		return;
 	};
-	const muestraErrores = () => {
+	const actualizaLosErrores = () => {
 		// Campos con 'fa-solid'
 		v.inputs.forEach((campo, indice) => {
 			// Si no se revisó el campo, interrumpe la función
@@ -116,12 +106,12 @@ window.addEventListener("load", async () => {
 		}
 
 		// Botón Submit
-		botonSubmit();
+		actualizaBotonSubmit();
 
 		// Fin
 		return;
 	};
-	const botonSubmit = () => {
+	const actualizaBotonSubmit = () => {
 		// Variables
 		const OK = Array.from(DOM.iconosOK)
 			.map((n) => n.className)
@@ -157,7 +147,7 @@ window.addEventListener("load", async () => {
 
 		// Actualiza los errores
 		v.errores.hay = Object.values(v.errores).some((n) => !!n);
-		muestraErrores();
+		actualizaLosErrores();
 
 		// Fin
 		return;
@@ -169,32 +159,32 @@ window.addEventListener("load", async () => {
 
 		// Averigua si hay errores
 		await mail.valida();
-		muestraErrores();
+		actualizaLosErrores();
 
 		// Si el botón está inactivo interrumpe la función
 		if (DOM.button.className.includes("inactivo") || v.errores.hay) return;
-		else DOM.button.classList.add("inactivo");
 
 		// Redirige
-		await mail.envia();
+		DOM.button.classList.add("inactivo");
+		await enviaMail();
 		location.href = v.mailEnviado ? v.urlExitoso : v.urlFallido;
 
 		// Fin
 		return;
 	});
 
-	// Start-up - Redirige si se olvidó la contraseña y no se deben validar los datos perennes
+	// Start-up - Si se olvidó la contraseña y no se deben validar los datos perennes, redirige automáticamente
 	if (olvidoContr && !v.datosDeSession.validarDatosPerennes) {
 		v.datos.email = v.datosDeSession.datos.email;
 
 		// Redirige
 		DOM.button.classList.add("inactivo");
-		await mail.envia();
+		await enviaMail();
 		location.href = v.mailEnviado ? v.urlExitoso : v.urlFallido;
 	}
 
 	// Inactiva 'submit' si hay algún error
-	botonSubmit();
+	actualizaBotonSubmit();
 });
 
 // Variables
@@ -212,3 +202,4 @@ const rutas = {
 	valida: rutaInicio + "/validaciones/?datos=",
 	envia: rutaInicio + "/envio-de-mail/?email=",
 };
+let v
