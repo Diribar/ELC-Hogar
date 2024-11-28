@@ -18,8 +18,8 @@ const iconos = {
 	...{agregar: "fa-circle-plus", calificar: "fa-chart-simple", eliminar: "fa-trash-can"},
 	...{detalle: "fa-circle-info", edicion: "fa-pen", edicionCambiada: "fa-arrow-right-long", rotar: "fa-rotate-90"},
 	...{graficos: "fa-chart-line", chart: "fa-chart-pie", columnas: "fa-chart-simple", area: "fa-chart-area"},
-	...{prod: "fa-video", rclv: "fa-child", link: "fa-link"},
-	...{mail: "fa-envelope", mantenim: "fa-tools", revision: "fa-user-graduate"},
+	...{prod: "fa-video", rclv: "fa-child", link: "fa-link", instituc: "fa-cross", mail: "fa-envelope", mantenim: "fa-tools"},
+	...{altaUser: "fa-user-plus", revision: "fa-user-graduate"},
 };
 
 module.exports = {
@@ -209,6 +209,7 @@ module.exports = {
 			["/detalle/p", "detalleProd", iconos.prod, iconos.detalle],
 			["/edicion/p", "edicionProd", iconos.prod, iconos.edicion],
 			["/calificar/p", "calificarProd", iconos.prod, iconos.calificar],
+			["/links/mirar/l", "mirarLinks", iconos.prod, "fa-couch"],
 
 			// RCLVs
 			["/detalle/r", "detalleRclv", iconos.rclv, iconos.detalle],
@@ -228,17 +229,18 @@ module.exports = {
 		startsWith: [
 			// Usuarios
 			["/usuarios/login", "login", "fa-circle-user"],
-			["/usuarios/alta-mail", "altaDeMail"],
-			["/usuarios/editables", "altaDeMail"],
-			["/usuarios/editables-bienvenido", "altaDeMail"],
-			["/usuarios/perennes", "perennes"],
-			["/usuarios/perennes-bienvenido", "perennes"],
+			["/usuarios/alta-mail", "altaDeMail", iconos.altaUser],
+			["/usuarios/editables", "altaDeMail", iconos.altaUser],
+			["/usuarios/editables-bienvenido", "altaDeMail", iconos.altaUser],
+			["/usuarios/perennes", "perennes", iconos.altaUser],
+			["/usuarios/perennes-bienvenido", "perennes", iconos.altaUser],
+
+			// Institucional
+			["/institucional/contactanos", "contactanos", iconos.instituc, iconos.mail],
+			["/institucional", "institucional", iconos.instituc, "fa-building-columns"],
 
 			// Otros
 			["/consultas", "consultas", "fa-film"],
-			["/links/mirar/l", "mirarLinks", iconos.prod, "fa-couch"],
-			["/institucional/contactanos", "contactanos", "fa-cross", iconos.mail],
-			["/institucional", "institucional", "fa-cross", "fa-building-columns"],
 			["/revision", "revision", iconos.revision],
 			["/mantenimiento", "mantenimiento", iconos.mantenim],
 			["/graficos", "graficos", iconos.graficos],
