@@ -175,13 +175,19 @@ module.exports = {
 
 			if (req.session.cliente.cliente_id.startsWith("U")) return res.redirect("/usuarios/login");
 
+			// Crea sub-mensajes
+			let mensajesBeneficiosLogin = "<ul>";
+			for (let mensaje of beneficiosLogin) mensajesBeneficiosLogin += "<li>" + mensaje + "</li>";
+			mensajesBeneficiosLogin += "</ul>";
+
 			// Muestra cartel de aviso
 			const informacion = {
 				titulo: "Login necesario",
 				mensajes: [
-					"Ciertas tareas requieren un compromiso de parte tuyo/a.",
-					"En estos casos, para avanzar necesitamos que te crees un usuario.",
+					"Ciertas tareas requieren un compromiso de tu parte.",
+					"Para acceder a ellas, necesitamos que te crees un usuario.",
 					"Nos comprometemos a no enviarte mensajes no solicitados por vos.",
+					"Beneficios de crearte un usuario y loguearte:" + mensajesBeneficiosLogin,
 				],
 				iconos: [
 					variables.vistaAnterior(req.session.urlSinLogin), // retroceder
