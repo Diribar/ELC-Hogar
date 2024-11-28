@@ -16,10 +16,6 @@ window.addEventListener("load", async () => {
 		iconosOK: document.querySelectorAll(".inputError .fa-circle-check"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
 	};
-	v = {
-		campos: ["asunto", "comentario"],
-		validaDatos: "/institucional/api/in-valida-contactanos/?",
-	};
 
 	// Funciones
 	const FN = {
@@ -85,6 +81,9 @@ window.addEventListener("load", async () => {
 			// Si el botón submit está inactivo, interrumpe la función
 			if (DOM.submit.className.includes("inactivo")) return this.actualizaVarios();
 
+			// Genera los datos para el envío del mail
+			// const APIs = [{ruta: , duracion: 9000}];
+
 			// Envío de mail más cartel de progreso
 			DOM.submit.classList.add("inactivo");
 			const mailEnviado = await barraProgreso(ruta, APIs);
@@ -122,4 +121,11 @@ window.addEventListener("load", async () => {
 	if (Array.from(DOM.inputs).some((n) => n.value)) await FN.actualizaVarios();
 });
 
-let v
+// Variables
+const campos = ["asunto", "comentario"];
+const rutas = {
+	inicio: "/institucional/api/in-contactanos-",
+	validaDatos: "valida/?",
+	enviaMail: "envia-mail/?",
+};
+let v = {};
