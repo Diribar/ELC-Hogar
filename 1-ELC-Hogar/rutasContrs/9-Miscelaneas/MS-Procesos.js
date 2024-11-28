@@ -179,7 +179,7 @@ module.exports = {
 			// Fin
 			return {iconosArray};
 		},
-		prodRclv:()=>{},
+		prodRclv: () => {},
 		resumen: (navegsDia) => {
 			// Obtiene las personas
 			const clientes_id = [...new Set(navegsDia.map((n) => n.cliente_id))];
@@ -194,7 +194,7 @@ module.exports = {
 
 				// Agrega un registro de cabecera
 				const indice = navegsDia.findIndex((n) => n.cliente_id == cliente_id);
-				const cabecera = {persona, cantPers, esUser, hora, iconosHTML};
+				const cabecera = {cliente_id, persona, cantPers, esUser, hora, iconosHTML};
 				navegsDia.splice(indice, 0, cabecera);
 			}
 
@@ -413,8 +413,8 @@ const FN_navegsDia = {
 			iconosResto = [...new Set(iconosResto)];
 			iconosResto.sort((a, b) => (a < b ? -1 : 1));
 			const iconosConsFamilia = iconosResto.join(" ");
-			iconosCons.push(iconosConsFamilia);
-		} else iconosCons.slice(0, -3);
+			iconosCons.unshift(iconosConsFamilia);
+		}
 
 		// Convierte los íconos a texto
 		iconosCons = iconosCons.join("<span class'separador'> / </span>");

@@ -59,7 +59,7 @@ module.exports = {
 			const esUser = navegDia.cliente_id.startsWith("U");
 			const hora = comp.fechaHora.horarioUTC(navegDia.fecha).split("hs")[0];
 			const {iconosArray, distintivo} = procesos.navegsDia.ruta(navegDia.ruta);
-			const iconosHTML = iconosArray ? iconosArray.join("") : null;
+			const iconosHTML = iconosArray ? iconosArray.join(" ") : null;
 			const ruta = navegDia.ruta;
 
 			// Fin
