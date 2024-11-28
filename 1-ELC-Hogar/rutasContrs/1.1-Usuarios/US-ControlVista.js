@@ -170,7 +170,27 @@ module.exports = {
 	// Varios
 	loginCompleto: async (req, res) => {
 		// Envía a Login si no está logueado
-		if (!req.session.usuario) return res.redirect("/usuarios/login");
+		if (!req.session.usuario) {
+			// Si es un usuario sin login, redirige a login
+
+			if (req.session.cliente.cliente_id.startsWith("U")) return res.redirect("/usuarios/login");
+
+			// Muestra cartel de aviso
+			const informacion = {
+				titulo: "Login necesario",
+				mensajes: [
+					"Ciertas tareas requieren un compromiso de parte tuyo/a.",
+					"En estos casos, para avanzar necesitamos que te crees un usuario.",
+					"Nos comprometemos a no enviarte mensajes no solicitados por vos.",
+				],
+				iconos: [
+					variables.vistaAnterior(req.session.urlSinLogin), // retroceder
+					{clase: iconos.login, link: "/usuarios/login", titulo: "Ir al Login / Alta de usuario"},
+				],
+				trabajando: true,
+			};
+			return res.render("CMP-0Estructura", {informacion});
+		}
 
 		// Variables
 		const statusUsuario_id = req.session.usuario.statusRegistro_id;
