@@ -396,8 +396,8 @@ const FN_navegsDia = {
 		// Obtiene los iconos por familia
 		for (let familia of familias) {
 			// Obtiene los regsCliente con ese ícono
-			const registrosConIcono = regsCliente.filter((n) => n.iconosArray[0].includes(iconos[familia]));
-			regsCliente = regsCliente.filter((n) => !n.iconosArray[0].includes(iconos[familia]));
+			const registrosConIcono = regsCliente.filter((n) => n.iconosArray && n.iconosArray[0].includes(iconos[familia]));
+			regsCliente = regsCliente.filter((n) => !n.iconosArray || !n.iconosArray[0].includes(iconos[familia]));
 			if (!registrosConIcono.length) continue;
 
 			// Obtiene el ícono principal
@@ -414,7 +414,7 @@ const FN_navegsDia = {
 		}
 
 		// Obtiene los íconos que no fueron incluidos
-		let iconosResto = regsCliente.map((n) => n.iconosArray[0]);
+		let iconosResto = regsCliente.map((n) => n.iconosArray && n.iconosArray[0]);
 		if (iconosResto.length) {
 			iconosResto = [...new Set(iconosResto)];
 			iconosResto.sort((a, b) => (a < b ? -1 : 1));
