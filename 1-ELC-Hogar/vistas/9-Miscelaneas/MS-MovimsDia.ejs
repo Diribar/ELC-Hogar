@@ -26,8 +26,13 @@
 				<!-- Fecha -->
 				<td class="fecha"><%= navegDia.hora %></td>
 
-				<!-- Ruta -->
-				<td class="ruta"><%- navegDia.iconosHTML || navegsDia.distintivo %><%- navegDia.nombre %></td>
+				<!-- Íconos de la ruta -->
+				<td class="ruta">
+					<% if (navegDia.prodRclv) { %><a href="<%= navegDia.ruta %>"><% } %>
+						<%- navegDia.iconosHTML || navegsDia.distintivo %><%- navegDia.nombre %>
+						<%= navegDia.prodRclv && navegDia.prodRclv.id %>
+					<% if (navegDia.prodRclv) { %></a><% } %>
+				</td>
 			</tr>
 			<% } %>
 		</tbody>
