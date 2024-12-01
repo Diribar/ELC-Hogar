@@ -1,7 +1,7 @@
 <form id="cuerpoFooterImgDer" method="POST" enctype="multipart/form-data">
 	<section id="cuerpoFooter">
 		<div id="cuerpo">
-			<%- codigo != "agregar" ? include('MN-TimerContador') : "" %>
+			<%- codigo != "agregar" ? include('MN-Timer') : "" %>
 			<div id="tituloPrincipal">
 				<h1 id="titulo"><%= titulo %></h1>
 				<%- include("MN-Ayuda", {mensaje: "Al terminar, te pedimos que vayas a la vista <em>Detalle</em> para liberarlo."}) %>
