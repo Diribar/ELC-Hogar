@@ -193,13 +193,13 @@ module.exports = {
 			if (indice > -1) entidad = entidad.slice(0, indice);
 
 			// Si no es una entidad, interrumpe la función
-			if (!variables.entidades.todos.includes(entidad)) return {};
+			if (!variables.entidades.todos.includes(entidad)) return;
 
 			// Averigua si tiene un id
 			const tieneId = ruta.split("/?id=").length > 1;
 
 			// Si no tiene id, interrumpe la función
-			if (!tieneId) return {};
+			if (!tieneId) return ;
 
 			// Averigua el id
 			let id = ruta.split("/?id=")[1].split("&")[0];
