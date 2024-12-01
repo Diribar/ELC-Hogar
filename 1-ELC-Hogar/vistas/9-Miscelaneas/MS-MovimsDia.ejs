@@ -12,7 +12,7 @@
 			<% for (let navegDia of navegsDia) { %>
 			<tr id="<%= navegDia.cliente_id %>" class="<%- navegDia.cantPers ? 'resumen' : 'ocultar' %>">
 				<!-- Persona -->
-				<td class="cliente <%= navegDia.esUser ? 'esU' : 'esV' %>">
+				<td class="cliente">
 					<!-- Ícono ver / ocultar -->
 					<span class="mostrar<% if (!navegDia.cantPers) { %> ocultar<% } %>"><i class="fa-solid fa-circle-plus"></i></span>
 
@@ -20,7 +20,7 @@
 					<span class="codigo"><% if (!navegDia.cantPers) { %><%= navegDia.persona %><% } %></span>
 
 					<!-- Cantidad de navegaciones -->
-					<span class="cantNavegs"><% if (navegDia.cantPers) { %><%= navegDia.cantPers %><% } %></span>
+					<span class="cantNavegs"><% if (navegDia.cantPers) { %><%= navegDia.cantPers %><% } %><% if (navegDia.esUser) { %>*<% } %></span>
 				</td>
 
 				<!-- Fecha -->
