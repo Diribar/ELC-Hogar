@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
 	"FechaUTC": "Dom. 1/dic",
-	"HoraUTC": "10:44",
+	"HoraUTC": "12:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 25/nov",
@@ -57,7 +57,7 @@
 			"id": 186
 		},
 		"30-nov-24": {},
-		"01-dic-24": {"leyenda": "Hoy recordamos a san Carlos de Foucauld", "entidad": "personajes", "id": 209},
+		"01-dic-24": {"leyenda": "Hoy es el Comienzo del Adviento", "entidad": "eventos", "id": 13},
 		"02-dic-24": {"leyenda": "Estamos en época de Adviento", "entidad": "epocasDelAno", "id": 25},
 		"03-dic-24": {"leyenda": "Hoy recordamos a san Francisco Javier", "entidad": "personajes", "id": 167}
 	}
