@@ -20,7 +20,7 @@
             hr.soloPortrait {display: block;}
         }
         :is(#izquierda, #derecha) {margin: 0;}
-        #tituloHeader {left: 47%;}
+        #tituloHeader {left: 48%;}
         #busquedaRapida {
             position: absolute; margin: 0; width: 100%; top: 13px;
             display: flex; flex-direction: column; align-items: center;
