@@ -12,6 +12,9 @@ window.addEventListener("load", async () => {
 	};
 	if (!entidad && pathname.includes("/revision-us")) entidad = "usuarios";
 
+	// Si no hay datos, interrumpe la función
+	if (!entidad || !id) return;
+
 	// Horario Inicial
 	const datos = await fetch("/api/cmp-horario-inicial/?entidad=" + entidad + "&id=" + id).then((n) => n.json());
 	const {capturadoEn, creadoEn, capturadoPor_id, usuario_id} = datos;

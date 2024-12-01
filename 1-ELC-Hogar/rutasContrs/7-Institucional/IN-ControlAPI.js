@@ -26,9 +26,9 @@ module.exports = {
 			const usuario = req.session.usuario;
 			const emailELC = "sp2015w@gmail.com";
 			const asuntoMail = asuntosContactanos.find((n) => n.codigo == asunto).descripcion;
-			const comentAdic =
-				"<br><br><br>" +
-				(usuario ? usuario.nombre + " " + usuario.apellido + "<br>" + usuario.email : "La persona no estaba logueada");
+			const datosUsuario = usuario ? usuario.nombre + " " + usuario.apellido + "<br>" + usuario.email : null;
+			const datosCliente = "La persona no estaba logueada, cliente_id " + req.session.cliente.cliente_id;
+			const comentAdic = "<br><br><br>" + (datosUsuario || datosCliente);
 
 			// Envía el mail a ELC
 			const datosMail = {

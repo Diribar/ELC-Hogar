@@ -29,12 +29,27 @@ module.exports = {
 			const codigo = "contactanos";
 			const titulo = "Contactanos";
 			const urlAnterior = req.session.urlAnterior;
+			let informacion;
 
 			// Obtiene información para la vista
 			const dataEntry = req.session.contactanos || {};
 
+			// Información para el cartel genérico
+			if (!req.session.usuario)
+				informacion = {
+					mensajes: [
+						"Si vas a querer que te respondamos, necesitamos saber quién sos.",
+						"Podés ir al login o continuar como estás, con los íconos de abajo.",
+					],
+					iconos: [
+						{clase: iconos.login, link: "/usuarios/login", titulo: "Ir a 'Login'"},
+						{clase: iconos.derecha, titulo: "Continuar a 'Contactanos'", id: "continuar"},
+					],
+					trabajando: true,
+				};
+
 			// Va a la vista
-			return res.render("CMP-0Estructura", {tema, codigo, titulo, dataEntry, urlAnterior});
+			return res.render("CMP-0Estructura", {tema, codigo, titulo, dataEntry, urlAnterior, informacion});
 		},
 		envioExitoso: (req, res) => {
 			// Variables

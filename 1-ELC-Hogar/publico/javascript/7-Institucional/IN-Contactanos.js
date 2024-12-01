@@ -15,6 +15,10 @@ window.addEventListener("load", async () => {
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 		iconosOK: document.querySelectorAll(".inputError .fa-circle-check"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
+
+		// Cartel genérico
+		todoElMain: document.querySelector("#todoElMain"),
+		continuar: document.querySelector("#todoElMain #iconosCartel #continuar"),
 	};
 
 	// Funciones
@@ -95,25 +99,21 @@ window.addEventListener("load", async () => {
 		},
 	};
 
-	// Eventos
+	// Eventos - inputs en el form
+	DOM.continuar.addEventListener("click", () => DOM.todoElMain.classList.add("ocultar"));
 	DOM.inputs.forEach((input, i) => {
 		input.addEventListener("input", (e) => {
 			// Acciones
 			amplio.restringeCaracteres(e); // restringe caracteres indeseados
 			DOM.iconosError[i].classList.add("ocultar"); // oculta los íconos de error
 			FN.contador(); // actualiza el contador
-			if (!input.value) FN.actualizaVarios(); // busca el mensaje de error
+			FN.actualizaVarios(); // busca el mensaje de error
 
 			// Fin
 			return;
 		});
 	});
-
-	DOM.form.addEventListener("input", async (e) => {
-		FN.actualizaVarios();
-	});
-
-	// Submit
+	// Eventos - submit
 	DOM.form.addEventListener("submit", async (e) => FN.submit(e));
 	DOM.submit.addEventListener("click", async (e) => FN.submit(e));
 
