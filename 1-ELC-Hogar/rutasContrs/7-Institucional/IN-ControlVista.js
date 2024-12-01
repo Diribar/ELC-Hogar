@@ -2,7 +2,7 @@
 // Variables
 const valida = require("./IN-FN-Validar");
 
-// *********** Controlador ***********
+// Controlador
 module.exports = {
 	institucional: (req, res) => {
 		// Variables
@@ -31,7 +31,7 @@ module.exports = {
 			const urlAnterior = req.session.urlAnterior;
 
 			// Obtiene información para la vista
-			const dataEntry = req.session.contactanos ? req.session.contactanos : {};
+			const dataEntry = req.session.contactanos || {};
 
 			// Va a la vista
 			return res.render("CMP-0Estructura", {tema, codigo, titulo, dataEntry, urlAnterior});
@@ -55,18 +55,21 @@ module.exports = {
 			const usuario = req.session.usuario;
 			const emailELC = "sp2015w@gmail.com";
 			const asuntoMail = asuntosContactanos.find((n) => n.codigo == asunto).descripcion;
-			let mailEnviado, destino, datos;
+			const comentAdic =
+				"<br><br><br>" +
+				(usuario ? usuario.nombre + " " + usuario.apellido + "<br>" + usuario.email : "La persona no estaba logueada");
+			let mailEnviado, datos;
 
 			// Envía el mail a ELC
 			datos = {
 				email: emailELC,
 				asunto: asuntoMail,
-				comentario: comentario + "<br><br><br>" + usuario.nombre + " " + usuario.apellido + "<br>" + usuario.email,
+				comentario: comentario + comentAdic,
 			};
 			mailEnviado = await comp.enviaMail(datos);
-			if (!mailEnviado) destino = "/institucional/contactanos/envio-fallido";
-			// Envía el email al usuario
-			else {
+
+			// Si el envío fue exitoso y la persona está logueada, le envía un email de confirmación
+			if (mailEnviado && usuario) {
 				datos = {
 					email: usuario.email,
 					asunto: "Mail enviado a ELC",
@@ -78,28 +81,30 @@ module.exports = {
 						"</em>",
 				};
 				comp.enviaMail(datos);
-				destino = "/institucional/contactanos/envio-exitoso";
 			}
 
 			// Fin
-			return res.redirect(destino);
+			const destino = mailEnviado ? "envio-exitoso" : "envio-fallido";
+			return res.redirect("/institucional/contactanos/" + destino);
 		},
 		envioExitoso: (req, res) => {
 			// Variables
 			const direccion = req.session.urlFueraDeContactanos;
 			if (!req.session.contactanos) return res.redirect(direccion);
-			const {asunto, comentario} = req.session.contactanos;
+			const {asunto} = req.session.contactanos;
 			const asuntoMail = asuntosContactanos.find((n) => n.codigo == asunto).descripcion;
 			delete req.session.contactanos;
 
 			// Información
+			const primerMensaje = ["Le hemos enviado tu mensaje a nuestro equipo, con el asunto <em>" + asuntoMail + "</em>."];
+			const segundoMensaje = req.session.usuario
+				? "Incluimos tu nombre y dirección de mail, para que puedas recibir una respuesta."
+				: "Tené en cuenta que como no estabas logueado, no podremos responderte.";
+
 			const informacion = {
-				mensajes: [
-					"Hemos enviado tu mensaje al equipo de ELC, con el asunto '" + asuntoMail + "'",
-					"Incluimos tu nombre y dirección de mail, para que puedas recibir una respuesta",
-				],
-				iconos: [{...variables.vistaEntendido(direccion), titulo: "Entendido"}],
 				titulo: "Envío exitoso de mail",
+				mensajes: [primerMensaje, segundoMensaje],
+				iconos: [{...variables.vistaEntendido(direccion), titulo: "Entendido"}],
 				check: true,
 			};
 

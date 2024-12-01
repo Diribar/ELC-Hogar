@@ -16,11 +16,12 @@ const aptoUsuario = [usAltaTerm, usPenalizaciones, usAptoInput];
 // API
 router.get("/api/in-valida-contactanos", API.validaContactanos);
 
-// Vistas
-router.get("/contactanos", aptoUsuario, vista.contactanos.form);
-router.post("/contactanos", aptoUsuario, vista.contactanos.guardar);
-router.get("/contactanos/envio-exitoso", aptoUsuario, vista.contactanos.envioExitoso);
-router.get("/contactanos/envio-fallido", aptoUsuario, vista.contactanos.envioFallido);
+// Vistas - se quitó el 'aptoUsuario', para probar la experiencia
+// router.get("/contactanos", aptoUsuario, vista.contactanos.form);
+router.get("/contactanos", vista.contactanos.form);
+router.post("/contactanos", vista.contactanos.guardar);
+router.get("/contactanos/envio-exitoso", vista.contactanos.envioExitoso);
+router.get("/contactanos/envio-fallido", vista.contactanos.envioFallido);
 
 router.get("/inicio", vistaMS.redirecciona.inicio);
 router.get("/:codigo", vista.institucional); // institucional
