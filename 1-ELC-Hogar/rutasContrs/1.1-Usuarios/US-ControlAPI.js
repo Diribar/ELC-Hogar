@@ -48,10 +48,12 @@ module.exports = {
 			return res.json(errores);
 		},
 		creaUsuarioEnviaMail: async (req, res) => {
-			// Envía el mail con la contraseña
+			// Variables
 			const {email} = req.query;
 			const {cliente} = req.session;
 			const {diasNaveg, visitaCreadaEn, cliente_id: cliente_idViejo} = cliente;
+
+			// Envía el mail con la contraseña
 			const {contrasena, mailEnviado} = await procesos.envioDeMailConContrasena({email, altaMail: true});
 
 			// Si hubo errores con el envío del mensaje, interrumpe la función

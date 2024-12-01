@@ -16,10 +16,6 @@ window.addEventListener("load", async () => {
 		iconosOK: document.querySelectorAll(".inputError .fa-circle-check"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
 	};
-	v = {
-		campos: ["asunto", "comentario"],
-		validaDatos: "/institucional/api/in-valida-contactanos/?",
-	};
 
 	// Funciones
 	const FN = {
@@ -39,7 +35,7 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		obtieneLosValores: () => {
-			v.datosUrl = "";
+			v.datosUrl = "/?";
 			DOM.inputs.forEach((input, i) => {
 				if (i) v.datosUrl += "&";
 				v.datosUrl += input.name + "=" + encodeURIComponent(input.value);
@@ -49,10 +45,10 @@ window.addEventListener("load", async () => {
 		},
 		actualizaLosErrores: async () => {
 			// Obtiene los errores
-			errores = await fetch(v.validaDatos + v.datosUrl).then((n) => n.json());
+			errores = await fetch(rutas.inicioAPI + rutas.validaDatos + v.datosUrl).then((n) => n.json());
 
 			// Acciones en función de si hay errores o no
-			v.campos.forEach((campo, indice) => {
+			campos.forEach((campo, indice) => {
 				// Actualiza los mensajes de error
 				DOM.mensajesError[indice].innerHTML = errores[campo];
 
@@ -79,19 +75,22 @@ window.addEventListener("load", async () => {
 			// Consecuencias
 			hayErrores ? DOM.submit.classList.add("inactivo") : DOM.submit.classList.remove("inactivo");
 		},
-		submitForm: async function (e) {
+		submit: async function (e) {
 			e.preventDefault();
 
 			// Si el botón submit está inactivo, interrumpe la función
 			if (DOM.submit.className.includes("inactivo")) return this.actualizaVarios();
 
-			// Cartel mientras se recibe la respuesta
+			// Genera los datos para el envío del mail
+			const ruta = rutas.inicioAPI + rutas.enviaMail;
+			const APIs = [{ruta: v.datosUrl, duracion: 9000}];
+
+			// Envío de mail más cartel de progreso
 			DOM.submit.classList.add("inactivo");
-			await enviaMail();
+			const mailEnviado = await barraProgreso(ruta, APIs);
 
 			// Redirige
-			location.href = v.mailEnviado ? v.urlExitoso : v.urlFallido;
-
+			location.href = rutas.inicioVista + (mailEnviado ? rutas.envioExitoso : rutas.envioFallido);
 			return;
 		},
 	};
@@ -115,11 +114,21 @@ window.addEventListener("load", async () => {
 	});
 
 	// Submit
-	DOM.form.addEventListener("submit", async (e) => FN.submitForm(e));
-	DOM.submit.addEventListener("click", async (e) => FN.submitForm(e));
+	DOM.form.addEventListener("submit", async (e) => FN.submit(e));
+	DOM.submit.addEventListener("click", async (e) => FN.submit(e));
 
 	// Status inicial
 	if (Array.from(DOM.inputs).some((n) => n.value)) await FN.actualizaVarios();
 });
 
-let v
+// Variables
+const campos = ["asunto", "comentario"];
+const rutas = {
+	inicioAPI: "/institucional/api/in-contactanos-",
+	validaDatos: "valida",
+	enviaMail: "envia-mail",
+	inicioVista: "/institucional/contactanos/",
+	envioExitoso: "envio-exitoso",
+	envioFallido: "envio-fallido",
+};
+let v = {};
