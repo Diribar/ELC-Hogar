@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 28/nov",
-	"HoraUTC": "0:00",
+	"FechaUTC": "Dom. 1/dic",
+	"HoraUTC": "10:44",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 25/nov",
@@ -51,14 +51,14 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"26-nov-24": {"leyenda": "Hoy recordamos a La familia Von Trapp", "entidad": "personajes", "id": 72},
-		"27-nov-24": {"leyenda": "Hoy recordamos las Apariciones de la Medalla Milagrosa", "entidad": "hechos", "id": 69},
-		"28-nov-24": {"leyenda": "Hoy recordamos a santa Catalina Labouré", "entidad": "personajes", "id": 208},
 		"29-nov-24": {
 			"leyenda": "Hoy recordamos a la beata María Magdalena de la Encarnación",
 			"entidad": "personajes",
 			"id": 186
 		},
-		"30-nov-24": {}
+		"30-nov-24": {},
+		"01-dic-24": {"leyenda": "Hoy recordamos a san Carlos de Foucauld", "entidad": "personajes", "id": 209},
+		"02-dic-24": {"leyenda": "Estamos en época de Adviento", "entidad": "epocasDelAno", "id": 25},
+		"03-dic-24": {"leyenda": "Hoy recordamos a san Francisco Javier", "entidad": "personajes", "id": 167}
 	}
 }
