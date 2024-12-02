@@ -324,6 +324,55 @@ module.exports = {
 			// Fin
 			return;
 		},
+		actualizaUsuarios: async () => {
+			// Lleva a cero el valor de algunos campos
+			await baseDeDatos.actualizaTodos("usuarios", {intentosLogin: 0, intentosDP: 0});
+
+			// Elimina usuarios antiguos que no confirmaron su contraseña
+			const fechaDeCorte = new Date(new Date().getTime() - unDia);
+			const condicion = {statusRegistro_id: mailPendValidar_id, fechaContrasena: {[Op.lt]: fechaDeCorte}};
+			await baseDeDatos.eliminaPorCondicion("usuarios", condicion);
+
+			// Fin
+			return;
+		},
+		eliminaLinksInactivos: async () => {
+			const fechaDeCorte = comp.fechaHora.nuevoHorario(-25);
+			const condicion = {statusRegistro_id: inactivo_id, statusSugeridoEn: {[Op.lt]: fechaDeCorte}};
+			await baseDeDatos.eliminaPorCondicion("links", condicion);
+			return;
+		},
+		ABM_noRevisores: async () => {
+			// Si no hay casos, termina
+			const {regs, edics} = await procesos.ABM_noRevs();
+			if (!(regs.perl.length + edics.perl.length + regs.links.length + edics.links.length)) return;
+
+			// Arma el cuerpo del mensaje
+			const cuerpoMail = procesos.mailDeFeedback.mensRevsTablero({regs, edics});
+
+			// Obtiene los usuarios revisorPERL y revisorLinks
+			let perl = baseDeDatos.obtieneTodosPorCondicion("usuarios", {rolUsuario_id: rolesRevPERL_ids});
+			let links = baseDeDatos.obtieneTodosPorCondicion("usuarios", {rolUsuario_id: rolesRevLinks_ids});
+			[perl, links] = await Promise.all([perl, links]);
+			const revisores = {perl, links};
+
+			// Rutina por usuario
+			const asunto = {perl: "Productos y RCLVs prioritarios a revisar", links: "Links prioritarios a revisar"};
+			let mailsEnviados = [];
+			for (let tipo of ["perl", "links"])
+				if (regs[tipo].length || edics[tipo].length)
+					for (let revisor of revisores[tipo])
+						mailsEnviados.push(
+							comp.enviaMail({asunto: asunto[tipo], email: revisor.email, comentario: cuerpoMail[tipo]})
+						); // Envía el mail y actualiza la BD
+
+			// Avisa que está procesando el envío de los mails
+			await Promise.all(mailsEnviados);
+
+			// Fin
+			return;
+		},
+		// Gestiones diarias - indicadores
 		cantNavegs: async () => {
 			// Navegantes diarios, quitando los duplicados
 			const persWebDia = await baseDeDatos
@@ -424,54 +473,6 @@ module.exports = {
 
 			// Elimina los registros de días anteriores
 			await baseDeDatos.eliminaPorCondicion("navegsDia", condicion);
-
-			// Fin
-			return;
-		},
-		actualizaUsuarios: async () => {
-			// Lleva a cero el valor de algunos campos
-			await baseDeDatos.actualizaTodos("usuarios", {intentosLogin: 0, intentosDP: 0});
-
-			// Elimina usuarios antiguos que no confirmaron su contraseña
-			const fechaDeCorte = new Date(new Date().getTime() - unDia);
-			const condicion = {statusRegistro_id: mailPendValidar_id, fechaContrasena: {[Op.lt]: fechaDeCorte}};
-			await baseDeDatos.eliminaPorCondicion("usuarios", condicion);
-
-			// Fin
-			return;
-		},
-		eliminaLinksInactivos: async () => {
-			const fechaDeCorte = comp.fechaHora.nuevoHorario(-25);
-			const condicion = {statusRegistro_id: inactivo_id, statusSugeridoEn: {[Op.lt]: fechaDeCorte}};
-			await baseDeDatos.eliminaPorCondicion("links", condicion);
-			return;
-		},
-		ABM_noRevisores: async () => {
-			// Si no hay casos, termina
-			const {regs, edics} = await procesos.ABM_noRevs();
-			if (!(regs.perl.length + edics.perl.length + regs.links.length + edics.links.length)) return;
-
-			// Arma el cuerpo del mensaje
-			const cuerpoMail = procesos.mailDeFeedback.mensRevsTablero({regs, edics});
-
-			// Obtiene los usuarios revisorPERL y revisorLinks
-			let perl = baseDeDatos.obtieneTodosPorCondicion("usuarios", {rolUsuario_id: rolesRevPERL_ids});
-			let links = baseDeDatos.obtieneTodosPorCondicion("usuarios", {rolUsuario_id: rolesRevLinks_ids});
-			[perl, links] = await Promise.all([perl, links]);
-			const revisores = {perl, links};
-
-			// Rutina por usuario
-			const asunto = {perl: "Productos y RCLVs prioritarios a revisar", links: "Links prioritarios a revisar"};
-			let mailsEnviados = [];
-			for (let tipo of ["perl", "links"])
-				if (regs[tipo].length || edics[tipo].length)
-					for (let revisor of revisores[tipo])
-						mailsEnviados.push(
-							comp.enviaMail({asunto: asunto[tipo], email: revisor.email, comentario: cuerpoMail[tipo]})
-						); // Envía el mail y actualiza la BD
-
-			// Avisa que está procesando el envío de los mails
-			await Promise.all(mailsEnviados);
 
 			// Fin
 			return;
