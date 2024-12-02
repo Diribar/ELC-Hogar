@@ -523,6 +523,34 @@ module.exports = {
 
 	// Clientes
 	clientes: {
+		frecPorCliente: (registros, proximaFecha) => {
+			// Quita los clientes futuros
+			registros = registros.filter((n) => n.visitaCreadaEn <= proximaFecha);
+
+			// Variables
+			let fin = registros;
+			let inicio;
+
+			// Buena noticia - Más de 30
+			inicio = fin;
+			fin = inicio.filter((n) => n.diasNaveg <= 30);
+			const masDeTreinta = inicio.length - fin.length;
+
+			// Buena noticia - Más de 10
+			inicio = fin;
+			fin = inicio.filter((n) => n.diasNaveg <= 10);
+			const onceTreinta = inicio.length - fin.length;
+
+			// Problema - tres a diez
+			inicio = fin;
+			fin = inicio.filter((n) => n.diasNaveg < 3);
+			const tresDiez = inicio.length - fin.length;
+
+			// Problema - Uno o dos
+			const unoDos = fin.length;
+
+			return {tresDiez, onceTreinta, masDeTreinta, unoDos};
+		},
 		cantNavegs: async () => {
 			// Variables
 			let revisar = await baseDeDatos.obtieneTodos("persWebDiaAcum");
@@ -605,34 +633,6 @@ module.exports = {
 
 			// Fin
 			return;
-		},
-		frecPorCliente: (registros, proximaFecha) => {
-			// Quita los clientes futuros
-			registros = registros.filter((n) => n.visitaCreadaEn <= proximaFecha);
-
-			// Variables
-			let fin = registros;
-			let inicio;
-
-			// Buena noticia - Más de 30
-			inicio = fin;
-			fin = inicio.filter((n) => n.diasNaveg <= 30);
-			const masDeTreinta = inicio.length - fin.length;
-
-			// Buena noticia - Más de 10
-			inicio = fin;
-			fin = inicio.filter((n) => n.diasNaveg <= 10);
-			const onceTreinta = inicio.length - fin.length;
-
-			// Problema - tres a diez
-			inicio = fin;
-			fin = inicio.filter((n) => n.diasNaveg < 3);
-			const tresDiez = inicio.length - fin.length;
-
-			// Problema - Uno o dos
-			const unoDos = fin.length;
-
-			return {tresDiez, onceTreinta, masDeTreinta, unoDos};
 		},
 	},
 	navegsDia: {
