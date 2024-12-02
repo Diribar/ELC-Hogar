@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Dom. 1/dic",
-	"HoraUTC": "12:00",
+	"FechaUTC": "Lun. 2/dic",
+	"HoraUTC": "1:29",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 25/nov",
-	"HoraSemUTC": "0:37",
-	"semanaUTC": 48,
+	"FechaSemUTC": "Lun. 2/dic",
+	"HoraSemUTC": "1:29",
+	"semanaUTC": 49,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS HORARIAS ---------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario y no maduros",
@@ -18,13 +18,14 @@
 	"MotivoDiarias3": "Estadísticas que se necesita que se actualicen en forma diaria",
 	"RutinasDiarias": {
 		"imagenDerecha": "SI",
-		"cantNavegs": "SI",
-		"cantClientes": "SI",
 		"actualizaUsuarios": "SI",
-		"clientesMensualidad": "SI",
 		"eliminaLinksInactivos": "SI",
 		"ABM_noRevisores": "SI",
-		"navegsDia": "SI"
+		"cantNavegs": "SI",
+		"cantClientes": "SI",
+		"navegsDia": "SI",
+		"eliminaVisitasAntiguas": "SI",
+		"clientesMensualidad": "SI"
 	},
 	"Subtitulo5": "-------------- RUTINAS SEMANALES ---------------",
 	"MotivoSemanales1": "Actualizaciones que se necesita que sean semanales",
@@ -51,14 +52,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"29-nov-24": {
-			"leyenda": "Hoy recordamos a la beata María Magdalena de la Encarnación",
-			"entidad": "personajes",
-			"id": 186
-		},
 		"30-nov-24": {},
 		"01-dic-24": {"leyenda": "Hoy es el Comienzo del Adviento", "entidad": "eventos", "id": 13},
 		"02-dic-24": {"leyenda": "Estamos en época de Adviento", "entidad": "epocasDelAno", "id": 25},
-		"03-dic-24": {"leyenda": "Hoy recordamos a san Francisco Javier", "entidad": "personajes", "id": 167}
+		"03-dic-24": {"leyenda": "Hoy recordamos a san Francisco Javier", "entidad": "personajes", "id": 167},
+		"04-dic-24": {"leyenda": "Hoy recordamos a santa Barbara de Nicomedia", "entidad": "personajes", "id": 68}
 	}
 }
