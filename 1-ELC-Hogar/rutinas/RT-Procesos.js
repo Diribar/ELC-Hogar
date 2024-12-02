@@ -551,16 +551,24 @@ module.exports = {
 
 			return {tresDiez, onceTreinta, masDeTreinta, unoDos};
 		},
-		cantNavegs: async () => {
+		eliminaVisitasAntiguas: async () => {
+			const haceUnMes = comp.fechaHora.anoMesDia(Date.now() - unMes);
+			const condicion = {fechaUltNaveg: {[Op.lt]: haceUnMes}, diasNaveg: 1};
+			await baseDeDatos.eliminaPorCondicion("visitas", condicion);
+
+			// Fin
+			return;
+		},
+		cantNavegsMensual: async () => {
 			// Variables
 			let revisar = await baseDeDatos.obtieneTodos("persWebDiaAcum");
 			if (!revisar.length) return;
-			const anoMesUlt = revisar[revisar.length - 1].anoMes;
+			const anoMesUlt = revisar[revisar.length - 1].anoMes;// obtiene el añoMes del último registro
 			let promedios = {};
 
 			// Rutina
 			while (true) {
-				// Averigua si en el acumulado hay días de meses anteriores
+				// Averigua si en el acumulado hay días de meses anteriores y que además tengan fecha
 				const hallazgo = revisar.find((n) => n.anoMes < anoMesUlt && n.fecha);
 
 				// Si no los hay, interrumpe la función
@@ -594,7 +602,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		cantClientes: async () => {
+		cantClientesMensual: async () => {
 			// Variables
 			let revisar = await baseDeDatos.obtieneTodos("persBdDiaAcum");
 			if (!revisar.length) return;
@@ -613,7 +621,7 @@ module.exports = {
 				const regsParaProcesar = revisar.filter((n) => n.anoMes == anoMesAntiguo);
 				const regUltimo = regsParaProcesar[regsParaProcesar.length - 1];
 
-				// Quita el dato de la fecha de ese registro
+				// Convierte el último registro del mes, en el registro a dejar quitándole la fecha
 				await baseDeDatos.actualizaPorId("persBdDiaAcum", regUltimo.id, {fecha: null});
 
 				// Elimina los demás registros de ese mes
@@ -622,14 +630,6 @@ module.exports = {
 				// Fin
 				revisar = revisar.filter((n) => n.anoMes != anoMesAntiguo);
 			}
-
-			// Fin
-			return;
-		},
-		eliminaVisitasAntiguas: async () => {
-			const haceUnMes = comp.fechaHora.anoMesDia(Date.now() - unMes);
-			const condicion = {fechaUltNaveg: {[Op.lt]: haceUnMes}, diasNaveg: 1};
-			await baseDeDatos.eliminaPorCondicion("visitas", condicion);
 
 			// Fin
 			return;
