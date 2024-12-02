@@ -555,7 +555,7 @@ module.exports = {
 			// Variables
 			let revisar = await baseDeDatos.obtieneTodos("persWebDiaAcum");
 			if (!revisar.length) return;
-			const anoMesUlt = revisar[revisar.length - 1].anoMes;// obtiene el añoMes del último registro
+			const anoMesUlt = revisar[revisar.length - 1].anoMes; // obtiene el añoMes del último registro
 			let promedios = {};
 
 			// Rutina
@@ -570,7 +570,7 @@ module.exports = {
 				const anoMesAntiguo = hallazgo.anoMes;
 
 				// Obtiene la cantidad de registros de ese año mes
-				const regsParaProcesar = revisar.filter((n) => n.fecha.startsWith(anoMesAntiguo));
+				const regsParaProcesar = revisar.filter((n) => n.fecha && n.fecha.startsWith(anoMesAntiguo));
 
 				// Obtiene los promedios
 				const totales = regsParaProcesar.reduce(({logins, usSinLogin, visitas}, reg) => ({
