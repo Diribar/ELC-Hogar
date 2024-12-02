@@ -28,10 +28,10 @@
 
 				<!-- Íconos de la ruta -->
 				<td class="ruta">
-					<% if (navegDia.prodRclv_id) { %><a href="<%= navegDia.ruta %>"><% } %>
+					<% if (navegDia.ruta) { %><a href="<%= navegDia.ruta %>"><% } %>
 						<%- navegDia.iconosHTML || navegsDia.distintivo %><%- navegDia.nombre %>
 						<%= navegDia.prodRclv_id %>
-					<% if (navegDia.prodRclv_id) { %></a><% } %>
+					<% if (navegDia.ruta) { %></a><% } %>
 				</td>
 			</tr>
 			<% } %>
