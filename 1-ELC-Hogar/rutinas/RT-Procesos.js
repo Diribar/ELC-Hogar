@@ -551,14 +551,6 @@ module.exports = {
 
 			return {tresDiez, onceTreinta, masDeTreinta, unoDos};
 		},
-		eliminaVisitasAntiguas: async () => {
-			const haceUnMes = comp.fechaHora.anoMesDia(Date.now() - unMes);
-			const condicion = {fechaUltNaveg: {[Op.lt]: haceUnMes}, diasNaveg: 1};
-			await baseDeDatos.eliminaPorCondicion("visitas", condicion);
-
-			// Fin
-			return;
-		},
 		cantNavegsMensual: async () => {
 			// Variables
 			let revisar = await baseDeDatos.obtieneTodos("persWebDiaAcum");
