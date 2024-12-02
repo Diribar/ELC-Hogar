@@ -478,10 +478,10 @@ module.exports = {
 			return;
 		},
 		clientesMensualidad: async () => {
-			// Ejecuta las funciones de cada gráfico
-			await procesos.clientes.cantNavegs();
-			await procesos.clientes.cantClientes();
+			// Ejecuta las funciones de cada indicador
 			await procesos.clientes.eliminaVisitasAntiguas();
+			await procesos.clientes.cantNavegsMensual();
+			await procesos.clientes.cantClientesMensual();
 
 			// Fin
 			return;
