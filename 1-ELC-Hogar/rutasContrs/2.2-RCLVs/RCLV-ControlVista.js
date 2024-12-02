@@ -82,7 +82,7 @@ module.exports = {
 	altaEdic: {
 		form: async (req, res) => {
 			// Tema y Código - puede venir de: agregarProd, edicionProd, detalleRCLV, revision...
-			const {baseUrl, tarea, siglaFam, entidad} = comp.partesDelUrl(req);
+			const {baseUrl, tarea, entidad} = comp.partesDelUrl(req);
 			const tema = baseUrl == "/revision" ? "revisionEnts" : "rclvCrud";
 			let codigo = tarea.slice(1);
 			if (codigo == "alta") codigo += "/r"; // crud: 'agregar', 'edicion'; revisión: 'alta/r', 'solapamiento'
