@@ -186,34 +186,23 @@ module.exports = {
 			// Fin
 			return {iconosArray};
 		},
-		prodRclv: async (ruta) => {
-			// Averigua si es una entidad
-			let entidad = ruta.slice(1);
-			const indice = entidad.indexOf("/");
-			if (indice > -1) entidad = entidad.slice(0, indice);
-
-			// Si no es una entidad, interrumpe la función
-			if (!variables.entidades.todos.includes(entidad)) return;
-
-			// Averigua si tiene un id
-			const tieneId = ruta.split("/?id=").length > 1;
-
+		prodRclv_id: async (ruta) => {
 			// Si no tiene id, interrumpe la función
+			const tieneId = ruta.split("/?id=").length > 1;
 			if (!tieneId) return ;
 
 			// Averigua el id
 			let id = ruta.split("/?id=")[1].split("&")[0];
 
 			// Si es un link, averigua el producto
-			if (entidad == "links") {
+			if (ruta.startsWith("/links/mirar/l")) {
 				const link = await baseDeDatos.obtienePorId("links", id);
-				entidad = comp.obtieneDesdeCampo_id.entidadProd(link);
 				const campo_id = comp.obtieneDesdeCampo_id.campo_id(link);
 				id = link[campo_id];
 			}
 
 			// Fin
-			return {entidad, id};
+			return id;
 		},
 		resumen: (navegsDia) => {
 			// Obtiene las personas
