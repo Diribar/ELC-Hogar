@@ -5,8 +5,6 @@ module.exports = (sequelize, dt) => {
 		nombre: {type: dt.STRING(20)},
 		avatar: {type: dt.STRING(20)},
 
-		abierto: {type: dt.BOOLEAN},
-		permUso: {type: dt.BOOLEAN},
 		siemprePago: {type: dt.BOOLEAN},
 		siempreGratuito: {type: dt.BOOLEAN},
 		siempreCompleta: {type: dt.BOOLEAN},
