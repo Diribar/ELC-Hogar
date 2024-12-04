@@ -20,7 +20,7 @@ module.exports = {
 		if (!info.RutinasDiarias || !Object.keys(info.RutinasDiarias).length) return;
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 
-		// await this.rutinas.navegsDia();
+		// await this.rutinas.actualizaPaisesConMasProductos();
 		// await obsoletas.actualizaCapEnCons()
 		// await this.RutinasSemanales();
 
@@ -505,27 +505,28 @@ module.exports = {
 		},
 		actualizaPaisesConMasProductos: async () => {
 			// Variables
-			const condicion = {statusRegistro_id: aprobado_id};
+			const condicion = {statusRegistro_id: aprobados_ids};
 			const entidades = ["peliculas", "colecciones"];
-			let paisesID = {};
+			let paisesIds = {};
 
 			// Obtiene la frecuencia por país
 			for (let entidad of entidades) {
 				// Obtiene todos los registros de la entidad
 				await baseDeDatos
 					.obtieneTodosPorCondicion(entidad, condicion)
-					.then((n) => n.filter((m) => m.paises_id))
-					.then((n) =>
-						n.map((m) => {
-							for (let o of m.paises_id.split(" ")) paisesID[o] ? paisesID[o]++ : (paisesID[o] = 1);
+					.then((n) => n.filter((m) => m.paises_id)) // quita los registros sin país
+					.then((registros) =>
+						registros.map((registro) => {
+							const paises_id = registro.paises_id.split(" ");
+							for (let pais_id of paises_id) paisesIds[pais_id] ? paisesIds[pais_id]++ : (paisesIds[pais_id] = 1);
 						})
 					);
 			}
 
 			// Actualiza la frecuencia por país
 			paises.forEach((pais, i) => {
-				const cantidad = paisesID[pais.id] ? paisesID[pais.id] : 0;
-				paises[i].cantProds.cantidad = cantidad;
+				const cantidad = paisesIds[pais.id] || 0;
+				paises[i].cantProds.cantidad = cantidad; // actualiza la variable en 'global'
 				baseDeDatos.actualizaPorCondicion("paisesCantProds", {pais_id: pais.id}, {cantidad});
 			});
 
