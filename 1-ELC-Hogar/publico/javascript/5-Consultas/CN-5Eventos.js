@@ -344,8 +344,5 @@ window.addEventListener("load", async () => {
 				if (DOM.cartelRCLV) DOM.cartelRCLV.classList.add("toggle");
 			}
 		}
-
-		console.log(elemento, padre);
-		console.log(nombre, padre.id);
 	});
 });
