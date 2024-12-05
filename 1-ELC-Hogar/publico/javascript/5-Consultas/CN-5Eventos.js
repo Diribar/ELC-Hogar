@@ -325,7 +325,7 @@ window.addEventListener("load", async () => {
 		}
 
 		// De lo contrario, alterna entre lo que se muestra sobre la 'imagen derecha'
-		else if (elemento == DOM.imgDerecha) {
+		else if (["encabezado", "contadorDeProds","imgDerecha"].includes(nombre)) {
 			// 1. Si se ve 'vistaDeResults', lo oculta y muestra 'cartelRCLV'
 			if (!DOM.vistaDeResults.className.includes("toggle")) {
 				DOM.vistaDeResults.classList.add("toggle");
@@ -333,14 +333,18 @@ window.addEventListener("load", async () => {
 			}
 
 			// 2. Si se ve 'cartelRCLV', lo oculta
-			else if (!seHicieronCambios && DOM.cartelRCLV && !DOM.cartelRCLV.className.includes("toggle")) {
+			else if (DOM.cartelRCLV && !DOM.cartelRCLV.className.includes("toggle")) {
 				DOM.vistaDeResults.classList.add("toggle");
 				if (DOM.cartelRCLV) DOM.cartelRCLV.classList.add("toggle");
 			}
 
-			// 3. Si no se hicieron cambios, muestra 'vistaDeResults'
-			else DOM.vistaDeResults.classList.remove("toggle");
+			// 3. Muestra 'vistaDeResults'
+			else {
+				DOM.vistaDeResults.classList.remove("toggle");
+				if (DOM.cartelRCLV) DOM.cartelRCLV.classList.add("toggle");
+			}
 		}
+
 		console.log(elemento, padre);
 		console.log(nombre, padre.id);
 	});
