@@ -9,7 +9,6 @@ window.addEventListener("load", () => {
 		motivosFila: document.querySelectorAll(".yaExistentes .motivo"),
 		motivosSelect: document.querySelectorAll(".yaExistentes .motivo select"),
 		botonesOut: document.querySelectorAll(".yaExistentes .out"),
-		// pasivos: document.querySelector("#tabla #tags #inactivo"),
 	};
 	let columnas = DOM.taparMotivo.length / DOM.yaExistentes.length;
 	let respuesta;
