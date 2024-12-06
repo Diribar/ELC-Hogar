@@ -18,8 +18,8 @@ const iconos = {
 	...{agregar: "fa-circle-plus", calificar: "fa-chart-simple", eliminar: "fa-trash-can"},
 	...{detalle: "fa-circle-info", edicion: "fa-pen", edicionCambiada: "fa-arrow-right-long", rotar: "fa-rotate-90"},
 	...{graficos: "fa-chart-line", chart: "fa-chart-pie", columnas: "fa-chart-simple", area: "fa-chart-area"},
-	...{prod: "fa-video", rclv: "fa-child", link: "fa-link", instituc: "fa-building-columns", mail: "fa-envelope", mantenim: "fa-tools"},
-	...{login:"fa-circle-user", altaUser: "fa-user-plus", revision: "fa-user-graduate"},
+	...{prod: "fa-video", rclv: "fa-child", link: "fa-link", instituc: "fa-building-columns", mail: "fa-envelope"},
+	...{login: "fa-circle-user", altaUser: "fa-user-plus", revision: "fa-user-graduate", mantenim: "fa-tools"},
 };
 
 module.exports = {
@@ -184,7 +184,7 @@ module.exports = {
 			"<i class='" + iconos.faSolid + " fa-circle elegi'></i> <b>elegí</b> el idioma",
 		],
 	},
-	beneficiosLogin:[
+	beneficiosLogin: [
 		"Te permite marcar tus preferencias por película: la quiero ver, ya la vi, no me interesa.",
 		"También te permite entre otras cosas:<ul><li>Ver tus mismas preferencias en distintos dispositivos.</li><li>Ver el listado de tus últimas películas consultadas.</li><li>Dar de alta contenido en nuestro sitio.</li></ul>",
 	],
@@ -201,7 +201,7 @@ module.exports = {
 		{descripcion: "Otro motivo", codigo: "varios"},
 	],
 	eliminarCuandoSinEntidadId: ["statusHistorial", "histEdics", "misConsultas", "pppRegistros", "calRegistros"],
-	requestsTriviales: ["WhatsApp", "Postman", "TelegramBot", "Zabbix"], // evita que se cuenten como visitas
+	requestsTriviales: ["WhatsApp", "Postman", "TelegramBot", "TwitterBot", "Zabbix"], // evita que se cuenten como visitas
 	rutasConHistorial: {
 		iguales: [
 			["/", "inicio", iconos.instituc, iconos.inicio],
