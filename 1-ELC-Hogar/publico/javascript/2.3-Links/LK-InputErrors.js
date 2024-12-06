@@ -301,9 +301,9 @@ window.addEventListener("load", async () => {
 		if (fila == filas) return;
 		// Si se ingresó un url en el alta, depurarlo
 		if (fila == filaAlta && !columna) FN.depuraUrl();
-		DOM.controlesDataEntry(fila, columna);
+		FN.controlesDataEntry(fila, columna);
 	});
 
 	// Startup - revisa las ediciones y el alta
-	for (let fila = 0; fila < filas - 1; fila++) await DOM.controlesDataEntry(fila, 0);
+	for (let fila = 0; fila < filas - 1; fila++) await FN.controlesDataEntry(fila, 0);
 });
