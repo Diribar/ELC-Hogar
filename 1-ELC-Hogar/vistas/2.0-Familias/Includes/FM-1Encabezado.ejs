@@ -2,7 +2,8 @@
 	<!-- Izquierda -->
 	<div id="nombres">
 		<% if (codigo != "detalle") { %>
-			<a href="<%= '/' + entidad + '/detalle/' + familia[0] + '/?id=' + id + (locals.origen && !origen.endsWith("DT") ? ('&origen=' + origen) : '') %>">
+			<% const urlInicio = entidad != "links" ? (entidad + '/detalle/' + familia[0]) : "links/mirar/l" %>
+			<a href="<%= '/' + urlInicio + '/?id=' + id + (locals.origen && !origen.endsWith("DT") ? ('&origen=' + origen) : '') %>">
 		<% } %>
 			<!-- Nombre principal -->
 			<h2>
