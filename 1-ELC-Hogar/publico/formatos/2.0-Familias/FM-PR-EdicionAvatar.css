@@ -3,7 +3,7 @@
 	label {line-height: 0;}
 
 	/* Imagen - Íconos */
-	.fa-solid {font-size: 2rem; background: white; border-radius: 50%;}
+	.fa-solid {font-size: 2rem;}
 	.ayudaErrores {display: flex; flex-direction: row;}
 	:is(.ayuda, .errores) {position: static; translate: none;}
 	.errores .fa-solid {margin-left: 10px;}
