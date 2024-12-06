@@ -16,7 +16,7 @@ window.addEventListener("load", async () => {
 	};
 
 	// Funciones
-	let creaLosIframes = async (domLinks, activoInactivo) => {
+	const creaLosIframes = async (domLinks, activoInactivo) => {
 		// Rutina para crear todos los iframes
 		for (let domLink of domLinks) {
 			// Agrega el entorno del iframe
