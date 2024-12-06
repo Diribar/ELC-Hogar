@@ -38,9 +38,9 @@ window.addEventListener("load", () => {
 				// Obtiene los datos
 				let url = condicion;
 				url += "&url=" + encodeURIComponent(DOM.links_url[fila].value);
-				url += "&motivo_id=" + DOM.motivosSelect[fila].value;
 				url += "&IN=NO";
 				url += "&aprob=NO";
+				url += "&motivo_id=" + DOM.motivosSelect[fila].value;
 
 				// Envía la decisión y oculta la fila
 				fetch(rutaEliminar + url).then((n) => n.json());
