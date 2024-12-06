@@ -11,29 +11,12 @@ window.addEventListener("load", () => {
 		botonesOut: document.querySelectorAll(".yaExistentes .out"),
 	};
 	let columnas = DOM.taparMotivo.length / DOM.yaExistentes.length;
-	let respuesta;
 
 	// Inactiva o elimina
 	DOM.botonesOut.forEach((botonOut, fila) => {
 		botonOut.addEventListener("click", async () => {
-			// Inactiva
-			if (botonOut.className.includes("fa-trash-can")) {
-				// Obtiene los datos
-				let url = condicion;
-				url += "&url=" + encodeURIComponent(DOM.links_url[fila].value);
-				url += "&motivo_id=" + DOM.motivosSelect[fila].value;
-				url += "&IN=NO";
-				url += "&aprob=NO";
-
-				// Envía la decisión
-				respuesta = await fetch(rutaEliminar + url).then((n) => n.json());
-
-				// Consecuencias a partir de la respuesta
-				if (respuesta) location.reload();
-				else DOM.yaExistentes[fila].classList.add("ocultar");
-			}
 			// Muestra los motivos
-			else {
+			if (!botonOut.className.includes("fa-trash-can")) {
 				// Oculta el botón de edicion
 				if (DOM.botonesEditar.length) DOM.botonesEditar[fila].classList.add("ocultar");
 
@@ -47,6 +30,21 @@ window.addEventListener("load", () => {
 				// Muestra el select
 				DOM.motivosFila[fila].classList.remove("ocultar");
 				DOM.motivosSelect[fila].focus();
+			}
+			// Inactiva
+			else {
+				console.log("fa-trash-can");
+
+				// Obtiene los datos
+				let url = condicion;
+				url += "&url=" + encodeURIComponent(DOM.links_url[fila].value);
+				url += "&motivo_id=" + DOM.motivosSelect[fila].value;
+				url += "&IN=NO";
+				url += "&aprob=NO";
+
+				// Envía la decisión y oculta la fila
+				fetch(rutaEliminar + url).then((n) => n.json());
+				DOM.yaExistentes[fila].classList.add("ocultar");
 			}
 		});
 	});
