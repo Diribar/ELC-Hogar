@@ -43,7 +43,7 @@ window.addEventListener("load", async () => {
 	const provs = await fetch(v.rutaObtieneProvs).then((n) => n.json());
 	let prov, col, sinErrores;
 
-	// FUNCIONES ---------------------------------------------------------------
+	// Funciones
 	const FN = {
 		obtieneFilaColumna: (e) => {
 			// Obtiene campo
