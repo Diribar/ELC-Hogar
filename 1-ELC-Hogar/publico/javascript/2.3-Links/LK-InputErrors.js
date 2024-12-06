@@ -44,7 +44,7 @@ window.addEventListener("load", async () => {
 	let prov, col, sinErrores;
 
 	// FUNCIONES ---------------------------------------------------------------
-	let FN = {
+	const FN = {
 		obtieneFilaColumna: (e) => {
 			// Obtiene campo
 			let campo = e.target.name;
@@ -71,9 +71,9 @@ window.addEventListener("load", async () => {
 			DOM.urlInputs[filaAlta].value = url;
 			return url;
 		},
-		controlesEnUrl: async (fila) => {
+		controlesEnUrl: async function (fila) {
 			// Detecta errores y aplica consecuencia
-			const error = fila == filaAlta ? await mensajeDeError(fila, "url") : "";
+			const error = fila == filaAlta ? await this.mensajeDeError(fila, "url") : "";
 			sinErrores = !error || !error.url;
 			if (sinErrores && !col) col++;
 
@@ -100,44 +100,44 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		controlesEnCalidad: async (fila, prov) => {
+		controlesEnCalidad: async function (fila, prov) {
 			// Si el resultado es conocido --> ponerlo
 			const condicion = !!prov.calidad;
 			if (condicion) DOM.calidadInputs[fila].value = prov.calidad;
 			DOM.calidadInputs[fila].disabled = !!condicion;
 
 			// Detecta errores y aplica consecuencias
-			const error = await mensajeDeError(fila, "calidad");
+			const error = await this.mensajeDeError(fila, "calidad");
 			sinErrores = !error || !error.calidad;
 			if (sinErrores) col++;
 
 			// Fin
 			return;
 		},
-		controlesEnCastellano: async (fila) => {
+		controlesEnCastellano: async function (fila) {
 			// Detecta errores y aplica consecuencia
-			const error = await mensajeDeError(fila, "castellano");
+			const error = await this.mensajeDeError(fila, "castellano");
 			sinErrores = !error || !error.castellano;
 			if (sinErrores) col++;
 
 			// Fin
 			return;
 		},
-		controlesEnSubtitulosCastellano: async (fila) => {
+		controlesEnSubtitulosCastellano: async function (fila) {
 			// Si el resultado es conocido --> ponerlo
 			const condicion = DOM.castellanoInputs[fila].value == "1";
 			if (condicion) DOM.subtitulos[fila].value = "-";
 			DOM.subtitulos[fila].disabled = !!condicion;
 
 			// Detecta errores y aplica consecuencia
-			const error = await mensajeDeError(fila, "subtitulos");
+			const error = await this.mensajeDeError(fila, "subtitulos");
 			sinErrores = !error || !error.subtitulos;
 			if (sinErrores) col++;
 
 			// Fin
 			return;
 		},
-		controlesEnGratuito: async (fila, prov) => {
+		controlesEnGratuito: async function (fila, prov) {
 			// Si el resultado es conocido --> ponerlo
 			const cond1 = prov.siempreGratuito;
 			const cond2 = prov.siemprePago;
@@ -146,14 +146,14 @@ window.addEventListener("load", async () => {
 			DOM.gratuitoInputs[fila].disabled = cond1 || cond2;
 
 			// Detecta errores y aplica consecuencia
-			const error = await mensajeDeError(fila, "gratuito");
+			const error = await this.mensajeDeError(fila, "gratuito");
 			sinErrores = !error || !error.gratuito;
 			if (sinErrores) col++;
 
 			// Fin
 			return;
 		},
-		controlesEnTipo: async (fila, prov) => {
+		controlesEnTipo: async function (fila, prov) {
 			// Si el resultado es conocido --> ponerlo
 			const condicion = !prov.trailer || !prov.pelicula || v.colecciones;
 			if (condicion)
@@ -164,14 +164,14 @@ window.addEventListener("load", async () => {
 			DOM.tipoInputs[fila].disabled = !!condicion;
 
 			// Detecta errores y aplica consecuencia
-			const error = await mensajeDeError(fila, "tipo_id");
+			const error = await this.mensajeDeError(fila, "tipo_id");
 			sinErrores = !error || !error.tipo_id;
 			if (sinErrores) col++;
 
 			// Fin
 			return;
 		},
-		controlesEnCompleto: async (fila, prov) => {
+		controlesEnCompleto: async function (fila, prov) {
 			// Si el resultado es conocido --> ponerlo
 			const condicion =
 				DOM.tipoInputs[fila].value == 1 || // es un trailer
@@ -182,14 +182,14 @@ window.addEventListener("load", async () => {
 			DOM.completoInputs[fila].disabled = !!condicion;
 
 			// Detecta errores y aplica consecuencia
-			const error = await mensajeDeError(fila, "completo");
+			const error = await this.mensajeDeError(fila, "completo");
 			sinErrores = !error || !error.completo;
 			if (sinErrores) col++;
 
 			// Fin
 			return;
 		},
-		controlesEnParte: async (fila) => {
+		controlesEnParte: async function (fila) {
 			// Eliminar los caracteres que no sean '-' o un número
 			DOM.parteInputs[fila].value = DOM.parteInputs[fila].value.replace(/[^-\d]/g, "");
 
@@ -199,7 +199,7 @@ window.addEventListener("load", async () => {
 			DOM.parteInputs[fila].disabled = !!condicion;
 
 			// Detecta errores y aplica consecuencia
-			const error = await mensajeDeError(fila, "parte");
+			const error = await this.mensajeDeError(fila, "parte");
 			sinErrores = !error || !error.parte;
 			if (sinErrores) col++;
 
@@ -241,57 +241,56 @@ window.addEventListener("load", async () => {
 			OK && error ? DOM.guardar[fila].classList.remove("inactivo") : DOM.guardar[fila].classList.add("inactivo");
 			OK && error ? DOM.guardar[fila].setAttribute("tabindex", "0") : DOM.guardar[fila].setAttribute("tabindex", "-1");
 		},
-	};
-	// Sub-funciones ------------------------------------------------------------
-	let controlesDataEntry = async (fila, columna) => {
-		// Barre el contenido de izquierda a derecha
-		col = columna;
-		sinErrores = true;
-		await FN.controlesEnUrl(fila);
-		if (col == 1 && sinErrores) await FN.controlesEnCalidad(fila, prov);
-		if (col == 2 && sinErrores) await FN.controlesEnCastellano(fila);
-		if (col == 3 && sinErrores) await FN.controlesEnSubtitulosCastellano(fila);
-		if (col == 4 && sinErrores) await FN.controlesEnGratuito(fila, prov);
-		if (col == 5 && sinErrores) await FN.controlesEnTipo(fila, prov);
-		if (col == 6 && sinErrores) await FN.controlesEnCompleto(fila, prov);
-		if (col == 7 && sinErrores) await FN.controlesEnParte(fila);
-		// Actualizar el formato
-		if (fila == filaAlta) FN.actualizaFormato(columna);
-		// Submit
-		FN.activaInactivaBotonGuardar(fila);
-		// Pone el foco en el input a resolver o en el botón guardar
-		let celda = fila * columnas + col;
-		if (col < columnas) DOM.inputs[celda].focus();
-		else if (!DOM.guardar[fila].className.includes("inactivo")) DOM.guardar[fila].focus();
-		// Fin
-		return;
-	};
-	let mensajeDeError = async (fila, campo) => {
-		// Obtiene la columna, el índice y el valor
-		let columna = v.camposInput.indexOf(campo);
-		let indice = fila * columnas + columna;
-		let valor = encodeURIComponent(DOM.inputs[indice].value);
+		controlesDataEntry: async (fila, columna) => {
+			// Barre el contenido de izquierda a derecha
+			col = columna;
+			sinErrores = true;
+			await FN.controlesEnUrl(fila);
+			if (col == 1 && sinErrores) await FN.controlesEnCalidad(fila, prov);
+			if (col == 2 && sinErrores) await FN.controlesEnCastellano(fila);
+			if (col == 3 && sinErrores) await FN.controlesEnSubtitulosCastellano(fila);
+			if (col == 4 && sinErrores) await FN.controlesEnGratuito(fila, prov);
+			if (col == 5 && sinErrores) await FN.controlesEnTipo(fila, prov);
+			if (col == 6 && sinErrores) await FN.controlesEnCompleto(fila, prov);
+			if (col == 7 && sinErrores) await FN.controlesEnParte(fila);
+			// Actualizar el formato
+			if (fila == filaAlta) FN.actualizaFormato(columna);
+			// Submit
+			FN.activaInactivaBotonGuardar(fila);
+			// Pone el foco en el input a resolver o en el botón guardar
+			let celda = fila * columnas + col;
+			if (col < columnas) DOM.inputs[celda].focus();
+			else if (!DOM.guardar[fila].className.includes("inactivo")) DOM.guardar[fila].focus();
+			// Fin
+			return;
+		},
+		mensajeDeError: async (fila, campo) => {
+			// Obtiene la columna, el índice y el valor
+			let columna = v.camposInput.indexOf(campo);
+			let indice = fila * columnas + columna;
+			let valor = encodeURIComponent(DOM.inputs[indice].value);
 
-		// Obtiene el campo y valor anterior
-		let [campoAnt, valorAnt] =
-			campo == "subtitulos" || campo == "completo" || campo == "parte"
-				? [DOM.inputs[indice - 1].name + "=", DOM.inputs[indice - 1].value + "&"]
-				: ["", ""];
+			// Obtiene el campo y valor anterior
+			let [campoAnt, valorAnt] =
+				campo == "subtitulos" || campo == "completo" || campo == "parte"
+					? [DOM.inputs[indice - 1].name + "=", DOM.inputs[indice - 1].value + "&"]
+					: ["", ""];
 
-		// Consolida la información y averigua si hay algún error
-		const condicion = campoAnt + valorAnt + campo + "=" + valor;
-		const error = await fetch(v.rutaValidar + condicion).then((n) => n.json());
+			// Consolida la información y averigua si hay algún error
+			const condicion = campoAnt + valorAnt + campo + "=" + valor;
+			const error = await fetch(v.rutaValidar + condicion).then((n) => n.json());
 
-		// Reemplaza el mensaje
-		let mensaje = error[campo];
-		DOM.mensajesError[indice].innerHTML = mensaje;
+			// Reemplaza el mensaje
+			let mensaje = error[campo];
+			DOM.mensajesError[indice].innerHTML = mensaje;
 
-		// Acciones en función de si hay o no mensajes de error
-		mensaje ? DOM.iconosError[indice].classList.remove("ocultar") : DOM.iconosError[indice].classList.add("ocultar");
-		!mensaje ? DOM.iconosOK[indice].classList.remove("ocultar") : DOM.iconosOK[indice].classList.add("ocultar");
+			// Acciones en función de si hay o no mensajes de error
+			mensaje ? DOM.iconosError[indice].classList.remove("ocultar") : DOM.iconosError[indice].classList.add("ocultar");
+			!mensaje ? DOM.iconosOK[indice].classList.remove("ocultar") : DOM.iconosOK[indice].classList.add("ocultar");
 
-		// Fin
-		return error;
+			// Fin
+			return error;
+		},
 	};
 
 	// Event Listeners
@@ -302,9 +301,9 @@ window.addEventListener("load", async () => {
 		if (fila == filas) return;
 		// Si se ingresó un url en el alta, depurarlo
 		if (fila == filaAlta && !columna) FN.depuraUrl();
-		controlesDataEntry(fila, columna);
+		DOM.controlesDataEntry(fila, columna);
 	});
 
 	// Startup - revisa las ediciones y el alta
-	for (let fila = 0; fila < filas - 1; fila++) await controlesDataEntry(fila, 0);
+	for (let fila = 0; fila < filas - 1; fila++) await DOM.controlesDataEntry(fila, 0);
 });
