@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let DOM = {
+	const DOM = {
 		// Generales
 		form: document.querySelector("#datosLargos form"),
 		guardar: document.querySelectorAll("tbody tr button"),
@@ -28,7 +28,7 @@ window.addEventListener("load", async () => {
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 		mensajesError: document.querySelectorAll(".inputError .mensajeError"),
 	};
-	let v = {
+	const v = {
 		// Generales
 		colecciones: entidad == "colecciones",
 		camposInput: Array.from(DOM.camposInput).map((n) => n.name),
@@ -37,10 +37,10 @@ window.addEventListener("load", async () => {
 		rutaValidar: "/links/api/lk-valida/?",
 		rutaObtieneProvs: "/links/api/lk-obtiene-provs",
 	};
-	let columnas = DOM.camposInput.length;
-	let filas = DOM.inputs.length / columnas;
-	let filaAlta = filas - 1;
-	let provs = await fetch(v.rutaObtieneProvs).then((n) => n.json());
+	const columnas = DOM.camposInput.length;
+	const filas = DOM.inputs.length / columnas;
+	const filaAlta = filas - 1;
+	const provs = await fetch(v.rutaObtieneProvs).then((n) => n.json());
 	let prov, col, sinErrores;
 
 	// FUNCIONES ---------------------------------------------------------------
