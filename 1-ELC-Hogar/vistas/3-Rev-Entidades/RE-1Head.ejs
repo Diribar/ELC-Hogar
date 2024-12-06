@@ -14,9 +14,11 @@
 	<% } %>
 
 <% } else { %>
+	<% if (["alta/p", "rechazar", "inactivar", "recuperar", "edicion"].includes(codigo)) { %>
+		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-DatosBreves.css">
+	<% } %>
 	<% if (["alta/p", "rechazar", "inactivar", "recuperar", "abmLinks", "edicion"].includes(codigo)) { %>
 		<!-- Compartido -->
-		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-DatosBreves.css">
 		<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-Iconos.css">
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-1Encabezado.css">
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-Detalle.css">
@@ -42,6 +44,11 @@
 			<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-PR-HistorialStatus.css">
 			<script src="/publico/javascript/3-Rev-Entidades/RE-PR-InacRecup.js"></script>
 
+		<% } else if (codigo == "edicion") { %>
+			<!-- Ediciones - Particular -->
+			<link rel="stylesheet" href="/publico/formatos/3-Rev-Entidades/RE-PR-Edicion.css">
+			<script src="/publico/javascript/3-Rev-Entidades/RE-PR-Edicion.js"></script>
+
 		<% } else if (codigo == "abmLinks") { %>
 			<!-- Links - Uso compartido -->
 			<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-LK-ABM.css">
@@ -55,10 +62,6 @@
 			<script src="/publico/javascript/3-Rev-Entidades/RE3-Link1-AltasBajas.js"></script>
 			<script src="/publico/javascript/3-Rev-Entidades/RE3-Link2-Ediciones.js"></script>
 
-		<% } else if (codigo == "edicion") { %>
-			<!-- Ediciones - Particular -->
-			<link rel="stylesheet" href="/publico/formatos/3-Rev-Entidades/RE-PR-Edicion.css">
-			<script src="/publico/javascript/3-Rev-Entidades/RE-PR-Edicion.js"></script>
 		<% } %>
 	<% } else if (codigo == "edicion/avatar") { %>
 		<!-- Prod-Avatar -->
