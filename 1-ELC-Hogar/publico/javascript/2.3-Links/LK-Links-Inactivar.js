@@ -13,19 +13,15 @@ window.addEventListener("load", () => {
 	let columnas = DOM.taparMotivo.length / DOM.yaExistentes.length;
 	let respuesta;
 
-	// Listener de 'inactivar'
+	// Inactiva o elimina
 	DOM.botonesOut.forEach((botonOut, fila) => {
 		botonOut.addEventListener("click", async () => {
-			// Si el ícono está inactivo, interrumpe la función
-			if (botonOut.className.includes("inactivo")) return;
-
-			// Elimina permanentemente
+			// Inactiva
 			if (botonOut.className.includes("fa-trash-can")) {
-				// Variables
-				let motivo_id = DOM.motivosSelect[fila].value;
+				// Obtiene los datos
 				let url = condicion;
 				url += "&url=" + encodeURIComponent(DOM.links_url[fila].value);
-				url += "&motivo_id=" + motivo_id;
+				url += "&motivo_id=" + DOM.motivosSelect[fila].value;
 				url += "&IN=NO";
 				url += "&aprob=NO";
 
@@ -36,14 +32,13 @@ window.addEventListener("load", () => {
 				if (respuesta) location.reload();
 				else DOM.yaExistentes[fila].classList.add("ocultar");
 			}
-			// Inactiva
+			// Muestra los motivos
 			else {
-				// Ocultar el botón de edicion
+				// Oculta el botón de edicion
 				if (DOM.botonesEditar.length) DOM.botonesEditar[fila].classList.add("ocultar");
 
-				// Reemplaza por el tacho
+				// Reemplaza el ícono por el tacho
 				botonOut.classList.replace("fa-circle-xmark", "fa-trash-can");
-				// botonOut.classList.add("inactivo"); quitamos lo de inactivo, porque pusimos un motivo 'default'
 
 				// Oculta los 6 campos
 				for (let columna = 0; columna < columnas; columna++)
@@ -53,14 +48,6 @@ window.addEventListener("load", () => {
 				DOM.motivosFila[fila].classList.remove("ocultar");
 				DOM.motivosSelect[fila].focus();
 			}
-		});
-	});
-
-	// Listener de motivo
-	DOM.motivosSelect.forEach((motivoSelect, fila) => {
-		motivoSelect.addEventListener("change", () => {
-			let motivo = motivoSelect.value;
-			if (motivo) DOM.botonesOut[fila].classList.remove("inactivo");
 		});
 	});
 });
