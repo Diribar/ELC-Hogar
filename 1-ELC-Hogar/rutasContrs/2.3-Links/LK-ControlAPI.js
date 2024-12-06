@@ -196,7 +196,7 @@ module.exports = {
 		// Fin
 		return res.json(respuesta);
 	},
-	altaBaja: async (req, res) => {
+	aprobInactivo: async (req, res) => {
 		// Variables
 		const {url} = req.query;
 		const link = await baseDeDatos.obtienePorCondicion("links", {url}, variables.entidades.asocsProd);

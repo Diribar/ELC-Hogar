@@ -38,7 +38,7 @@ router.get("/api/lk-guardar", API.guarda);
 router.get("/api/lk-inactiva-o-elimina", API.inactivaElimina);
 router.get("/api/lk-recuperar", API.recupera);
 router.get("/api/lk-deshacer", API.deshace);
-router.get("/api/lk-alta-baja", m.linkAltaBaja, API.altaBaja);
+router.get("/api/lk-aprob-inactivo", m.linkAltaBaja, API.aprobInactivo);
 
 // Vistas
 router.get("/abm-links/p", aptoABM, m.capturaActivar, vista.abm);
