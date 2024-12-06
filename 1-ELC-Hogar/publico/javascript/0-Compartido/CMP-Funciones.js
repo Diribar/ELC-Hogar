@@ -401,3 +401,41 @@ const barraProgreso = async (pre, APIs) => {
 	// Fin
 	return respuesta.json();
 };
+const inactivaEliminaLink = async ({DOM, fila, botonOut, ruta}) => {
+	// Variables
+	const columnas = DOM.taparMotivo.length / DOM.yaExistentes.length;
+	DOM.motivosSelect = document.querySelectorAll(".yaExistentes .motivo select");
+
+	// Muestra los motivos
+	if (!botonOut.className.includes("fa-trash-can")) {
+		// Oculta el botón de edicion
+		if (DOM.botonesEditar && DOM.botonesEditar.length) DOM.botonesEditar[fila].classList.add("ocultar");
+
+		// Reemplaza el ícono por el tacho
+		botonOut.classList.replace("fa-circle-xmark", "fa-trash-can");
+
+		// Oculta los 6 campos
+		for (let columna = 0; columna < columnas; columna++) DOM.taparMotivo[fila * columnas + columna].classList.add("ocultar");
+
+		// Muestra el select
+		DOM.motivos[fila].classList.remove("ocultar");
+		DOM.motivosSelect[fila].focus();
+	}
+
+	// Inactiva
+	else {
+		// Obtiene los datos
+		let url = "?prodEntidad=" + entidad + "&prodId=" + id;
+		url += "&url=" + encodeURIComponent(DOM.linksUrl[fila].value);
+		url += "&IN=NO";
+		url += "&aprob=NO";
+		url += "&motivo_id=" + DOM.motivosSelect[fila].value;
+
+		// Envía la decisión y oculta la fila
+		await fetch(ruta + url).then((n) => n.json());
+		DOM.yaExistentes[fila].classList.add("ocultar");
+
+		// Fin
+		return;
+	}
+};
