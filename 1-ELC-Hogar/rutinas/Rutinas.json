@@ -1,6 +1,6 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 6/dic",
+	"FechaUTC": "Sáb. 7/dic",
 	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
@@ -52,10 +52,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"04-dic-24": {"leyenda": "Hoy recordamos a santa Barbara de Nicomedia", "entidad": "personajes", "id": 68},
 		"05-dic-24": {"leyenda": "Hoy recordamos a la venerable Alexia González-Barros", "entidad": "personajes", "id": 246},
 		"06-dic-24": {"leyenda": "Hoy recordamos a san Nicolás de Bari", "entidad": "personajes", "id": 168},
 		"07-dic-24": {"leyenda": "Estamos en época de Adviento", "entidad": "epocasDelAno", "id": 25},
-		"08-dic-24": {"leyenda": "Hoy recordamos la Inmaculada Concepción de María", "entidad": "eventos", "id": 30}
+		"08-dic-24": {"leyenda": "Hoy recordamos la Inmaculada Concepción de María", "entidad": "eventos", "id": 30},
+		"09-dic-24": {"leyenda": "Hoy recordamos a santa Narcisa de Jesús", "entidad": "personajes", "id": 190}
 	}
 }
