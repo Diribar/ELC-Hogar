@@ -3,7 +3,6 @@ window.addEventListener("load", async () => {
 	DOM.cuerpo.addEventListener("input", async (e) => {
 		// Variables
 		const nombre = e.target.name;
-		console.log(nombre);
 
 		// Acciones si se cambia la configuración
 		if (nombre == "cabecera_id") {
