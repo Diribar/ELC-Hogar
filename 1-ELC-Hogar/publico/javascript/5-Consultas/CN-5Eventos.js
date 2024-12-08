@@ -3,6 +3,7 @@ window.addEventListener("load", async () => {
 	DOM.cuerpo.addEventListener("input", async (e) => {
 		// Variables
 		const nombre = e.target.name;
+		console.log(nombre);
 
 		// Acciones si se cambia la configuración
 		if (nombre == "cabecera_id") {
@@ -65,6 +66,9 @@ window.addEventListener("load", async () => {
 				setTimeout(() => DOM.excluyeLeyenda.classList.add("ocultar"), v.setTimeOutStd);
 			}
 			await accionesEstandarPorInputs();
+
+			// Si se cambió el layout, guarda el movimiento en la base de datos
+			if (nombre == "layout_id") await sessionCookie.guardaLayoutEnMovimsBD();
 		}
 
 		// Fin
@@ -325,7 +329,7 @@ window.addEventListener("load", async () => {
 		}
 
 		// De lo contrario, alterna entre lo que se muestra sobre la 'imagen derecha'
-		else if (["encabezado", "contadorDeProds","imgDerecha"].includes(nombre)) {
+		else if (["encabezado", "contadorDeProds", "imgDerecha"].includes(nombre)) {
 			// 1. Si se ve 'vistaDeResults', lo oculta y muestra 'cartelRCLV'
 			if (!DOM.vistaDeResults.className.includes("toggle")) {
 				DOM.vistaDeResults.classList.add("toggle");

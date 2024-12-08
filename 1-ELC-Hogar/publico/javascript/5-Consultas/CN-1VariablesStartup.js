@@ -101,6 +101,9 @@ window.addEventListener("load", async () => {
 		v.mostrarResultados = true;
 		FN_resultados.muestra();
 	}
+
+	// Guarda el movimiento 'layout' en la base de datos
+	await sessionCookie.guardaLayoutEnMovimsBD();
 });
 
 // Variables

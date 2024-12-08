@@ -176,11 +176,12 @@ module.exports = {
 		},
 		guardaLayoutMovsBD: async (req, res) => {
 			// Variables
-			const {layout: comentario} = req.query;
+			const {cliente_id} = req.session.cliente || {};
 			const ruta = "/consultas";
+			const {layout: comentario} = req.query;
 
 			// Guarda el registro de navegación
-			await baseDeDatos.agregaRegistro("navegsDia", {cliente_id, ruta, comentario});
+			if (cliente_id) await baseDeDatos.agregaRegistro("navegsDia", {cliente_id, ruta, comentario});
 		},
 	},
 	sessionCookie: {
