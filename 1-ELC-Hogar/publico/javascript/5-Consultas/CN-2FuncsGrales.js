@@ -370,7 +370,6 @@ const sessionCookie = {
 		// Variables
 		const rutaCompleta = ruta + "guarda-el-layout-en-movims-bd/?layout=";
 		const layout = v.layoutsBD.find((n) => n.id == v.layout_id).nombre;
-		console.log(layout);
 
 		// Guarda
 		await fetch(rutaCompleta + encodeURIComponent(layout));
