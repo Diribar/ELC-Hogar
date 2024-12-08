@@ -178,7 +178,8 @@ module.exports = {
 			// Variables
 			const {cliente_id} = req.session.cliente || {};
 			const ruta = "/consultas";
-			const {layout: comentario} = req.query;
+			const {layout} = req.query;
+			const comentario = layout.slice(0, 20);
 
 			// Guarda el registro de navegación
 			if (cliente_id) await baseDeDatos.agregaRegistro("navegsDia", {cliente_id, ruta, comentario});
