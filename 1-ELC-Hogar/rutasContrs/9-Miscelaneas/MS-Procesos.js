@@ -186,41 +186,31 @@ module.exports = {
 			// Fin
 			return {iconosArray};
 		},
-		prodRclv_id: async (ruta) => {
-			// Si no tiene id, interrumpe la función
-			const tieneId = ruta.split("/?id=").length > 1;
-			if (!tieneId) return ;
-
-			// Averigua el id
-			let id = ruta.split("/?id=")[1].split("&")[0];
-
-			// Si es un link, averigua el producto
-			if (ruta.startsWith("/links/mirar/l")) {
-				const link = await baseDeDatos.obtienePorId("links", id);
-				const campo_id = comp.obtieneDesdeCampo_id.campo_id(link);
-				id = link[campo_id];
-			}
-
-			// Fin
-			return id;
-		},
 		prodRclvNombre: async (ruta) => {
 			// Si no tiene id, interrumpe la función
 			const tieneId = ruta.split("/?id=").length > 1;
-			if (!tieneId) return ;
+			if (!tieneId) return;
 
-			// Averigua el id
+			// Averigua la entidad y el id
+			let entidad = variables.entidades.todos.find((n) => ruta.includes("/" + n + "/"));
 			let id = ruta.split("/?id=")[1].split("&")[0];
 
 			// Si es un link, averigua el producto
 			if (ruta.startsWith("/links/mirar/l")) {
 				const link = await baseDeDatos.obtienePorId("links", id);
+				entidad = comp.obtieneDesdeCampo_id(link);
 				const campo_id = comp.obtieneDesdeCampo_id.campo_id(link);
 				id = link[campo_id];
 			}
 
+			// Obtiene el nombre
+			const nombre = await baseDeDatos
+				.obtienePorId(entidad, id)
+				.then((n) => n.nombreCastellano || n.nombreOriginal || n.nombre)
+				.then((n) => n.slice(0, 11));
+
 			// Fin
-			return id;
+			return nombre;
 		},
 		resumen: (navegsDia) => {
 			// Obtiene las personas
