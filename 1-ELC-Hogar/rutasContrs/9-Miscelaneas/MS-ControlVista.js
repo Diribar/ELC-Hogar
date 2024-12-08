@@ -70,7 +70,7 @@ module.exports = {
 		navegsDia = navegsDia.filter((n) => n.distintivo || n.iconosArray);
 
 		// Agrega el prodRclv
-		for (let navegDia of navegsDia) navegDia.prodRclv_id = await procesos.navegsDia.prodRclv_id(navegDia.ruta);
+		for (let navegDia of navegsDia) navegDia.prodRclvNombre = await procesos.navegsDia.prodRclvNombre(navegDia.ruta);
 
 		// Agrega un registro resumen por usuario
 		navegsDia = procesos.navegsDia.resumen(navegsDia);
