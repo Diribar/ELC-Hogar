@@ -18,6 +18,7 @@ router.get("/api/cn-actualiza-en-usuario-configCons_id", API.cambiosEnBD.actuali
 router.get("/api/cn-crea-una-configuracion", API.cambiosEnBD.creaConfig);
 router.get("/api/cn-guarda-una-configuracion", API.cambiosEnBD.guardaConfig);
 router.get("/api/cn-elimina-configuracion-de-consulta", API.cambiosEnBD.eliminaConfig);
+router.get("/api/cn-guarda-el-layout-en-movims-bd", API.cambiosEnBD.guardaLayoutMovsBD);
 
 // API - Session y Cookie
 router.get("/api/cn-guarda-la-configuracion-en-session-y-cookie", API.sessionCookie.guardaConfig);
