@@ -12,8 +12,8 @@ module.exports = (req, res, next) => {
 
 	// Obtiene la ruta
 	let {originalUrl: ruta} = req;
-	if (ruta == "/institucional/inicio") return next();
-	if (ruta.startsWith("/consultas")) ruta = "/consultas";
+	if (ruta == "/institucional/inicio") return next(); // saltea, porque redirecciona a "/inicio"
+	if (ruta.startsWith("/consultas")) return next(); // se guarda desde una API dedicada
 	if (ruta.includes("&")) ruta = ruta.split("&")[0];
 
 	// Guarda el registro de navegación
