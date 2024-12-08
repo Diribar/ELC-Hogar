@@ -174,6 +174,14 @@ module.exports = {
 			// Fin
 			return res.json();
 		},
+		guardaLayoutMovsBD: async (req, res) => {
+			// Variables
+			const {layout: comentario} = req.query;
+			const ruta = "/consultas";
+
+			// Guarda el registro de navegación
+			await baseDeDatos.agregaRegistro("navegsDia", {cliente_id, ruta, comentario});
+		},
 	},
 	sessionCookie: {
 		guardaConfig: (req, res) => {
