@@ -979,6 +979,7 @@ module.exports = {
 
 		// Si es un url irrelevante
 		if (req.originalUrl == "/favicon.ico") return true;
+		if (req.originalUrl.startsWith("/Externa/")) return true;
 
 		// Si es una aplicación conocida que no es de navegación, pero que muestra datos del url visitado
 		if (requestsTriviales.some((n) => req.headers["user-agent"].startsWith(n))) return true;
