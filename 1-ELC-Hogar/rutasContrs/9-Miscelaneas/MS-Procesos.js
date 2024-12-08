@@ -165,7 +165,7 @@ module.exports = {
 			// Averigua si tiene íconos
 			const posibilidades = Object.values(rutasConHistorial).flat();
 			const ruta = posibilidades.find((n) => distintivo == n[1]);
-			const iconosDistintivo = ruta.slice(2);
+			const iconosDistintivo = ruta.slice(2); // quita la info que no sea de íconos
 			if (!iconosDistintivo.length) return {distintivo};
 
 			// Genera el HTML de íconos
