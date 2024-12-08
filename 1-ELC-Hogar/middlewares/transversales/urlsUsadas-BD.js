@@ -18,7 +18,7 @@ module.exports = (req, res, next) => {
 
 	// Guarda el registro de navegación
 	prodRclvNombre(ruta).then((nombre) => {
-		const comentario = nombre.slice(0, 20);
+		const comentario = nombre ? nombre.slice(0, 20) : null;
 		baseDeDatos.agregaRegistro("navegsDia", {cliente_id, ruta, comentario});
 	});
 

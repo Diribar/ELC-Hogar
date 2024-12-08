@@ -186,32 +186,6 @@ module.exports = {
 			// Fin
 			return {iconosArray};
 		},
-		prodRclvNombre: async (ruta) => {
-			// Si no tiene id, interrumpe la función
-			const tieneId = ruta.split("/?id=").length > 1;
-			if (!tieneId) return;
-
-			// Averigua la entidad y el id
-			let entidad = variables.entidades.todos.find((n) => ruta.includes("/" + n + "/"));
-			let id = ruta.split("/?id=")[1].split("&")[0];
-
-			// Si es un link, averigua el producto
-			if (ruta.startsWith("/links/mirar/l")) {
-				const link = await baseDeDatos.obtienePorId("links", id);
-				entidad = comp.obtieneDesdeCampo_id(link);
-				const campo_id = comp.obtieneDesdeCampo_id.campo_id(link);
-				id = link[campo_id];
-			}
-
-			// Obtiene el nombre
-			const nombre = await baseDeDatos
-				.obtienePorId(entidad, id)
-				.then((n) => n.nombreCastellano || n.nombreOriginal || n.nombre)
-				.then((n) => n.slice(0, 11));
-
-			// Fin
-			return nombre;
-		},
 		resumen: (navegsDia) => {
 			// Obtiene las personas
 			const clientes_id = [...new Set(navegsDia.map((n) => n.cliente_id))];
