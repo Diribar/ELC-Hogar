@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Dom. 8/dic",
-	"HoraUTC": "9:25",
+	"FechaUTC": "Lun. 9/dic",
+	"HoraUTC": "0:52",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 2/dic",
-	"HoraSemUTC": "1:29",
-	"semanaUTC": 49,
+	"FechaSemUTC": "Lun. 9/dic",
+	"HoraSemUTC": "0:52",
+	"semanaUTC": 50,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS HORARIAS ---------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario y no maduros",
@@ -52,10 +52,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"06-dic-24": {"leyenda": "Hoy recordamos a san Nicolás de Bari", "entidad": "personajes", "id": 168},
 		"07-dic-24": {"leyenda": "Estamos en época de Adviento", "entidad": "epocasDelAno", "id": 25},
 		"08-dic-24": {"leyenda": "Hoy recordamos la Inmaculada Concepción de María", "entidad": "eventos", "id": 30},
 		"09-dic-24": {"leyenda": "Hoy recordamos a santa Narcisa de Jesús", "entidad": "personajes", "id": 190},
-		"10-dic-24": {"leyenda": "Estamos en época de Adviento", "entidad": "epocasDelAno", "id": 25}
+		"10-dic-24": {"leyenda": "Estamos en época de Adviento", "entidad": "epocasDelAno", "id": 25},
+		"11-dic-24": {"leyenda": "Estamos en época de Adviento", "entidad": "epocasDelAno", "id": 25}
 	}
 }

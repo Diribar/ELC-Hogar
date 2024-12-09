@@ -240,12 +240,7 @@ module.exports = {
 			["/usuarios/perennes-bienvenido", "perennes", iconos.altaUser],
 
 			// Institucional
-			["/institucional/contactanos", "contactanos", iconos.instituc, iconos.mail],
-			["/institucional/quienes-somos", "quienesSomos", iconos.instituc, "fa-people-group"],
-			["/institucional/mision-y-vision", "misionVision", iconos.instituc, "fa-heart"],
-			["/institucional/en-que-consiste-este-sitio", "enQueConsiste", iconos.instituc, "fa-question"],
-			["/institucional/nuestro-perfil-de-peliculas", "perfilPelis", iconos.instituc, "fa-trophy"],
-			["/institucional/derechos-de-autor", "derechosAutor", iconos.instituc, "fa-copyright"],
+			["/institucional/contactanos", "contactanos", iconos.mail],
 			["/institucional", "institucional", iconos.instituc],
 
 			// Otros

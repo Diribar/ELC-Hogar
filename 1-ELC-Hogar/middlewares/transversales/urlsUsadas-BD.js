@@ -16,9 +16,16 @@ module.exports = (req, res, next) => {
 	if (ruta.startsWith("/consultas")) return next(); // se guarda desde una API dedicada
 	if (ruta.includes("&")) ruta = ruta.split("&")[0];
 
+	// Obtiene el comentario
+	let comentario;
+	if (ruta.startsWith("/institucional")) {
+		const vista = Object.keys(vistasInstitucs).find((n) => ruta.includes("/" + n));
+		if (vista) comentario = vistasInstitucs[vista].titulo;
+	}
+
 	// Guarda el registro de navegación
 	prodRclvNombre(ruta).then((nombre) => {
-		const comentario = nombre ? nombre.slice(0, 20) : null;
+		if (!comentario && nombre) comentario = nombre.slice(0, 20);
 		baseDeDatos.agregaRegistro("navegsDia", {cliente_id, ruta, comentario});
 	});
 
