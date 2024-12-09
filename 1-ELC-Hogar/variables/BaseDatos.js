@@ -21,7 +21,9 @@ module.exports = {
 
 			// Variables de productos
 			idiomas: baseDeDatos.obtieneTodosConOrden("idiomas", "nombre"),
-			paises: baseDeDatos.obtieneTodos("paises", "cantProds").then((n) => n.sort((a, b) => (a.nombre < b.nombre ? -1 : 1))),
+			paises: baseDeDatos
+				.obtieneTodos("paises", "cantProds") // 'cantProds' es un 'include'
+				.then((n) => n.sort((a, b) => (a.nombre < b.nombre ? -1 : 1))),
 			publicos: baseDeDatos.obtieneTodosConOrden("publicos", "orden"),
 			tiposActuacion: baseDeDatos.obtieneTodosConOrden("tiposActuacion", "orden"),
 			epocasEstreno: baseDeDatos.obtieneTodosConOrden("epocasEstreno", "hasta", "DESC"),

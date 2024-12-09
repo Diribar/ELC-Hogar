@@ -165,10 +165,8 @@ module.exports = {
 					: prioridad.menor
 				: entidad == "temas"
 				? prioridad.menor
-				: entidad == "eventos"
-				? dataEntry.soloCfc
-					? prioridad.mayor
-					: prioridad.menor
+				: entidad == "eventos" // eventos siempre tiene la mayor prioridad
+				? prioridad.mayor
 				: entidad == "epocasDelAno"
 				? prioridad.menor
 				: "";

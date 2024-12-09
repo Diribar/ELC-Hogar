@@ -1,0 +1,16 @@
+elc.lat/producto/detalle/?entidad=peliculas&id=541&origen=TM
+
+elc.lat/peliculas/dp/541/?origen=TM
+cine.evangelicemoslacultura.com/peliculas/dp/541/?origen=TM
+
+
+peliculas.elc.lat
+razonmasfe.com/catoflix/
+peliculas.evangelicemoslacultura.com/
+
+peliculas.elc.lat/peliculas/dp/541
+movie/la-mision/
+
+
+peliculas.elc.lat/peliculas/dp/541
+razonmasfe.com/catoflix/movie/purgatorio/

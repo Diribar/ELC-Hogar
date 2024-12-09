@@ -20,7 +20,7 @@ module.exports = {
 		if (!info.RutinasDiarias || !Object.keys(info.RutinasDiarias).length) return;
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 
-		// await this.rutinas.navegsDia();
+		// await this.rutinas.actualizaPaisesConMasProductos();
 		// await obsoletas.actualizaCapEnCons()
 		// await this.RutinasSemanales();
 
@@ -324,6 +324,55 @@ module.exports = {
 			// Fin
 			return;
 		},
+		actualizaUsuarios: async () => {
+			// Lleva a cero el valor de algunos campos
+			await baseDeDatos.actualizaTodos("usuarios", {intentosLogin: 0, intentosDP: 0});
+
+			// Elimina usuarios antiguos que no confirmaron su contraseña
+			const fechaDeCorte = new Date(new Date().getTime() - unDia);
+			const condicion = {statusRegistro_id: mailPendValidar_id, fechaContrasena: {[Op.lt]: fechaDeCorte}};
+			await baseDeDatos.eliminaPorCondicion("usuarios", condicion);
+
+			// Fin
+			return;
+		},
+		eliminaLinksInactivos: async () => {
+			const fechaDeCorte = comp.fechaHora.nuevoHorario(-25);
+			const condicion = {statusRegistro_id: inactivo_id, statusSugeridoEn: {[Op.lt]: fechaDeCorte}};
+			await baseDeDatos.eliminaPorCondicion("links", condicion);
+			return;
+		},
+		ABM_noRevisores: async () => {
+			// Si no hay casos, termina
+			const {regs, edics} = await procesos.ABM_noRevs();
+			if (!(regs.perl.length + edics.perl.length + regs.links.length + edics.links.length)) return;
+
+			// Arma el cuerpo del mensaje
+			const cuerpoMail = procesos.mailDeFeedback.mensRevsTablero({regs, edics});
+
+			// Obtiene los usuarios revisorPERL y revisorLinks
+			let perl = baseDeDatos.obtieneTodosPorCondicion("usuarios", {rolUsuario_id: rolesRevPERL_ids});
+			let links = baseDeDatos.obtieneTodosPorCondicion("usuarios", {rolUsuario_id: rolesRevLinks_ids});
+			[perl, links] = await Promise.all([perl, links]);
+			const revisores = {perl, links};
+
+			// Rutina por usuario
+			const asunto = {perl: "Productos y RCLVs prioritarios a revisar", links: "Links prioritarios a revisar"};
+			let mailsEnviados = [];
+			for (let tipo of ["perl", "links"])
+				if (regs[tipo].length || edics[tipo].length)
+					for (let revisor of revisores[tipo])
+						mailsEnviados.push(
+							comp.enviaMail({asunto: asunto[tipo], email: revisor.email, comentario: cuerpoMail[tipo]})
+						); // Envía el mail y actualiza la BD
+
+			// Avisa que está procesando el envío de los mails
+			await Promise.all(mailsEnviados);
+
+			// Fin
+			return;
+		},
+		// Gestiones diarias - indicadores
 		cantNavegs: async () => {
 			// Navegantes diarios, quitando los duplicados
 			const persWebDia = await baseDeDatos
@@ -428,59 +477,18 @@ module.exports = {
 			// Fin
 			return;
 		},
-		actualizaUsuarios: async () => {
-			// Lleva a cero el valor de algunos campos
-			await baseDeDatos.actualizaTodos("usuarios", {intentosLogin: 0, intentosDP: 0});
-
-			// Elimina usuarios antiguos que no confirmaron su contraseña
-			const fechaDeCorte = new Date(new Date().getTime() - unDia);
-			const condicion = {statusRegistro_id: mailPendValidar_id, fechaContrasena: {[Op.lt]: fechaDeCorte}};
-			await baseDeDatos.eliminaPorCondicion("usuarios", condicion);
-
-			// Fin
-			return;
-		},
-		eliminaLinksInactivos: async () => {
-			const fechaDeCorte = comp.fechaHora.nuevoHorario(-25);
-			const condicion = {statusRegistro_id: inactivo_id, statusSugeridoEn: {[Op.lt]: fechaDeCorte}};
-			await baseDeDatos.eliminaPorCondicion("links", condicion);
-			return;
-		},
-		ABM_noRevisores: async () => {
-			// Si no hay casos, termina
-			const {regs, edics} = await procesos.ABM_noRevs();
-			if (!(regs.perl.length + edics.perl.length + regs.links.length + edics.links.length)) return;
-
-			// Arma el cuerpo del mensaje
-			const cuerpoMail = procesos.mailDeFeedback.mensRevsTablero({regs, edics});
-
-			// Obtiene los usuarios revisorPERL y revisorLinks
-			let perl = baseDeDatos.obtieneTodosPorCondicion("usuarios", {rolUsuario_id: rolesRevPERL_ids});
-			let links = baseDeDatos.obtieneTodosPorCondicion("usuarios", {rolUsuario_id: rolesRevLinks_ids});
-			[perl, links] = await Promise.all([perl, links]);
-			const revisores = {perl, links};
-
-			// Rutina por usuario
-			const asunto = {perl: "Productos y RCLVs prioritarios a revisar", links: "Links prioritarios a revisar"};
-			let mailsEnviados = [];
-			for (let tipo of ["perl", "links"])
-				if (regs[tipo].length || edics[tipo].length)
-					for (let revisor of revisores[tipo])
-						mailsEnviados.push(
-							comp.enviaMail({asunto: asunto[tipo], email: revisor.email, comentario: cuerpoMail[tipo]})
-						); // Envía el mail y actualiza la BD
-
-			// Avisa que está procesando el envío de los mails
-			await Promise.all(mailsEnviados);
+		eliminaVisitasAntiguas: async () => {
+			const haceUnMes = comp.fechaHora.anoMesDia(Date.now() - unMes);
+			const condicion = {fechaUltNaveg: {[Op.lt]: haceUnMes}, diasNaveg: 1};
+			await baseDeDatos.eliminaPorCondicion("visitas", condicion);
 
 			// Fin
 			return;
 		},
 		clientesMensualidad: async () => {
-			// Ejecuta las funciones de cada gráfico
-			await procesos.clientes.cantNavegs();
-			await procesos.clientes.cantClientes();
-			await procesos.clientes.eliminaVisitasAntiguas();
+			// Ejecuta las funciones de cada indicador
+			await procesos.clientes.cantNavegsMensual();
+			await procesos.clientes.cantClientesMensual();
 
 			// Fin
 			return;
@@ -497,27 +505,28 @@ module.exports = {
 		},
 		actualizaPaisesConMasProductos: async () => {
 			// Variables
-			const condicion = {statusRegistro_id: aprobado_id};
+			const condicion = {statusRegistro_id: aprobados_ids};
 			const entidades = ["peliculas", "colecciones"];
-			let paisesID = {};
+			let paisesIds = {};
 
 			// Obtiene la frecuencia por país
 			for (let entidad of entidades) {
 				// Obtiene todos los registros de la entidad
 				await baseDeDatos
 					.obtieneTodosPorCondicion(entidad, condicion)
-					.then((n) => n.filter((m) => m.paises_id))
-					.then((n) =>
-						n.map((m) => {
-							for (let o of m.paises_id.split(" ")) paisesID[o] ? paisesID[o]++ : (paisesID[o] = 1);
+					.then((n) => n.filter((m) => m.paises_id)) // quita los registros sin país
+					.then((registros) =>
+						registros.map((registro) => {
+							const paises_id = registro.paises_id.split(" ");
+							for (let pais_id of paises_id) paisesIds[pais_id] ? paisesIds[pais_id]++ : (paisesIds[pais_id] = 1);
 						})
 					);
 			}
 
 			// Actualiza la frecuencia por país
 			paises.forEach((pais, i) => {
-				const cantidad = paisesID[pais.id] ? paisesID[pais.id] : 0;
-				paises[i].cantProds.cantidad = cantidad;
+				const cantidad = paisesIds[pais.id] || 0;
+				paises[i].cantProds.cantidad = cantidad; // actualiza la variable en 'global'
 				baseDeDatos.actualizaPorCondicion("paisesCantProds", {pais_id: pais.id}, {cantidad});
 			});
 
