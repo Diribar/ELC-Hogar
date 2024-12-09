@@ -110,5 +110,5 @@ window.addEventListener("load", () => {
 });
 
 // Variables
-const rutaAltaBaja = "/links/api/lk-aprob-inactivo/";
+const rutaAltaBaja = "/revision/api/lk-aprob-inactivo/";
 const rutaSigProd = "/revision/api/re-siguiente-producto-link/";
