@@ -114,7 +114,7 @@
 	<button type="submit" class="iconos <%- codigo != 'eliminar' ? 'inactivo' : '' %>">
 		<% if (condicCrud && !condicCrudEliminar || condicRevRech) {  %>
 			<!-- VISTAS CRUD (Inactivar/Recuperar) - Para cambiar el status y enviar a Revisión -->
-			<!-- VISTAS REVISION (Inactivar/Recuperar/Rechazo) - Para confirmar el cambio de status -->
+			<!-- VISTAS REVISION (Inactivar/Recuperar/Rechazo/CorregirStatus) - Para confirmar el cambio de status -->
 			<i class="<%= iconos.faSolid %> <%= iconos.check %>" tabindex="-1" title="Confirma el cambio de status"></i>
 		<% } %>
 		<% if (condicCrudEliminar) {  %>
