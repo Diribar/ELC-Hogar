@@ -143,7 +143,12 @@ module.exports = {
 			for (let i = respuesta.length - 1; i > 0; i--) {
 				const actual = respuesta[i];
 				const anterior = respuesta[i - 1];
-				if (actual.cliente_id == anterior.cliente_id && actual.ruta == anterior.ruta) respuesta.splice(i, 1);
+				if (
+					actual.cliente_id == anterior.cliente_id &&
+					actual.ruta == anterior.ruta &&
+					actual.comentario == anterior.comentario
+				)
+					respuesta.splice(i, 1);
 			}
 
 			// Fin
