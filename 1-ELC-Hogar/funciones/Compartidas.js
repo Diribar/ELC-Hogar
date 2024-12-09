@@ -978,6 +978,9 @@ module.exports = {
 		// Si es una API
 		if (req.originalUrl.includes("/api/")) return true;
 
+		// Si es un url irrelevante
+		if (req.originalUrl == "/favicon.ico") return true;
+
 		// Si es una aplicación conocida que no es de navegación, pero que muestra datos del url visitado
 		if (requestsTriviales.some((n) => req.headers["user-agent"].startsWith(n))) return true;
 

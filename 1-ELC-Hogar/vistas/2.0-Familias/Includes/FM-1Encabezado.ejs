@@ -1,16 +1,26 @@
 <div id="encabezado" class="<%= codigo %> <%= registro.statusRegistro.codigo %>">
 	<!-- Izquierda -->
 	<div id="nombres">
-		<% if (codigo != "detalle") { %><a href="<%= '/' + entidad + '/detalle/' + familia[0] + '/?id=' + id + (locals.origen && !origen.endsWith("DT") ? ('&origen=' + origen) : '') %>"><% } %>
+		<% if (codigo != "detalle") { %>
+			<% const urlInicio = entidad != "links" ? (entidad + '/detalle/' + familia[0]) : "links/mirar/l" %>
+			<a href="<%= '/' + urlInicio + '/?id=' + id + (locals.origen && !origen.endsWith("DT") ? ('&origen=' + origen) : '') %>">
+		<% } %>
+			<!-- Nombre principal -->
 			<h2>
-				<%= registro.capitulo ? (registro.capitulo + ". ") : "" %>
-				<%= registro.nombreCastellano ? (registro.nombreCastellano + (registro.anoEstreno ? " (" + registro.anoEstreno + ")" : "")) : (locals.canonNombre + registro.nombre) %>
+				<% if (registro.capitulo) { %><%= registro.capitulo + ". " %><% } %>
+				<% if (registro.nombreCastellano) { %>
+					<%= registro.nombreCastellano + (registro.anoEstreno ? " (" + registro.anoEstreno + ")" : "") %>
+				<% } else { %><%= locals.canonNombre + registro.nombre %><% } %>
 			</h2>
-			<% const nombre2 = registro.nombreOriginal ? registro.nombreOriginal : registro.nombreAltern %>
-			<% if (nombre2) { %>
-				<h3><em><%= nombre2 %></em></h3>
+
+			<!-- Nombre alternativo -->
+			<% const nombreAltern = registro.nombreOriginal || registro.nombreAltern %>
+			<% if (nombreAltern) { %>
+				<h3><em><%= nombreAltern %></em></h3>
 			<% } %>
-		<% if (codigo != "detalle") { %></a><% } %>
+		<% if (codigo != "detalle") { %>
+			</a>
+		<% } %>
 	</div>
 
 	<!-- Derecha -->

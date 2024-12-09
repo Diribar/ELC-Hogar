@@ -205,20 +205,31 @@ module.exports = {
 			const tema = "fmCrud";
 			const codigo = "corregirStatus";
 			const entidad = comp.obtieneEntidadDesdeUrl(req);
-			const {id, origen, prodRclv} = {...req.query, ...req.body};
+			const esLink = entidad == "links";
 			const titulo = "Corregir el Status";
+			const {id, origen} = req.query;
+			let {prodRclv: registro} = req.body;
 
 			// Obtiene el historial
-			const historialStatus = await procesos.historialDeStatus.obtiene({entidad, ...prodRclv});
+			const historialStatus = await procesos.historialDeStatus.obtiene({entidad, ...registro});
 
 			// Datos para la vista
-			const imgDerPers = procesos.obtieneAvatar(prodRclv).orig;
+			const imgDerPers = esLink ? "/publico/imagenes/Varios/Link.jpg" : procesos.obtieneAvatar(registro).orig;
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
+
+			// Producto o Rclv
+			if (esLink) {
+				const prodEntidad = comp.obtieneDesdeCampo_id.entidadProd(registro);
+				const campo_idProd = comp.obtieneDesdeCampo_id.campo_idProd(registro);
+				const prodId = registro[campo_idProd];
+				const producto = await baseDeDatos.obtienePorId(prodEntidad, prodId);
+				registro.nombreCastellano = "Link - " + producto.nombreCastellano;
+			}
 
 			// Fin
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, titulo, origen},
-				...{entidad, id, registro: prodRclv, imgDerPers},
+				...{entidad, id, registro, imgDerPers},
 				...{historialStatus, familia},
 				cartelGenerico: true,
 			});

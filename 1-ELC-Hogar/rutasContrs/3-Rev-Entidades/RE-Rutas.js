@@ -25,6 +25,7 @@ const m = {
 	edicionVista: require("../../middlewares/porRegistro/edicionVista"),
 	prodSinRclvAprob: require("../../middlewares/porRegistro/prodSinRclvAprob"),
 	linksEnSemana: require("../../middlewares/porRegistro/linksEnSemana"),
+	linkAltaBaja: require("../../middlewares/porRegistro/linkAltaBaja"),
 	motivoNecesario: require("../../middlewares/porRegistro/motivoNecesario"),
 	motivoOpcional: require("../../middlewares/porRegistro/motivoOpcional"),
 
@@ -52,6 +53,7 @@ router.get("/api/re-edicion-aprob-rech", m.edicionAPI, API.edicAprobRech);
 // APIs- Links
 router.get("/api/re-edicion-link", m.edicionAPI, API.edicAprobRech);
 router.get("/api/re-siguiente-producto-link", API.sigProdLinks);
+router.get("/api/lk-aprob-inactivo", m.linkAltaBaja, API.aprobInactivo);
 
 // Vistas - Tablero de Control
 router.get("/tablero", usuarioBase, m.usRolAutTablEnts, vista.tableroControl);
