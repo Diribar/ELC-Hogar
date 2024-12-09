@@ -393,7 +393,7 @@ const FN_tablManten = {
 const FN_navegsDia = {
 	obtieneIconosPorFamilia: (regsCliente) => {
 		// Variables
-		const familias = ["instituc", "prod", "rclv", "agregar"];
+		const familias = ["prod", "rclv", "agregar"];
 
 		let iconosCons = [];
 
