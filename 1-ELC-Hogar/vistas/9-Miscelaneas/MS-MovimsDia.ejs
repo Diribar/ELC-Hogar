@@ -10,15 +10,15 @@
 		</thead>
 		<tbody>
 			<% for (let navegDia of navegsDia) { %>
-			<tr id="<%= navegDia.cliente_id %>" class="<%- navegDia.cantPers ? 'resumen' : 'ocultar' %>">
+			<tr id="<%= navegDia.cliente_id %>" class="<%- navegDia.cantMovs ? 'resumen' : 'ocultar' %>">
 				<!-- Persona -->
 				<td class="cliente">
-					<% if (navegDia.cantPers) { %>
+					<% if (navegDia.cantMovs) { %>
 						<!-- Ícono mostrar / ocultar -->
 						<span class="mostrar "><i class="fa-solid fa-circle-plus"></i></span>
 
 						<!-- Cantidad de navegaciones -->
-						<span class="cantNavegs"><%= navegDia.cantPers %><% if (navegDia.esUser) { %>*<% } %></span>
+						<span class="cantNavegs"><%= navegDia.cantMovs %><% if (navegDia.esUser) { %>*<% } %></span>
 					<% } else { %>
 						<!-- Código de cliente -->
 						<span class="codigo"><%= navegDia.persona %></span>
