@@ -36,7 +36,7 @@ window.addEventListener("load", () => {
 			}
 
 		// Siguiente producto
-		await buscaSigProd;
+		await buscaSigProd();
 
 		// Fin
 		return;
