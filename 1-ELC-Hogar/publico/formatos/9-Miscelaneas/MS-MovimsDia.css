@@ -15,6 +15,7 @@ body {
 						i {font-size: 1rem;}
 						.cliente, .ruta {text-align: left;}
 						.fecha {text-align: center;}
+						.ruta span {font-style: italic; font-size: 1rem; margin-left: 2px;}
 					}
 				}
 			}

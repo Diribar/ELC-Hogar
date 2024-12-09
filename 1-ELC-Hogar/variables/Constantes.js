@@ -204,8 +204,8 @@ module.exports = {
 	requestsTriviales: ["WhatsApp", "Postman", "TelegramBot", "TwitterBot", "Zabbix"], // evita que se cuenten como visitas
 	rutasConHistorial: {
 		iguales: [
-			["/", "inicio", iconos.instituc, iconos.inicio],
-			["/institucional/inicio", "inicio", iconos.instituc, iconos.inicio],
+			["/", "inicio", iconos.inicio],
+			["/institucional/inicio", "inicio", iconos.inicio],
 			["busqueda-rapida", "busquedaRapida", "fa-magnifying-glass"],
 		],
 		includes: [
@@ -241,7 +241,12 @@ module.exports = {
 
 			// Institucional
 			["/institucional/contactanos", "contactanos", iconos.instituc, iconos.mail],
-			["/institucional", "institucional", iconos.instituc, "fa-question"],
+			["/institucional/quienes-somos", "quienesSomos", iconos.instituc, "fa-people-group"],
+			["/institucional/mision-y-vision", "misionVision", iconos.instituc, "fa-heart"],
+			["/institucional/en-que-consiste-este-sitio", "enQueConsiste", iconos.instituc, "fa-question"],
+			["/institucional/nuestro-perfil-de-peliculas", "perfilPelis", iconos.instituc, "fa-trophy"],
+			["/institucional/derechos-de-autor", "derechosAutor", iconos.instituc, "fa-copyright"],
+			["/institucional", "institucional", iconos.instituc],
 
 			// Otros
 			["/consultas", "consultas", "fa-film"],

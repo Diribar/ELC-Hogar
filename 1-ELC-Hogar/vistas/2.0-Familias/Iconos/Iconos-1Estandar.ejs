@@ -15,7 +15,7 @@
 			<i class="<%= iconos.faSolid %> <%= iconos.izquierda %>" tabindex="-1" title="Liberar y salir"></i>
 		</a>
 	<% } %>
-	<% if (!detalle && (ORIGEN_DIF_DT && !revLinks || !locals.origen)) { %>
+	<% if (!detalle && (ORIGEN_DIF_DT && !revLinks || !locals.origen) && ["p", "r"].includes(siglaFam)) { %>
 		<!-- Ir a Detalle - siempre que el origen sea distinto a 'Detalle' o no haya origen -->
 		<a href="<%= '/' + entidad + '/detalle/' + siglaFam + '/?id=' + id %>" tabindex="-1">
 			<i class="<%= iconos.faSolid %> <%= iconos.detalle %>" tabindex="-1" title="Ir a la vista 'Detalle'"></i>

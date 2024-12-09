@@ -4,6 +4,7 @@ module.exports = (sequelize, dt) => {
 		fecha: {type: dt.DATE},
 		cliente_id: {type: dt.STRING(11)},
 		ruta: {type: dt.STRING(100)},
+		comentario: {type: dt.STRING(20)},
 	};
 	const config = {
 		tableName: "ind_navegs_dia",

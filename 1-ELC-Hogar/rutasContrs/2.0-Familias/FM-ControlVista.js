@@ -237,29 +237,32 @@ module.exports = {
 		statusGuardar: async (req, res) => {
 			// Variables
 			const entidad = comp.obtieneEntidadDesdeUrl(req);
-			const {id, origen, opcion, prodRclv, ultHist} = {...req.query, ...req.body};
+			const {id, opcion, prodRclv: prodRclvLink, ultHist} = {...req.query, ...req.body};
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
-			const cola = "/?entidad=" + entidad + "&id=" + id + (origen ? "&origen=" + origen : "");
 			let destino;
 
-			// Acciones si se aprueba el status del producto
-			if (opcion == "prodRclv") {
-				await baseDeDatos.eliminaPorCondicion("statusHistorial", {entidad, entidad_id: id}); // elimina el historial de ese 'prodRclv'
-				if (prodRclv.statusRegistro_id > aprobado_id) destino = "inactivar"; // establece que se redireccione a 'inactivar'
-			}
+			// Acciones si se aprueba el status del prodRclvLink
+			if (opcion == "prodRclvLink") await baseDeDatos.eliminaPorCondicion("statusHistorial", {entidad, entidad_id: id}); // elimina el historial de ese 'prodRclvLink'
 
 			// Acciones si se aprueba el status del historial
 			if (opcion == "historial") {
 				const datos = {statusRegistro_id: ultHist.statusFinal_id, statusSugeridoEn: ultHist.statusFinalEn};
-				await baseDeDatos.actualizaPorId(entidad, id, datos);
-				destino = "detalle";
+				await baseDeDatos.actualizaPorId(entidad, id, datos); // actualiza el status del prodRclvLink
 			}
+
+			// Obtiene el destino
+			if (entidad == "links") {
+				const prodEntidad = comp.obtieneDesdeCampo_id.entidadProd(prodRclvLink);
+				const campo_idProd = comp.obtieneDesdeCampo_id.campo_idProd(prodRclvLink);
+				const prodId = prodRclvLink[campo_idProd];
+				destino = "/" + prodEntidad + "/abm-links/p/?id=" + prodId; // establece que se redireccione a 'abm-links'
+			} else destino = "/" + familia + "/detalle/?id=" + id; // establece que se redireccione a 'detalle'
 
 			// Actualiza la variable 'statusErrores'
 			await comp.actualizaStatusErrores.consolidado();
 
 			// Fin
-			return res.redirect("/" + familia + "/" + destino + cola);
+			return res.redirect(destino);
 		},
 	},
 };

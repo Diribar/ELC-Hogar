@@ -366,6 +366,17 @@ const sessionCookie = {
 		await fetch(rutaCompleta);
 		return;
 	},
+	guardaLayoutEnMovimsBD: async () => {
+		// Variables
+		const rutaCompleta = ruta + "guarda-el-layout-en-movims-bd/?layout=";
+		const layout = v.layoutsBD.find((n) => n.id == v.layout_id).nombre;
+
+		// Guarda
+		await fetch(rutaCompleta + encodeURIComponent(layout));
+
+		// Fin
+		return;
+	},
 };
 
 // Start-up
@@ -374,7 +385,7 @@ const cambioDeConfig_id = async (texto) => {
 	await actualiza.valoresInicialesDeVariables(); // revisada
 	if (cabecera.id && v.usuario_id) cambiosEnBD.actualizaEnUsuarioConfigCons_id(); // revisada
 	if (texto != "start-up") await sessionCookie.eliminaConfig(); // revisada
-	await actualiza.statusInicialPrefs(); // revisada
+	await actualiza.statusInicialPrefs(); // establece el layout_id
 	actualiza.toggleBotonFiltros();
 
 	// Fin
@@ -455,6 +466,4 @@ const verificaConfigCons_id = async () => {
 	// Fin
 	return existe;
 };
-const excluyeBC = () => {
-	return (DOM.excluyeInput.checked ? "Excluye" : "Incluye") + " películas con baja calificación";
-};
+const excluyeBC = () => (DOM.excluyeInput.checked ? "Excluye" : "Incluye") + " películas con baja calificación";

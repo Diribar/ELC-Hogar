@@ -274,16 +274,69 @@ module.exports = {
 	},
 	obtieneEntidadDesdeUrl: (req) => {
 		// Lo obtiene del path
-		const {entidad} = req.params;
+		let {entidad} = req.params;
 		if (entidad) return entidad;
 
-		// Lo obtiene del baseUrl
-		let baseUrl = req.baseUrl.slice(1);
-		const indice = baseUrl.indexOf("/");
-		if (indice > -1) baseUrl = baseUrl.slice(0, indice);
-		return baseUrl;
+		// Lo obtiene del url
+		const url = req.originalUrl;
+		entidad = variables.entidades.todos.find((n) => url.includes("/" + n + "/"));
+		return entidad;
 	},
 	// Productos y RCLVs
+	obtieneLeadTime: (desdeOrig, hastaOrig) => {
+		// Variables
+		let desdeFinal = desdeOrig;
+		let hastaFinal = hastaOrig;
+
+		// Pasa el 'desde' del sábado/domingo al lunes siguiente
+		if (desdeOrig.getDay() == 6) desdeFinal = desdeOrig + 2 * unDia;
+		else if (desdeOrig.getDay() == 0) desdeFinal = desdeOrig + 1 * unDia;
+
+		// Pasa el 'hasta' del sábado/domingo al viernes anterior
+		if (hastaOrig.getDay() == 6) hastaFinal = hastaOrig - 1 * unDia;
+		else if (hastaOrig.getDay() == 0) hastaFinal = hastaOrig - 2 * unDia;
+
+		// Calcula la cantidad de horas
+		let diferencia = hastaFinal - desdeFinal;
+		if (diferencia < 0) diferencia = 0;
+		let horasDif = diferencia / unaHora;
+
+		// Averigua la cantidad de fines de semana
+		let semanas = parseInt(horasDif / (7 * 24));
+		horasDif -= semanas * 2 * 24;
+
+		// Resultado
+		let leadTime = parseInt(horasDif * 100) / 100; // Redondea a 2 digitos
+		leadTime = Math.min(96, leadTime);
+
+		// Fin
+		return leadTime;
+	},
+	obtieneTodosLosCamposInclude: function (entidad) {
+		// Obtiene todos los campos de la familia
+		const familias = this.obtieneDesdeEntidad.familias(entidad);
+		const camposFamilia = [...variables.camposRevisar[familias]];
+
+		// Obtiene los campos include
+		const camposEntidad = camposFamilia.filter((n) => n[entidad] || n[familias]);
+		const camposInclude = camposEntidad.filter((n) => n.relacInclude);
+
+		// Genera un array con las asociaciones
+		const asociaciones = camposInclude.map((n) => n.relacInclude);
+
+		// Fin
+		return asociaciones;
+	},
+	obtieneRegs: async function (campos) {
+		// Obtiene los resultados
+		let resultados = await FN.obtieneRegs(campos);
+
+		// Quita los comprometidos por capturas
+		resultados = await this.sinProblemasDeCaptura(resultados, campos.revId);
+
+		// Fin
+		return resultados;
+	},
 	puleEdicion: async function (entidad, original, edicion) {
 		// Variables
 		const familias = this.obtieneDesdeEntidad.familias(entidad);
@@ -429,62 +482,8 @@ module.exports = {
 			return inicio + anchor + final;
 		},
 	},
-	obtieneLeadTime: (desdeOrig, hastaOrig) => {
-		// Variables
-		let desdeFinal = desdeOrig;
-		let hastaFinal = hastaOrig;
-
-		// Pasa el 'desde' del sábado/domingo al lunes siguiente
-		if (desdeOrig.getDay() == 6) desdeFinal = desdeOrig + 2 * unDia;
-		else if (desdeOrig.getDay() == 0) desdeFinal = desdeOrig + 1 * unDia;
-
-		// Pasa el 'hasta' del sábado/domingo al viernes anterior
-		if (hastaOrig.getDay() == 6) hastaFinal = hastaOrig - 1 * unDia;
-		else if (hastaOrig.getDay() == 0) hastaFinal = hastaOrig - 2 * unDia;
-
-		// Calcula la cantidad de horas
-		let diferencia = hastaFinal - desdeFinal;
-		if (diferencia < 0) diferencia = 0;
-		let horasDif = diferencia / unaHora;
-
-		// Averigua la cantidad de fines de semana
-		let semanas = parseInt(horasDif / (7 * 24));
-		horasDif -= semanas * 2 * 24;
-
-		// Resultado
-		let leadTime = parseInt(horasDif * 100) / 100; // Redondea a 2 digitos
-		leadTime = Math.min(96, leadTime);
-
-		// Fin
-		return leadTime;
-	},
-	obtieneTodosLosCamposInclude: function (entidad) {
-		// Obtiene todos los campos de la familia
-		const familias = this.obtieneDesdeEntidad.familias(entidad);
-		const camposFamilia = [...variables.camposRevisar[familias]];
-
-		// Obtiene los campos include
-		const camposEntidad = camposFamilia.filter((n) => n[entidad] || n[familias]);
-		const camposInclude = camposEntidad.filter((n) => n.relacInclude);
-
-		// Genera un array con las asociaciones
-		const asociaciones = camposInclude.map((n) => n.relacInclude);
-
-		// Fin
-		return asociaciones;
-	},
 	valorNombre: (valor, alternativa) => (valor ? valor.nombre : alternativa),
 	nombresPosibles: (registro) => FN.nombresPosibles(registro),
-	obtieneRegs: async function (campos) {
-		// Obtiene los resultados
-		let resultados = await FN.obtieneRegs(campos);
-
-		// Quita los comprometidos por capturas
-		resultados = await this.sinProblemasDeCaptura(resultados, campos.revId);
-
-		// Fin
-		return resultados;
-	},
 	sinProblemasDeCaptura: async (prodsRclvs, revId) => {
 		// Variables
 		const haceUnaHora = FN.nuevoHorario(-1);
@@ -980,6 +979,7 @@ module.exports = {
 
 		// Si es un url irrelevante
 		if (req.originalUrl == "/favicon.ico") return true;
+		if (req.originalUrl.startsWith("/Externa/")) return true;
 
 		// Si es una aplicación conocida que no es de navegación, pero que muestra datos del url visitado
 		if (requestsTriviales.some((n) => req.headers["user-agent"].startsWith(n))) return true;

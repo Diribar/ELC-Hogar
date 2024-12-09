@@ -165,7 +165,7 @@ module.exports = {
 			// Averigua si tiene íconos
 			const posibilidades = Object.values(rutasConHistorial).flat();
 			const ruta = posibilidades.find((n) => distintivo == n[1]);
-			const iconosDistintivo = ruta.slice(2);
+			const iconosDistintivo = ruta.slice(2); // quita la info que no sea de íconos
 			if (!iconosDistintivo.length) return {distintivo};
 
 			// Genera el HTML de íconos
@@ -185,42 +185,6 @@ module.exports = {
 
 			// Fin
 			return {iconosArray};
-		},
-		prodRclv_id: async (ruta) => {
-			// Si no tiene id, interrumpe la función
-			const tieneId = ruta.split("/?id=").length > 1;
-			if (!tieneId) return ;
-
-			// Averigua el id
-			let id = ruta.split("/?id=")[1].split("&")[0];
-
-			// Si es un link, averigua el producto
-			if (ruta.startsWith("/links/mirar/l")) {
-				const link = await baseDeDatos.obtienePorId("links", id);
-				const campo_id = comp.obtieneDesdeCampo_id.campo_id(link);
-				id = link[campo_id];
-			}
-
-			// Fin
-			return id;
-		},
-		prodRclvNombre: async (ruta) => {
-			// Si no tiene id, interrumpe la función
-			const tieneId = ruta.split("/?id=").length > 1;
-			if (!tieneId) return ;
-
-			// Averigua el id
-			let id = ruta.split("/?id=")[1].split("&")[0];
-
-			// Si es un link, averigua el producto
-			if (ruta.startsWith("/links/mirar/l")) {
-				const link = await baseDeDatos.obtienePorId("links", id);
-				const campo_id = comp.obtieneDesdeCampo_id.campo_id(link);
-				id = link[campo_id];
-			}
-
-			// Fin
-			return id;
 		},
 		resumen: (navegsDia) => {
 			// Obtiene las personas

@@ -13,6 +13,7 @@ module.exports = async (req, res, next) => {
 	)
 		return next();
 	else req.session.bienvenido = true;
+	console.log(16, "Cartel bienvenida", req.headers["user-agent"], req.originalUrl);
 
 	// Prepara los mensajes y el ícono
 	const mensajes = [
