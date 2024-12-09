@@ -2,8 +2,10 @@
 	<% if (codigo == "corregirStatus") { %>
 		<!-- Status del Producto o RCLV -->
 		<div id="statusRegistro" class="titulos">
-			<input type="radio" name="opcion" value="prodRclvLink">
-			<h3>Status del Registro:</h3>
+			<input id="input1" type="radio" name="opcion" value="prodRclvLink">
+			<label for="input1">
+				<h3>Status del Registro:</h3>
+			</label>
 			<div id="<%= registro.statusRegistro.codigo %>" class="status">
 				<b><%= registro.statusRegistro.nombre %></b>
 			</div>
@@ -13,9 +15,13 @@
 	<!-- Historial de status -->
 	<div class="titulos">
 		<% if (codigo == "corregirStatus") { %>
-			<input type="radio" name="opcion" value="historial">
+			<input id="input2" type="radio" name="opcion" value="historial">
+			<label for="input2">
+				<h3>Historial de status</h3>
+			</label>
+		<% } else { %>
+			<h3>Historial de status</h3>
 		<% } %>
-		<h3>Historial de status</h3>
 	</div>
 	<table>
 		<tbody>
