@@ -82,7 +82,7 @@ module.exports = {
 		const link = await baseDeDatos.obtienePorCondicion("links", {url}, variables.entidades.asocsProd);
 
 		// Más variables
-		const datos = procesos.variables({link, req});
+		const datos = procesos.links.variables({link, req});
 		const {id, statusRegistro_id, statusCreado, decisAprob, datosLink, campoDecision} = datos;
 		const {motivo_id, revId, statusOriginalPor_id, statusOriginal_id, statusFinal_id} = datos;
 
