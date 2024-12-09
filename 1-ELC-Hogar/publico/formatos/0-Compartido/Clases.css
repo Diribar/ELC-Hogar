@@ -10,7 +10,7 @@
 .spaceEvenly {justify-content: space-evenly;}
 
 /* Íconos clave */
-.fa-solid {line-height: normal;}
+.fa-solid {line-height: 1;}
 .fa-circle-check, .fa-circle-xmark, .fa-circle-left,
 .fa-circle-right {background: var(--backIcono); border-color: var(--backIcono);}
 .fa-circle-check, .fa-solid.fa-heart, .fa-chart-simple.fa-rotate-90.true {color: var(--verde-oscuro);}

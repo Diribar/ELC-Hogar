@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Mar. 3/dic",
-	"HoraUTC": "1:33",
+	"FechaUTC": "Vie. 6/dic",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 2/dic",
@@ -52,10 +52,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"01-dic-24": {"leyenda": "Hoy es el Comienzo del Adviento", "entidad": "eventos", "id": 13},
-		"02-dic-24": {"leyenda": "Estamos en época de Adviento", "entidad": "epocasDelAno", "id": 25},
-		"03-dic-24": {"leyenda": "Hoy recordamos a san Francisco Javier", "entidad": "personajes", "id": 167},
 		"04-dic-24": {"leyenda": "Hoy recordamos a santa Barbara de Nicomedia", "entidad": "personajes", "id": 68},
-		"05-dic-24": {"leyenda": "Hoy recordamos a la venerable Alexia González-Barros", "entidad": "personajes", "id": 246}
+		"05-dic-24": {"leyenda": "Hoy recordamos a la venerable Alexia González-Barros", "entidad": "personajes", "id": 246},
+		"06-dic-24": {"leyenda": "Hoy recordamos a san Nicolás de Bari", "entidad": "personajes", "id": 168},
+		"07-dic-24": {"leyenda": "Estamos en época de Adviento", "entidad": "epocasDelAno", "id": 25},
+		"08-dic-24": {"leyenda": "Hoy recordamos la Inmaculada Concepción de María", "entidad": "eventos", "id": 30}
 	}
 }

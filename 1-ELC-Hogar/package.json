@@ -1,6 +1,6 @@
 {
 	"name": "elc-peliculas",
-	"description": "Recomendación de películas afines a la Iglesia Católica",
+	"description": "Recomendación de películas con valores afines a la Iglesia Católica",
 	"main": "app.js",
 	"scripts": {
 		"start": "nodemon -e js app.js"
@@ -20,7 +20,7 @@
 		"express-session": "^1.18.1",
 		"method-override": "^3.0.0",
 		"morgan": "^1.10.0",
-		"multer": "^1.4.4",
+		"multer": "^1.4.5-lts.1",
 		"mysql2": "^3.9.7",
 		"node-cron": "^3.0.2",
 		"node-fetch": "^2.6.7",
