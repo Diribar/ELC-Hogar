@@ -21,8 +21,11 @@
 	<% } %>
 	<% if (["recuperar", "eliminar", "corregirStatus", "historial"].includes(codigo)) { %>
 		<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM-PR-HistorialStatus.css">
-		<% if (["recuperar"].includes(codigo)) { %>
+		<% if (codigo == "recuperar") { %>
 			<script src="/publico/javascript/2.0-Familias/FM-PR-Recuperar.js"></script>
+		<% } %>
+		<% if (codigo == "corregirStatus") { %>
+			<script src="/publico/javascript/2.0-Familias/FM-PRL-CorregirStatus.js"></script>
 		<% } %>
 	<% } %>
 <% } %>

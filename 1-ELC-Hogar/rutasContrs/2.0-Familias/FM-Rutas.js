@@ -40,18 +40,12 @@ const correcs = [m.entValida, m.idValido, m.statusCompara, aptoUsuario, m.permUs
 router.get("/api/fm-obtiene-info-del-be", API.obtieneInfo);
 router.get("/api/fm-obtiene-registro", API.obtieneRegistro);
 
-// Vistas - Historial
+// Vistas - CRUD
 router.get("/historial", aptoDetalle, m.statusCompara, vista.form.historial);
-
-// Vistas - Inactivar
 router.get("/inactivar", aptoCRUD, m.capturaActivar, vista.form.motivos);
 router.post("/inactivar", aptoCRUD, m.motivoNecesario, m.capturaInactivar, vista.inacRecupGuardar);
-
-// Vistas - Recuperar
 router.get("/recuperar", aptoCRUD, m.capturaActivar, vista.form.historial);
 router.post("/recuperar", aptoCRUD, m.comentNecesario, m.capturaInactivar, vista.inacRecupGuardar);
-
-// Vistas - Elimina
 router.get("/eliminado-por-creador", eliminadoPorCreador, vista.form.elimina);
 router.get("/eliminado", aptoEliminar, vista.form.elimina);
 
