@@ -23,7 +23,7 @@ window.addEventListener("load", () => {
 	let parado = window.matchMedia("(orientation: portrait)").matches;
 
 	// Funciones
-	let muestraOculta = {
+	const muestraOculta = {
 		startUp: () => {
 			if (parado) {
 				DOM.datosBreves.classList.add("toggle"); // oculta datosBreves
