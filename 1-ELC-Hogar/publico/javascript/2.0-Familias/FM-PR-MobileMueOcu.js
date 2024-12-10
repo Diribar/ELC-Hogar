@@ -10,6 +10,7 @@ window.addEventListener("load", () => {
 		// Sector Cuerpo
 		datosLargos: DOM.datos.querySelector("#datosLargos"),
 		datosBreves: DOM.datos.querySelector("#datosBreves"),
+
 		// Sector Imagen Derecha
 		imagen: DOM.imgDerecha.querySelector("img"),
 		links: DOM.imgDerecha.querySelector("#links"),
@@ -21,9 +22,10 @@ window.addEventListener("load", () => {
 	DOM.iconoDL = DOM.mobile.querySelector("#iconoDL");
 	DOM.iconoDB = DOM.mobile.querySelector("#iconoDB");
 	let parado = window.matchMedia("(orientation: portrait)").matches;
+	let muestra;
 
 	// Funciones
-	const muestraOculta = {
+	const FN = {
 		startUp: () => {
 			if (parado) {
 				DOM.datosBreves.classList.add("toggle"); // oculta datosBreves
@@ -55,43 +57,27 @@ window.addEventListener("load", () => {
 			}
 
 			// Fin
+			muestra = true;
 			return;
 		},
-		imagen: () => {
-			if (parado) {
-				// si se ve algo, oculta todo
-				if (
-					!DOM.datosLargos.className.includes("toggle") || // se ven los datos largos
-					!DOM.datosBreves.className.includes("toggle") || // se ven los datos breves
-					(DOM.links && !DOM.links.className.includes("toggle")) // los links existen y se ven
-				) {
-					if (DOM.links) DOM.links.classList.add("toggle");
-					DOM.datosLargos.classList.add("toggle"); // oculta datosLargos
-					DOM.sectorIconos.classList.add("toggle");
-				}
-				// Acciones si está todo oculto
-				else {
-					// Muestra el sector íconos
-					DOM.sectorIconos.classList.remove("toggle");
-
-					// Si existe links, los muestra y muestra iconoDL
-					if (DOM.links) {
-						DOM.links.classList.remove("toggle");
-						DOM.datosLargos.classList.add("toggle"); // oculta datosLargos
-						DOM.iconoDL.classList.remove("toggle");
-						DOM.iconoDB.classList.add("toggle"); // oculta iconoDB
-					}
-					// Si no existe links, muestra DL e ícono DB, y oculta ícono DL
-					else {
-						DOM.datosLargos.classList.remove("toggle");
-						DOM.iconoDL.classList.add("toggle");
-						DOM.iconoDB.classList.remove("toggle");
-					}
-				}
-			} else muestraOculta.startUp();
-
-			// Oculta los datos breves
-			DOM.datosBreves.classList.add("toggle");
+		imagenParado: function () {
+			if (muestra) DOM.datos.classList.add("ocultar");// Si se está mostrando, oculta todo
+			else DOM.datos.classList.remove("ocultar");// Si está todo oculto, muestra
+			this.imagenAcostado()
+		},
+		imagenAcostado: () => {
+			// Si se está mostrando, oculta todo
+			if (muestra) {
+				if (DOM.links) DOM.links.classList.add("ocultar");
+				DOM.sectorIconos.classList.add("ocultar");
+				muestra = false;
+			}
+			// Si está todo oculto, muestra
+			else {
+				if (DOM.links) DOM.links.classList.remove("ocultar");
+				DOM.sectorIconos.classList.remove("ocultar");
+				muestra = true;
+			}
 		},
 	};
 
@@ -126,18 +112,18 @@ window.addEventListener("load", () => {
 	// Event listeners - Start-up / 'click' en la imagen
 	for (let sector of [DOM.imagen, DOM.sectorIconos])
 		sector.addEventListener("click", (e) => {
-			if (e.target.localName == "img" || e.target.id == "sectorIconos") muestraOculta.imagen();
+			if (e.target.localName == "img" || e.target.id == "sectorIconos") parado ? FN.imagenParado() : FN.imagenAcostado();
 			return;
 		});
 
 	// Event listeners - Recarga la vista si se gira
 	screen.orientation.addEventListener("change", () => {
 		parado = window.matchMedia("(orientation: portrait)").matches;
-		muestraOculta.startUp();
+		FN.startUp();
 	});
 
 	// Start-up
-	muestraOculta.startUp();
+	FN.startUp();
 	DOM.mobile.classList.remove("invisible");
 });
 
