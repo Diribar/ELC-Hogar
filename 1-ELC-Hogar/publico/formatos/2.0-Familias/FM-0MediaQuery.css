@@ -48,7 +48,6 @@
 	/* Ancho, alto, posición */
 	body {--anchoImgDer: 100vw;}
 	#cuerpoFooter {position: absolute;}
-	#cuerpo #datos {position: absolute !important;}
 	#cuerpoFooter #cuerpo, #cuerpo #datos, #cuerpoFooterImgDer #imgDerecha {width: 100vw !important; max-width: 100vw;}
 	#cuerpo #encabezado {
 		padding-inline: 10px;
@@ -67,7 +66,11 @@
 		}
 	}
 
-	#imgDerecha img {max-height: var(--altoCuerpo);}
+	#imgDerecha {
+		padding-top: var(--altoTituloPrincipal); padding-bottom: var(--altoFooter);
+		img {max-height: 100%;}
+		#sectorIconos {bottom: calc(var(--altoFooter) + 10px);}
+	}
 
 	/* Encabezado */
 	#encabezado #colCap {
@@ -76,7 +79,7 @@
 	}
 
 	/* Información */
-	#datos #datosLargos {max-height: 75%;}
+	#datos #datosLargos {max-height: 80%;}
 	/* #datosBreves #recuadroDB {max-height: 80%;} */
 	:is(#datosLargos #recuadroDL, #datosBreves #recuadroDB) {z-index: 1}
 	#datosLargos #recuadroDL {max-width: calc(100vw - 1vw);} /* 6vw: márgenes */
@@ -101,5 +104,8 @@
 
 	/* Sectores a ocultar */
 	#cuerpoFooter #tituloPrincipal, #datosLargos #encabezado {display: none !important;}
-	#imgDerecha #sectorIconos .iconos#href #ppp {display: none;}
+	#imgDerecha #sectorIconos {
+		bottom: 10px;
+		.iconos#href #ppp {display: none;}
+	}
 }
