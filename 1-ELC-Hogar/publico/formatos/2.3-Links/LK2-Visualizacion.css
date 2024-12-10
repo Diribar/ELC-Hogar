@@ -42,10 +42,6 @@
 	#cuerpo #medio {position: absolute; top: 50%; left: 50%; translate: -50% -50%;}
 	#medio #contIframe {--anchoDisp: var(--anchoImgDer);}
 	#cuerpo #medio {z-index: 1;}
-	body {
-		--altoFooter: 0px;
-		footer {display: none;}
-	}
 }
 
 /* Acostado */

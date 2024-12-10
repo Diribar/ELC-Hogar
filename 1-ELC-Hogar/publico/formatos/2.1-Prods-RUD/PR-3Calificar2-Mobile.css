@@ -7,10 +7,6 @@
 
 /* Parado */
 @media (orientation: portrait) {
-	body {
-		--altoFooter: 0px;
-		footer {display: none;}
-	}
 	#recuadroDL #contenido {
 		margin: 15px 20px;
 		.marco {
