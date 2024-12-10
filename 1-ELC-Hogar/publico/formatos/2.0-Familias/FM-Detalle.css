@@ -22,8 +22,7 @@
 	}
 
 	#imgDerecha #sectorIconos {
-		position: absolute; bottom: 10px; width: 100%;
-		justify-content: space-evenly; align-items: center;
+		position: absolute; width: 100%; justify-content: space-evenly;
 		.iconos {margin: 0;}
 	}
 }
