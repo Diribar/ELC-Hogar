@@ -5,6 +5,7 @@ window.addEventListener("load", () => {
 		datos: document.querySelector("#cuerpo #datos"),
 		imgDerecha: document.querySelector("#imgDerecha"),
 	};
+	if (!DOM.datos) DOM.datos = document.querySelector("#cuerpo #tabla");
 	DOM = {
 		...DOM,
 		// Sector Cuerpo
@@ -18,9 +19,11 @@ window.addEventListener("load", () => {
 	};
 
 	// Más variables
-	DOM.mobile = DOM.sectorIconos.querySelector("#mobile");
-	DOM.iconoDL = DOM.mobile.querySelector("#iconoDL");
-	DOM.iconoDB = DOM.mobile.querySelector("#iconoDB");
+	if (DOM.sectorIconos) {
+		DOM.mobile = DOM.sectorIconos.querySelector("#mobile");
+		DOM.iconoDL = DOM.mobile.querySelector("#iconoDL");
+		DOM.iconoDB = DOM.mobile.querySelector("#iconoDB");
+	}
 	let parado = window.matchMedia("(orientation: portrait)").matches;
 	let muestra;
 
@@ -28,29 +31,29 @@ window.addEventListener("load", () => {
 	const FN = {
 		startUp: () => {
 			if (parado) {
-				DOM.datosBreves.classList.add("toggle"); // oculta datosBreves
+				if (DOM.datosBreves) DOM.datosBreves.classList.add("toggle"); // oculta datosBreves
 
 				// Si existe links, los muestra y muestra iconoDL
 				if (DOM.links) {
 					DOM.links.classList.remove("toggle");
-					DOM.datosLargos.classList.add("toggle"); // oculta datosLargos
-					DOM.iconoDL.classList.remove("toggle"); // muestra iconoDL
-					DOM.iconoDB.classList.add("toggle"); // oculta iconoDB
+					if (DOM.datosLargos) DOM.datosLargos.classList.add("toggle"); // oculta datosLargos
+					if (DOM.iconoDL) DOM.iconoDL.classList.remove("toggle"); // muestra iconoDL
+					if (DOM.iconoDB) DOM.iconoDB.classList.add("toggle"); // oculta iconoDB
 				}
 				// Si no existe links, muestra DL e ícono DB
 				else {
-					DOM.datosLargos.classList.remove("toggle"); // muestra datosLargos
-					DOM.iconoDL.classList.add("toggle"); // oculta iconoDL
-					DOM.iconoDB.classList.remove("toggle"); // muestra iconoDB
+					if (DOM.datosLargos) DOM.datosLargos.classList.remove("toggle"); // muestra datosLargos
+					if (DOM.iconoDL) DOM.iconoDL.classList.add("toggle"); // oculta iconoDL
+					if (DOM.iconoDB) DOM.iconoDB.classList.remove("toggle"); // muestra iconoDB
 				}
 			} else {
 				// Datos Largos
-				DOM.datosLargos.classList.remove("toggle"); // muestra datosLargos
-				DOM.iconoDL.classList.add("toggle"); // oculta iconoDL
+				if (DOM.datosLargos) DOM.datosLargos.classList.remove("toggle"); // muestra datosLargos
+				if (DOM.iconoDL) DOM.iconoDL.classList.add("toggle"); // oculta iconoDL
 
 				// Datos Breves
-				DOM.datosBreves.classList.add("toggle"); // oculta datosBreves
-				DOM.iconoDB.classList.remove("toggle"); // muestra iconoDB
+				if (DOM.datosBreves) DOM.datosBreves.classList.add("toggle"); // oculta datosBreves
+				if (DOM.iconoDB) DOM.iconoDB.classList.remove("toggle"); // muestra iconoDB
 
 				// Links
 				if (DOM.links) DOM.links.classList.remove("toggle");
@@ -61,60 +64,64 @@ window.addEventListener("load", () => {
 			return;
 		},
 		imagenParado: function () {
-			if (muestra) DOM.datos.classList.add("ocultar");// Si se está mostrando, oculta todo
-			else DOM.datos.classList.remove("ocultar");// Si está todo oculto, muestra
-			this.imagenAcostado()
+			if (muestra) DOM.datos.classList.add("ocultar"); // Si se está mostrando, oculta todo
+			else DOM.datos.classList.remove("ocultar"); // Si está todo oculto, muestra
+			this.imagenAcostado();
 		},
 		imagenAcostado: () => {
 			// Si se está mostrando, oculta todo
 			if (muestra) {
 				if (DOM.links) DOM.links.classList.add("ocultar");
-				DOM.sectorIconos.classList.add("ocultar");
+				if (DOM.sectorIconos) DOM.sectorIconos.classList.add("ocultar");
 				muestra = false;
 			}
 			// Si está todo oculto, muestra
 			else {
 				if (DOM.links) DOM.links.classList.remove("ocultar");
-				DOM.sectorIconos.classList.remove("ocultar");
+				if (DOM.sectorIconos) DOM.sectorIconos.classList.remove("ocultar");
 				muestra = true;
 			}
 		},
 	};
 
 	// Event listeners - Muestra datosLargos
-	DOM.iconoDL.addEventListener("click", () => {
-		// Datos Largos
-		DOM.datosLargos.classList.remove("toggle"); // muestra datosLargos
-		DOM.iconoDL.classList.add("toggle"); // oculta iconoDL
+	if (DOM.iconoDL)
+		DOM.iconoDL.addEventListener("click", () => {
+			// Datos Largos
+			DOM.datosLargos.classList.remove("toggle"); // muestra datosLargos
+			DOM.iconoDL.classList.add("toggle"); // oculta iconoDL
 
-		// Datos Breves
-		DOM.datosBreves.classList.add("toggle"); // oculta datosBreves
-		DOM.iconoDB.classList.remove("toggle"); // muestra iconoDB
+			// Datos Breves
+			DOM.datosBreves.classList.add("toggle"); // oculta datosBreves
+			DOM.iconoDB.classList.remove("toggle"); // muestra iconoDB
 
-		// Links
-		if (parado && DOM.links) DOM.links.classList.add("toggle");
-	});
+			// Links
+			if (parado && DOM.links) DOM.links.classList.add("toggle");
+		});
 
 	// Event listeners - Muestra datosBreves
-	DOM.iconoDB.addEventListener("click", () => {
-		// Datos Largos
-		DOM.datosLargos.classList.add("toggle"); // muestra datosLargos
-		DOM.iconoDL.classList.remove("toggle"); // oculta iconoDL
+	if (DOM.iconoDB)
+		DOM.iconoDB.addEventListener("click", () => {
+			// Datos Largos
+			DOM.datosLargos.classList.add("toggle"); // muestra datosLargos
+			DOM.iconoDL.classList.remove("toggle"); // oculta iconoDL
 
-		// Datos Breves
-		DOM.datosBreves.classList.remove("toggle"); // oculta datosBreves
-		DOM.iconoDB.classList.add("toggle"); // muestra iconoDB
+			// Datos Breves
+			DOM.datosBreves.classList.remove("toggle"); // oculta datosBreves
+			DOM.iconoDB.classList.add("toggle"); // muestra iconoDB
 
-		// Links
-		if (parado && DOM.links) DOM.links.classList.add("toggle");
-	});
+			// Links
+			if (parado && DOM.links) DOM.links.classList.add("toggle");
+		});
 
 	// Event listeners - Start-up / 'click' en la imagen
 	for (let sector of [DOM.imagen, DOM.sectorIconos])
-		sector.addEventListener("click", (e) => {
-			if (e.target.localName == "img" || e.target.id == "sectorIconos") parado ? FN.imagenParado() : FN.imagenAcostado();
-			return;
-		});
+		if (sector)
+			sector.addEventListener("click", (e) => {
+				if (e.target.localName == "img" || e.target.id == "sectorIconos")
+					parado ? FN.imagenParado() : FN.imagenAcostado();
+				return;
+			});
 
 	// Event listeners - Recarga la vista si se gira
 	screen.orientation.addEventListener("change", () => {
@@ -124,7 +131,7 @@ window.addEventListener("load", () => {
 
 	// Start-up
 	FN.startUp();
-	DOM.mobile.classList.remove("invisible");
+	if (DOM.mobile) DOM.mobile.classList.remove("invisible");
 });
 
 // Variables
