@@ -6,7 +6,7 @@ module.exports = {
 	consultas: async (req, res) => {
 		// Variables
 		const tema = "consultas";
-		const codigo = "tableroControl";
+		const codigo = null;
 		const titulo = "Consulta de Películas";
 		const usuario = req.session.usuario ? req.session.usuario : {};
 		const usuario_id = usuario ? usuario.id : null;

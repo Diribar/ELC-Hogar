@@ -73,10 +73,7 @@ module.exports = {
 		navegsDia = procesos.navegsDia.resumen(navegsDia);
 
 		// Fin
-		return res.render("CMP-0Estructura", {
-			...{tema, codigo, titulo: "Movimientos del día", navegsDia},
-			...{omitirFooter: true},
-		});
+		return res.render("CMP-0Estructura", {tema, codigo, titulo: "Movimientos del día", navegsDia});
 	},
 
 	// Listados
