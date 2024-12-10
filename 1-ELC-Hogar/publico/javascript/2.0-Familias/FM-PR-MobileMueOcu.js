@@ -2,10 +2,9 @@
 window.addEventListener("load", () => {
 	// Variables
 	let DOM = {
-		datos: document.querySelector("#cuerpo #datos"),
+		datos: document.querySelector("#cuerpo #datos") || document.querySelector("#cuerpo #tabla"),
 		imgDerecha: document.querySelector("#imgDerecha"),
 	};
-	if (!DOM.datos) DOM.datos = document.querySelector("#cuerpo #tabla");
 	DOM = {
 		...DOM,
 		// Sector Cuerpo
