@@ -199,13 +199,13 @@ module.exports = {
 			for (let cliente_id of clientes_id) {
 				// Obtiene datos para la cabecera
 				const regsCliente = navegsDia.filter((n) => n.cliente_id == cliente_id);
-				const cantPers = regsCliente.length;
+				const cantMovs = regsCliente.length;
 				const {persona, esUser, hora} = regsCliente[0];
 				const iconosHTML = FN_navegsDia.obtieneIconosPorFamilia(regsCliente);
 
 				// Agrega un registro de cabecera
 				const indice = navegsDia.findIndex((n) => n.cliente_id == cliente_id);
-				const cabecera = {cliente_id, persona, cantPers, esUser, hora, iconosHTML};
+				const cabecera = {cliente_id, persona, cantMovs, esUser, hora, iconosHTML};
 				navegsDia.splice(indice, 0, cabecera);
 			}
 
@@ -393,7 +393,7 @@ const FN_tablManten = {
 const FN_navegsDia = {
 	obtieneIconosPorFamilia: (regsCliente) => {
 		// Variables
-		const familias = ["instituc", "prod", "rclv", "agregar"];
+		const familias = ["prod", "rclv", "agregar"];
 
 		let iconosCons = [];
 
