@@ -100,7 +100,7 @@ window.addEventListener("load", async () => {
 	};
 
 	// Eventos - inputs en el form
-	DOM.continuar.addEventListener("click", () => DOM.todoElMain.classList.add("ocultar"));
+	if (DOM.continuar) DOM.continuar.addEventListener("click", () => DOM.todoElMain.classList.add("ocultar"));
 	DOM.inputs.forEach((input, i) => {
 		input.addEventListener("input", (e) => {
 			// Acciones
