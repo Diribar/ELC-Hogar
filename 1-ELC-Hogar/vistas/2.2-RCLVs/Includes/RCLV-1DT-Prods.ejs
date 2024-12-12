@@ -24,6 +24,9 @@
 							<% if (prod.crueldad) { %>
 								<i id="crueldad" class="<%= iconos.faSolid %> fa-circle-exclamation" title="Crueldad sensible"></i>
 							<% } %>
+							<% if (prod.calificacion) { %>
+								<p id="calificacion" title="Calificación"><%= prod.calificacion %>%</p>
+							<% } %>
 						</div>
 					</div>
 				</div>
