@@ -81,7 +81,7 @@
 	/* Información */
 	#datos #datosLargos {max-height: 80%;}
 	/* #datosBreves #recuadroDB {max-height: 80%;} */
-	:is(#datosLargos #recuadroDL, #datosBreves #recuadroDB, #tabla) {z-index: 1}
+	:is(#datosLargos #recuadroDL, #datosBreves #recuadroDB, #cuerpo #tabla, #zonaDeGraficos #cuadro) {z-index: 1}
 	#datosLargos #recuadroDL {max-width: calc(100vw - 1vw);}
 
 	/* Sectores a ocultar */
