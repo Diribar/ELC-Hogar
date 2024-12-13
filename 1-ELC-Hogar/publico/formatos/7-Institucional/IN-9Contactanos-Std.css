@@ -11,6 +11,8 @@
 			min-width: min(100vw, 450px); min-height: min(300px, 100%);
 
 			form {
+				#encabFrom {align-self: center; margin-bottom: 10px; font-size: 1.1rem; font-weight: bold; color: var(--verde-oscuro);}
+
 				.inputError {
 					&:has(textarea) {margin-top: 10px; display: flex; flex-direction: column;}
 					.input {border-radius: 7px; width: 100%;}
@@ -18,9 +20,9 @@
 					/* Aspectos particulares - Select */
 					:is(select, option) {color: var(--azul-oscuro);}
 					select {
-						font-weight: bold;
-						&:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro); color: snow;}
-						&:has(option[value=""]:checked) {background: var(--rojo-claro);}
+						font-weight: bold; color: snow;
+						&:has(option[value=""]:checked) {background: var(--rojo-oscuro);}
+						&:not(:has(option[value=""]:checked)) {background: var(--verde-oscuro);}
 						option {background: snow; font-size: 1.2rem;}
 					}
 

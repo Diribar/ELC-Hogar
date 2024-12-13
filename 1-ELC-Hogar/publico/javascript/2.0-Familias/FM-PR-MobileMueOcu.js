@@ -119,12 +119,11 @@ window.addEventListener("load", () => {
 			sector.addEventListener("click", (e) => {
 				if (e.target.localName == "img" || e.target.id == "sectorIconos")
 					parado ? FN.imagenParado() : FN.imagenAcostado();
-				return;
 			});
 
 	// Event listeners - Recarga la vista si se gira
 	screen.orientation.addEventListener("change", () => {
-		parado = window.matchMedia("(orientation: portrait)").matches;
+		parado = !window.matchMedia("(orientation: portrait)").matches; // debe ser con negación, para que funcione bien
 		FN.startUp();
 	});
 

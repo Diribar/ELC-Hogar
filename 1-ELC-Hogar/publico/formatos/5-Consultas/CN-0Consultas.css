@@ -11,7 +11,7 @@
 		#encabezado {display: flex; flex-direction: row; justify-content: space-between; width: 100%;}
 		#zonaDisponible {
 			display: flex; flex-direction: column; justify-content: center; align-items: center;
-			width: 100%; flex-grow: 1; position: relative;
+			width: 100%; flex-grow: 1; position: relative; z-index: 1;
 			#vistaDeResults {
 				position: absolute;
 				max-height: min(95%, 490px); min-height: min(205px, 90%);
