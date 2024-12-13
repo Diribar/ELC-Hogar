@@ -2,7 +2,7 @@
 @media (orientation: landscape) and (height > 600px) {#cuerpo #cuadroDeTexto {scale: 1.2;}}
 
 /* Parado */
-@media (orientation: portrait) {#cuerpoFooter {z-index: 1;}}
+/* @media (orientation: portrait) {#cuerpoFooter {z-index: 1;}} */
 
 /* Acostado */
 @media (orientation: landscape) and (height <= 600px) {
