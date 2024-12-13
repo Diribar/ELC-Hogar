@@ -2,27 +2,19 @@
 main {
 	height: var(--altoMain);
 	display: flex; flex-direction: row; overflow-y: hidden; position: relative;
-
-	/* Tapar el fondo */
-	#todoElMain {position: absolute; left: 0px; top: 0px; height: 100%; width: 100%;}
-	#tapaElFondo {position: absolute;} /* Hace falta cuando está sólo en el cuerpo, sin la imagen derecha */
-	#tapaElFondo {background: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
-
-	/* Consolidado, Cuerpo y Footer */
-	#cuerpoFooterImgDer {
-		flex-direction: row;
-		#cuerpoFooter {
-			flex-direction: column;
-			#cuerpo {max-height: var(--altoCuerpo);}
-		}
-
-		/* Imagen Derecha */
-		#imgDerecha {
-			display: flex; flex-direction: column; justify-content: center; align-items: center;
-			img {max-width: var(--anchoImgDer); max-height: var(--altoMain); z-index: -1;}
-		}
-	}
-
 }
 #cuerpoFooterImgDer, #cuerpoFooter, #cuerpoFooter #cuerpo {display: flex; flex-grow: 1; position: relative;}
 
+/* Tapar el fondo */
+main #todoElMain {position: absolute; left: 0px; top: 0px; height: 100%; width: 100%;}
+main #tapaElFondo {position: absolute;} /* Hace falta cuando está sólo en el cuerpo, sin la imagen derecha */
+main #tapaElFondo {background: var(--gris-claro); opacity: 70%; height: 100%; width: 100%;}
+
+/* Consolidado, Cuerpo y Footer */
+main #cuerpoFooterImgDer {flex-direction: row;}
+#cuerpoFooterImgDer #cuerpoFooter {flex-direction: column;}
+#cuerpoFooter #cuerpo {max-height: var(--altoCuerpo);}
+
+/* Imagen Derecha */
+#cuerpoFooterImgDer #imgDerecha {display: flex; flex-direction: column; justify-content: center; align-items: center;}
+#imgDerecha img {max-width: var(--anchoImgDer); max-height: var(--altoMain);}
