@@ -1,6 +1,6 @@
 /* Cuerpo */
 #cuerpoFooter #cuerpo {
-	flex-direction: row; max-height: 100% !important;
+	flex-direction: row; max-height: 100%;
 
 	/* Configuración de la consulta */
 	#configCons {display: flex; flex-direction: column; width: 230px; height: 100%;}
