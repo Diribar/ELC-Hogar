@@ -164,7 +164,7 @@ window.addEventListener("load", async () => {
 			DOM.configCons.classList.add("aumentaX");
 
 			// Se asegura de que los resultados estén a la vista
-			if (v.layout_id && v.mostrarResultados) DOM.vistaDeResults.classList.remove("toggle");
+			if (v.layout_id && v.mostrarResultados) DOM.zonaDisponible.classList.remove("toggle");
 
 			// Fin
 			return;
@@ -329,21 +329,21 @@ window.addEventListener("load", async () => {
 
 		// De lo contrario, alterna entre lo que se muestra sobre la 'imagen derecha'
 		else if (["encabezado", "contadorDeProds", "imgDerecha"].includes(nombre)) {
-			// 1. Si se ve 'vistaDeResults', lo oculta y muestra 'cartelRCLV'
-			if (!DOM.vistaDeResults.className.includes("toggle")) {
-				DOM.vistaDeResults.classList.add("toggle");
+			// 1. Si se ve 'zonaDisponible', lo oculta y muestra 'cartelRCLV'
+			if (!DOM.zonaDisponible.className.includes("toggle")) {
+				DOM.zonaDisponible.classList.add("toggle");
 				if (DOM.cartelRCLV) DOM.cartelRCLV.classList.remove("toggle");
 			}
 
 			// 2. Si se ve 'cartelRCLV', lo oculta
 			else if (DOM.cartelRCLV && !DOM.cartelRCLV.className.includes("toggle")) {
-				DOM.vistaDeResults.classList.add("toggle");
+				DOM.zonaDisponible.classList.add("toggle");
 				if (DOM.cartelRCLV) DOM.cartelRCLV.classList.add("toggle");
 			}
 
-			// 3. Muestra 'vistaDeResults'
+			// 3. Muestra 'zonaDisponible'
 			else {
-				DOM.vistaDeResults.classList.remove("toggle");
+				DOM.zonaDisponible.classList.remove("toggle");
 				if (DOM.cartelRCLV) DOM.cartelRCLV.classList.add("toggle");
 			}
 		}
