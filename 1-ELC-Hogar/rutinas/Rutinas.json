@@ -22,9 +22,9 @@
 		"eliminaLinksInactivos": "SI",
 		"ABM_noRevisores": "SI",
 		"cantNavegs": "SI",
+		"eliminaVisitasAntiguas": "SI",
 		"cantClientes": "SI",
 		"navegsDia": "SI",
-		"eliminaVisitasAntiguas": "SI",
 		"clientesMensualidad": "SI"
 	},
 	"Subtitulo5": "-------------- RUTINAS SEMANALES ---------------",
