@@ -85,10 +85,8 @@
 			}
 		}
 		#imgDerecha {
-			max-height: calc(var(--altoMain) - 27.6px - var(--altoFooter));
-			padding-top: 27.6px; padding-bottom: var(--altoFooter);
 			position: absolute; top: 50%; left: 50%; translate: -50% -50%;
-			img {max-width: 100vw; max-height: calc(var(--altoMain) - 27.6px - var(--altoFooter));}
+			img {max-width: 100vw; max-height: calc(var(--altoMain) - 27.6px - var(--altoFooter));} /* 27.6px es el alto del layout */
 			a:has(#cartelRCLV).toggle {display: none;} /* oculta los resultados y el cartelRCLV */
 		}
 	}
