@@ -3,6 +3,7 @@ html {
 	font-size: 14px; /* debe estar en 'html', porque es de donde donde toma referencia el 'rem' */
 	line-height: 1;
 }
+
 /* Colores */
 body {
 	--amarillo-claro:rgb(255,242,204);
@@ -69,5 +70,11 @@ body {
 	height: var(--alturaViewPort); width: 100vw;
 	color: var(--azul-oscuro);
 	line-height: inherit;
-	* {color: inherit;}
+}
+body, * {
+	margin: 0px; padding: 0; box-sizing: border-box;
+}
+body * {
+	font-family: 'Calibri', 'Trebuchet MS', 'sans-serif'; color: inherit;
+	&:focus {outline-color: black;}
 }
