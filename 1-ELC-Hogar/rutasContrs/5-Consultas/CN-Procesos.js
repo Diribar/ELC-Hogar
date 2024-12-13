@@ -399,29 +399,12 @@ module.exports = {
 				}
 				rclvs = await Promise.all(rclvs).then((n) => n.flat());
 
-				// Se fija si debe reemplazar la fechaDelAno_id de un registro 'epocaDelAno' con el día actual
-				if (diaHoy) {
-					const epocaDelAno_id = diaHoy.epocaDelAno_id;
-					if (epocaDelAno_id != ninguno_id) {
-						const indice = rclvs.findIndex((n) => n.id == epocaDelAno_id && n.entidad == "epocasDelAno");
-						rclvs[indice].fechaDelAno_id = diaHoy.id;
-					}
-				}
-
 				// Acciones si hay resultados
 				if (rclvs.length) {
 					// Ordena los registros
 					rclvs
-						.sort((a, b) => b.prioridad - a.prioridad) // Prioridad descendente
-						.sort((a, b) => a.fechaDelAno_id - b.fechaDelAno_id) // Día ascendente
-						.sort((a, b) =>
-							// Año ascendente
-							(!a.anoFM || a.anoFM == anoHoy) && b.anoFM > anoHoy
-								? -1
-								: a.anoFM > anoHoy && (!b.anoFM || b.anoFM == anoHoy)
-								? 1
-								: 0
-						);
+						.sort((a, b) => b.prioridad - a.prioridad) // Prioridad menor: prioridad
+						.sort((a, b) => a.fechaDelAno_id - b.fechaDelAno_id); // Prioridad mayor: día ascendente
 
 					// Para los botones, mueve los pasados al futuro
 					if (diaHoy) {
