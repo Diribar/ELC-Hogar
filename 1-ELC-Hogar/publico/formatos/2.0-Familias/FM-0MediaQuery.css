@@ -68,7 +68,7 @@
 
 	#imgDerecha {
 		padding-top: var(--altoTituloPrincipal); padding-bottom: var(--altoFooter);
-		img {max-height: 100%;}
+		img {max-height: 100%; z-index: -1;}
 		#sectorIconos {bottom: calc(var(--altoFooter) + 10px);}
 	}
 
@@ -81,7 +81,7 @@
 	/* Información */
 	#datos #datosLargos {max-height: 80%;}
 	/* #datosBreves #recuadroDB {max-height: 80%;} */
-	:is(#datosLargos #recuadroDL, #datosBreves #recuadroDB, #tabla) {z-index: 1}
+	/* :is(#datosLargos #recuadroDL, #datosBreves #recuadroDB, #tabla) {z-index: 1} */
 	#datosLargos #recuadroDL {max-width: calc(100vw - 1vw);} /* 6vw: márgenes */
 
 	/* Sectores a ocultar */
