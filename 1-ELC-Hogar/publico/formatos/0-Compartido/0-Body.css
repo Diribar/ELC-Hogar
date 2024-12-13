@@ -2,13 +2,6 @@
 html {
 	font-size: 14px; /* debe estar en 'html', porque es de donde donde toma referencia el 'rem' */
 	line-height: 1;
-
-	/* Formatos para todos los elementos */
-	* {
-		margin: 0px; padding: 0; box-sizing: border-box;
-		font-family: 'Calibri', 'Trebuchet MS', 'sans-serif';
-		&:focus {outline-color: black;}
-	}
 }
 /* Colores */
 body {
