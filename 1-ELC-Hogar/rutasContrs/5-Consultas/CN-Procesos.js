@@ -739,7 +739,7 @@ module.exports = {
 			},
 			rclvs: ({rclvs, layout}) => {
 				// Si no corresponde ordenar, interrumpe la función
-				if (rclvs.length <= 1 || layout.codigo.startsWith("santoral")) return rclvs;
+				if (rclvs.length < 2 || layout.codigo.startsWith("santoral")) return rclvs;
 
 				// Particularidad para el Año de Ocurrencia
 				if (layout.codigo == "anoOcurrencia") {
