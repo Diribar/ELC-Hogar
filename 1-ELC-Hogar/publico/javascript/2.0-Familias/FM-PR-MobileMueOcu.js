@@ -7,6 +7,9 @@ window.addEventListener("load", () => {
 	};
 	DOM = {
 		...DOM,
+		// Íconos del título
+		iconosDelTitulo: document.querySelector("#tituloPrincipal #iconosDelTitulo"),
+
 		// Sector Cuerpo
 		datosLargos: DOM.datos.querySelector("#datosLargos"),
 		datosBreves: DOM.datos.querySelector("#datosBreves"),
@@ -67,8 +70,16 @@ window.addEventListener("load", () => {
 			return;
 		},
 		imagenParado: function () {
-			if (muestra) DOM.datos.classList.add("ocultar"); // Si se está mostrando, oculta todo
-			else DOM.datos.classList.remove("ocultar"); // Si está todo oculto, muestra
+			// Si se está mostrando, oculta todo
+			if (muestra) {
+				DOM.datos.classList.add("ocultar");
+				DOM.iconosDelTitulo.classList.add("ocultar");
+			}
+			// Si está todo oculto, muestra
+			else {
+				DOM.datos.classList.remove("ocultar");
+				DOM.iconosDelTitulo.classList.remove("ocultar");
+			}
 			this.imagenAcostado();
 		},
 		imagenAcostado: () => {
@@ -131,10 +142,7 @@ window.addEventListener("load", () => {
 			});
 
 	// Event listeners - Recarga la vista si se gira
-	screen.orientation.addEventListener("change", () => {
-		parado = !window.matchMedia("(orientation: portrait)").matches; // debe ser con negación, para que funcione bien
-		FN.startUp();
-	});
+	screen.orientation.addEventListener("change", () => location.reload());
 
 	// Start-up
 	FN.startUp();
