@@ -20,7 +20,6 @@
 		"imagenDerecha": "SI",
 		"actualizaUsuarios": "SI",
 		"eliminaLinksInactivos": "SI",
-		"eliminaRegsSinEntidad_id": "SI",
 		"ABM_noRevisores": "SI",
 		"cantNavegs": "SI",
 		"eliminaVisitasAntiguas": "SI",
