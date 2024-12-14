@@ -10,7 +10,7 @@ module.exports = {
 			if (!usuario_id || !rclv.prodsEdiciones || !rclv.prodsEdiciones.length) return rclv;
 
 			// Obtiene las ediciones propias de productos vinculadas con el rclv, y si no hay interrumpe la función
-			const edicsPropias = rclv.prodsEdiciones.find((n) => n.editadoPor_id == usuario_id);
+			const edicsPropias = rclv.prodsEdiciones.filter((n) => n.editadoPor_id == usuario_id);
 			if (!edicsPropias.length) return rclv;
 
 			for (let edicion of edicsPropias) {
