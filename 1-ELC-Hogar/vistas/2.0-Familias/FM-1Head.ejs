@@ -2,8 +2,6 @@
 	<link rel="stylesheet" href="/publico/formatos/2.0-Familias/FM9-Responsab.css">
 
 <% } else if (tema == "fmCrud") { %>
-	<!-- fmCrud: Inactivar, Recuperar, Rechazar, Eliminar -->
-
 	<!-- Compartido -->
 	<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-Iconos.css">
 	<link rel="stylesheet" href="/publico/formatos/0-Compartido/Main/MN-DatosBreves.css">
@@ -26,6 +24,9 @@
 		<% } %>
 		<% if (codigo == "corregirStatus") { %>
 			<script src="/publico/javascript/2.0-Familias/FM-PRL-CorregirStatus.js"></script>
+		<% } %>
+		<% if (codigo == "historial") { %>
+			<script src="/publico/javascript/2.0-Familias/FM-PR-MobileMueOcu.js"></script>
 		<% } %>
 	<% } %>
 <% } %>
