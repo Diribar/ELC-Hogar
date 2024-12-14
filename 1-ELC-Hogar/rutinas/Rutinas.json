@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Vie. 13/dic",
-	"HoraUTC": "3:37",
+	"FechaUTC": "Sáb. 14/dic",
+	"HoraUTC": "1:49",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 9/dic",
@@ -52,10 +52,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"11-dic-24": {"leyenda": "Estamos en época de Adviento", "entidad": "epocasDelAno", "id": 25},
 		"12-dic-24": {"leyenda": "Hoy recordamos las Apariciones de María en Guadalupe", "entidad": "hechos", "id": 24},
 		"13-dic-24": {"leyenda": "Estamos en época de Adviento", "entidad": "epocasDelAno", "id": 25},
 		"14-dic-24": {"leyenda": "Hoy recordamos a san Juan de la Cruz", "entidad": "personajes", "id": 183},
-		"15-dic-24": {"leyenda": "Estamos en época de Adviento", "entidad": "epocasDelAno", "id": 25}
+		"15-dic-24": {"leyenda": "Estamos en época de Adviento", "entidad": "epocasDelAno", "id": 25},
+		"16-dic-24": {"leyenda": "Estamos en época de Adviento", "entidad": "epocasDelAno", "id": 25}
 	}
 }
