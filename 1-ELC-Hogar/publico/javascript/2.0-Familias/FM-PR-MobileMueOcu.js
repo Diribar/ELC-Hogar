@@ -20,6 +20,7 @@ window.addEventListener("load", () => {
 	// Más variables
 	if (DOM.sectorIconos) {
 		DOM.mobile = DOM.sectorIconos.querySelector("#mobile");
+		DOM.iconoVer = DOM.mobile.querySelector("#iconoVer");
 		DOM.iconoDL = DOM.mobile.querySelector("#iconoDL");
 		DOM.iconoDB = DOM.mobile.querySelector("#iconoDB");
 	}
@@ -58,8 +59,11 @@ window.addEventListener("load", () => {
 				if (DOM.links) DOM.links.classList.remove("toggle");
 			}
 
-			// Fin
+			// Varios
+			if (DOM.iconoVer) DOM.iconoVer.classList.add("toggle"); // oculta iconoVer
 			muestra = true;
+
+			// Fin
 			return;
 		},
 		imagenParado: function () {
@@ -83,15 +87,18 @@ window.addEventListener("load", () => {
 		},
 	};
 
+	// Event listeners - Muestra 'ver'
+	if (DOM.iconoVer) DOM.iconoVer.addEventListener("click", () => FN.startUp());
+
 	// Event listeners - Muestra datosLargos
 	if (DOM.iconoDL)
 		DOM.iconoDL.addEventListener("click", () => {
-			// Datos Largos
+			// Datos
 			DOM.datosLargos.classList.remove("toggle"); // muestra datosLargos
-			DOM.iconoDL.classList.add("toggle"); // oculta iconoDL
-
-			// Datos Breves
 			DOM.datosBreves.classList.add("toggle"); // oculta datosBreves
+
+			// Íconos
+			DOM.iconoDL.classList.add("toggle"); // oculta iconoDL
 			DOM.iconoDB.classList.remove("toggle"); // muestra iconoDB
 
 			// Links
@@ -101,13 +108,15 @@ window.addEventListener("load", () => {
 	// Event listeners - Muestra datosBreves
 	if (DOM.iconoDB)
 		DOM.iconoDB.addEventListener("click", () => {
-			// Datos Largos
-			DOM.datosLargos.classList.add("toggle"); // muestra datosLargos
-			DOM.iconoDL.classList.remove("toggle"); // oculta iconoDL
+			// Datos
+			DOM.datosLargos.classList.add("toggle"); // oculta datosLargos
+			DOM.datosBreves.classList.remove("toggle"); // muestra datosBreves
 
-			// Datos Breves
-			DOM.datosBreves.classList.remove("toggle"); // oculta datosBreves
-			DOM.iconoDB.classList.add("toggle"); // muestra iconoDB
+			// Íconos
+			DOM.iconoDB.classList.add("toggle"); // oculta iconoDB
+			DOM.iconoVer
+				? DOM.iconoVer.classList.remove("toggle") // muestra iconoVer
+				: DOM.iconoDL.classList.remove("toggle"); // muestra iconoDL
 
 			// Links
 			if (parado && DOM.links) DOM.links.classList.add("toggle");
