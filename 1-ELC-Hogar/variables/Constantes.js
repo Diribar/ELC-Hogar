@@ -200,7 +200,7 @@ module.exports = {
 		{descripcion: "Comentario sobre una película", codigo: "producto"},
 		{descripcion: "Otro motivo", codigo: "varios"},
 	],
-	eliminarCuandoSinEntidadId: ["statusHistorial", "histEdics", "misConsultas", "pppRegistros", "calRegistros"],
+	eliminarCuandoSinEntidadId: ["statusHistorial", "edicsHistorial", "misConsultas", "pppRegistros", "calRegistros"],
 	requestsTriviales: ["WhatsApp", "Postman", "TelegramBot", "TwitterBot", "Zabbix"], // evita que se cuenten como visitas
 	rutasConHistorial: {
 		iguales: [

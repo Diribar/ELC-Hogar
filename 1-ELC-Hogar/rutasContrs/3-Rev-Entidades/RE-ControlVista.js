@@ -168,7 +168,7 @@ module.exports = {
 				// Reemplazo manual - Variables
 				codigo += "/avatar";
 				const avatar = procsFM.obtieneAvatar(original, edicion);
-				const motivos = motivosEdics.filter((m) => m.avatar_prods);
+				const motivos = edicsMotivos.filter((m) => m.avatar_prods);
 				const avatarExterno = !avatar.orig.includes("/Externa/");
 				const nombre = original.nombreCastellano ? original.nombreCastellano : original.nombre;
 				const avatarsExternosPelis = variables.avatarsExternosPelis(nombre);
@@ -202,7 +202,7 @@ module.exports = {
 				usuario: await procsFM.bloques.usuario(edicion.editadoPor_id, "ediciones"),
 			};
 			const imgDerPers = procsFM.obtieneAvatar(original).orig;
-			const motivos = motivosEdics.filter((m) => m.prods);
+			const motivos = edicsMotivos.filter((m) => m.prods);
 
 			// Achica la edición a su mínima expresión
 			edicion = await comp.puleEdicion(entidad, original, edicion);
@@ -440,7 +440,7 @@ module.exports = {
 			// CONSECUENCIAS - Si es un capítulo, actualiza el status de link de su colección
 			if (entidad == "capitulos") comp.actualizaCalidadesDeLinkEnCole(original.coleccion_id);
 
-			// CONSECUENCIAS - Si es un RCLV y es un alta, actualiza la tabla 'histEdics' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
+			// CONSECUENCIAS - Si es un RCLV y es un alta, actualiza la tabla 'edicsHistorial' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
 			if (rclv && codigo == "alta") procesos.rclv.edicAprobRech(entidad, original, revId);
 
 			// CONSECUENCIAS - statusHistorial: elimina el registro con statusFinal 'inactivar_id' o 'recuperar_id'

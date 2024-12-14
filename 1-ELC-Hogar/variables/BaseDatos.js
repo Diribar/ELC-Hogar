@@ -17,7 +17,7 @@ module.exports = {
 			statusMotivos: baseDeDatos
 				.obtieneTodosConOrden("statusMotivos", "orden")
 				.then((n) => n.sort((a, b) => (a.grupo < b.grupo ? -1 : a.grupo > b.grupo ? 1 : 0))),
-			motivosEdics: baseDeDatos.obtieneTodosConOrden("motivosEdics", "orden"),
+			edicsMotivos: baseDeDatos.obtieneTodosConOrden("edicsMotivos", "orden"),
 
 			// Variables de productos
 			idiomas: baseDeDatos.obtieneTodosConOrden("idiomas", "nombre"),
@@ -118,8 +118,8 @@ module.exports = {
 			epocaVarias: epocasOcurrencia.find((n) => n.id == "var"),
 			epocasSinVarias: epocasOcurrencia.filter((n) => n.id != "var"),
 			mesesAbrev: meses.map((n) => n.abrev),
-			motivoInfoErronea: motivosEdics.find((n) => n.codigo == "infoErronea"),
-			motivoVersionActual: motivosEdics.find((n) => n.codigo == "versionActual"),
+			motivoInfoErronea: edicsMotivos.find((n) => n.codigo == "infoErronea"),
+			motivoVersionActual: edicsMotivos.find((n) => n.codigo == "versionActual"),
 			motivoDupl_id: statusMotivos.find((n) => n.codigo == "duplicado").id,
 		};
 
