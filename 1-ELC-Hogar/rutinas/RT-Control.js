@@ -337,9 +337,12 @@ module.exports = {
 			return;
 		},
 		eliminaLinksInactivos: async () => {
+			// Elimina los links
 			const fechaDeCorte = comp.fechaHora.nuevoHorario(-25);
 			const condicion = {statusRegistro_id: inactivo_id, statusSugeridoEn: {[Op.lt]: fechaDeCorte}};
 			await baseDeDatos.eliminaPorCondicion("links", condicion);
+
+			// Fin
 			return;
 		},
 		ABM_noRevisores: async () => {
@@ -785,7 +788,7 @@ module.exports = {
 		idDeTablas: async () => {
 			// Variables
 			const tablas = [
-				...["histEdics", "statusHistorial"],
+				...["edicsHistorial", "statusHistorial"],
 				...["prodsEdicion", "rclvsEdicion", "linksEdicion"],
 				...["persWebDiaAcum", "persWebDia", "persBdDiaAcum"],
 				...["prodsAzar", "capturas"],
