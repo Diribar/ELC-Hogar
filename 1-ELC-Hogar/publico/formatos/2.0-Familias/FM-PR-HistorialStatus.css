@@ -38,3 +38,14 @@
 		#comentario {margin-left: 15px; min-width: 250px; width: 250px;}
 	}
 }
+
+@media (orientation: portrait) {
+	#recuadroDL #contenido {
+		margin: 0 30px;
+		#informacion {margin-top: 20px;}
+		& > #sectorIconos {
+			display: flex !important; margin: 15px 0 !important;
+			#cambioStatus {display: none;}
+		}
+	}
+}

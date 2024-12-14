@@ -424,6 +424,14 @@ module.exports = {
 			// Fin
 			return;
 		},
+		eliminaVisitasAntiguas: async () => {
+			const haceUnAno = comp.fechaHora.anoMesDia(Date.now() - unAno); // tiene que ser la vida útil de los cookies
+			const condicion = {fechaUltNaveg: {[Op.lt]: haceUnAno}, diasNaveg: 1};
+			await baseDeDatos.eliminaPorCondicion("visitas", condicion);
+
+			// Fin
+			return;
+		},
 		cantClientes: async () => {
 			// Obtiene la última fecha del historial
 			const ultRegHistClientes = await baseDeDatos.obtienePorCondicionElUltimo("persBdDiaAcum");
@@ -473,14 +481,6 @@ module.exports = {
 
 			// Elimina los registros de días anteriores
 			await baseDeDatos.eliminaPorCondicion("navegsDia", condicion);
-
-			// Fin
-			return;
-		},
-		eliminaVisitasAntiguas: async () => {
-			const haceUnMes = comp.fechaHora.anoMesDia(Date.now() - unMes);
-			const condicion = {fechaUltNaveg: {[Op.lt]: haceUnMes}, diasNaveg: 1};
-			await baseDeDatos.eliminaPorCondicion("visitas", condicion);
 
 			// Fin
 			return;

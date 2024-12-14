@@ -210,10 +210,10 @@ module.exports = {
 		],
 		includes: [
 			// Productos
-			["/detalle/p", "detalleProd", iconos.prod, iconos.detalle],
-			["/edicion/p", "edicionProd", iconos.prod, iconos.edicion],
-			["/calificar/p", "calificarProd", iconos.prod, iconos.calificar],
-			["/links/mirar/l", "mirarLink", iconos.prod, "fa-couch"],
+			["/detalle/p/", "detalleProd", iconos.prod, iconos.detalle],
+			["/edicion/p/", "edicionProd", iconos.prod, iconos.edicion],
+			["/calificar/p/", "calificarProd", iconos.prod, iconos.calificar],
+			["/links/mirar/l/", "mirarLink", iconos.prod, "fa-couch"],
 
 			// RCLVs
 			["/detalle/r", "detalleRclv", iconos.rclv, iconos.detalle],
@@ -221,8 +221,8 @@ module.exports = {
 
 			// Apto Input
 			["/agregar-", "agregarProd", iconos.agregar, iconos.prod],
-			["/agregar/r", "agregarRclv", iconos.agregar, iconos.rclv],
-			["/abm-links/p", "abmLinks", iconos.agregar, iconos.link],
+			["/agregar/r/", "agregarRclv", iconos.agregar, iconos.rclv],
+			["/abm-links/p/", "abmLinks", iconos.agregar, iconos.link],
 
 			// Familia
 			["/historial", "historial"],
