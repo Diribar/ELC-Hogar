@@ -90,10 +90,10 @@ router.post("/solapamiento/r/:entidad", aptoCRUD, m.usRolRevPERL, m.multer.singl
 router.get("/abm-links/p/:entidad", aptoCRUD, m.rutaCRUD_ID, m.linksEnSemana, m.usRolRevLinks, m.capturaActivar, vista.form.links);
 
 // Vistas - Correcciones
-router.get("/correccion-del-motivo/:entidad", correcs, m.capturaActivar, m.statusCorrecto, vista.correcs.motivoForm);
-router.post("/correccion-del-motivo/:entidad", correcs, m.capturaInactivar, m.statusCorrecto, m.motivoNecesario, vista.correcs.motivoGuardar);
-router.get("/correccion-del-status/:entidad", correcs, m.capturaActivar, vista.correcs.statusForm);
-router.post("/correccion-del-status/:entidad", correcs, m.capturaInactivar, vista.correcs.statusGuardar);
+router.get("/correccion-del-motivo/:entidad", correcs, m.capturaActivar, m.statusCorrecto, vista.form.difMotivo);
+router.get("/correccion-del-status/:entidad", correcs, m.capturaActivar, vista.form.difStatus);
+router.post("/correccion-del-motivo/:entidad", correcs, m.capturaInactivar, m.statusCorrecto, m.motivoNecesario, vista.guardar.difMotivo);
+router.post("/correccion-del-status/:entidad", correcs, m.capturaInactivar, vista.guardar.difStatus);
 
 // Fin
 module.exports = router;
