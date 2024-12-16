@@ -34,7 +34,6 @@ const eliminadoPorCreador = [...aptoUsuario, m.entValida, m.idValido, m.statusCo
 const aptoDetalle = [m.entValida, m.idValido, m.rutaCRUD_ID];
 const aptoCRUD = [...aptoDetalle, m.statusCorrecto, m.statusCompara, ...aptoUsuario, m.permUserReg];
 const aptoEliminar = [...aptoCRUD, m.usRolRevPERL];
-const correcs = [m.entValida, m.idValido, m.statusCompara, aptoUsuario, m.permUserReg, m.usRolRevPERL];
 
 // APIs
 router.get("/api/fm-obtiene-info-del-be", API.obtieneInfo);
@@ -48,12 +47,6 @@ router.get("/recuperar/:siglaFam", aptoCRUD, m.capturaActivar, vista.form.histor
 router.post("/recuperar/:siglaFam", aptoCRUD, m.comentNecesario, m.capturaInactivar, vista.inacRecupGuardar);
 router.get("/eliminado-por-creador/:siglaFam", eliminadoPorCreador, vista.form.elimina);
 router.get("/eliminado/:siglaFam", aptoEliminar, vista.form.elimina);
-
-// Vistas - Correcciones
-router.get("/correccion-del-motivo/:siglaFam", correcs, m.capturaActivar, m.statusCorrecto, vista.correcs.motivoForm);
-router.post("/correccion-del-motivo/:siglaFam", correcs, m.capturaInactivar, m.statusCorrecto, m.motivoNecesario, vista.correcs.motivoGuardar);
-router.get("/correccion-del-status/:siglaFam", correcs, m.capturaActivar, vista.correcs.statusForm);
-router.post("/correccion-del-status/:siglaFam", correcs, m.capturaInactivar, vista.correcs.statusGuardar);
 
 // Fin
 module.exports = router;

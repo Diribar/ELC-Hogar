@@ -552,4 +552,106 @@ module.exports = {
 			return res.redirect("/revision/tablero");
 		},
 	},
+
+	correcs: {
+		motivoForm: async (req, res) => {
+			// Variables
+			const tema = "fmCrud";
+			const codigo = "cambiarMotivo";
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const {id, origen, prodRclv, ultHist} = {...req.query, ...req.body};
+			const petitFamilias = comp.obtieneDesdeEntidad.petitFamilias(entidad);
+			const titulo = "Cambiar el Motivo";
+
+			// Datos para la vista
+			const motivo = ultHist.motivo_id ? statusMotivos.find((n) => n.id == ultHist.motivo_id) : null;
+			const motivos = statusMotivos.filter((n) => n[petitFamilias]);
+			const entidades = variables.entidades[petitFamilias];
+			const entsNombre = variables.entidades[petitFamilias + "Nombre"];
+			const imgDerPers = procesos.obtieneAvatar(prodRclv).orig;
+			const familia = comp.obtieneDesdeEntidad.familia(entidad);
+
+			// Envía la info a la vista
+			return res.render("CMP-0Estructura", {
+				...{tema, codigo, titulo, origen},
+				...{familia, entidad, id, registro: prodRclv, motivo, ultHist, imgDerPers},
+				...{entidades, entsNombre, motivos},
+				cartelGenerico: true,
+			});
+		},
+		motivoGuardar: async (req, res) => {
+			// Variables
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const {id, motivo_id, entDupl, idDupl, ultHist, origen} = {...req.query, ...req.body};
+			const {statusFinal_id} = ultHist;
+
+			// Genera el comentario
+			let {comentario} = req.body;
+			comentario = await procesos.comentario({entidad, id, motivo_id, comentario, entDupl, idDupl, statusFinal_id});
+
+			// Actualiza el motivo en el último registro del historial
+			await baseDeDatos.actualizaPorId("statusHistorial", ultHist.id, {motivo_id, comentario});
+
+			// Genera la 'cola'
+			let cola = "/?id=" + id;
+			if (origen) cola += "&origen=" + origen;
+
+			// Fin
+			return res.redirect("/" + entidad + "/historial" + cola);
+		},
+		statusForm: async (req, res) => {
+			// Variables
+			const tema = "fmCrud";
+			const codigo = "corregirStatus";
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const esLink = entidad == "links";
+			const titulo = "Corregir el Status";
+			const {id, origen} = req.query;
+			let {prodRclv: registro} = req.body;
+
+			// Obtiene el historial
+			const historialStatus = await procsFM.historialDeStatus.obtiene({entidad, ...registro});
+
+			// Datos para la vista
+			const imgDerPers = esLink ? "/publico/imagenes/Varios/Link.jpg" : procesos.obtieneAvatar(registro).orig;
+			const familia = comp.obtieneDesdeEntidad.familia(entidad);
+
+			// Producto o Rclv
+			if (esLink) {
+				const prodEntidad = comp.obtieneDesdeCampo_id.entidadProd(registro);
+				const campo_idProd = comp.obtieneDesdeCampo_id.campo_idProd(registro);
+				const prodId = registro[campo_idProd];
+				const producto = await baseDeDatos.obtienePorId(prodEntidad, prodId);
+				registro.nombreCastellano = "Link - " + producto.nombreCastellano;
+			}
+
+			// Fin
+			return res.render("CMP-0Estructura", {
+				...{tema, codigo, titulo, origen},
+				...{entidad, id, registro, imgDerPers},
+				...{historialStatus, familia},
+				cartelGenerico: true,
+			});
+		},
+		statusGuardar: async (req, res) => {
+			// Variables
+			const entidad = comp.obtieneEntidadDesdeUrl(req);
+			const {id, opcion, prodRclv: prodRclvLink, ultHist} = {...req.query, ...req.body};
+			const familia = comp.obtieneDesdeEntidad.familia(entidad);
+			let destino;
+
+			// Acciones si se aprueba el status del prodRclvLink
+			if (opcion == "prodRclvLink") await baseDeDatos.eliminaPorCondicion("statusHistorial", {entidad, entidad_id: id}); // elimina el historial de ese 'prodRclvLink'
+
+			// Acciones si se aprueba el status del historial
+			if (opcion == "historial") {
+				const datos = {statusRegistro_id: ultHist.statusFinal_id, statusSugeridoEn: ultHist.statusFinalEn};
+				await baseDeDatos.actualizaPorId(entidad, id, datos); // actualiza el status del prodRclvLink
+			}
+
+			// Fin
+			return res.redirect("/revision/tablero");
+		},
+	},
+
 };
