@@ -241,7 +241,7 @@ module.exports = {
 		const {coleccion_id, temporada} = req.query;
 
 		// Obtiene los datos
-		const datos = await procesos.obtieneCapitulos(coleccion_id, temporada);
+		const datos = await procsFM.obtieneCapitulos(coleccion_id, temporada);
 
 		// Fin
 		return res.json(datos);
