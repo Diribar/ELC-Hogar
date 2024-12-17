@@ -46,9 +46,30 @@ module.exports = {
 		const tema = "infoDeGestion";
 		const codigo = "navegsDia";
 		const titulo = "Movimientos del día";
+		let fechaMax, fechaMin;
+
+		// Obtiene las navegsDia y las procesa
+		let navegsDia = await baseDeDatos.obtieneTodosConOrden("navegsDia", "fecha", true);
+		if (navegsDia.length) {
+			// Obtiene las fechas máxima y mínima
+			const cantRegs = navegsDia.length;
+			fechaMin = navegsDia[cantRegs - 1];
+			fechaMax = navegsDia[0];
+
+			// Tareas varias
+			navegsDia = procesos.navegsDia.ordenaPorCliente(navegsDia);
+			navegsDia = procesos.navegsDia.eliminaDuplicados(navegsDia);
+			navegsDia = procesos.navegsDia.modificaDatos(navegsDia);
+
+			// Descarta los registros que no tengan distintivo o iconoArray
+			navegsDia = navegsDia.filter((n) => n.distintivo || n.iconosArray);
+
+			// Agrega un registro resumen por usuario
+			navegsDia = procesos.navegsDia.resumen(navegsDia);
+		}
 
 		// Fin
-		return res.render("CMP-0Estructura", {tema, codigo, titulo});
+		return res.render("CMP-0Estructura", {tema, codigo, titulo, navegsDia, fechaMax, fechaMin});
 	},
 
 	// Listados
