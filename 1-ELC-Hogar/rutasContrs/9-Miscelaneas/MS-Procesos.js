@@ -142,11 +142,13 @@ module.exports = {
 			// Fin
 			return fechas;
 		},
-		filtraPorFecha: (navegsDia, fecha) => {
+		filtraPorFecha: (navegsDia, fecha, fechas) => {
 			// Obtiene la fecha
 			if (fecha) {
 				fecha = new Date(fecha);
 				if (isNaN(fecha)) fecha = null;
+				if (fecha && (fecha > new Date(fechas[0]) || fecha < new Date(fechas[fechas.length - 1])))
+					fecha = new Date(fechas[0]);
 			}
 
 			// Genera una fecha
@@ -158,6 +160,9 @@ module.exports = {
 
 			// Filtra por esas fechas
 			navegsDia = navegsDia.filter((n) => n.fecha >= fechaMin && n.fecha < fechaMax);
+
+			// Convierte la fecha a texto
+			fecha = comp.fechaHora.anoMesDia(fecha);
 
 			// Fin
 			return [navegsDia, fecha];

@@ -55,7 +55,7 @@ module.exports = {
 		if (navegsDia.length) {
 			// Tareas varias
 			fechas = procesos.navegsDia.obtieneRangoFechas(navegsDia);
-			[navegsDia, fecha] = procesos.navegsDia.filtraPorFecha(navegsDia, fecha);
+			[navegsDia, fecha] = procesos.navegsDia.filtraPorFecha(navegsDia, fecha, fechas);
 			navegsDia = procesos.navegsDia.ordenaPorCliente(navegsDia);
 			navegsDia = procesos.navegsDia.eliminaDuplicados(navegsDia);
 			navegsDia = procesos.navegsDia.modificaDatos(navegsDia);
