@@ -46,33 +46,24 @@ module.exports = {
 		const tema = "infoDeGestion";
 		const codigo = "navegsDia";
 
-		// Obtiene información de la BD
-		let navegsDia = procesos.navegsDia.obtieneNavegsDia();
-		let usuarios = baseDeDatos.obtieneTodos("usuarios");
-		[navegsDia, usuarios] = await Promise.all([navegsDia, usuarios]);
+		// Obtiene las navegsDia
+		let navegsDia = await baseDeDatos.obtieneTodosConOrden("navegsDia", "fecha", true);
 
-		// Modifica los datos
-		navegsDia.forEach((navegDia, i) => {
-			// Variables
-			const {cliente_id, comentario} = navegDia;
-			const persona = Number(navegDia.cliente_id.slice(1));
-			const esUser = navegDia.cliente_id.startsWith("U");
-			const hora = comp.fechaHora.horarioUTC(navegDia.fecha).split("hs")[0];
-			const {iconosArray, distintivo} = procesos.navegsDia.iconosArray(navegDia.ruta);
-			const iconosHTML = iconosArray ? iconosArray.join(" ") : null;
-			const ruta = navegDia.ruta;
+		if (navegsDia.length) {
+			// Tareas varias
+			navegsDia = procesos.navegsDia.ordenaPorCliente(navegsDia);
+			navegsDia = procesos.navegsDia.eliminaDuplicados(navegsDia);
+			navegsDia = procesos.navegsDia.modificaDatos(navegsDia);
 
-			// Fin
-			navegsDia[i] = {cliente_id, persona, esUser, hora, ruta, iconosHTML, iconosArray, distintivo, comentario};
-		});
+			// Descarta los registros que no tengan distintivo o iconoArray
+			navegsDia = navegsDia.filter((n) => n.distintivo || n.iconosArray);
 
-		// Descarta los registros que no tengan distintivo o iconoArray
-		navegsDia = navegsDia.filter((n) => n.distintivo || n.iconosArray);
-
-		// Agrega un registro resumen por usuario
-		navegsDia = procesos.navegsDia.resumen(navegsDia);
+			// Agrega un registro resumen por usuario
+			navegsDia = procesos.navegsDia.resumen(navegsDia);
+		}
 
 		// Fin
+		// return res.send(navegsDia);
 		return res.render("CMP-0Estructura", {tema, codigo, titulo: "Movimientos del día", navegsDia});
 	},
 
