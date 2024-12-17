@@ -755,9 +755,16 @@ module.exports = {
 		},
 		descartaCapsSiColPresente: {
 			prods: (resultados) => {
-				// Rutina por producto
+				// Descarta capítulos si la colección está presente
 				const colecciones = resultados.filter((n) => n.entidad == "colecciones");
 				for (let coleccion of colecciones) resultados = resultados.filter((n) => n.coleccion_id != coleccion.id);
+
+				// Descarta capítulos cuando ya hay uno existente de su colección
+				for (let i = resultados.length - 1; i; i--) {
+					if (!resultados[i].coleccion_id) continue;
+					if (resultados.find((n) => n.coleccion_id == resultados[i].coleccion_id).id != resultados[i].id)
+						resultados.splice(i, 1);
+				}
 
 				// Fin
 				return resultados;
