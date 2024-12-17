@@ -471,11 +471,12 @@ module.exports = {
 		},
 		navegsDia: async () => {
 			// Variables
-			const fechaMax = new Date(hoy);
-			const condicion = {fecha: {[Op.lt]: fechaMax}};
 			let espera = [];
+			let condicion;
 
 			// Obtiene los registros de días anteriores
+			const fechaMax = new Date(hoy);
+			condicion = {fecha: {[Op.lt]: fechaMax}};
 			const navegsDia = await baseDeDatos.obtieneTodosPorCondicion("navegsDia", condicion);
 			if (!navegsDia.length) return;
 
@@ -486,6 +487,8 @@ module.exports = {
 			await Promise.all(espera);
 
 			// Elimina los registros de días anteriores
+			const fechaEliminar = new Date(new Date(hoy).getTime() - unaDia * 3);
+			condicion = {fecha: {[Op.lt]: fechaEliminar}};
 			await baseDeDatos.eliminaPorCondicion("navegsDia", condicion);
 
 			// Fin
