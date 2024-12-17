@@ -48,6 +48,7 @@ module.exports = {
 		const titulo = "Movimientos del día";
 		let {fecha} = req.query;
 		let fechas = [];
+		let fechaMostrar, cantClientes;
 
 		// Obtiene las navegsDia y las procesa
 		let navegsDia = await baseDeDatos.obtieneTodosConOrden("navegsDia", "fecha", true);
@@ -64,13 +65,16 @@ module.exports = {
 
 			// Agrega un registro resumen por usuario
 			navegsDia = procesos.navegsDia.resumen(navegsDia);
+
+			// fechaMostrar
+			fechaMostrar = comp.fechaHora.anoMesDia(fecha);
+
+			// Cantidad de clienes
+			cantClientes = navegsDia.filter((n) => n.cantMovs).length;
 		}
 
-		// fechaMostrar
-		const fechaMostrar = comp.fechaHora.anoMesDia(fecha);
-
 		// Fin
-		return res.render("CMP-0Estructura", {tema, codigo, titulo, navegsDia, fechaMostrar, fechas});
+		return res.render("CMP-0Estructura", {tema, codigo, titulo, navegsDia, fechaMostrar, fechas, cantClientes});
 	},
 
 	// Listados
