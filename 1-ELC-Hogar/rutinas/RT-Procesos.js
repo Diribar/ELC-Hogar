@@ -641,7 +641,7 @@ module.exports = {
 				const fechaTope = comp.fechaHora.anoMesDia(new Date(fechaSig).getTime() + unDia);
 				const navegsDeUnDia = navegsDiaPulido.filter((ruta) => ruta.fecha >= fechaSig && ruta.fecha < fechaTope); // obtiene las rutas del día
 
-				// Si no hay navegsDeUnDia, aumenta el día e interrumpe el ciclo
+				// Si no hay navegsDeUnDia, aumenta el día y saltea el ciclo
 				if (!navegsDeUnDia.length) {
 					fechaSig = comp.fechaHora.anoMesDia(new Date(fechaSig).getTime() + unDia);
 					continue;
