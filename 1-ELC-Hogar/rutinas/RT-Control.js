@@ -20,7 +20,7 @@ module.exports = {
 		if (!info.RutinasDiarias || !Object.keys(info.RutinasDiarias).length) return;
 		if (!info.RutinasHorarias || !info.RutinasHorarias.length) return;
 
-		// await this.rutinas.actualizaPaisesConMasProductos();
+		// await this.rutinas.cantClientes();
 		// await obsoletas.actualizaCapEnCons()
 		// await this.RutinasSemanales();
 
