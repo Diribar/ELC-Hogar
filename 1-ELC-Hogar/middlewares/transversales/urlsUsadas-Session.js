@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
 	if (!rutaConHistorial && !rutaSinHistorial) {
 		console.log("¡Atención! - Ruta desconocida:", req.originalUrl);
 		const informacion = {
-			mensajes: ["No tenemos esa dirección en nuestro sistema"],
+			mensajes: ["No tenemos esa dirección en nuestro sistema (url-historial)"],
 			iconos: [variables.vistaInicio],
 		};
 		return res.render("CMP-0Estructura", {informacion});

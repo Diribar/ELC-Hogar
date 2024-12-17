@@ -79,8 +79,10 @@ window.addEventListener("load", async () => {
 			// location.reload();
 			if (respuesta.reload) location.reload();
 			if (respuesta.ocultar) DOM.filasDatos[fila].classList.add("ocultar");
-			if (respuesta.activos && DOM.activos.className.includes("traslucido")) DOM.activos.innerHTML = "* Activos";
-			if (respuesta.pasivos && DOM.pasivos.className.includes("traslucido")) DOM.pasivos.innerHTML = "* Pasivos";
+			if (respuesta.activos && DOM.activos && DOM.activos.className.includes("traslucido"))
+				DOM.activos.innerHTML = "* Activos";
+			if (respuesta.pasivos && DOM.pasivos && DOM.pasivos.className.includes("traslucido"))
+				DOM.pasivos.innerHTML = "* Pasivos";
 		});
 	});
 });

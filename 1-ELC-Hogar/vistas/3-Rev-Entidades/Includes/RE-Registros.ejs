@@ -15,7 +15,7 @@
 				<% const entidadUrl = !url.startsWith('/') ? '/' + (corresponde_id ? reg.entidad : "capitulos") : '' %>
 
 				<a href="<%='/' + urlBase + url + entidadUrl + '/?id=' + (corresponde_id ? reg.id : reg.csl[campo]) + EDIC_ID + ORIGEN + GRUPO %>">
-					<p><%= reg.fechaRefTexto %> - <%= reg.abrev %> - <%= reg.nombre %></p>
+					<p><%= reg.fechaRefTexto %> - <%= reg.abrev %> - <%= reg.nombre || "Link" %></p>
 				</a>
 			<% } %>
 		</div>

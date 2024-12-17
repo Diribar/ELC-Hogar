@@ -18,7 +18,7 @@
 									<p id="texto" class="absolute ocultar"><%= prod.ppp.nombre %></p>
 								</div>
 							<% } %>
-							<% if (prod.linksGral) { %>
+							<% if (prod.linksGral == conLinks) { %>
 								<i id="prodConLink" class="<%= iconos.faSolid %> <%= iconos.link %>" title="Con link"></i>
 							<% } %>
 							<% if (prod.crueldad) { %>

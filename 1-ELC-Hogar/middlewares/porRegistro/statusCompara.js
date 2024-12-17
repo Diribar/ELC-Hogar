@@ -6,7 +6,6 @@ module.exports = async (req, res, next) => {
 	const {tema, entidad} = comp.partesDelUrl(req);
 	const {id} = req.query;
 	const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase();
-	const familia = comp.obtieneDesdeEntidad.familia(entidad);
 	let elLa = comp.obtieneDesdeEntidad.elLa(entidad).trim();
 	elLa = comp.letras.inicialMayus(elLa);
 	const statusDistinto = tema == "/correccion-del-status";
@@ -30,7 +29,7 @@ module.exports = async (req, res, next) => {
 	} else if (!statusAlineado && statusIgual) {
 		// Variables
 		const {urlAnterior} = req.session;
-		const urlStatus = "/" + entidad + "/correccion-del-status/?id=" + id;
+		const urlStatus = "/revision/correccion-del-status/" + entidad + "/?id=" + id;
 		const tituloStatus = "Ir a la vista de Cambio de Status";
 		const nombre = comp.nombresPosibles(prodRclv);
 

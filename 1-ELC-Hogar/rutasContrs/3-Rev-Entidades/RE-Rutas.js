@@ -21,6 +21,7 @@ const m = {
 	idValido: require("../../middlewares/porRegistro/idValido"),
 	rutaCRUD_ID: require("../../middlewares/varios/rutaCRUD_ID"),
 	statusCorrecto: require("../../middlewares/porRegistro/statusCorrecto"),
+	statusCompara: require("../../middlewares/porRegistro/statusCompara"),
 	edicionAPI: require("../../middlewares/porRegistro/edicionAPI"),
 	edicionVista: require("../../middlewares/porRegistro/edicionVista"),
 	prodSinRclvAprob: require("../../middlewares/porRegistro/prodSinRclvAprob"),
@@ -39,9 +40,10 @@ const m = {
 };
 
 // Middlewares - Consolidados
-const usuarioBase = [m.usAltaTerm, m.usPenalizaciones];
+const usuarioBase = [m.usAltaTerm, m.usPenalizaciones, m.usAptoInput];
 const aptoCRUD = [m.entValida, m.idValido, m.statusCorrecto, ...usuarioBase, m.permUserReg];
 const aptoEdicion = [...aptoCRUD, m.usRolRevPERL, m.edicionVista];
+const correcs = [m.entValida, m.idValido, m.statusCompara, ...usuarioBase, m.permUserReg, m.usRolRevPERL];
 
 // APIs - Tablero
 router.get("/api/re-actualiza-visibles", API.actualizaVisibles);
@@ -86,6 +88,12 @@ router.post("/solapamiento/r/:entidad", aptoCRUD, m.usRolRevPERL, m.multer.singl
 
 // Vistas - Links
 router.get("/abm-links/p/:entidad", aptoCRUD, m.rutaCRUD_ID, m.linksEnSemana, m.usRolRevLinks, m.capturaActivar, vista.form.links);
+
+// Vistas - Correcciones
+router.get("/correccion-del-motivo/:entidad", correcs, m.capturaActivar, m.statusCorrecto, vista.form.difMotivo);
+router.get("/correccion-del-status/:entidad", correcs, m.capturaActivar, vista.form.difStatus);
+router.post("/correccion-del-motivo/:entidad", correcs, m.capturaInactivar, m.statusCorrecto, m.motivoNecesario, vista.guardar.difMotivo);
+router.post("/correccion-del-status/:entidad", correcs, m.capturaInactivar, vista.guardar.difStatus);
 
 // Fin
 module.exports = router;

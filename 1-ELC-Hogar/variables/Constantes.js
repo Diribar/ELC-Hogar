@@ -256,10 +256,10 @@ module.exports = {
 		],
 	},
 	rutasSinHistorial: {
-		includes: [],
+		includes: ["/eliminado"],
 		startsWith: [
 			...["/cookies", "/session", "/movimientos-del-dia"], // Miscelaneas
-			...["/eliminado", "/productos-por-registro/r", "/listados/links"], // Familias
+			...["/productos-por-registro/r", "/listados/links"], // Familias
 			"/usuarios",
 		],
 	},

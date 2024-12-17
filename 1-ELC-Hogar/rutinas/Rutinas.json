@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Sáb. 14/dic",
-	"HoraUTC": "1:49",
+	"FechaUTC": "Lun. 16/dic",
+	"HoraUTC": "19:16",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 9/dic",
-	"HoraSemUTC": "0:52",
-	"semanaUTC": 50,
+	"FechaSemUTC": "Lun. 16/dic",
+	"HoraSemUTC": "19:16",
+	"semanaUTC": 51,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS HORARIAS ---------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario y no maduros",
@@ -20,7 +20,6 @@
 		"imagenDerecha": "SI",
 		"actualizaUsuarios": "SI",
 		"eliminaLinksInactivos": "SI",
-		"eliminaRegsSinEntidad_id": "SI",
 		"ABM_noRevisores": "SI",
 		"cantNavegs": "SI",
 		"eliminaVisitasAntiguas": "SI",
@@ -52,10 +51,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"12-dic-24": {"leyenda": "Hoy recordamos las Apariciones de María en Guadalupe", "entidad": "hechos", "id": 24},
-		"13-dic-24": {"leyenda": "Estamos en época de Adviento", "entidad": "epocasDelAno", "id": 25},
 		"14-dic-24": {"leyenda": "Hoy recordamos a san Juan de la Cruz", "entidad": "personajes", "id": 183},
 		"15-dic-24": {"leyenda": "Estamos en época de Adviento", "entidad": "epocasDelAno", "id": 25},
-		"16-dic-24": {"leyenda": "Estamos en época de Adviento", "entidad": "epocasDelAno", "id": 25}
+		"16-dic-24": {"leyenda": "Estamos en época de Adviento", "entidad": "epocasDelAno", "id": 25},
+		"17-dic-24": {"leyenda": "Estamos en época de Adviento", "entidad": "epocasDelAno", "id": 25},
+		"18-dic-24": {"leyenda": "Estamos en época de Adviento", "entidad": "epocasDelAno", "id": 25}
 	}
 }
