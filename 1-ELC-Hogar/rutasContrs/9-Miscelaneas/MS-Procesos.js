@@ -125,11 +125,7 @@ module.exports = {
 		},
 	},
 	navegsDia: {
-		obtieneNavegsDia: async () => {
-			// Obtiene las navegsDia
-			let navegsDia = await baseDeDatos.obtieneTodosConOrden("navegsDia", "fecha", true);
-			if (!navegsDia.length) return [];
-
+		ordenaPorCliente: (navegsDia) => {
 			// Las reordena
 			let respuesta = [];
 			while (navegsDia.length) {
@@ -139,20 +135,46 @@ module.exports = {
 				navegsDia = navegsDia.filter((n) => n.cliente_id != cliente_id);
 			}
 
+			// Fin
+			return respuesta;
+		},
+		eliminaDuplicados: (navegsDia) => {
 			// Elimina duplicados
-			for (let i = respuesta.length - 1; i > 0; i--) {
-				const actual = respuesta[i];
-				const anterior = respuesta[i - 1];
+			for (let i = navegsDia.length - 1; i > 0; i--) {
+				const actual = navegsDia[i];
+				const anterior = navegsDia[i - 1];
 				if (
 					actual.cliente_id == anterior.cliente_id &&
 					actual.ruta == anterior.ruta &&
 					actual.comentario == anterior.comentario
 				)
-					respuesta.splice(i, 1);
+					navegsDia.splice(i, 1);
 			}
 
 			// Fin
-			return respuesta;
+			return navegsDia;
+		},
+		modificaDatos: function (navegsDia) {
+			// Modifica los datos
+			navegsDia.forEach((navegDia, i) => {
+				// Variables
+				const {cliente_id, comentario, ruta} = navegDia;
+				const persona = Number(navegDia.cliente_id.slice(1));
+				const esUser = navegDia.cliente_id.startsWith("U");
+				const anoMesDia = comp.fechaHora.anoMesDia(navegDia.fecha);
+				const hora = comp.fechaHora.horarioUTC(navegDia.fecha).split("hs")[0];
+				const {iconosArray, distintivo} = this.iconosArray(navegDia.ruta);
+				const iconosHTML = iconosArray ? iconosArray.join(" ") : null;
+
+				// Fin
+				navegsDia[i] = {
+					...{cliente_id, persona, esUser, anoMesDia, hora},
+					...{ruta, iconosHTML, iconosArray, distintivo, comentario},
+				};
+			});
+
+			// Fin
+			return navegsDia;
 		},
 		iconosArray: (url) => {
 			// Variables
