@@ -472,10 +472,10 @@ module.exports = {
 		navegsDia: async () => {
 			// Variables
 			const fechaMax = new Date(hoy);
+			const condicion = {fecha: {[Op.lt]: fechaMax}};
 			let espera = [];
 
 			// Obtiene los registros de días anteriores
-			const condicion = {fecha: {[Op.lt]: fechaMax}};
 			const navegsDia = await baseDeDatos.obtieneTodosPorCondicion("navegsDia", condicion);
 			if (!navegsDia.length) return;
 
