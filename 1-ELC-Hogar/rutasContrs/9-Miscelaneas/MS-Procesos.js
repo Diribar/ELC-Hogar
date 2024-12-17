@@ -125,6 +125,43 @@ module.exports = {
 		},
 	},
 	navegsDia: {
+		obtieneRangoFechas: (navegsDia) => {
+			// Variables
+			const primFecha = comp.fechaHora.anoMesDia(navegsDia[0].fecha);
+			const ultFecha = comp.fechaHora.anoMesDia(navegsDia[navegsDia.length - 1].fecha);
+			let fechas = [primFecha];
+			let fecha = primFecha;
+
+			// Genera las fechas
+			while (fecha > ultFecha) {
+				fecha = new Date(fecha).getTime() - unDia;
+				fecha = comp.fechaHora.anoMesDia(fecha);
+				fechas.push(fecha);
+			}
+
+			// Fin
+			return fechas;
+		},
+		filtraPorFecha: (navegsDia, fecha) => {
+			// Obtiene la fecha
+			if (fecha) {
+				fecha = new Date(fecha);
+				if (isNaN(fecha)) fecha = null;
+			}
+
+			// Genera una fecha
+			if (!fecha) fecha = new Date(navegsDia[0].fecha);
+
+			// Genera las fechas máxima y mínima
+			const fechaMin = new Date(fecha.setUTCHours(0, 0, 0));
+			const fechaMax = new Date(fechaMin.getTime() + unDia);
+
+			// Filtra por esas fechas
+			navegsDia = navegsDia.filter((n) => n.fecha >= fechaMin && n.fecha < fechaMax);
+
+			// Fin
+			return [navegsDia, fecha];
+		},
 		ordenaPorCliente: (navegsDia) => {
 			// Las reordena
 			let respuesta = [];
