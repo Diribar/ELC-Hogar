@@ -236,12 +236,12 @@ module.exports = {
 					.then((n) => n.map((m) => ({...m, tabla: "statusHistorial"})))
 			);
 
-			// Obtiene los registros de "histEdics"
+			// Obtiene los registros de "edicsHistorial"
 			condicion = {comunicadoEn: null};
 			registros.push(
 				baseDeDatos
-					.obtieneTodosPorCondicion("histEdics", condicion, "motivo")
-					.then((n) => n.map((m) => ({...m, tabla: "histEdics"}))) // Agrega el nombre de la tabla
+					.obtieneTodosPorCondicion("edicsHistorial", condicion, "motivo")
+					.then((n) => n.map((m) => ({...m, tabla: "edicsHistorial"}))) // Agrega el nombre de la tabla
 			);
 
 			// Espera a que se reciba la info
@@ -524,6 +524,10 @@ module.exports = {
 	// Clientes
 	clientes: {
 		frecPorCliente: (registros, proximaFecha) => {
+			// Variables
+			// const haceUnMes=new Date(proximaFecha).getTime()-unMes
+			// console.log(proximaFecha,unMes);
+
 			// Quita los clientes futuros
 			registros = registros.filter((n) => n.visitaCreadaEn <= proximaFecha);
 
@@ -547,6 +551,8 @@ module.exports = {
 			const tresDiez = inicio.length - fin.length;
 
 			// Problema - Uno o dos
+			// inicio = fin;
+			// fin = inicio.filter((n) => n.fechaUltNaveg>);
 			const unoDos = fin.length;
 
 			return {tresDiez, onceTreinta, masDeTreinta, unoDos};
@@ -811,6 +817,36 @@ module.exports = {
 		return;
 	},
 	sumaUnDia: (fecha) => new Date(new Date(fecha).getTime() + unDia).toISOString().slice(0, 10),
+	eliminaRegsSinEntidad_id: async () => {
+		// Variables
+		const entidades = [...variables.entidades.todos, "usuarios"];
+		let idsPorEntidad = {};
+		let aux = [];
+
+		// Obtiene los registros por entidad
+		for (let entidad of entidades) aux.push(baseDeDatos.obtieneTodos(entidad).then((n) => n.map((m) => m.id)));
+		aux = await Promise.all(aux);
+		entidades.forEach((entidad, i) => (idsPorEntidad[entidad] = aux[i])); // obtiene un objeto de ids por entidad
+
+		// Elimina historial
+		for (let tabla of eliminarCuandoSinEntidadId) {
+			// Obtiene los registros de historial, para analizar si corresponde eliminar alguno
+			const regsHistorial = await baseDeDatos.obtieneTodos(tabla);
+
+			// Si no encuentra la "entidad + id", elimina el registro
+			for (let regHistorial of regsHistorial)
+				if (
+					!regHistorial.entidad || // no existe la entidad
+					!entidades.includes(regHistorial.entidad) || // entidad desconocida
+					!regHistorial.entidad_id || // no existe la entidad_id
+					!idsPorEntidad[regHistorial.entidad].includes(regHistorial.entidad_id) // no existe la combinacion de entidad + entidad_id
+				)
+					baseDeDatos.eliminaPorId(tabla, regHistorial.id);
+		}
+
+		// Fin
+		return;
+	},
 };
 
 // Variables

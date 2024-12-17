@@ -1,5 +1,5 @@
 module.exports = (sequelize, dt) => {
-	const alias = "histEdics";
+	const alias = "edicsHistorial";
 	const columns = {
 		entidad: {type: dt.STRING(20)},
 		entidad_id: {type: dt.INTEGER},
@@ -24,7 +24,7 @@ module.exports = (sequelize, dt) => {
 	};
 	const entidad = sequelize.define(alias, columns, config);
 	entidad.associate = (n) => {
-		entidad.belongsTo(n.motivosEdics, {as: "motivo", foreignKey: "motivo_id"});
+		entidad.belongsTo(n.edicsMotivos, {as: "motivo", foreignKey: "motivo_id"});
 		entidad.belongsTo(n.usuarios, {as: "statusSugeridoPor", foreignKey: "sugeridoPor_id"});
 		entidad.belongsTo(n.usuarios, {as: "revisadoPor", foreignKey: "revisadoPor_id"});
 	};

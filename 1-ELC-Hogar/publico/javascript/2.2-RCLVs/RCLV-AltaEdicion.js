@@ -67,7 +67,7 @@ window.addEventListener("load", async () => {
 		leyNombreDefault: document.querySelector("form select.input[name=leyNombre] option"),
 		leyNombreFijo: document.querySelector("form #leyNombre:not(:has(select))"),
 	};
-	v = {
+	let v = {
 		// Campos por sector
 		camposNombre: Array.from(DOM.camposNombre).map((n) => n.name),
 		camposFecha: Array.from(DOM.camposFecha).map((n) => n.name),
@@ -379,8 +379,11 @@ window.addEventListener("load", async () => {
 				// Si no existe el sector, interrumpe la función
 				if (!DOM[sector]) return; // hoyEstamos, leyNombre
 
-				// Opciones
+				// Variables
+				const opcionElegidaValor = document.querySelector("form .input[name=" + sector + "] option:checked").value;
 				let opciones = [];
+
+				// Opciones
 				if (sector == "hoyEstamos_id")
 					opciones = v.hoyEstamos.filter((n) => !n.genero_id || (v.genero_id && n.genero_id == v.genero_id));
 				else if (sector == "leyNombre" && DOM.nombre.value) {
@@ -395,10 +398,6 @@ window.addEventListener("load", async () => {
 					opciones = await fetch(rutas.obtieneLeyNombre + info).then((n) => n.json());
 				}
 
-				// Obtiene la opción seleccionada actualmente
-				DOM.opcionElegida = document.querySelector("form .input[name=" + sector + "] option:checked");
-				const indice = Array.from(DOM[sector]).indexOf(DOM.opcionElegida);
-
 				// Reinicia el select
 				DOM[sector].innerHTML = "";
 				DOM[sector].appendChild(DOM[sector + "Default"]);
@@ -409,14 +408,15 @@ window.addEventListener("load", async () => {
 					const option = document.createElement("option");
 					option.value = typeof opcion == "string" ? opcion : opcion.id;
 					option.innerText = typeof opcion == "string" ? opcion : opcion.nombre;
-					option.selected = true;
 
 					// Agrega la opción
 					DOM[sector].appendChild(option);
 				}
 
 				// Selecciona la opción original
-				if (indice >= DOM[sector].length) return;
+				const opcionesValor = Array.from(DOM[sector]).map((n) => n.value);
+				const indice = opcionesValor.indexOf(opcionElegidaValor);
+				if (indice == -1) return;
 				DOM[sector].selectedIndex = indice;
 
 				// Corrige el ancho
@@ -947,7 +947,6 @@ const linksUrl = ["https://es.wikipedia.org/wiki/", "https://www.google.com/sear
 const googleIMG = {pre: "//google.com/search?q=", post: "&tbm=isch&tbs=isz:l&hl=es-419"};
 let OK = {};
 errores = {};
-let v;
 
 // Funciones
 const FN_aux = {

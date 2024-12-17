@@ -300,8 +300,8 @@ module.exports = {
 					datosCompleto.penalizac = motivo.penalizac;
 				}
 
-				// Guarda los registros en "histEdics"
-				baseDeDatos.agregaRegistro("histEdics", datosCompleto);
+				// Guarda los registros en "edicsHistorial"
+				baseDeDatos.agregaRegistro("edicsHistorial", datosCompleto);
 
 				// Aumenta la cantidad de edicsAprob / edicsRech
 				const aprobRech = valorAprob == valorDesc ? "Aprob" : "Rech";
@@ -581,7 +581,7 @@ module.exports = {
 			const fueProvistoPorElUsuario1 = original.statusRegistro_id == creadoAprob_id && !camposNoPermInput.includes(campo);
 			const fueProvistoPorElUsuario2 = original.statusRegistro_id == aprobado_id;
 			if (fueProvistoPorElUsuario1 || fueProvistoPorElUsuario2) {
-				// 3. Actualiza la tabla de 'histEdics'
+				// 3. Actualiza la tabla de 'edicsHistorial'
 				let datosEdic = {entidad, entidad_id: original.id, campo, titulo};
 				datosEdic = {
 					...datosEdic,
@@ -592,7 +592,7 @@ module.exports = {
 				};
 				// Agrega el motivo del rechazo
 				if (!aprob) {
-					motivo = motivosEdics.find((n) => (motivo_id ? n.id == motivo_id : n.info_erronea));
+					motivo = edicsMotivos.find((n) => (motivo_id ? n.id == motivo_id : n.info_erronea));
 					datosEdic.penalizac = motivo.penalizac;
 					datosEdic.motivo_id = motivo.id;
 				}
@@ -602,7 +602,7 @@ module.exports = {
 				datosEdic.valorDesc = aprob ? mostrarOrig : mostrarEdic;
 				datosEdic.valorAprob = aprob ? mostrarEdic : mostrarOrig;
 				// Agrega el registro
-				baseDeDatos.agregaRegistro("histEdics", datosEdic);
+				baseDeDatos.agregaRegistro("edicsHistorial", datosEdic);
 
 				// 4. Aumenta el campo 'edicsAprob/edicsRech' en el registro del usuario
 				baseDeDatos.aumentaElValorDeUnCampo("usuarios", edicion.editadoPor_id, decision, 1);

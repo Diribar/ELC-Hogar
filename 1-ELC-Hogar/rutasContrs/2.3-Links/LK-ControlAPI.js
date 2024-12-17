@@ -93,7 +93,7 @@ module.exports = {
 		) {
 			await baseDeDatos.eliminaPorId("links", link.id); // Elimina el registro original
 			baseDeDatos.eliminaPorCondicion("statusHistorial", {entidad: "links", entidad_id: link.id}); // elimina el historial de cambios de status
-			baseDeDatos.eliminaPorCondicion("histEdics", {entidad: "links", entidad_id: link.id}); // elimina el historial de cambios de edición
+			baseDeDatos.eliminaPorCondicion("edicsHistorial", {entidad: "links", entidad_id: link.id}); // elimina el historial de cambios de edición
 			link.statusRegistro_id = inactivo_id;
 			await procsFM.accsEnDepsPorCambioDeStatus("links", link);
 			respuesta = {mensaje: "El link fue eliminado con éxito", ocultar: true};

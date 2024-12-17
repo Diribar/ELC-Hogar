@@ -337,9 +337,15 @@ module.exports = {
 			return;
 		},
 		eliminaLinksInactivos: async () => {
+			// Elimina los links
 			const fechaDeCorte = comp.fechaHora.nuevoHorario(-25);
 			const condicion = {statusRegistro_id: inactivo_id, statusSugeridoEn: {[Op.lt]: fechaDeCorte}};
 			await baseDeDatos.eliminaPorCondicion("links", condicion);
+
+			// Elimina registros sin entidad_id
+			await procesos.eliminaRegsSinEntidad_id()
+
+			// Fin
 			return;
 		},
 		ABM_noRevisores: async () => {
@@ -747,36 +753,6 @@ module.exports = {
 			// Fin
 			return;
 		},
-		eliminaRegsSinEntidad_id: async () => {
-			// Variables
-			const entidades = [...variables.entidades.todos, "usuarios"];
-			let idsPorEntidad = {};
-			let aux = [];
-
-			// Obtiene los registros por entidad
-			for (let entidad of entidades) aux.push(baseDeDatos.obtieneTodos(entidad).then((n) => n.map((m) => m.id)));
-			aux = await Promise.all(aux);
-			entidades.forEach((entidad, i) => (idsPorEntidad[entidad] = aux[i])); // obtiene un objeto de ids por entidad
-
-			// Elimina historial
-			for (let tabla of eliminarCuandoSinEntidadId) {
-				// Obtiene los registros de historial, para analizar si corresponde eliminar alguno
-				const regsHistorial = await baseDeDatos.obtieneTodos(tabla);
-
-				// Si no encuentra la "entidad + id", elimina el registro
-				for (let regHistorial of regsHistorial)
-					if (
-						!regHistorial.entidad || // no existe la entidad
-						!entidades.includes(regHistorial.entidad) || // entidad desconocida
-						!regHistorial.entidad_id || // no existe la entidad_id
-						!idsPorEntidad[regHistorial.entidad].includes(regHistorial.entidad_id) // no existe la combinacion de entidad + entidad_id
-					)
-						baseDeDatos.eliminaPorId(tabla, regHistorial.id);
-			}
-
-			// Fin
-			return;
-		},
 		eliminaRegsDelHistStatus: async () => {
 			const condicion = {statusOriginal_id: creadoAprob_id, statusFinal_id: aprobado_id};
 			await baseDeDatos.eliminaPorCondicion("statusHistorial", condicion);
@@ -785,7 +761,7 @@ module.exports = {
 		idDeTablas: async () => {
 			// Variables
 			const tablas = [
-				...["histEdics", "statusHistorial"],
+				...["edicsHistorial", "statusHistorial"],
 				...["prodsEdicion", "rclvsEdicion", "linksEdicion"],
 				...["persWebDiaAcum", "persWebDia", "persBdDiaAcum"],
 				...["prodsAzar", "capturas"],
