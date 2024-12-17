@@ -10,32 +10,32 @@
 		</thead>
 		<tbody>
 			<% for (let navegDia of navegsDia) { %>
-			<tr id="<%= navegDia.cliente_id %>" class="<%- navegDia.cantMovs ? 'resumen' : 'ocultar' %>">
-				<!-- Persona -->
-				<td class="cliente">
-					<% if (navegDia.cantMovs) { %>
-						<!-- Ícono mostrar / ocultar -->
-						<span class="mostrar "><i class="fa-solid fa-circle-plus"></i></span>
+				<tr id="<%= navegDia.cliente_id %>" class="<%- navegDia.cantMovs ? 'resumen' : 'ocultar' %>">
+					<!-- Persona -->
+					<td class="cliente">
+						<% if (navegDia.cantMovs) { %>
+							<!-- Ícono mostrar / ocultar -->
+							<span class="mostrar "><i class="fa-solid fa-circle-plus"></i></span>
 
-						<!-- Cantidad de navegaciones -->
-						<span class="cantNavegs"><%= navegDia.cantMovs %><% if (navegDia.esUser) { %>*<% } %></span>
-					<% } else { %>
-						<!-- Código de cliente -->
-						<span class="codigo"><%= navegDia.persona %></span>
-					<% } %>
-				</td>
+							<!-- Cantidad de navegaciones -->
+							<span class="cantNavegs"><%= navegDia.cantMovs %><% if (navegDia.esUser) { %>*<% } %></span>
+						<% } else { %>
+							<!-- Código de cliente -->
+							<span class="codigo"><%= navegDia.persona %></span>
+						<% } %>
+					</td>
 
-				<!-- Fecha -->
-				<td class="fecha"><%= navegDia.hora %></td>
+					<!-- Fecha -->
+					<td class="fecha"><%= navegDia.hora %></td>
 
-				<!-- Íconos de la ruta -->
-				<td class="ruta">
-					<% if (navegDia.ruta) { %><a href="<%= navegDia.ruta %>"><% } %>
-						<%- navegDia.iconosHTML || navegsDia.distintivo %>
-						<span><%= navegDia.comentario %></span>
-					<% if (navegDia.ruta) { %></a><% } %>
-				</td>
-			</tr>
+					<!-- Íconos de la ruta -->
+					<td class="ruta">
+						<% if (navegDia.ruta) { %><a href="<%= navegDia.ruta %>"><% } %>
+							<%- navegDia.iconosHTML || navegsDia.distintivo %>
+							<span><%= navegDia.comentario %></span>
+						<% if (navegDia.ruta) { %></a><% } %>
+					</td>
+				</tr>
 			<% } %>
 		</tbody>
 	</table>
