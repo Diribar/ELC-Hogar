@@ -1,6 +1,7 @@
 "use strict";
 // Variables
 const procsFM = require("../2.0-Familias/FM-FN-Procesos");
+const procesos = require("./MS-Procesos");
 
 // Controlador
 module.exports = {
@@ -95,5 +96,25 @@ module.exports = {
 
 		// Fin
 		return res.json();
+	},
+	navegsDia:async (req, res) => {
+		// Obtiene las navegsDia
+		let navegsDia = await baseDeDatos.obtieneTodosConOrden("navegsDia", "fecha", true);
+
+		if (navegsDia.length) {
+			// Tareas varias
+			navegsDia = procesos.navegsDia.ordenaPorCliente(navegsDia);
+			navegsDia = procesos.navegsDia.eliminaDuplicados(navegsDia);
+			navegsDia = procesos.navegsDia.modificaDatos(navegsDia);
+
+			// Descarta los registros que no tengan distintivo o iconoArray
+			navegsDia = navegsDia.filter((n) => n.distintivo || n.iconosArray);
+
+			// Agrega un registro resumen por usuario
+			navegsDia = procesos.navegsDia.resumen(navegsDia);
+		}
+
+		// Fin
+		return res.json(navegsDia)
 	},
 };
