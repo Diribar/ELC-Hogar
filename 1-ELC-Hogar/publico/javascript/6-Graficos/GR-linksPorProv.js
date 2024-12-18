@@ -5,7 +5,7 @@ window.addEventListener("load", async () => {
 
 	// Variables
 	const DOM = {grafico: document.querySelector("#zonaDeGraficos #cuadro #grafico")};
-	let ejeX = regsBD.map((n) => n.nombre);
+	const ejeX = regsBD.map((n) => n.nombre);
 	const ejeY = regsBD.map((n) => n.links);
 
 	// Consolida el resultado
