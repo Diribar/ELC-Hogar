@@ -73,12 +73,12 @@ window.addEventListener("load", () => {
 			// Si se está mostrando, oculta todo
 			if (muestra) {
 				DOM.datos.classList.add("ocultar");
-				DOM.iconosDelTitulo.classList.add("ocultar");
+				if (DOM.iconosDelTitulo) DOM.iconosDelTitulo.classList.add("ocultar");
 			}
 			// Si está todo oculto, muestra
 			else {
 				DOM.datos.classList.remove("ocultar");
-				DOM.iconosDelTitulo.classList.remove("ocultar");
+				if (DOM.iconosDelTitulo) DOM.iconosDelTitulo.classList.remove("ocultar");
 			}
 			this.imagenAcostado();
 		},

@@ -6,9 +6,10 @@ body {
 			#tabla {
 				position: absolute; translate: 0 -50%; top: calc(50% + var(--altoTituloPrincipal) / 2);
 				max-height: calc(var(--altoCuerpoMenosTitulo) - 20px); overflow: auto; border-radius: 10px;
+				background-color: var(--gris-claro);
+				#titulos select {margin-right: 5px;}
 				table {
-					border-spacing: 10px 7px; margin: auto;
-					background-color: var(--gris-claro);
+					border-spacing: 10px 7px; margin: auto; min-width: 200px;
 					font-size: 1.2rem;
 					tr {
 						i {font-size: 1rem;}

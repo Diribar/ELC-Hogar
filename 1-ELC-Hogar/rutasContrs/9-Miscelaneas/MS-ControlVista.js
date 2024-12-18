@@ -45,35 +45,36 @@ module.exports = {
 		// Variables
 		const tema = "infoDeGestion";
 		const codigo = "navegsDia";
+		const titulo = "Movimientos del día";
+		let {fecha} = req.query;
+		let fechas = [];
+		let fechaMostrar, cantClientes;
 
-		// Obtiene información de la BD
-		let navegsDia = procesos.navegsDia.obtieneNavegsDia();
-		let usuarios = baseDeDatos.obtieneTodos("usuarios");
-		[navegsDia, usuarios] = await Promise.all([navegsDia, usuarios]);
+		// Obtiene las navegsDia y las procesa
+		let navegsDia = await baseDeDatos.obtieneTodosConOrden("navegsDia", "fecha", true);
+		if (navegsDia.length) {
+			// Tareas varias
+			fechas = procesos.navegsDia.obtieneRangoFechas(navegsDia);
+			[navegsDia, fecha] = procesos.navegsDia.filtraPorFecha(navegsDia, fecha, fechas);
+			navegsDia = procesos.navegsDia.ordenaPorCliente(navegsDia);
+			navegsDia = procesos.navegsDia.eliminaDuplicados(navegsDia);
+			navegsDia = procesos.navegsDia.modificaDatos(navegsDia);
 
-		// Modifica los datos
-		navegsDia.forEach((navegDia, i) => {
-			// Variables
-			const {cliente_id, comentario} = navegDia;
-			const persona = Number(navegDia.cliente_id.slice(1));
-			const esUser = navegDia.cliente_id.startsWith("U");
-			const hora = comp.fechaHora.horarioUTC(navegDia.fecha).split("hs")[0];
-			const {iconosArray, distintivo} = procesos.navegsDia.iconosArray(navegDia.ruta);
-			const iconosHTML = iconosArray ? iconosArray.join(" ") : null;
-			const ruta = navegDia.ruta;
+			// Descarta los registros que no tengan distintivo o iconoArray
+			navegsDia = navegsDia.filter((n) => n.distintivo || n.iconosArray);
 
-			// Fin
-			navegsDia[i] = {cliente_id, persona, esUser, hora, ruta, iconosHTML, iconosArray, distintivo, comentario};
-		});
+			// Agrega un registro resumen por usuario
+			navegsDia = procesos.navegsDia.resumen(navegsDia);
 
-		// Descarta los registros que no tengan distintivo o iconoArray
-		navegsDia = navegsDia.filter((n) => n.distintivo || n.iconosArray);
+			// fechaMostrar
+			fechaMostrar = comp.fechaHora.anoMesDia(fecha);
 
-		// Agrega un registro resumen por usuario
-		navegsDia = procesos.navegsDia.resumen(navegsDia);
+			// Cantidad de clienes
+			cantClientes = navegsDia.filter((n) => n.cantMovs).length;
+		}
 
 		// Fin
-		return res.render("CMP-0Estructura", {tema, codigo, titulo: "Movimientos del día", navegsDia});
+		return res.render("CMP-0Estructura", {tema, codigo, titulo, navegsDia, fechaMostrar, fechas, cantClientes});
 	},
 
 	// Listados

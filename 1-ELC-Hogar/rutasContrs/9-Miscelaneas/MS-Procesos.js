@@ -125,11 +125,49 @@ module.exports = {
 		},
 	},
 	navegsDia: {
-		obtieneNavegsDia: async () => {
-			// Obtiene las navegsDia
-			let navegsDia = await baseDeDatos.obtieneTodosConOrden("navegsDia", "fecha", true);
-			if (!navegsDia.length) return [];
+		obtieneRangoFechas: (navegsDia) => {
+			// Variables
+			const primFecha = comp.fechaHora.anoMesDia(navegsDia[0].fecha);
+			const ultFecha = comp.fechaHora.anoMesDia(navegsDia[navegsDia.length - 1].fecha);
+			let fechas = [primFecha];
+			let fecha = primFecha;
 
+			// Genera las fechas
+			while (fecha > ultFecha) {
+				fecha = new Date(fecha).getTime() - unDia;
+				fecha = comp.fechaHora.anoMesDia(fecha);
+				fechas.push(fecha);
+			}
+
+			// Fin
+			return fechas;
+		},
+		filtraPorFecha: (navegsDia, fecha, fechas) => {
+			// Obtiene la fecha
+			if (fecha) {
+				fecha = new Date(fecha);
+				if (isNaN(fecha)) fecha = null;
+				if (fecha && (fecha > new Date(fechas[0]) || fecha < new Date(fechas[fechas.length - 1])))
+					fecha = new Date(fechas[0]);
+			}
+
+			// Genera una fecha
+			if (!fecha) fecha = new Date(navegsDia[0].fecha);
+
+			// Genera las fechas máxima y mínima
+			const fechaMin = new Date(fecha.setUTCHours(0, 0, 0));
+			const fechaMax = new Date(fechaMin.getTime() + unDia);
+
+			// Filtra por esas fechas
+			navegsDia = navegsDia.filter((n) => n.fecha >= fechaMin && n.fecha < fechaMax);
+
+			// Convierte la fecha a texto
+			fecha = comp.fechaHora.anoMesDia(fecha);
+
+			// Fin
+			return [navegsDia, fecha];
+		},
+		ordenaPorCliente: (navegsDia) => {
 			// Las reordena
 			let respuesta = [];
 			while (navegsDia.length) {
@@ -139,20 +177,46 @@ module.exports = {
 				navegsDia = navegsDia.filter((n) => n.cliente_id != cliente_id);
 			}
 
+			// Fin
+			return respuesta;
+		},
+		eliminaDuplicados: (navegsDia) => {
 			// Elimina duplicados
-			for (let i = respuesta.length - 1; i > 0; i--) {
-				const actual = respuesta[i];
-				const anterior = respuesta[i - 1];
+			for (let i = navegsDia.length - 1; i > 0; i--) {
+				const actual = navegsDia[i];
+				const anterior = navegsDia[i - 1];
 				if (
 					actual.cliente_id == anterior.cliente_id &&
 					actual.ruta == anterior.ruta &&
 					actual.comentario == anterior.comentario
 				)
-					respuesta.splice(i, 1);
+					navegsDia.splice(i, 1);
 			}
 
 			// Fin
-			return respuesta;
+			return navegsDia;
+		},
+		modificaDatos: function (navegsDia) {
+			// Modifica los datos
+			navegsDia.forEach((navegDia, i) => {
+				// Variables
+				const {cliente_id, comentario, ruta} = navegDia;
+				const persona = Number(navegDia.cliente_id.slice(1));
+				const esUser = navegDia.cliente_id.startsWith("U");
+				const anoMesDia = comp.fechaHora.anoMesDia(navegDia.fecha);
+				const hora = comp.fechaHora.horarioUTC(navegDia.fecha).split("hs")[0];
+				const {iconosArray, distintivo} = this.iconosArray(navegDia.ruta);
+				const iconosHTML = iconosArray ? iconosArray.join(" ") : null;
+
+				// Fin
+				navegsDia[i] = {
+					...{cliente_id, persona, esUser, anoMesDia, hora},
+					...{ruta, iconosHTML, iconosArray, distintivo, comentario},
+				};
+			});
+
+			// Fin
+			return navegsDia;
 		},
 		iconosArray: (url) => {
 			// Variables

@@ -6,6 +6,7 @@ window.addEventListener("load", async () => {
 		mostrarOcultarTodas: document.querySelectorAll("tbody tr.resumen td .mostrar i"),
 	};
 
+	// Eventos
 	DOM.mostrarOcultarTodas.forEach((mostrarOcultar, i) => {
 		mostrarOcultar.addEventListener("click", () => {
 			// Obtiene las filas a mostrar/ocultar
@@ -20,4 +21,7 @@ window.addEventListener("load", async () => {
 				: mostrarOcultar.classList.replace("fa-circle-minus", "fa-circle-plus");
 		});
 	});
+
+	// Fin
+	return
 });
