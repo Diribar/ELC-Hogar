@@ -41,7 +41,7 @@ module.exports = {
 	// Gráficos
 	graficos: {
 		// Clientes
-		persBdDia: {
+		clientesBD: {
 			rubro: "clientes",
 			titulo: "Cant. de Clientes en BD",
 			url: "cantidad-de-clientes",
@@ -50,7 +50,7 @@ module.exports = {
 		},
 
 		// Navegaciones
-		persWebDia: {
+		navegsDia: {
 			rubro: "navegantes",
 			titulo: "Navegantes por día",
 			url: "navegantes-por-dia",

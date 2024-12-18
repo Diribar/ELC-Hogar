@@ -2,13 +2,13 @@
 
 let exportar = {
 	// Clientes
-	persBdDia: async (req, res) => {
+	clientesBD: async (req, res) => {
 		const datos = await baseDeDatos.obtieneTodosConOrden("persBdDiaAcum", "fecha");
 		return res.json(datos);
 	},
 
 	// Navegantes
-	persWebDia: async (req, res) => {
+	navegsDia: async (req, res) => {
 		const registros = await baseDeDatos.obtieneTodosConOrden("persWebDiaAcum", "fecha");
 		return res.json(registros);
 	},
