@@ -82,7 +82,6 @@ let exportar = {
 	rclvsRangosSinEfems: async (req, res) => {
 		// Variables
 		let fechas = await obtieneFechasConEfems();
-		console.log(85, fechas);
 
 		// Obtiene rangos entre efemérides
 		fechas.forEach((fecha, i) => {
@@ -144,13 +143,12 @@ const obtieneFechasConEfems = async () => {
 	for (let fecha of fechas) {
 		// Rutina
 		for (let entRCLV of entsRCLV)
-			if (fecha[entRCLV].length) {
+			if (fecha[entRCLV].filter((n) => n.categoria_id != "VPC").length) {
 				fecha.rclvs = true;
 				break;
 			}
 
-		// Elimina info innecesaria
-		for (let prop in fecha) if (!["id", "nombre", "rclvs"].includes(prop)) delete fecha[prop];
+		// Elimina info innecesaria - for (let prop in fecha) if (!["id", "nombre", "rclvs"].includes(prop)) delete fecha[prop];
 	}
 
 	// Conserva solo las fechas con efemérides
