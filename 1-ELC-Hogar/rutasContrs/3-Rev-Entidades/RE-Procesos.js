@@ -548,14 +548,17 @@ module.exports = {
 			const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 			const decision = "edics" + (aprob ? "Aprob" : "Rech");
 			const ahora = comp.fechaHora.ahora();
-			const camposRevisar = variables.camposRevisar[familias].filter((n) => n[entidad] || n[familias]);
-			const campoRevisar = camposRevisar.find((n) => n.nombre == campo);
-			const relacInclude = campoRevisar.relacInclude;
+			const camposRevisar =
+				familias == "links"
+					? variables.camposRevisar[familias]
+					: variables.camposRevisar[familias].filter((n) => n[entidad] || n[familias]);
+			const campoRevisar = camposRevisar.find((n) => n.nombre == campo); // obtiene el objeto del campo a revisar
+			const relacInclude = campoRevisar.relacInclude; // obtiene el método del include
 			const titulo = campoRevisar.titulo;
 			let motivo;
 
 			// Genera la información a actualizar
-			let datos = {
+			const datos = {
 				editadoPor_id: edicion.editadoPor_id,
 				editadoEn: edicion.editadoEn,
 				edicRevisadaPor_id: revId,
@@ -597,8 +600,8 @@ module.exports = {
 					datosEdic.motivo_id = motivo.id;
 				}
 				// Asigna los valores 'aprob' y 'rech'
-				let mostrarOrig = await FN_edicion.valoresParaMostrar(original, relacInclude, campoRevisar);
-				let mostrarEdic = await FN_edicion.valoresParaMostrar(edicion, relacInclude, campoRevisar);
+				const mostrarOrig = await FN_edicion.valoresParaMostrar(original, relacInclude, campoRevisar);
+				const mostrarEdic = await FN_edicion.valoresParaMostrar(edicion, relacInclude, campoRevisar);
 				datosEdic.valorDesc = aprob ? mostrarOrig : mostrarEdic;
 				datosEdic.valorAprob = aprob ? mostrarEdic : mostrarOrig;
 				// Agrega el registro
