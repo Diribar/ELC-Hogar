@@ -81,7 +81,8 @@ let exportar = {
 	// RCLVs
 	rclvsRangosSinEfems: async (req, res) => {
 		// Variables
-		let fechas = await obtieneEfemerides();
+		let fechas = await obtieneFechasConEfems();
+		console.log(85, fechas);
 
 		// Obtiene rangos entre efemérides
 		fechas.forEach((fecha, i) => {
@@ -130,31 +131,26 @@ for (let tema of ["Hora", "Prod", "Ruta"])
 module.exports = exportar;
 
 // Funciones
-const obtieneEfemerides = async () => {
+const obtieneFechasConEfems = async () => {
 	// Variables
-	const entsRCLV = variables.entidades.rclvs.slice(0, -1);
-	const include = ["personajes", "hechos", "temas", "eventos"];
+	const entsRCLV = variables.entidades.rclvs.slice(0, -1); // quita la entidad 'epocaDelAno'
 	let fechas;
 
 	// Obtiene las fechas con sus RCLV
-	fechas = await baseDeDatos.obtieneTodos("fechasDelAno", include);
+	fechas = await baseDeDatos.obtieneTodos("fechasDelAno", entsRCLV);
 	fechas = fechas.filter((n) => n.id < 400);
 
 	// Concentra los distintos RCLVs en el campo RCLV
 	for (let fecha of fechas) {
-		// Variables
-		fecha.rclvs = [];
-
 		// Rutina
 		for (let entRCLV of entsRCLV)
 			if (fecha[entRCLV].length) {
-				const nombres = fecha[entRCLV].map((n) => n.nombre);
-				fecha.rclvs.push(...nombres);
+				fecha.rclvs = true;
+				break;
 			}
 
 		// Elimina info innecesaria
 		for (let prop in fecha) if (!["id", "nombre", "rclvs"].includes(prop)) delete fecha[prop];
-		if (!fecha.rclvs.length) delete fecha.rclvs;
 	}
 
 	// Conserva solo las fechas con efemérides
