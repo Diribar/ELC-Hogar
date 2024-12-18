@@ -51,7 +51,7 @@ module.exports = {
 		let fechaMostrar, cantClientes;
 
 		// Obtiene las navegsDia y las procesa
-		let navegsDia = await baseDeDatos.obtieneTodosConOrden("navegsDia", "fecha", true);
+		let navegsDia = await baseDeDatos.obtieneTodosConOrden("navegsDia", "id", true);
 		if (navegsDia.length) {
 			// Tareas varias
 			fechas = procesos.navegsDia.obtieneRangoFechas(navegsDia);
