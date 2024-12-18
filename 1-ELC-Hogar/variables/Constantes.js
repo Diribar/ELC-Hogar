@@ -214,15 +214,13 @@ module.exports = {
 			["/edicion/p/", "edicionProd", iconos.prod, iconos.edicion],
 			["/calificar/p/", "calificarProd", iconos.prod, iconos.calificar],
 			["/links/mirar/l/", "mirarLink", iconos.prod, "fa-couch"],
+			["/agregar-", "agregarProd", iconos.prod, iconos.agregar],
+			["/abm-links/p/", "abmLinks", iconos.prod, iconos.link],
 
 			// RCLVs
 			["/detalle/r", "detalleRclv", iconos.rclv, iconos.detalle],
 			["/edicion/r", "edicionDeRclv", iconos.rclv, iconos.edicion],
-
-			// Apto Input
-			["/agregar-", "agregarProd", iconos.agregar, iconos.prod],
-			["/agregar/r/", "agregarRclv", iconos.agregar, iconos.rclv],
-			["/abm-links/p/", "abmLinks", iconos.agregar, iconos.link],
+			["/agregar/r/", "agregarRclv", iconos.rclv, iconos.agregar],
 
 			// Familia
 			["/historial", "historial"],
