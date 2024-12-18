@@ -21,7 +21,7 @@ window.addEventListener("load", async () => {
 	const resultado = [["Fecha", ...grupos.map((grupo) => [grupo, {role: "style"}]).flat()]];
 	for (let reg of regsBD) {
 		resultado.push([
-			reg.fecha,
+			(reg.fecha && reg.fecha.slice(-2)) || reg.anoMes,
 			...grupos.map((grupo) => [reg[grupo], "stroke-color: " + coloresBorde[grupo]]).flat(),
 		]);
 	}
