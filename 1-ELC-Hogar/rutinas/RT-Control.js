@@ -487,7 +487,7 @@ module.exports = {
 			await Promise.all(espera);
 
 			// Elimina los registros de días anteriores
-			const fechaEliminar = new Date(new Date(hoy).getTime() - unaDia * 3);
+			const fechaEliminar = new Date(new Date(hoy).getTime() - unDia * 3);
 			condicion = {fecha: {[Op.lt]: fechaEliminar}};
 			await baseDeDatos.eliminaPorCondicion("navegsDia", condicion);
 
