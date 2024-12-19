@@ -75,14 +75,14 @@ module.exports = {
 		const linkVolver =
 			entidad && id
 				? "/" + entidad + "/inactivar-captura/?id=" + id + (origen ? "&origen=" + origen : "")
-				: req.session.urlSinLogin;
+				: req.session.urlSinCaptura;
 
 		// Fin
 		return {
 			mensajes: [
 				"Nos agrada que nuestros usuarios nos aporten información.",
-				"Podrás aportarnos películas, calificarlas, y contactarnos",
-				"Requiere responsabilidad, y por eso te vamos a pedir algunos datos.",
+				"Esa posibilidad requiere responsabilidad.",
+				"Necesitamos algunos datos tuyos, para validar tu identidad en el futuro.",
 				"Para avanzar, elegí el ícono de la flecha hacia la derecha.",
 			],
 			iconos: [
