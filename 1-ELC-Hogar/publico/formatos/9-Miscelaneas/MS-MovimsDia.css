@@ -12,7 +12,7 @@ body {
 					border-spacing: 10px 7px; margin: auto; min-width: 200px;
 					font-size: 1.2rem;
 					tr {
-						i {font-size: 1rem;}
+						i {font-size: 1rem; cursor: pointer;}
 						.cliente, .ruta {text-align: left;}
 						.fecha {text-align: right;}
 						.ruta span {font-style: italic; font-size: 1rem; margin-left: 2px;}
