@@ -74,7 +74,7 @@ module.exports = {
 		const {id, origen} = req.query;
 		const linkVolver =
 			entidad && id
-				? "/" + entidad + "/inactivar-captura/?id=" + id + (origen ? "&origen=" + origen : "")
+				? "/" + entidad + "/inactivar-captura/?id=" + id + "&origen=" + (origen || "DT")
 				: req.session.urlSinCaptura;
 
 		// Fin
