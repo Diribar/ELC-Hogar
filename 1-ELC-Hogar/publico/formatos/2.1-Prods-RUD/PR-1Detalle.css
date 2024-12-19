@@ -15,7 +15,7 @@
 				&.subtCast {background: gold; color: var(--gris-oscuro);}
 				&.otroIdioma {background: var(--rojo-oscuro); color: var(--gris-claro);}
 			}
-			-webkit-appearance: none; -moz-appearance: none; text-indent: 1px; text-overflow: ''; /* para ocultar la flecha */
+			-webkit-appearance: none; -moz-appearance: none; text-indent: 0px; text-overflow: ''; /* para ocultar la flecha */
 		}
 	}
 	:is(button, nav select) {
