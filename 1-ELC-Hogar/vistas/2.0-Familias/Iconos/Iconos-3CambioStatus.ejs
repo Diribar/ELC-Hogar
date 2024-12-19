@@ -23,7 +23,7 @@
 			<% } %>
 			<% if (locals.revisorPERL && [...inacRecup_ids, creado_id].includes(locals.status_id)) { %>
 				<!-- Revisar: Alta, Inactivar, Recuperar -->
-				<% const url = status_id == creado_id ? ("alta/" + siglaFam + "/" + entidad) : status_id == inactivar_id ? "inactivar" : "recuperar" %>
+				<% const url = (status_id == creado_id ? ("alta/" + siglaFam) : status_id == inactivar_id ? "inactivar" : "recuperar") + "/" + entidad %>
 				<a href="<%= '/revision/' + url + '/?id=' + id + origenHTML %>" tabindex="-1">
 					<i class="<%= iconos.faSolid %> fa-user-graduate" tabindex="-1" title="Ir a 'Revisión de <%= url %>'"></i>
 				</a>
