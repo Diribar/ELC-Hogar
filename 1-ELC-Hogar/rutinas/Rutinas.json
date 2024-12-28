@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Jue. 19/dic",
-	"HoraUTC": "1:07",
+	"FechaUTC": "Sáb. 28/dic",
+	"HoraUTC": "16:30",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 16/dic",
-	"HoraSemUTC": "19:16",
-	"semanaUTC": 51,
+	"FechaSemUTC": "Mar. 24/dic",
+	"HoraSemUTC": "0:00",
+	"semanaUTC": 52,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS HORARIAS ---------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario y no maduros",
@@ -51,10 +51,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"17-dic-24": {"leyenda": "Estamos en época de Adviento", "entidad": "epocasDelAno", "id": 25},
-		"18-dic-24": {"leyenda": "Estamos en época de Adviento", "entidad": "epocasDelAno", "id": 25},
-		"19-dic-24": {"leyenda": "Estamos en época de Adviento", "entidad": "epocasDelAno", "id": 25},
-		"20-dic-24": {"leyenda": "Estamos en época de Adviento", "entidad": "epocasDelAno", "id": 25},
-		"21-dic-24": {"leyenda": "Estamos en época de Adviento", "entidad": "epocasDelAno", "id": 25}
+		"26-dic-24": {"leyenda": "Estamos en época de Navidad", "entidad": "epocasDelAno", "id": 26},
+		"27-dic-24": {"leyenda": "Hoy recordamos a san Juan apóstol", "entidad": "personajes", "id": 94},
+		"28-dic-24": {"leyenda": "Estamos en época de Navidad", "entidad": "epocasDelAno", "id": 26},
+		"29-dic-24": {"leyenda": "Hoy recordamos la Sagrada Familia", "entidad": "personajes", "id": 6},
+		"30-dic-24": {"leyenda": "Estamos en época de Navidad", "entidad": "epocasDelAno", "id": 26}
 	}
 }
