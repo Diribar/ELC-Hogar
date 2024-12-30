@@ -18,7 +18,7 @@ module.exports = async (req, res, next) => {
 	if (!informacion && cliente.versionElc != versionElc) {
 		// Variables
 		const permisos = ["permInputs", "autTablEnts", "revisorPERL", "revisorLinks", "revisorEnts", "revisorUs"];
-		let novedades = novedadesELC.filter((n) => n.versionElc > cliente.versionElc && n.versionElc <= versionElc);
+		let novedades = novedadesELC.filter((n) => n.versionElc > cliente.versionElc); // obtiene las novedades
 
 		// Si la novedad especifica un permiso que el cliente no tiene, se la descarta
 		for (let i = novedades.length - 1; i >= 0; i--)
