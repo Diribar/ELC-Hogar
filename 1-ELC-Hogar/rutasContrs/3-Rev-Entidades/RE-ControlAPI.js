@@ -27,12 +27,10 @@ module.exports = {
 		const originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original}; // debe estar antes de que se procese la edición
 
 		// Campos especiales - RCLVs
-		if (familias == "rclvs") {
-			if (campo == "fechaMovil" && originalGuardado.fechaMovil == "0") {
-				await baseDeDatos.actualizaPorId(entidad, entId, {anoFM: null}); // debe serlo por el eventual solapamiento
-				baseDeDatos.actualizaPorId(nombreEdic, edicId, {anoFM: null});
-				reload = !aprob; // si fue rechazado, se debe recargar la vista para quitar 'anoFM'
-			}
+		if (familias == "rclvs" && campo == "fechaMovil" && originalGuardado.fechaMovil == "0") {
+			await baseDeDatos.actualizaPorId(entidad, entId, {anoFM: null}); // debe serlo por el eventual solapamiento
+			baseDeDatos.actualizaPorId(nombreEdic, edicId, {anoFM: null});
+			reload = !aprob; // si fue rechazado, se debe recargar la vista para quitar 'anoFM'
 		}
 
 		// Entre otras tareas, actualiza el original si fue aprobada la sugerencia, y obtiene la edición en su mínima expresión

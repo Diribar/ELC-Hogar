@@ -318,7 +318,7 @@ module.exports = {
 		const camposFamilia = [...variables.camposRevisar[familias]];
 
 		// Obtiene los campos include
-		const camposEntidad = camposFamilia.filter((n) => n[entidad] || n[familias]);
+		const camposEntidad = familias == "links" ? camposFamilia : camposFamilia.filter((n) => n[entidad] || n[familias]);
 		const camposInclude = camposEntidad.filter((n) => n.relacInclude);
 
 		// Genera un array con las asociaciones

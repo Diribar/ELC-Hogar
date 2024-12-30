@@ -31,9 +31,9 @@ window.addEventListener("load", async () => {
 });
 
 // Fórmulas
-let resultado = async (url) => {
-	let ruta = "/revision/api/re-edicion-link/";
-	let respuesta = await fetch(ruta + url).then((n) => n.json());
+const resultado = async (url) => {
+	const ruta = "/revision/api/re-edicion-link/";
+	const respuesta = await fetch(ruta + url).then((n) => n.json());
 
 	// Si el resultado es 'OK', recarga la vista
 	if (respuesta.OK) location.reload();
