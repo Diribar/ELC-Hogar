@@ -984,14 +984,8 @@ const alAzar = {
 	},
 	porAltaUltimosDias: function (v) {
 		// Outputs - Último día
-		v.resultado = v.resultados.find((n) => new Date(n.altaRevisadaEn).getTime() > v.ahora.getTime() - unDia);
+		v.resultado = v.resultados.find((n) => n.altaRevisadaEn.getTime() > v.ahora.getTime() - unDia);
 		this.agregaUnBoton(v);
-
-		// Outputs - Últimos días
-		if (!v.productos.length) {
-			v.resultado = v.resultados.find((n) => new Date(n.altaRevisadaEn).getTime() > v.ahora.getTime() - unDia * 2);
-			this.agregaUnBoton(v);
-		}
 
 		// Fin
 		return;
@@ -1052,7 +1046,7 @@ const alAzar = {
 	},
 	agregaUnBoton: (v) => {
 		// Si se llegó a los cuatro, aborta
-		if (v.contador == v.cantResults || !v.resultado) return v;
+		if (v.contador == v.cantResults || !v.resultado) return;
 
 		// Miscelaneas
 		v.productos.push(v.resultado);

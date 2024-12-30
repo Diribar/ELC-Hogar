@@ -15,7 +15,6 @@ global.entorno = produccion ? "production" : pruebas ? "test" : "development";
 require("dotenv").config();
 global.fetch = require("node-fetch");
 global.anoELC = process.env.anoELC;
-global.versionElc = process.env.versionElc;
 global.carpetaPublica = path.join(__dirname, "publico");
 global.carpetaExterna = path.join(__dirname, "..", process.env.carpetaExterna);
 
@@ -85,6 +84,7 @@ app.set("views", [
 	for (let campo in lecturasDeBd) global[campo] = lecturasDeBd[campo]; // asigna una variable a cada lectura
 	const datosPartics = await varsBD.datosPartics();
 	for (let campo in datosPartics) global[campo] = datosPartics[campo]; // asigna una variable a valores específicos
+	global.versionElc = novedadesELC[novedadesELC.length - 1].versionElc;
 
 	// Variables que requieren 'require'
 	global.variables = require("./variables/Depends.js");

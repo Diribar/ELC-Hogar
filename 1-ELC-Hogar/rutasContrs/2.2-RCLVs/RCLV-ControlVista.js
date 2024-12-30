@@ -81,7 +81,7 @@ module.exports = {
 	},
 	altaEdic: {
 		form: async (req, res) => {
-			// Tema y Código - puede venir de: agregarProd, edicionProd, detalleRCLV, revision...
+			// Variables - puede venir de: agregarProd, edicionProd, detalleRCLV, revision...
 			const {baseUrl, tarea, entidad} = comp.partesDelUrl(req);
 			const tema = baseUrl == "/revision" ? "revisionEnts" : "rclvCrud";
 			let codigo = tarea.slice(1);
@@ -175,9 +175,8 @@ module.exports = {
 				...{cartelGenerico, cartelRechazo, estrucPers: true},
 			});
 		},
-		// Puede venir de agregarProd, edicionProd, detalleRCLV, revision
 		guardar: async (req, res) => {
-			// Variables
+			// Variables - puede venir de agregarProd, edicionProd, detalleRCLV, revision
 			const {tarea, entidad} = comp.partesDelUrl(req);
 			const {id, prodEntidad, prodId, eliminarEdic} = req.query;
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
