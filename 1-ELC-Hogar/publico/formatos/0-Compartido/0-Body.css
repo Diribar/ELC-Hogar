@@ -1,8 +1,5 @@
 /* Formatos */
-html {
-	font-size: 14px; /* debe estar en 'html', porque es de donde donde toma referencia el 'rem' */
-	line-height: 1;
-}
+html {font-size: 14px;} /* debe estar en 'html', porque es de donde donde toma referencia el 'rem' */
 
 /* Colores */
 body {
