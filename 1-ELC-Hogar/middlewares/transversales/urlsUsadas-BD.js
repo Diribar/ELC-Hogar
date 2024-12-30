@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
 
 	// Obtiene el cliente
 	const {cliente_id} = req.session.cliente;
-	if (cliente_id == "U0000000011") return next();
+	if (cliente_id == "U000000001") return next();
 
 	// Obtiene la ruta
 	let {originalUrl: ruta} = req;
@@ -27,7 +27,7 @@ module.exports = (req, res, next) => {
 	prodRclvNombre(ruta).then((nombre) => {
 		if (!comentario && nombre) comentario = nombre.slice(0, 20);
 		let dispCliente = req.headers["user-agent"];
-		for (let metodo in requestsClientes) if (requestsClientes[metodo] == dispCliente) dispCliente = metodo;
+		for (let metodo in requestsClientes) if (requestsClientes[metodo].includes(dispCliente)) dispCliente = metodo;
 		baseDeDatos.agregaRegistro("navegsDia", {cliente_id, ruta, comentario, dispCliente});
 	});
 
