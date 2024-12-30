@@ -23,7 +23,7 @@ window.addEventListener("load", async () => {
 	for (let reg of regsBD) {
 		// Alimenta los datos del gráfico
 		const {fecha, anoMes, logins, usSinLogin, visitas} = reg;
-		const valorX = fecha || anoMes;
+		const valorX = (fecha && fecha.slice(-2)) || anoMes;
 		resultado.push([
 			" " + valorX + " ",
 			...[logins, "stroke-color: " + coloresBorde[0]],
