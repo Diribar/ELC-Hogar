@@ -34,6 +34,7 @@ module.exports = {
 			const entidadEdic = petitFamilias ? petitFamilias + "Edicion" : null;
 			return entidadEdic;
 		},
+		// Campos vinculados
 		campo_id: (entidad) => {
 			const indice = variables.entidades.todos.indexOf(entidad);
 			const campo_id = indice > -1 ? variables.entidades.todos_id[indice] : null;
