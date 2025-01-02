@@ -533,26 +533,26 @@ module.exports = {
 			}
 
 			// Rutina por entidad rclv
-			const entidadesRCLV = variables.entidades.rclvs;
-			for (let entidadRCLV of entidadesRCLV) {
-				const rclv_id = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
+			const entsRclv = variables.entidades.rclvs;
+			for (let entRclv of entsRclv) {
+				const rclv_id = comp.obtieneDesdeEntidad.campo_id(entRclv);
 				if (registro[rclv_id] && registro[rclv_id] != ninguno_id)
 					prodAprob
-						? baseDeDatos.actualizaPorId(entidadRCLV, registro[rclv_id], {prodsAprob: true})
-						: comp.actualizaProdsEnRCLV({entidad: entidadRCLV, id: registro[rclv_id]});
+						? baseDeDatos.actualizaPorId(entRclv, registro[rclv_id], {prodsAprob: true})
+						: comp.actualizaProdsEnRCLV({entidad: entRclv, id: registro[rclv_id]});
 			}
 		}
 
 		// linksEnProds
 		if (familias == "links") {
 			// Obtiene los datos identificatorios del producto
-			const prodEntidad = comp.obtieneDesdeCampo_id.entidadProd(registro);
+			const entProd = comp.obtieneDesdeCampo_id.entProd(registro);
 			const campo_id = comp.obtieneDesdeCampo_id.campo_idProd(registro);
 			const prodId = registro[campo_id];
 
 			// Actualiza el producto
-			await comp.linksEnProd({entidad: prodEntidad, id: prodId});
-			if (prodEntidad == "capitulos") {
+			await comp.linksEnProd({entidad: entProd, id: prodId});
+			if (entProd == "capitulos") {
 				const colID = await baseDeDatos.obtienePorId("capitulos", prodId).then((n) => n.coleccion_id);
 				comp.actualizaCalidadesDeLinkEnCole(colID);
 			}
@@ -667,10 +667,10 @@ module.exports = {
 			// RCLV
 			if (familias == "rclvs") {
 				// Borra el vínculo en las ediciones de producto y las elimina si quedan vacías
-				espera.push(this.vinculoEdicsProds({entidadRCLV: entidad, rclvID: id}));
+				espera.push(this.vinculoEdicsProds({entRclv: entidad, rclvID: id}));
 
 				// Borra el vínculo en los productos y les cambia el status si corresponde
-				espera.push(this.vinculoProds({entidadRCLV: entidad, rclvID: id}));
+				espera.push(this.vinculoProds({entRclv: entidad, rclvID: id}));
 
 				// Borra el vínculo en 'fechasDelAno'
 				if (entidad == "epocasDelAno") {
@@ -683,9 +683,9 @@ module.exports = {
 			await Promise.all(espera);
 			return;
 		},
-		vinculoEdicsProds: async ({entidadRCLV, rclvID}) => {
+		vinculoEdicsProds: async ({entRclv, rclvID}) => {
 			// Variables
-			const rclv_id = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
+			const rclv_id = comp.obtieneDesdeEntidad.campo_id(entRclv);
 
 			// Averigua si existen ediciones
 			const ediciones = await baseDeDatos.obtieneTodosPorCondicion("prodsEdicion", {[rclv_id]: rclvID});
@@ -700,9 +700,9 @@ module.exports = {
 			// Fin
 			return;
 		},
-		vinculoProds: async function ({entidadRCLV, rclvID}) {
+		vinculoProds: async function ({entRclv, rclvID}) {
 			// Variables
-			const campo_idRCLV = comp.obtieneDesdeEntidad.campo_id(entidadRCLV);
+			const campo_idRCLV = comp.obtieneDesdeEntidad.campo_id(entRclv);
 			const entidades = variables.entidades.prods;
 			let prods = [];
 			let espera = [];
@@ -860,15 +860,15 @@ let FN = {
 		for (let edicion of ediciones) {
 			// Variables
 			const campo_idProd = comp.obtieneDesdeCampo_id.campo_idProd(edicion);
-			const prodEntidad = comp.obtieneDesdeCampo_id.entidadProd(edicion);
+			const entProd = comp.obtieneDesdeCampo_id.entProd(edicion);
 			const prodId = edicion[campo_idProd];
 
 			// Obtiene el producto original
-			const original = await baseDeDatos.obtienePorId(prodEntidad, prodId);
+			const original = await baseDeDatos.obtienePorId(entProd, prodId);
 
 			// Elimina la edición si está vacía
 			delete edicion[campo_idRCLV];
-			await comp.puleEdicion(prodEntidad, original, edicion);
+			await comp.puleEdicion(entProd, original, edicion);
 		}
 		// Fin
 		return;
