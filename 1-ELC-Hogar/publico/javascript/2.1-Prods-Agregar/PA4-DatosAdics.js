@@ -294,7 +294,7 @@ window.addEventListener("load", async () => {
 			// Guardar los valores en Session y Cookies
 			funcionesGrales.guardaLosValoresEnSessionCookies();
 
-			// Obtiene la RCLV_entidad
+			// Obtiene la entRclv
 			const entRclv = obtieneEntRclv(link);
 
 			// Para ir a la vista RCLV

@@ -231,19 +231,19 @@ module.exports = {
 	confirma: {
 		verificaQueExistanLosRCLV: async (confirma) => {
 			// Variables
-			const entidadesRCLV = variables.entidades.rclvs;
+			const entsRclv = variables.entidades.rclvs;
 			let existe = true;
 			let epocaOcurrencia_id = null;
 
 			// Revisa que exista el RCLV
-			for (let entidad of entidadesRCLV) {
+			for (let entRclv of entsRclv) {
 				// Variables
-				const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-				const RCLV_id = confirma[campo_id];
+				const campo_id = comp.obtieneDesdeEntidad.campo_id(entRclv);
+				const rclv_id = confirma[campo_id];
 
-				// Averigua si existen los RCLV_id
-				if (RCLV_id && RCLV_id > 2) {
-					const registro = await baseDeDatos.obtienePorId(entidad, RCLV_id);
+				// Averigua si existen los rclv_id y que no sean triviales
+				if (rclv_id && rclv_id > varios_id) {
+					const registro = await baseDeDatos.obtienePorId(entRclv, rclv_id);
 					if (!registro) {
 						existe = false;
 						break;
