@@ -51,8 +51,8 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"30-dic-24": {"leyenda": "Estamos en época de Navidad", "entidad": "epocasDelAno", "id": 26},
 		"31-dic-24": {"leyenda": "Estamos en época de Navidad", "entidad": "epocasDelAno", "id": 26},
-		"01-ene-25": {"leyenda": "Hoy recordamos a santa María, madre de Jesús", "entidad": "personajes", "id": 4}
+		"01-ene-25": {"leyenda": "Hoy recordamos a santa María, madre de Jesús", "entidad": "personajes", "id": 4},
+		"04-ene-25": {"leyenda": "Hoy recordamos a santa Elizabeth Ann Seton", "entidad": "personajes", "id": 130}
 	}
 }
