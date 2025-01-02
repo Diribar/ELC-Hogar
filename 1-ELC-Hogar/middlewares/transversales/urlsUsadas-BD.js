@@ -48,7 +48,7 @@ const prodRclvNombre = async (ruta) => {
 	// Si es un link, averigua el producto
 	if (ruta.startsWith("/links/mirar/l")) {
 		const link = await baseDeDatos.obtienePorId("links", id);
-		entidad = comp.obtieneDesdeCampo_id.entidadProd(link);
+		entidad = comp.obtieneDesdeCampo_id.entProd(link);
 		const campo_id = comp.obtieneDesdeCampo_id.campo_id(link);
 		id = link[campo_id];
 	}

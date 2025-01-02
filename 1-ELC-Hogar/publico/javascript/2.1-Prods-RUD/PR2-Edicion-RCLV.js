@@ -79,7 +79,7 @@ window.addEventListener("load", async () => {
 
 // Variables
 const rutaSession = "/producto/api/pr-envia-a-req-session/";
-const paramsOrigen = "prodEntidad=" + entidad + "&prodId=" + id + "&origen=PED";
+const paramsOrigen = "entProd=" + entidad + "&prodId=" + id + "&origen=PED";
 
 // Funciones
 const entidadesRclv = (link) => {

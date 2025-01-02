@@ -47,7 +47,7 @@ window.addEventListener("load", () => {
 		const sigProd = await fetch(rutaSigProd + url).then((n) => n.json());
 
 		// Redirecciona al sigProd
-		const cola = "&prodEntidad=" + sigProd.entidad + "&prodId=" + sigProd.id + "&origen=RL";
+		const cola = "&entProd=" + sigProd.entidad + "&prodId=" + sigProd.id + "&origen=RL";
 		return sigProd ? (location.href = "/" + entidad + "/inactivar-captura/?id=" + id + cola) : location.reload();
 	};
 
@@ -70,7 +70,7 @@ window.addEventListener("load", () => {
 		const fila = parseInt(indice / 2);
 		icono.addEventListener("click", async () => {
 			// Obtiene los datos
-			let url = "?prodEntidad=" + entidad + "&prodId=" + id;
+			let url = "?entProd=" + entidad + "&prodId=" + id;
 			url += "&url=" + encodeURIComponent(DOM.linksUrl[fila].value);
 			url += "&IN=" + (icono.className.includes("in") ? "SI" : "NO");
 			url += "&aprob=" + (icono.className.includes("aprob") ? "SI" : "NO");
