@@ -156,9 +156,9 @@ module.exports = {
 			.then((links) => links.filter((link) => !rolesRevLinks_ids.includes(link.statusSugeridoPor.rolUsuario_id)))
 			.then((links) =>
 				links.map((link) => {
-					const asociacion = comp.obtieneDesdeCampo_id.asocProd(link);
+					const prodAsoc = comp.obtieneDesdeCampo_id.prodAsoc(link);
 					const entidad = comp.obtieneDesdeCampo_id.entidadProd(link);
-					return {...link[asociacion], entidad, familia: "links"};
+					return {...link[prodAsoc], entidad, familia: "links"};
 				})
 			)
 			.then((prods) => comp.eliminaRepetidos(prods));
@@ -170,9 +170,9 @@ module.exports = {
 			.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
 			.then((edics) =>
 				edics.map((edic) => {
-					const asociacion = comp.obtieneDesdeCampo_id.asocProd(edic);
+					const prodAsoc = comp.obtieneDesdeCampo_id.prodAsoc(edic);
 					const entidad = comp.obtieneDesdeCampo_id.entidadProd(edic);
-					return {...edic[asociacion], entidad, familia: "links"};
+					return {...edic[prodAsoc], entidad, familia: "links"};
 				})
 			)
 			.then((prods) => comp.eliminaRepetidos(prods));
@@ -970,8 +970,8 @@ const FN_mailDeFeedback = {
 			if (!link.id) return {};
 
 			// Obtiene el nombre
-			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
-			nombre = comp.nombresPosibles(link[asocProd]);
+			const prodAsoc = comp.obtieneDesdeCampo_id.prodAsoc(link);
+			nombre = comp.nombresPosibles(link[prodAsoc]);
 
 			// Obtiene el anchor
 			link.href = link.prov.embededPoner ? urlHost + "/links/mirar/l/?id=" + link.id : "//" + link.url;
@@ -1197,15 +1197,15 @@ const FN_navegsDia = {
 		navegsDia = navegsDia.map(async (n) => {
 			// Obtiene el link con su producto
 			const linkId = parseFloat(n.ruta.split("id=")[1]);
-			const prodsAsoc = variables.entidades.prodsAsoc;
+			const {prodsAsoc} = variables.entidades;
 			const link = await baseDeDatos.obtienePorId("links", linkId, prodsAsoc);
 
 			// Obtiene el producto
-			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
-			const producto = link[asocProd];
+			const prodAsoc = comp.obtieneDesdeCampo_id.prodAsoc(link);
+			const producto = link[prodAsoc];
 
 			// Completa la info
-			const datos = {fecha: n.fecha, entidad: asocProd, id: producto.id, nombreCastellano: producto.nombreCastellano};
+			const datos = {fecha: n.fecha, entidad: prodAsoc, id: producto.id, nombreCastellano: producto.nombreCastellano};
 			return datos;
 		});
 		navegsDia = await Promise.all(navegsDia);
