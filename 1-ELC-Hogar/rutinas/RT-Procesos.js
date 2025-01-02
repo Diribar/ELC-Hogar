@@ -129,7 +129,7 @@ module.exports = {
 
 		// edicsPERL
 		entsProdsRclvs = ["prodsEdicion", "rclvsEdicion"];
-		include = {prodsEdicion: variables.entidades.asocsProd, rclvsEdicion: variables.entidades.asocsRclv};
+		include = {prodsEdicion: variables.entidades.prodsAsoc, rclvsEdicion: variables.entidades.rclvsAsoc};
 		let edicsPERL = [];
 		for (let entPERL of entsProdsRclvs) {
 			const registros = baseDeDatos
@@ -150,7 +150,7 @@ module.exports = {
 
 		// regsLinks
 		condicion = {...condicion, prodAprob: true};
-		include = ["statusSugeridoPor", ...variables.entidades.asocsProd];
+		include = ["statusSugeridoPor", ...variables.entidades.prodsAsoc];
 		const regsLinks = await baseDeDatos
 			.obtieneTodosPorCondicion("links", condicion, include)
 			.then((links) => links.filter((link) => !rolesRevLinks_ids.includes(link.statusSugeridoPor.rolUsuario_id)))
@@ -164,7 +164,7 @@ module.exports = {
 			.then((prods) => comp.eliminaRepetidos(prods));
 
 		// edicsLinks
-		include = ["editadoPor", ...variables.entidades.asocsProd];
+		include = ["editadoPor", ...variables.entidades.prodsAsoc];
 		const edicsLinks = await baseDeDatos
 			.obtieneTodos("linksEdicion", include)
 			.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
@@ -184,7 +184,7 @@ module.exports = {
 	// Borra imágenes obsoletas
 	eliminaImagenesSinRegistro: async ({carpeta, familias, entidadEdic, status_id, campoAvatar}) => {
 		// Variables
-		const petitFamilias = comp.obtieneDesdeFamilias.petitFamilias(familias);
+		const petitFamilias = familias == "productos" ? "prods" : familias;
 		let avatars = [];
 
 		// Revisa los avatars que están en las ediciones
@@ -965,7 +965,7 @@ const FN_mailDeFeedback = {
 				(">" + nombre + "</a>");
 		} else {
 			// Obtiene el registro
-			const asocs = variables.entidades.asocsProd;
+			const asocs = variables.entidades.prodsAsoc;
 			const link = await baseDeDatos.obtienePorId("links", reg.entidad_id, [...asocs, "prov"]);
 			if (!link.id) return {};
 
@@ -1197,8 +1197,8 @@ const FN_navegsDia = {
 		navegsDia = navegsDia.map(async (n) => {
 			// Obtiene el link con su producto
 			const linkId = parseFloat(n.ruta.split("id=")[1]);
-			const asocsProd = variables.entidades.asocsProd;
-			const link = await baseDeDatos.obtienePorId("links", linkId, asocsProd);
+			const prodsAsoc = variables.entidades.prodsAsoc;
+			const link = await baseDeDatos.obtienePorId("links", linkId, prodsAsoc);
 
 			// Obtiene el producto
 			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
