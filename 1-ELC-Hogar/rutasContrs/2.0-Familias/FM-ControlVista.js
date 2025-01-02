@@ -61,9 +61,6 @@ module.exports = {
 			// Elimina registros vinculados (no dependientes)
 			for (let tabla of eliminarCuandoSinEntidadId) baseDeDatos.eliminaPorCondicion(tabla, {entidad, entidad_id: id});
 
-			// Actualiza solapamiento y la variable 'fechasDelAno'
-			if (entidad == "epocasDelAno") comp.actualizaSolapam();
-
 			// Variables para la vista
 			const nombre = comp.nombresPosibles(original);
 			const articFinal = comp.obtieneDesdeEntidad.oa(entidad);

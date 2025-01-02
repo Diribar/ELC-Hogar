@@ -133,26 +133,20 @@ module.exports = exportar;
 const obtieneFechasConEfems = async () => {
 	// Variables
 	const entsRCLV = variables.entidades.rclvs.slice(0, -1); // quita la entidad 'epocaDelAno'
-	let fechas;
 
 	// Obtiene las fechas con sus RCLV
-	fechas = await baseDeDatos.obtieneTodos("fechasDelAno", entsRCLV);
-	fechas = fechas.filter((n) => n.id < 400);
+	let fechas = await baseDeDatos.obtieneTodos("fechasDelAno", entsRCLV).then((n) => n.filter((n) => n.id < 400));
 
 	// Concentra los distintos RCLVs en el campo RCLV
-	for (let fecha of fechas) {
-		// Rutina
+	for (let fecha of fechas)
 		for (let entRCLV of entsRCLV)
-			if (fecha[entRCLV].filter((n) => n.categoria_id != "VPC").length) {
-				fecha.rclvs = true;
-				break;
-			}
-
-		// Elimina info innecesaria - for (let prop in fecha) if (!["id", "nombre", "rclvs"].includes(prop)) delete fecha[prop];
-	}
+			if (!fecha.rclvs && fecha[entRCLV].filter((n) => n.categoria_id != "VPC").length) fecha.rclvs = true; // Se fija que tenga un RCLV que pueda figurar como imagen derecha (se excluyen los personajes 'VPC')
 
 	// Conserva solo las fechas con efemérides
 	fechas = fechas.filter((n) => n.rclvs);
+
+	// Elimina info innecesaria
+	fechas = fechas.map((n) => ({id: n.id, nombre: n.nombre, rclvs: n.rclvs}));
 
 	// Fin
 	return fechas;

@@ -650,7 +650,7 @@ module.exports = {
 
 			// Productos
 			if (familias == "productos") {
-				// Elimina las ediciones de link - debe ser 'await', por los links
+				// Elimina las ediciones de link - debe ser 'await', por los links originales
 				await baseDeDatos.eliminaPorCondicion("linksEdicion", condicion);
 
 				// Elimina los registros de las entidades dependientes, comunes a todos los productos
@@ -673,8 +673,10 @@ module.exports = {
 				espera.push(this.vinculoProds({entidadRCLV: entidad, rclvID: id}));
 
 				// Borra el vínculo en 'fechasDelAno'
-				if (entidad == "epocasDelAno")
-					espera.push(baseDeDatos.actualizaPorCondicion("fechasDelAno", {[campo_id]: id}, {[campo_id]: 1}));
+				if (entidad == "epocasDelAno") {
+					await baseDeDatos.actualizaPorCondicion("fechasDelAno", {[campo_id]: id}, {[campo_id]: 1}); // Quita la relación en la fecha del año
+					espera.push(comp.actualizaSolapam()); // Actualiza solapamiento y la variable 'fechasDelAno'
+				}
 			}
 
 			// Fin

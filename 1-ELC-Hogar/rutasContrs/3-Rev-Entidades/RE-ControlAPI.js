@@ -48,7 +48,7 @@ module.exports = {
 		}
 
 		// Actualiza el solapamiento
-		if (entidad == "epocasDelAno" && aprob) comp.actualizaSolapam();
+		if (entidad == "epocasDelAno" && aprob) comp.actualizaSolapam(); // no hace falta el await, porque no se usa en la vista
 
 		// Fin
 		return res.json({OK: true, quedanCampos: !!edicion, statusAprob, reload});

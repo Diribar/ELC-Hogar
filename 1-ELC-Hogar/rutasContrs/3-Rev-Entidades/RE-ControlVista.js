@@ -454,7 +454,7 @@ module.exports = {
 						}
 
 						// Actualiza el solapamiento
-						comp.actualizaSolapam();
+						comp.actualizaSolapam(); // no hace falta el await, porque no se usa en la vista
 					}
 				}
 
@@ -644,7 +644,7 @@ module.exports = {
 			await baseDeDatos.actualizaPorId("epocasDelAno", id, datos);
 
 			// Actualiza el solapamiento
-			comp.actualizaSolapam();
+			comp.actualizaSolapam(); // no hace falta el await, porque no se usa en la vista
 
 			// Fin
 			return res.redirect("/revision/tablero");
