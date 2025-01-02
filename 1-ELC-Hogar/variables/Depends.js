@@ -33,6 +33,7 @@ const camposDA = [
 	{titulo: "Época respecto a Cristo", nombre: "epocaOcurrencia_id", relacInclude: "epocaOcurrencia", tabla: "epocasOcurrencia"},
 ];
 const prods = ["peliculas", "colecciones", "capitulos"];
+const prods_id = ["pelicula_id", "coleccion_id", "capitulo_id"];
 const rclvs = ["personajes", "hechos", "temas", "eventos", "epocasDelAno"];
 const rclvs_id = ["personaje_id", "hecho_id", "tema_id", "evento_id", "epocaDelAno_id"];
 const prodsNombre = ["Película", "Colección", "Capítulo"];
@@ -44,11 +45,13 @@ module.exports = {
 	// Todos
 	entidades: {
 		// Productos y RCLVs
-		...{prods, prodsNombre, asocsProd},
+		...{prods, prodsNombre, asocsProd, prods_id},
 		...{rclvs, rclvsNombre, asocsRclv, rclvs_id},
+		femenino: ["peliculas", "colecciones", "epocasDelAno"],
 
 		// Otros
 		prodsRclvs: [...prods, ...rclvs],
+		prodsRclvs_id: [...prods_id, ...rclvs_id],
 		asocProdsRclvs: [...asocsProd, ...asocsRclv],
 		todos: [...prods, ...rclvs, "links"],
 		todosNombre: [...prodsNombre, ...rclvsNombre, "Link"],
