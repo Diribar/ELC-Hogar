@@ -55,15 +55,15 @@ const FN_resultados = {
 
 		// Contador para Productos
 		if (v.entidad == "productos") DOM.contadorDeProds.innerHTML = total;
-		// Contador para RCLVs
+		// Contador para rclvs
 		else {
 			// Variables
-			const cantRCLVs = total;
+			const cantRclvs = total;
 			let cantProds = 0;
 			if (v.resultados) for (let rclv of v.resultados) cantProds += rclv.productos.length;
 
 			// Actualiza el contador
-			DOM.contadorDeProds.innerHTML = cantRCLVs + " x " + cantProds;
+			DOM.contadorDeProds.innerHTML = cantRclvs + " x " + cantProds;
 		}
 
 		// Muestra el contador
@@ -257,7 +257,7 @@ const botones = {
 		informacion.appendChild(infoInf);
 
 		// Agrega el rclv en infoInf
-		const rclv = FN_auxiliares.obtieneElRCLV(producto);
+		const rclv = FN_auxiliares.obtieneElRclv(producto);
 		if (rclv) infoInf.appendChild(rclv);
 
 		// Fin
@@ -354,7 +354,7 @@ const listados = {
 			}
 			// Agrega fila/s al 'tbody' de rclv
 			else {
-				const filas = this.creaLasFilasDeUnRCLV({rclv: registro, indice});
+				const filas = this.creaLasFilasDeUnRclv({rclv: registro, indice});
 				for (let fila of filas) DOM.tbody.appendChild(fila);
 			}
 		});
@@ -442,25 +442,25 @@ const listados = {
 		// Fin
 		return fila;
 	},
-	creaLasFilasDeUnRCLV: function ({rclv, indice}) {
+	creaLasFilasDeUnRclv: function ({rclv, indice}) {
 		// Variables
 		let filas = [];
 		let celda;
 
-		// Crea la celdaRCLV
-		const celdaRCLV = this.creaUnaCelda.rclv(rclv);
-		celdaRCLV.className = "primeraCol";
+		// Crea la celdaRclv
+		const celdaRclv = this.creaUnaCelda.rclv(rclv);
+		celdaRclv.className = "primeraCol";
 
 		// Crea las filas de los productos
 		rclv.productos.forEach((producto, i) => {
 			// Crea una fila y le asigna su clase
 			const fila = document.createElement("tr");
-			const parImparRCLV = (indice % 2 ? "par" : "impar") + "RCLV";
+			const parImparRclv = (indice % 2 ? "par" : "impar") + "Rclv";
 			const parImparProd = (i % 2 ? "par" : "impar") + "Prod";
-			fila.classList.add(parImparRCLV, parImparProd);
+			fila.classList.add(parImparRclv, parImparProd);
 
-			// Agrega la celdaRCLV a la primera fila
-			if (!i) fila.appendChild(celdaRCLV);
+			// Agrega la celdaRclv a la primera fila
+			if (!i) fila.appendChild(celdaRclv);
 
 			// Crea la celda del producto y se la agrega a la fila
 			celda = this.creaUnaCelda.prod(producto);
@@ -525,9 +525,9 @@ const listados = {
 			let span;
 
 			// Obtiene el rclv
-			const agregarRCLV = v.entidad == "productos";
-			if (agregarRCLV) {
-				let rclv = agregarRCLV ? FN_auxiliares.obtieneElRCLV(producto) : "";
+			const agregarRclv = v.entidad == "productos";
+			if (agregarRclv) {
+				let rclv = agregarRclv ? FN_auxiliares.obtieneElRclv(producto) : "";
 				if (rclv) {
 					rclv = " (" + rclv.innerHTML + ")";
 					span = document.createElement("span");
@@ -695,7 +695,7 @@ const FN_auxiliares = {
 		// Fin
 		return titulo;
 	},
-	obtieneElRCLV: (producto) => {
+	obtieneElRclv: (producto) => {
 		for (let rclvNombre of v.rclvsNombre)
 			if (producto[rclvNombre]) {
 				// Crea el rclv con sus características

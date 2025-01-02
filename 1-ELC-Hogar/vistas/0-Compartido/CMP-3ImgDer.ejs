@@ -1,5 +1,5 @@
 <!-- Muestra la Imagen -->
-<% let ruta, titulo, destino, hoyLocal, RCLV_entidad %>
+<% let ruta, titulo, destino, hoyLocal, entRclv %>
 <div id="imgDerecha">
 	<% if (locals.tema == "institucional") { %>
 		<!-- Imagen Institucional -->
@@ -17,9 +17,9 @@
 		<% const mesLocal = mesesAbrev[ahora.getMonth()] %>
 		<% const anoLocal = ahora.getFullYear().toString().slice(-2) %>
 		<% hoyLocal = diaLocal + "-" + mesLocal + "-" + anoLocal %>
-		<% const RCLV_id = ImagenesDerecha[hoyLocal] && ImagenesDerecha[hoyLocal].id %>
-		<% RCLV_entidad = ImagenesDerecha[hoyLocal] && ImagenesDerecha[hoyLocal].entidad %>
-		<% destino = RCLV_entidad && RCLV_id ? ("/"+ RCLV_entidad + "/detalle/r/?id=" + RCLV_id) : null %>
+		<% const rclv_id = ImagenesDerecha[hoyLocal] && ImagenesDerecha[hoyLocal].id %>
+		<% entRclv = ImagenesDerecha[hoyLocal] && ImagenesDerecha[hoyLocal].entidad %>
+		<% destino = entRclv && rclv_id ? ("/"+ entRclv + "/detalle/r/?id=" + rclv_id) : null %>
 		<% ruta = "/publico/imagenes/ImagenDerecha/" + hoyLocal + ".jpg" %>
 		<% titulo = ImagenesDerecha[hoyLocal].leyenda %>
 	<% } %>
@@ -32,7 +32,7 @@
 		<%- include('PR1-Detalle-2Links') %>
 	<% } %>
 	<% if (locals.tema == "consultas") { %>
-		<%- include("CN-CartelRCLV", {hoyLocal, destino, RCLV_entidad}) %>
+		<%- include("CN-CartelRclv", {hoyLocal, destino, entRclv}) %>
 	<% } %>
 	<% if (locals.iconosMobile) { %>
 		<div id="sectorIconos">

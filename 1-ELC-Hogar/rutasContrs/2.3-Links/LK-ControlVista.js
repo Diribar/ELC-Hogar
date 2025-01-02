@@ -76,7 +76,7 @@ module.exports = {
 		link.url = "//" + link.url.replace(provEmbeded.embededQuitar, provEmbeded.embededPoner);
 
 		// Obtiene el producto 'Original' y 'Editado'
-		const entidad = comp.obtieneDesdeCampo_id.entidadProd(link);
+		const entidad = comp.obtieneDesdeCampo_id.entProd(link);
 		const prodId = link[comp.obtieneDesdeCampo_id.campo_idProd(link)];
 		const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: prodId, usuario_id});
 		const prodComb = {...original, ...edicion, id: prodId}; // obtiene la versión más completa posible del producto

@@ -37,7 +37,7 @@ window.addEventListener("load", async () => {
 		actores: document.querySelector(".inputError input[name=actores"),
 		epocaOcurrencia_id: document.querySelector(".inputError select[name=epocaOcurrencia_id"),
 		flechasDiferencia: document.querySelectorAll(".inputError .fa-arrow-right-long"),
-		linksRCLV: document.querySelectorAll(".inputError i.linkRCLV"),
+		linksRclv: document.querySelectorAll(".inputError i.linkRclv"),
 		iconosAyuda: document.querySelectorAll(".inputError .clickIcono"),
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
 	};
@@ -243,8 +243,8 @@ window.addEventListener("load", async () => {
 			return;
 		},
 		muestraOcultaIconosRclv: () => {
-			// Muestra/oculta los íconos de RCLV
-			for (let link of DOM.linksRCLV)
+			// Muestra/oculta los íconos de rclv
+			for (let link of DOM.linksRclv)
 				estamosEnEdicNueva ? link.classList.remove("inactivo") : link.classList.add("inactivo");
 
 			// Muestra/oculta los íconos de ayuda

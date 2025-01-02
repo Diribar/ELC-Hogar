@@ -363,7 +363,7 @@ module.exports = {
 			const revisores = {perl, links};
 
 			// Rutina por usuario
-			const asunto = {perl: "Productos y RCLVs prioritarios a revisar", links: "Links prioritarios a revisar"};
+			const asunto = {perl: "Productos y Rclvs prioritarios a revisar", links: "Links prioritarios a revisar"};
 			let mailsEnviados = [];
 			for (let tipo of ["perl", "links"])
 				if (regs[tipo].length || edics[tipo].length)
@@ -604,17 +604,17 @@ module.exports = {
 			// Fin
 			return;
 		},
-		revisaCorrigeProdsEnRCLV: async () => {
-			// Obtiene las entidadesRCLV
-			const entidadesRCLV = variables.entidades.rclvs;
+		revisaCorrigeProdsEnRclv: async () => {
+			// Obtiene las entsRclv
+			const entsRclv = variables.entidades.rclvs;
 
 			// Rutina por entidad
-			for (let entidad of entidadesRCLV) {
+			for (let entidad of entsRclv) {
 				// Obtiene los ID de los registros de la entidad
 				const IDs = await baseDeDatos.obtieneTodos(entidad).then((n) => n.map((m) => m.id));
 
 				// Rutina por ID
-				for (let id of IDs) comp.actualizaProdsEnRCLV({entidad, id});
+				for (let id of IDs) comp.actualizaProdsEnRclv({entidad, id});
 			}
 
 			// Fin
@@ -699,8 +699,8 @@ module.exports = {
 
 			const objetos = [
 				// Carpetas REVISAR
-				{carpeta: "2-Productos/Revisar", familias: "productos", entidadEdic: "prodsEdicion"}, // para los prods, sólo pueden estar en 'Edición'
-				{carpeta: "3-RCLVs/Revisar", familias: "rclvs", entidadEdic: "rclvsEdicion", status_id: creado_id},
+				{carpeta: "2-Productos/Revisar", familias: "productos", entEdic: "prodsEdicion"}, // para los prods, sólo pueden estar en 'Edición'
+				{carpeta: "3-RCLVs/Revisar", familias: "rclvs", entEdic: "rclvsEdicion", status_id: creado_id},
 
 				// Carpetas FINAL
 				{carpeta: "2-Productos/Final", familias: "productos", status_id: statusDistintoCreado_id},

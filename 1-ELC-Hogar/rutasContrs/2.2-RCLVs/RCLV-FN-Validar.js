@@ -7,7 +7,7 @@ module.exports = {
 		// Variables
 		datos = {...datos}; // Es fundamental escribir 'datos' así
 
-		// Campos comunes a los 3 RCLV
+		// Campos comunes a los 3 rclvs
 		const errores = {
 			nombre: await this.nombre(datos),
 			fecha: this.fecha(datos),
@@ -38,7 +38,7 @@ module.exports = {
 		// Fin
 		return errores;
 	},
-	// Campos comunes a todos los RCLV
+	// Campos comunes a todos los rclv
 	nombre: async (datos) => {
 		// Variables
 		let mensaje = "";

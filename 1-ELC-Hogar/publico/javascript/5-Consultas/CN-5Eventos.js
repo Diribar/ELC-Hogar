@@ -329,22 +329,22 @@ window.addEventListener("load", async () => {
 
 		// De lo contrario, alterna entre lo que se muestra sobre la 'imagen derecha'
 		else if (["encabezado", "contadorDeProds", "imgDerecha"].includes(nombre)) {
-			// 1. Si se ve 'zonaDisponible', lo oculta y muestra 'cartelRCLV'
+			// 1. Si se ve 'zonaDisponible', lo oculta y muestra 'cartelRclv'
 			if (!DOM.zonaDisponible.className.includes("toggle")) {
 				DOM.zonaDisponible.classList.add("toggle");
-				if (DOM.cartelRCLV) DOM.cartelRCLV.classList.remove("toggle");
+				if (DOM.cartelRclv) DOM.cartelRclv.classList.remove("toggle");
 			}
 
-			// 2. Si se ve 'cartelRCLV', lo oculta
-			else if (DOM.cartelRCLV && !DOM.cartelRCLV.className.includes("toggle")) {
+			// 2. Si se ve 'cartelRclv', lo oculta
+			else if (DOM.cartelRclv && !DOM.cartelRclv.className.includes("toggle")) {
 				DOM.zonaDisponible.classList.add("toggle");
-				if (DOM.cartelRCLV) DOM.cartelRCLV.classList.add("toggle");
+				if (DOM.cartelRclv) DOM.cartelRclv.classList.add("toggle");
 			}
 
 			// 3. Muestra 'zonaDisponible'
 			else {
 				DOM.zonaDisponible.classList.remove("toggle");
-				if (DOM.cartelRCLV) DOM.cartelRCLV.classList.add("toggle");
+				if (DOM.cartelRclv) DOM.cartelRclv.classList.add("toggle");
 			}
 		}
 	});

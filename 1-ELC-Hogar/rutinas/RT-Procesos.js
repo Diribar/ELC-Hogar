@@ -87,11 +87,11 @@ module.exports = {
 		const fechaDelAno = fechasDelAno.find((n) => n.dia == dia && n.mes_id == mes_id);
 		delete fechaDelAno.epocaDelAno; // quita el include
 
-		// Obtiene los RCLV
-		const rclvs = await FN_obtieneImgDerecha.obtieneLosRCLV(fechaDelAno);
+		// Obtiene los rclvs
+		const rclvs = await FN_obtieneImgDerecha.obtieneLosRclv(fechaDelAno);
 
 		// Acciones si se encontraron varios rclvs
-		const resultado = FN_obtieneImgDerecha.reduceRCLVs(rclvs);
+		const resultado = FN_obtieneImgDerecha.reduceRclvs(rclvs);
 
 		// Obtiene los datos de la imgDerecha
 		const imgDerecha = FN_obtieneImgDerecha.datosImgDerecha(resultado);
@@ -157,7 +157,7 @@ module.exports = {
 			.then((links) =>
 				links.map((link) => {
 					const prodAsoc = comp.obtieneDesdeCampo_id.prodAsoc(link);
-					const entidad = comp.obtieneDesdeCampo_id.entidadProd(link);
+					const entidad = comp.obtieneDesdeCampo_id.entProd(link);
 					return {...link[prodAsoc], entidad, familia: "links"};
 				})
 			)
@@ -171,7 +171,7 @@ module.exports = {
 			.then((edics) =>
 				edics.map((edic) => {
 					const prodAsoc = comp.obtieneDesdeCampo_id.prodAsoc(edic);
-					const entidad = comp.obtieneDesdeCampo_id.entidadProd(edic);
+					const entidad = comp.obtieneDesdeCampo_id.entProd(edic);
 					return {...edic[prodAsoc], entidad, familia: "links"};
 				})
 			)
@@ -182,13 +182,13 @@ module.exports = {
 	},
 
 	// Borra imágenes obsoletas
-	eliminaImagenesSinRegistro: async ({carpeta, familias, entidadEdic, status_id, campoAvatar}) => {
+	eliminaImagenesSinRegistro: async ({carpeta, familias, entEdic, status_id, campoAvatar}) => {
 		// Variables
 		const petitFamilias = familias == "productos" ? "prods" : familias;
 		let avatars = [];
 
 		// Revisa los avatars que están en las ediciones
-		if (entidadEdic) avatars.push(FN_eliminaImagenesSinRegistro.nombresDeAvatarEnBD({entidad: entidadEdic}));
+		if (entEdic) avatars.push(FN_eliminaImagenesSinRegistro.nombresDeAvatarEnBD({entidad: entEdic}));
 
 		// Revisa los avatars que están en los originales
 		if (status_id)
@@ -419,10 +419,10 @@ module.exports = {
 				cuerpoMail.perl += formatos.ol(mensajes);
 			}
 
-			// RCLVS - Cambios de Status
+			// Rclvs - Cambios de Status
 			registros = regs.perl.filter((n) => n.familia == "rclv");
 			if (registros.length) {
-				cuerpoMail.perl += formatos.h2("RCLVs");
+				cuerpoMail.perl += formatos.h2("Rclvs");
 				rclvs = true;
 				let mensajes = "";
 				for (let registro of registros) {
@@ -433,10 +433,10 @@ module.exports = {
 				cuerpoMail.perl += formatos.ol(mensajes);
 			}
 
-			// RCLVs - Ediciones
+			// Rclvs - Ediciones
 			registros = edics.perl.filter((n) => n.familia == "rclv");
 			if (registros.length) {
-				if (!rclvs) cuerpoMail.perl += formatos.h2("RCLVs");
+				if (!rclvs) cuerpoMail.perl += formatos.h2("Rclvs");
 				let mensajes = "";
 				for (let registro of registros) {
 					// Variables
@@ -904,7 +904,7 @@ const FN_mailDeFeedback = {
 				? -1
 				: a.entidadNombre > b.entidadNombre
 				? 1
-				: // Nombre del Producto o RCLV, o url del Link
+				: // Nombre del Producto o Rclv, o url del Link
 				a.nombre < b.nombre
 				? -1
 				: a.nombre > b.nombre
@@ -1009,11 +1009,11 @@ const formatos = {
 	},
 };
 const FN_obtieneImgDerecha = {
-	obtieneLosRCLV: async (fechaDelAno) => {
+	obtieneLosRclv: async (fechaDelAno) => {
 		// Variables
 		let rclvs = [];
 
-		// Obtiene los RCLV
+		// Obtiene los rclv
 		for (const entidad of variables.entidades.rclvs) {
 			// Si corresponde, saltea la rutina
 			if (entidad == "epocasDelAno" && fechaDelAno.epocaDelAno_id == ninguno_id) continue;
@@ -1025,7 +1025,7 @@ const FN_obtieneImgDerecha = {
 			entidad != "epocasDelAno" ? (condicion.fechaDelAno_id = fechaDelAno.id) : (condicion.id = fechaDelAno.epocaDelAno_id);
 			if (entidad == "personajes") condicion.categoria_id = "CFC"; // para personajes, sólo los relacionados con nuestra Iglesia
 
-			// Obtiene los RCLVs
+			// Obtiene los rclvs
 			const registros = baseDeDatos
 				.obtieneTodosPorCondicion(entidad, condicion)
 				.then((n) => n.map((m) => ({...m, entidad})));
@@ -1036,7 +1036,7 @@ const FN_obtieneImgDerecha = {
 		// Fin
 		return rclvs;
 	},
-	reduceRCLVs: (rclvs) => {
+	reduceRclvs: (rclvs) => {
 		// Variables
 		let resultado;
 

@@ -99,10 +99,10 @@ module.exports = {
 			icono: iconos.columnas,
 		},
 
-		// RCLVs
+		// Rclvs
 		rclvsRangosSinEfems: {
 			rubro: "rclvs",
-			titulo: "RCLVs - Rangos sin Efemérides",
+			titulo: "Rclvs - Rangos sin Efemérides",
 			url: "rclvs-rangos-sin-efemerides",
 			icono: iconos.columnas,
 		},
@@ -127,7 +127,7 @@ module.exports = {
 	dibujosAnimados: "Dibujos Animados",
 	documental: "Documental",
 
-	// RCLV
+	// Rclv
 	prefijosSanto: ["Domingo", "Tomás", "Tomas", "Tomé", "Toribio"], // ponemos 'Tomas' sin acento, por si alguien lo escribe mal
 	...{ninguno_id: 1, varios_id: 2, sinApMar_id: 2, idsReserv: 10, sinFecha_id: 400},
 	prioridadesRclv: [
@@ -226,7 +226,7 @@ module.exports = {
 			["/agregar-", "agregarProd", iconos.prod, iconos.agregar],
 			["/abm-links/p/", "abmLinks", iconos.prod, iconos.link],
 
-			// RCLVs
+			// Rclvs
 			["/detalle/r", "detalleRclv", iconos.rclv, iconos.detalle],
 			["/edicion/r", "edicionDeRclv", iconos.rclv, iconos.edicion],
 			["/agregar/r/", "agregarRclv", iconos.rclv, iconos.agregar],

@@ -201,9 +201,9 @@ module.exports = {
 			for (let campo of camposChkBtn) datos[campo] = datos[campo] ? 1 : 0;
 			return datos;
 		},
-		quitaCamposRCLV: (datos) => {
-			const camposRCLV = variables.camposDA.filter((n) => n.rclv).map((m) => m.nombre);
-			for (let campo of camposRCLV) if (datos.sinRCLV || datos[campo] == ninguno_id) delete datos[campo];
+		quitaCamposRclv: (datos) => {
+			const camposRclv = variables.camposDA.filter((n) => n.rclv).map((m) => m.nombre);
+			for (let campo of camposRclv) if (datos.sinRclv || datos[campo] == ninguno_id) delete datos[campo];
 			return datos;
 		},
 		valorParaActores: (datos) => {
@@ -229,13 +229,13 @@ module.exports = {
 		},
 	},
 	confirma: {
-		verificaQueExistanLosRCLV: async (confirma) => {
+		verificaQueExistanLosRclv: async (confirma) => {
 			// Variables
 			const entsRclv = variables.entidades.rclvs;
 			let existe = true;
 			let epocaOcurrencia_id = null;
 
-			// Revisa que exista el RCLV
+			// Revisa que exista el rclv
 			for (let entRclv of entsRclv) {
 				// Variables
 				const campo_id = comp.obtieneDesdeEntidad.campo_id(entRclv);

@@ -119,8 +119,10 @@
 				<div id="calendario" class="relative">
 					<table class="absolute">
 						<tbody>
+							<% console.log(122,fechasDelAno.filter(n=>n.id<9)) %>
 							<% for (let fechaDelAno of fechasDelAno) { %>
 								<% if (fechaDelAno.id > 366) {break} %>
+								<% console.log(124, fechaDelAno) %>
 								<tr>
 									<td style="width: 50px;"><%= fechaDelAno.nombre %></td>
 									<td><%= fechaDelAno.epocaDelAno.nombre %></td>

@@ -2,8 +2,8 @@
 // Variables
 const procsFM = require("../2.0-Familias/FM-FN-Procesos");
 const procsProd = require("../2.1-Prods-RUD/PR-FN-Procesos");
-const procsRCLV = require("../2.2-RCLVs/RCLV-FN-Procesos");
-const validaRCLV = require("../2.2-RCLVs/RCLV-FN-Validar");
+const procsRclv = require("../2.2-RCLVs/RCLV-FN-Procesos");
+const validaRclv = require("../2.2-RCLVs/RCLV-FN-Validar");
 const procsLinks = require("../2.3-Links/LK-FN-Procesos");
 const procesos = require("./RE-Procesos");
 
@@ -15,7 +15,7 @@ module.exports = {
 		const codigo = "tableroControl";
 		const revId = req.session.usuario.id;
 
-		// Productos y RCLVs
+		// Productos y Rclvs
 		let prodsRclvs = procesos.tablRevision.obtieneProdsRclvs(); // Correcciones de Motivo y Status
 
 		// Productos y Ediciones
@@ -23,9 +23,9 @@ module.exports = {
 		let prods2 = procesos.tablRevision.obtieneProds2(revId); // Pendientes de aprobar sinEdición,
 		let prods3 = procesos.tablRevision.obtieneProds3(); // películas y colecciones repetidas
 
-		// RCLV
-		let rclvs1 = procesos.tablRevision.obtieneRCLVs1(revId);
-		let rclvs2 = procesos.tablRevision.obtieneRCLVs2(revId);
+		// Rclvs
+		let rclvs1 = procesos.tablRevision.obtieneRclvs1(revId);
+		let rclvs2 = procesos.tablRevision.obtieneRclvs2(revId);
 
 		// Links
 		let sigProd = procesos.tablRevision.obtieneSigProd_Links(revId);
@@ -43,7 +43,7 @@ module.exports = {
 		AL.sort((a, b) => b.fechaRef - a.fechaRef);
 		prods.AL = AL;
 
-		// Consolida y procesa los productos y RCLVs
+		// Consolida y procesa los productos y rclvs
 		prodsRclvs = procesos.procesaCampos.prodsRclvs(prodsRclvs);
 		prods = procesos.procesaCampos.prods(prods);
 		rclvs = procesos.procesaCampos.rclvs(rclvs);
@@ -106,10 +106,10 @@ module.exports = {
 
 			// Producto o Rclv
 			if (esLink) {
-				const prodEntidad = comp.obtieneDesdeCampo_id.entidadProd(registro);
+				const entProd = comp.obtieneDesdeCampo_id.entProd(registro);
 				const campo_idProd = comp.obtieneDesdeCampo_id.campo_idProd(registro);
 				const prodId = registro[campo_idProd];
-				const producto = await baseDeDatos.obtienePorId(prodEntidad, prodId);
+				const producto = await baseDeDatos.obtienePorId(entProd, prodId);
 				registro.nombreCastellano = "Link - " + producto.nombreCastellano;
 			}
 
@@ -176,7 +176,7 @@ module.exports = {
 				...{entidad, id, familia, status_id, statusCreado},
 				...{entidadNombre, registro: original, links},
 				...{imgDerPers, tituloImgDerPers: original.nombreCastellano},
-				...{bloqueIzq, bloqueDer, RCLVs: [], asocs},
+				...{bloqueIzq, bloqueDer, rclvs: [], asocs},
 				...{urlActual: req.session.urlActual, cartelRechazo: true},
 			});
 		},
@@ -191,7 +191,7 @@ module.exports = {
 			const {id, edicId} = req.query;
 			const origen = req.query.origen ? req.query.origen : "TE";
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
-			const edicEntidad = comp.obtieneDesdeEntidad.entidadEdic(entidad);
+			const entEdic = comp.obtieneDesdeEntidad.entEdic(entidad);
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 			const delLa = comp.obtieneDesdeEntidad.delLa(entidad);
 
@@ -204,7 +204,7 @@ module.exports = {
 
 			// Obtiene los registros
 			const original = await baseDeDatos.obtienePorId(entidad, id, includeOrig);
-			let edicion = await baseDeDatos.obtienePorId(edicEntidad, edicId, includeEdic);
+			let edicion = await baseDeDatos.obtienePorId(entEdic, edicId, includeEdic);
 
 			// Si el avatar está presente en la edición, muestra esa vista
 			if (edicion.avatar) {
@@ -248,8 +248,8 @@ module.exports = {
 
 				// Actualiza el registro 'edición'
 				edicion.avatarUrl = null;
-				const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
-				baseDeDatos.actualizaPorId(entidadEdic, edicId, {avatar: null, avatarUrl: null});
+				const entEdic = comp.obtieneDesdeEntidad.entEdic(entidad);
+				baseDeDatos.actualizaPorId(entEdic, edicId, {avatar: null, avatarUrl: null});
 			}
 
 			// Más variables
@@ -265,7 +265,7 @@ module.exports = {
 			edicion = await comp.puleEdicion(entidad, original, edicion);
 
 			// Fin, si no quedan campos
-			if (!edicion) return res.render("CMP-0Estructura", {informacion: procesos.cartelNoQuedanCampos});
+			if (!edicion) return res.render("CMP-0Estructura", {informacion: procesos.edicion.cartelNoQuedanCampos});
 
 			// Obtiene los ingresos y reemplazos
 			const [ingresos, reemplazos] = await procesos.edicion.ingrReempl(original, edicion);
@@ -329,7 +329,7 @@ module.exports = {
 					: null;
 			const linkSigProd = sigProd
 				? "/".concat(entidad, "/inactivar-captura/?id=", id) +
-				  "&prodEntidad=".concat(sigProd.entidad, "&prodId=", sigProd.id, "&origen=RL")
+				  "&entProd=".concat(sigProd.entidad, "&prodId=", sigProd.id, "&origen=RL")
 				: null;
 
 			// Información para la vista
@@ -401,7 +401,7 @@ module.exports = {
 			datos = {entidad}; // limpia la variable 'datos'
 			let destino;
 
-			// Acciones si es un RCLV
+			// Acciones si es un rclv
 			if (rclv) {
 				// Variables
 				datos.avatar = req.file ? req.file.filename : original.avatar;
@@ -415,7 +415,7 @@ module.exports = {
 					if (req.file) datos.tamano = req.file.size;
 
 					// Averigua si hay errores de validación y toma acciones
-					const errores = await validaRCLV.consolidado(datos);
+					const errores = await validaRclv.consolidado(datos);
 					if (errores.hay) {
 						// Guarda session y cookie
 						req.session[entidad] = datos;
@@ -429,7 +429,7 @@ module.exports = {
 					}
 
 					// Procesa los datos del Data Entry
-					datos = procsRCLV.altaEdicGuardar.procesaLosDatos(datos);
+					datos = procsRclv.altaEdicGuardar.procesaLosDatos(datos);
 
 					// Acciones si recibimos un avatar
 					if (req.file) {
@@ -465,10 +465,10 @@ module.exports = {
 					if (original.avatar) comp.gestionArchivos.mueveImagen(original.avatar, "3-RCLVs/Revisar", "3-RCLVs/Final");
 				}
 
-				// Acciones si es un RCLV inactivo
+				// Acciones si es un rclv inactivo
 				if (statusFinal_id == inactivo_id) {
 					// Borra el vínculo en las ediciones de producto y las elimina si quedan vacías
-					procsFM.elimina.vinculoEdicsProds({entidadRCLV: entidad, rclvID: id});
+					procsFM.elimina.vinculoEdicsProds({entRclv: entidad, rclvID: id});
 
 					// Sus productos asociados:
 					// Dejan de estar vinculados
@@ -536,7 +536,7 @@ module.exports = {
 			// CONSECUENCIAS - Si es un capítulo, actualiza el status de link de su colección
 			if (entidad == "capitulos") comp.actualizaCalidadesDeLinkEnCole(original.coleccion_id);
 
-			// CONSECUENCIAS - Si es un RCLV y es un alta, actualiza la tabla 'edicsHistorial' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
+			// CONSECUENCIAS - Si es un rclv y es un alta, actualiza la tabla 'edicsHistorial' y esos mismos campos en el usuario --> debe estar después de que se grabó el original
 			if (rclv && codigo == "alta") procesos.rclv.edicAprobRech(entidad, original, revId);
 
 			// CONSECUENCIAS - statusHistorial: elimina el registro con statusFinal 'inactivar_id' o 'recuperar_id'
@@ -583,17 +583,17 @@ module.exports = {
 			// Variables
 			const entidad = comp.obtieneEntidadDesdeUrl(req);
 			const {id, edicId, rechazar, motivo_id} = {...req.query, ...req.body};
-			const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
+			const entEdic = comp.obtieneDesdeEntidad.entEdic(entidad);
 			const revId = req.session.usuario.id;
 			const original = await baseDeDatos.obtienePorId(entidad, id);
 			const campo = "avatar";
 			const aprob = !rechazar;
-			let edicion = await baseDeDatos.obtienePorId(entidadEdic, edicId);
+			let edicion = await baseDeDatos.obtienePorId(entEdic, edicId);
 			const originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original};
 
 			// 1. PROCESOS PARTICULARES PARA AVATAR
 			await procesos.edicion.procsParticsAvatar({entidad, original, edicion, aprob});
-			if (entidadEdic == "prodsEdicion") delete edicion.avatarUrl;
+			if (entEdic == "prodsEdicion") delete edicion.avatarUrl;
 
 			// 2. PROCESOS COMUNES A TODOS LOS CAMPOS
 			edicion = await procesos.edicion.edicAprobRech({
@@ -608,7 +608,7 @@ module.exports = {
 			});
 
 			// 3. Acciones si se terminó de revisar la edición de un producto
-			if (!edicion && entidadEdic == "prodsEdicion")
+			if (!edicion && entEdic == "prodsEdicion")
 				await procsProd.accionesPorCambioDeStatus({entidad, registro: originalGuardado});
 
 			// Fin
@@ -623,7 +623,7 @@ module.exports = {
 			let datos = {...req.body, entidad}; // la 'entidad' hace falta para una función posterior
 
 			// Averigua si hay errores de validación y toma acciones
-			const errores = await validaRCLV.fecha(datos);
+			const errores = await validaRclv.fecha(datos);
 			if (errores) {
 				// Guarda session y cookie
 				req.session.epocasDelAno = datos;
@@ -634,7 +634,7 @@ module.exports = {
 			}
 
 			// Procesa los datos del Data Entry
-			datos = procsRCLV.altaEdicGuardar.procesaLosDatos(datos);
+			datos = procsRclv.altaEdicGuardar.procesaLosDatos(datos);
 			for (let prop in datos) if (datos[prop] === null) delete datos[prop];
 
 			// Actualiza el registro original

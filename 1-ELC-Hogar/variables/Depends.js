@@ -44,7 +44,7 @@ const rclvs_id = ["personaje_id", "hecho_id", "tema_id", "evento_id", "epocaDelA
 module.exports = {
 	// Todos
 	entidades: {
-		// Productos y RCLVs
+		// Productos y Rclvs
 		...{prods, prodsNombre, prodsAsoc, prods_id},
 		...{rclvs, rclvsNombre, rclvsAsoc, rclvs_id},
 		prodsRclvs: [...prods, ...rclvs],
@@ -192,7 +192,7 @@ module.exports = {
 	camposDA: [...camposDA],
 	camposDA_conValores: async (usuario_id) => {
 		// Variables
-		const registrosRCLV = await regsRCLV(usuario_id);
+		const regsRclv = await obtieneRegsRclv(usuario_id);
 		const mensajes = {
 			publico: [
 				"Mayores solamente: escenas que pueden dañar la sensibilidad de un menor de hasta 12-14 años.",
@@ -215,11 +215,11 @@ module.exports = {
 			{nombre: "tipoActuacion_id", valores: tiposActuacion},
 			{nombre: "publico_id", valores: publicos, mensajes: mensajes.publico},
 			{nombre: "epocaOcurrencia_id", valores: epocasOcurrencia, mensajes: mensajes.epocaOcurrencia},
-			{nombre: "personaje_id", valores: registrosRCLV.personajes, mensajes: mensajes.personaje, link: "personajes"},
-			{nombre: "hecho_id", valores: registrosRCLV.hechos, mensajes: mensajes.hecho, link: "hechos"},
-			{nombre: "tema_id", valores: registrosRCLV.temas, mensajes: mensajes.tema, link: "temas"},
-			{nombre: "evento_id", valores: registrosRCLV.eventos, mensajes: mensajes.evento, link: "eventos"},
-			{nombre: "epocaDelAno_id", valores: registrosRCLV.epocasDelAno, mensajes: mensajes.epocaDelAno, link: "epocasDelAno"},
+			{nombre: "personaje_id", valores: regsRclv.personajes, mensajes: mensajes.personaje, link: "personajes"},
+			{nombre: "hecho_id", valores: regsRclv.hechos, mensajes: mensajes.hecho, link: "hechos"},
+			{nombre: "tema_id", valores: regsRclv.temas, mensajes: mensajes.tema, link: "temas"},
+			{nombre: "evento_id", valores: regsRclv.eventos, mensajes: mensajes.evento, link: "eventos"},
+			{nombre: "epocaDelAno_id", valores: regsRclv.epocasDelAno, mensajes: mensajes.epocaDelAno, link: "epocasDelAno"},
 		];
 		for (let campo of campos) {
 			const indice = resultado.findIndex((n) => n.nombre == campo.nombre);
@@ -379,7 +379,7 @@ module.exports = {
 };
 
 // Funciones
-const regsRCLV = async (usuario_id) => {
+const obtieneRegsRclv = async (usuario_id) => {
 	const condicion = {
 		[Op.or]: {
 			statusRegistro_id: aprobado_id,
@@ -387,9 +387,9 @@ const regsRCLV = async (usuario_id) => {
 		},
 	};
 	let valores = [];
-	let registrosRCLV = {};
+	let regsRclv = {};
 
-	// Obtiene los registrosRCLV
+	// Obtiene los regsRclv
 	for (let entRclv of rclvs) valores.push(baseDeDatos.obtieneTodosPorCondicion(entRclv, condicion, "statusRegistro"));
 	valores = await Promise.all(valores);
 
@@ -398,9 +398,9 @@ const regsRCLV = async (usuario_id) => {
 		// Ordena los registros por nombre
 		valores[i].sort((a, b) => (a.nombre.toLowerCase() < b.nombre.toLowerCase() ? -1 : 1));
 		// Fin
-		registrosRCLV[entRclv] = valores[i];
+		regsRclv[entRclv] = valores[i];
 	});
 
 	// Fin
-	return registrosRCLV;
+	return regsRclv;
 };

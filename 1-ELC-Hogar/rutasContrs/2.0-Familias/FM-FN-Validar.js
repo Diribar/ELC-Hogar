@@ -150,10 +150,10 @@ module.exports = {
 		for (let campo of camposPosibles)
 			if (campos.includes(campo)) errores[campo] = !datos[campo] && datos[campo] !== false ? inputVacio : ""; // Se usa 'false', para distinguir cuando el valor esté contestado de cuando no
 
-		// RCLVs
-		const rclvs_id = [...variables.entidades.rclvs_id, "sinRCLV"];
+		// Rclv
+		const rclvs_id = [...variables.entidades.rclvs_id, "sinRclv"];
 		if (campos.some((n) => rclvs_id.includes(n)))
-			errores.RCLV = rclvs_id.every((n) => !datos[n] || datos[n] == ninguno_id) ? rclvSinElegir : "";
+			errores.rclv = rclvs_id.every((n) => !datos[n] || datos[n] == ninguno_id) ? rclvSinElegir : "";
 
 		// Consolida la información
 		errores.hay = Object.values(errores).some((n) => !!n);

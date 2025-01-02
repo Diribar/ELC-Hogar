@@ -120,7 +120,7 @@ window.addEventListener("load", async () => {
 	if (epocasDelAno) {
 		DOM.dias_del_ano_Fila = document.querySelectorAll("form #calendario tr");
 		DOM.dias_del_ano_Dia = document.querySelectorAll("form #calendario tr td:first-child");
-		DOM.dias_del_ano_RCLV = document.querySelectorAll("form #calendario tr td:nth-child(2)");
+		DOM.dias_del_ano_Rclv = document.querySelectorAll("form #calendario tr td:nth-child(2)");
 		DOM.marcoCalendario = document.querySelector("form #calendario");
 		DOM.tablaCalendario = document.querySelector("form #calendario table");
 		v.fechasDelAno = Array.from(DOM.dias_del_ano_Dia).map((n) => n.innerHTML);
@@ -261,8 +261,8 @@ window.addEventListener("load", async () => {
 
 					// Actualiza el color de todos los días del año
 					for (let i = 0; i < DOM.dias_del_ano_Fila.length; i++) {
-						let ninguno = DOM.dias_del_ano_RCLV[i].innerHTML == "Ninguno";
-						let siMismo = DOM.dias_del_ano_RCLV[i].innerHTML == DOM.nombre.value;
+						let ninguno = DOM.dias_del_ano_Rclv[i].innerHTML == "Ninguno";
+						let siMismo = DOM.dias_del_ano_Rclv[i].innerHTML == DOM.nombre.value;
 						let color =
 							(idInicio < idFin && (i < idInicio || i > idFin)) || // el evento ocurre todo en el mismo año, e 'i' está fuera del rango
 							(idFin < i && i < idInicio) // ocurre en más de un año, e 'i' está fuera del rango

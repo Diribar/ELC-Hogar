@@ -16,13 +16,13 @@ window.addEventListener("load", async () => {
 		radioNO: document.querySelectorAll(".inputError .radioNO"),
 
 		// Rclv
-		checkRCLV: document.querySelector("#segundaColumna #checkBox input"),
-		selectsRCLV: document.querySelector("#segundaColumna #selectsRCLV"),
-		errorRCLV: document.querySelector(".inputError #errorRCLV"),
-		inputsRCLV: document.querySelectorAll("#segundaColumna .inputError .input"),
+		checkRclv: document.querySelector("#segundaColumna #checkBox input"),
+		selectsRclv: document.querySelector("#segundaColumna #selectsRclv"),
+		errorRclv: document.querySelector(".inputError #errorRclv"),
+		inputsRclv: document.querySelectorAll("#segundaColumna .inputError .input"),
 
 		// Rclv - Sectores
-		sectorRCLV: document.querySelector("#segundaColumna"),
+		sectorRclv: document.querySelector("#segundaColumna"),
 		sectorPers: document.querySelector("#segundaColumna #personaje_id"),
 		sectorHecho: document.querySelector("#segundaColumna #hecho_id"),
 		sectorValor: document.querySelector("#segundaColumna #tema_id"),
@@ -35,12 +35,12 @@ window.addEventListener("load", async () => {
 
 		// Rclv - Varios
 		ayudaRclv: document.querySelectorAll("#segundaColumna .ayudaRclv"),
-		iconosOK_RCLV: document.querySelectorAll("#segundaColumna .inputError .fa-circle-check"),
-		iconosError_RCLV: document.querySelectorAll("#segundaColumna .inputError .fa-circle-xmark"),
+		iconosOK_Rclv: document.querySelectorAll("#segundaColumna .inputError .fa-circle-check"),
+		iconosError_Rclv: document.querySelectorAll("#segundaColumna .inputError .fa-circle-xmark"),
 
 		// Rclv - Links
-		linksRCLV_Alta: document.querySelectorAll("#segundaColumna .inputError .linkRclv.alta"),
-		linksRCLV_Edic: document.querySelectorAll("#segundaColumna .inputError .linkRclv.edicion"),
+		linksRclv_Alta: document.querySelectorAll("#segundaColumna .inputError .linkRclv.alta"),
+		linksRclv_Edic: document.querySelectorAll("#segundaColumna .inputError .linkRclv.edicion"),
 
 		// OK/Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
@@ -65,16 +65,16 @@ window.addEventListener("load", async () => {
 			DOM.radioSI.forEach((radioSI, i) => {
 				let respuesta = radioSI.checked ? "1" : DOM.radioNO[i].checked ? "0" : "";
 				datosUrl += radioSI.name + "=" + respuesta + "&";
-				if (radioSI.name == "bhr" && respuesta) DOM.errorRCLV.classList.remove("ocultar");
+				if (radioSI.name == "bhr" && respuesta) DOM.errorRclv.classList.remove("ocultar");
 			});
 
 			// Busca el checkbox de rclv
-			if (DOM.checkRCLV.checked) datosUrl += "sinRCLV=on&";
+			if (DOM.checkRclv.checked) datosUrl += "sinRclv=on&";
 
 			//Busca todos los valores 'input'
 			DOM.inputs.forEach((input, i) => {
 				// Particularidad para rclv
-				if (camposRCLV.includes(input.name) && DOM.checkRCLV.checked) return;
+				if (camposRclv.includes(input.name) && DOM.checkRclv.checked) return;
 
 				// Agrega el campo y el valor
 				datosUrl += input.name + "=" + encodeURIComponent(input.value) + "&";
@@ -119,7 +119,7 @@ window.addEventListener("load", async () => {
 			await this.muestraLosErrores(datosUrl, mostrarIconoError);
 			this.actualizaBotonSubmit();
 			// Impactos en rclv
-			for (let metodo in impactoVisualEnRCLV) impactoVisualEnRCLV[metodo]();
+			for (let metodo in impactoVisualEnRclv) impactoVisualEnRclv[metodo]();
 			// Fin
 			return;
 		},
@@ -128,16 +128,16 @@ window.addEventListener("load", async () => {
 			if (DOM.submit.className.includes("inactivo")) this.statusInicial(true);
 			else DOM.form.submit();
 		},
-		urlRCLV: (campo) => {
+		urlRclv: (campo) => {
 			// Variables
 			let bhr = DOM.bhrSI.checked ? "1" : DOM.bhrNO.checked ? "0" : "";
-			let checkRCLV = DOM.checkRCLV.checked;
+			let checkRclv = DOM.checkRclv.checked;
 
 			// Agrega el valor del campo 'sin' o de los demás campos
 			let url = "";
-			checkRCLV
+			checkRclv
 				? (url += campo + "=on" + "&")
-				: camposRCLV.forEach((n, i) => (url += n + "=" + DOM.inputsRCLV[i].value + "&"));
+				: camposRclv.forEach((n, i) => (url += n + "=" + DOM.inputsRclv[i].value + "&"));
 
 			// Agrega 'ocurrió'
 			if (bhr) url += "bhr=" + bhr;
@@ -154,11 +154,11 @@ window.addEventListener("load", async () => {
 		},
 	};
 	// Rclv
-	const impactoVisualEnRCLV = {
+	const impactoVisualEnRclv = {
 		cfc: () => {
 			// Variables
 			const categoria = cfcSI.checked ? "CFC" : cfcNO.checked ? "VPC" : "";
-			if (!categoria) return DOM.sectorRCLV.classList.add("ocultaCfc"); // si no hay respuesta, agrega el 'oculta' de rclvs
+			if (!categoria) return DOM.sectorRclv.classList.add("ocultaCfc"); // si no hay respuesta, agrega el 'oculta' de rclvs
 
 			// Personajes - Borra todas las opciones y agrega las que van
 			DOM.selectPers.innerHTML = "";
@@ -181,7 +181,7 @@ window.addEventListener("load", async () => {
 			});
 
 			// Quita el 'oculta' de rclvs
-			DOM.sectorRCLV.classList.remove("ocultaCfc");
+			DOM.sectorRclv.classList.remove("ocultaCfc");
 			// Fin
 			return;
 		},
@@ -191,7 +191,7 @@ window.addEventListener("load", async () => {
 			const bhrNO = DOM.bhrNO.checked && !DOM.bhrSI.checked;
 
 			// Oculta o muestra el sector de rclvs
-			bhrSI || bhrNO ? DOM.sectorRCLV.classList.remove("ocultaOcurrio") : DOM.sectorRCLV.classList.add("ocultaOcurrio");
+			bhrSI || bhrNO ? DOM.sectorRclv.classList.remove("ocultaOcurrio") : DOM.sectorRclv.classList.add("ocultaOcurrio");
 
 			// Acciones si ocurrió
 			if (bhrSI) {
@@ -215,18 +215,18 @@ window.addEventListener("load", async () => {
 				DOM.selectHecho.value = 1;
 			}
 		},
-		sinRCLV: () => {
+		sinRclv: () => {
 			// Muestra u oculta el sector rclv
-			DOM.checkRCLV.checked ? DOM.selectsRCLV.classList.add("ocultar") : DOM.selectsRCLV.classList.remove("ocultar");
+			DOM.checkRclv.checked ? DOM.selectsRclv.classList.add("ocultar") : DOM.selectsRclv.classList.remove("ocultar");
 			// Fin
 			return;
 		},
 		edicJesusNinguno: () => {
 			// Acciones si el valor es 'Ninguno' o 'Jesús'
-			DOM.inputsRCLV.forEach((inputRCLV, indice) => {
-				inputRCLV.value == "1" || (indice == 0 && inputRCLV.value == "11")
-					? DOM.linksRCLV_Edic[indice].classList.add("ocultar")
-					: DOM.linksRCLV_Edic[indice].classList.remove("ocultar");
+			DOM.inputsRclv.forEach((inputRclv, indice) => {
+				inputRclv.value == "1" || (indice == 0 && inputRclv.value == "11")
+					? DOM.linksRclv_Edic[indice].classList.add("ocultar")
+					: DOM.linksRclv_Edic[indice].classList.remove("ocultar");
 			});
 			// Fin
 			return;
@@ -242,8 +242,8 @@ window.addEventListener("load", async () => {
 		let datosUrl = "";
 
 		// Particularidades
-		// 1. Para campos 'cfc', 'ocurrió', 'sinRCLV'
-		if (campo == "cfc" || campo == "bhr" || campo == "sinRCLV") impactoVisualEnRCLV[campo]();
+		// 1. Para campos 'cfc', 'ocurrió', 'sinRclv'
+		if (campo == "cfc" || campo == "bhr" || campo == "sinRclv") impactoVisualEnRclv[campo]();
 		if (campo == "cfc") {
 			// Le asigna a los selects un valor estandar
 			DOM.selectPers.value = "1";
@@ -251,11 +251,11 @@ window.addEventListener("load", async () => {
 		}
 
 		// 2. Para campos 'rclv'
-		if (camposRCLV.includes(campo)) impactoVisualEnRCLV.edicJesusNinguno();
-		if (campo == "sinRCLV" || camposRCLV.includes(campo)) DOM.errorRCLV.classList.remove("ocultar");
+		if (camposRclv.includes(campo)) impactoVisualEnRclv.edicJesusNinguno();
+		if (campo == "sinRclv" || camposRclv.includes(campo)) DOM.errorRclv.classList.remove("ocultar");
 
 		// Prepara los datos a validar
-		if ([...camposRCLV, "sinRCLV", "bhr"].includes(campo)) datosUrl += funcionesGrales.urlRCLV(campo);
+		if ([...camposRclv, "sinRclv", "bhr"].includes(campo)) datosUrl += funcionesGrales.urlRclv(campo);
 		else datosUrl += campo + "=" + valor;
 
 		// Valida errores
@@ -265,7 +265,7 @@ window.addEventListener("load", async () => {
 	});
 
 	// Links a rclv - Alta
-	DOM.linksRCLV_Alta.forEach((link) => {
+	DOM.linksRclv_Alta.forEach((link) => {
 		link.addEventListener("click", () => {
 			// Guardar los valores en Session y Cookies
 			funcionesGrales.guardaLosValoresEnSessionCookies();
@@ -278,14 +278,14 @@ window.addEventListener("load", async () => {
 		});
 	});
 	// Links a rclv - Edición
-	DOM.linksRCLV_Edic.forEach((link, i) => {
+	DOM.linksRclv_Edic.forEach((link, i) => {
 		link.addEventListener("click", () => {
 			// Guardar los valores en Session y Cookies
 			funcionesGrales.guardaLosValoresEnSessionCookies();
 
 			// Redirige a la vista rclv
 			const entRclv = obtieneEntRclv(link);
-			const id = DOM.inputsRCLV[i].value;
+			const id = DOM.inputsRclv[i].value;
 			location.href = "/" + entRclv + "/edicion/r/?id=" + id + "&origen=PDA";
 		});
 	});
@@ -310,7 +310,7 @@ const rutas = {
 	validar: "/producto/api/pa-valida-da/?",
 	guardaDatosAdics: "/producto/api/pa-guarda-datos-adicionales/?",
 };
-const camposRCLV = ["personaje_id", "hecho_id", "tema_id"];
+const camposRclv = ["personaje_id", "hecho_id", "tema_id"];
 
 const obtieneEntRclv = (link) =>
 	link.className.includes("personaje") ? "personajes" : link.className.includes("hecho") ? "hechos" : "temas";

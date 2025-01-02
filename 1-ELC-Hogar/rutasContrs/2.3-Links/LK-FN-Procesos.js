@@ -30,16 +30,16 @@ module.exports = {
 	},
 	datosLink: async (datos) => {
 		// Datos del producto
-		const regProd = await baseDeDatos.obtienePorId(datos.prodEntidad, datos.prodId);
+		const regProd = await baseDeDatos.obtienePorId(datos.entProd, datos.prodId);
 		datos.prodAprob = activos_ids.includes(regProd.statusRegistro_id); // antes era 'aprobados_ids'
 
 		// campo_id
-		const campo_id = comp.obtieneDesdeEntidad.campo_id(datos.prodEntidad);
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(datos.entProd);
 		datos[campo_id] = regProd.id;
 
 		// grupoCol_id
-		if (datos.prodEntidad == "colecciones") datos.grupoCol_id = regProd.id;
-		if (datos.prodEntidad == "capitulos") datos.grupoCol_id = regProd.coleccion_id;
+		if (datos.entProd == "colecciones") datos.grupoCol_id = regProd.id;
+		if (datos.entProd == "capitulos") datos.grupoCol_id = regProd.coleccion_id;
 
 		// Obtiene el proveedor
 		let proveedor = linksProvs.find((n) => n.urlDistintivo && datos.url.startsWith(n.urlDistintivo)); // debe ser 'starts'
@@ -102,7 +102,7 @@ module.exports = {
 		const link = sigProd
 			? "/".concat(entidad, "/inactivar-captura") +
 			  "/?id=".concat(producto.id) +
-			  "&prodEntidad=".concat(sigProd.entidad) +
+			  "&entProd=".concat(sigProd.entidad) +
 			  "&prodId=".concat(sigProd.id) +
 			  "&origen=LKM&grupo=inactivo"
 			: "";

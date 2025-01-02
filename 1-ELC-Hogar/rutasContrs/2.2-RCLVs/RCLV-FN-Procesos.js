@@ -15,7 +15,7 @@ module.exports = {
 
 			for (let edicion of edicsPropias) {
 				// Obtiene la entidad con la que está asociada la edición del rclv, y su campo 'producto_id'
-				const entProd = comp.obtieneDesdeCampo_id.entidadProd(edicion);
+				const entProd = comp.obtieneDesdeCampo_id.entProd(edicion);
 				const campo_id = comp.obtieneDesdeEntidad.campo_id(entProd);
 				const entId = edicion[campo_id];
 

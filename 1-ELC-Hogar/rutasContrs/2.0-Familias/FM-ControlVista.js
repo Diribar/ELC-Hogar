@@ -143,7 +143,7 @@ module.exports = {
 			// 3. Si es un capítulo, actualiza el status de link de su colección
 			if (entidad == "capitulos") comp.actualizaCalidadesDeLinkEnCole(original.coleccion_id);
 
-			// 4. Actualiza los RCLV, en el campo 'prodsAprob'
+			// 4. Actualiza los rclv, en el campo 'prodsAprob'
 			procesos.accsEnDepsPorCambioDeStatus(entidad, original);
 		}
 

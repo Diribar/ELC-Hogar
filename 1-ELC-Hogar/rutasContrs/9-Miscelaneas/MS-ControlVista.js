@@ -20,12 +20,12 @@ module.exports = {
 
 		// Productos
 		let prods = procesos.mantenim.obtieneProds(usuario_id).then((n) => procsRE.procesaCampos.prods(n));
-		let rclvs = procesos.mantenim.obtieneRCLVs(usuario_id).then((n) => procsRE.procesaCampos.rclvs(n));
+		let rclvs = procesos.mantenim.obtieneRclvs(usuario_id).then((n) => procsRE.procesaCampos.rclvs(n));
 		let prodsConLinksInactivos = procesos.mantenim
 			.obtieneLinksInactivos(usuario_id)
 			.then((n) => procsRE.procesaCampos.prods(n));
 
-		// RCLVs
+		// Rclvs
 		[prods, rclvs, prodsConLinksInactivos] = await Promise.all([prods, rclvs, prodsConLinksInactivos]);
 
 		// Une Productos y Links
@@ -119,7 +119,7 @@ module.exports = {
 		urlDeDestino: async (req, res) => {
 			// Variables
 			const entidad = comp.obtieneEntidadDesdeUrl(req);
-			const {origen: codOrigen, urlOrigen, prodEntidad, prodId, id} = req.query;
+			const {origen: codOrigen, urlOrigen, entProd, prodId, id} = req.query;
 			let {urlDestino} = req.query;
 			let destino;
 
@@ -129,7 +129,7 @@ module.exports = {
 
 			// Rutina para encontrar el destino en base al 'codOrigen'
 			if (codOrigen) {
-				const urls = procesos.redirecciona.urlsOrigenDestino(prodEntidad || entidad);
+				const urls = procesos.redirecciona.urlsOrigenDestino(entProd || entidad);
 				const url = urls.find((n) => codOrigen == n.codOrigen);
 				if (url) {
 					destino = url.destino;
@@ -138,7 +138,7 @@ module.exports = {
 			}
 			// Rutina para encontrar el destino en base al 'urlOrigen'
 			else {
-				urlDestino = entidad != prodEntidad ? urlOrigen.replace(entidad, prodEntidad) : urlOrigen;
+				urlDestino = entidad != entProd ? urlOrigen.replace(entidad, entProd) : urlOrigen;
 				destino = urlDestino + "/?id=" + prodId;
 			}
 
