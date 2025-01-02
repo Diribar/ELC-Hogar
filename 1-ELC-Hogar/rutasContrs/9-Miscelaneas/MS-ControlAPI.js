@@ -49,9 +49,9 @@ module.exports = {
 
 		// Armado de la variable 'datos' para ediciones
 		campos = camposProds;
-		datos.push({familia: "producto", entidad: "prodsEdicion", campos, include: variables.entidades.asocsProd}); // productos
+		datos.push({familia: "producto", entidad: "prodsEdicion", campos, include: variables.entidades.prodsAsoc}); // productos
 		campos = camposRclvs;
-		datos.push({familia: "rclv", entidad: "rclvsEdicion", campos, include: variables.entidades.asocsRclv}); // rclvs
+		datos.push({familia: "rclv", entidad: "rclvsEdicion", campos, include: variables.entidades.rclvsAsoc}); // rclvs
 
 		// Rutina
 		for (let dato of datos) {

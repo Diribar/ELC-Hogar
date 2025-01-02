@@ -596,7 +596,7 @@ module.exports = {
 		},
 		revisaCorrigeProdAprobEnLink: async () => {
 			// Obtiene todos los links con su producto asociado
-			const links = await baseDeDatos.obtieneTodos("links", variables.entidades.asocsProd);
+			const links = await baseDeDatos.obtieneTodos("links", variables.entidades.prodsAsoc);
 
 			// Actualiza su valor
 			comp.actualizaProdAprobEnLink(links);
