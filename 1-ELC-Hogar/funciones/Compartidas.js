@@ -130,32 +130,24 @@ module.exports = {
 
 		// Masculino / Femenino
 		delLa: (entidad) => {
-			return ["peliculas", "colecciones", "epocasDelAno"].includes(entidad)
-				? " de la "
-				: ["capitulos", "personajes", "hechos", "temas", "eventos", "links", "usuarios"].includes(entidad)
-				? " del "
-				: "";
+			return variables.entidades.femenino.includes(entidad) ? " de la " : " del ";
 		},
 		elLa: (entidad) => {
-			return ["peliculas", "colecciones", "epocasDelAno"].includes(entidad)
-				? " la "
-				: ["capitulos", "personajes", "hechos", "temas", "eventos", "links", "usuarios"].includes(entidad)
-				? " el "
-				: "";
+			return variables.entidades.femenino.includes(entidad) ? " la " : " el ";
 		},
-		oa: (entidad) => (["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "a" : "o"),
-		ea: (entidad) => (["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "a" : "e"),
-		unaUn: (entidad) => (["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? "una" : "un"),
+		oa: (entidad) => (variables.entidades.femenino.includes(entidad) ? "a" : "o"),
+		ea: (entidad) => (variables.entidades.femenino.includes(entidad) ? "a" : "e"),
+		unaUn: (entidad) => (variables.entidades.femenino.includes(entidad) ? "una" : "un"),
 	},
 	obtieneDesdeCampo_id: {
 		// Entidad
 		entidadProd: (registro) => {
 			return registro.pelicula_id
 				? "peliculas"
-				: registro.capitulo_id // debe ir antes de la colección por sus ediciones
-				? "capitulos"
 				: registro.coleccion_id
 				? "colecciones"
+				: registro.capitulo_id
+				? "capitulos"
 				: "";
 		},
 		entidadRCLV: (registro) => {
@@ -191,26 +183,12 @@ module.exports = {
 
 		// campo_id
 		campo_idProd: (registro) => {
-			return registro.pelicula_id
-				? "pelicula_id"
-				: registro.capitulo_id // debe ir antes de la colección por sus ediciones
-				? "capitulo_id"
-				: registro.coleccion_id
-				? "coleccion_id"
-				: "";
+			for (let prod_id in variables.entidades.prods_id) if (registro[prod_id]) return prod_id;
+			return null;
 		},
 		campo_idRCLV: (registro) => {
-			return registro.personaje_id
-				? "personaje_id"
-				: registro.hecho_id
-				? "hecho_id"
-				: registro.tema_id
-				? "tema_id"
-				: registro.evento_id
-				? "evento_id"
-				: registro.epocaDelAno_id
-				? "epocaDelAno_id"
-				: "";
+			for (let rclv_id in variables.entidades.rclvs_id) if (registro[rclv_id]) return rclv_id;
+			return null;
 		},
 		campo_id: function (registro) {
 			// Variables
