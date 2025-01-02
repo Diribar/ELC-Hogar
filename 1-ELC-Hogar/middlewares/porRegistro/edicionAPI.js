@@ -3,10 +3,10 @@
 module.exports = async (req, res, next) => {
 	// Variables
 	const {entidad, edicId, campo, aprob, motivo_id} = req.query;
-	const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
+	const entEdic = comp.obtieneDesdeEntidad.entEdic(entidad);
 
 	// Obtiene el registro editado
-	let edicion = await baseDeDatos.obtienePorId(nombreEdic, edicId);
+	let edicion = await baseDeDatos.obtienePorId(entEdic, edicId);
 
 	// Problema 1: No existe la edición
 	if (!edicion) return res.json({mensaje: "No se encuentra la edición"});

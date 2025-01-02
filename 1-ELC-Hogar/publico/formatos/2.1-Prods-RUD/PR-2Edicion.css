@@ -87,7 +87,7 @@
 							&:has(select[name="epocaOcurrencia_id"]) {width: 150px}
 							:is(#publico_id, #epocaOcurrencia_id) {right: -23px;}
 
-							/* RCLV */
+							/* Rclv */
 							.linkRCLV {
 								position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;
 								width: 15px; cursor: pointer;
