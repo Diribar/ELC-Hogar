@@ -29,9 +29,9 @@ module.exports = {
 			const petitFamilias = familias == "productos" ? "prods" : familias;
 			return petitFamilias;
 		},
-		entidadEdic:function (entidad) {
-			const petitFamilias=this.petitFamilias(entidad)
-			const entidadEdic=petitFamilias?petitFamilias+"Edicion":null
+		entidadEdic: function (entidad) {
+			const petitFamilias = this.petitFamilias(entidad);
+			const entidadEdic = petitFamilias ? petitFamilias + "Edicion" : null;
 			return entidadEdic;
 		},
 		campo_id: (entidad) => {
