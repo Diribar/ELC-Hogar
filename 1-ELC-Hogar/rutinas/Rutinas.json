@@ -51,8 +51,6 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"28-dic-24": {"leyenda": "Estamos en época de Navidad", "entidad": "epocasDelAno", "id": 26},
-		"29-dic-24": {"leyenda": "Hoy recordamos la Sagrada Familia", "entidad": "personajes", "id": 6},
 		"30-dic-24": {"leyenda": "Estamos en época de Navidad", "entidad": "epocasDelAno", "id": 26},
 		"31-dic-24": {"leyenda": "Estamos en época de Navidad", "entidad": "epocasDelAno", "id": 26},
 		"01-ene-25": {"leyenda": "Hoy recordamos a santa María, madre de Jesús", "entidad": "personajes", "id": 4}
