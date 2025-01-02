@@ -39,7 +39,7 @@
 				#selectsRCLV {
 					height: 100%;
 					select {width: 150px;}
-					.linkRCLV {
+					.linkRclv {
 						position: absolute; transform: translateY(-50%); top: 50%;
 						width: 15px; cursor: pointer; line-height: 1; color: var(--gris-oscuro);
 						&.alta {right: -20px; font-size: 1rem;}

@@ -88,7 +88,7 @@
 							:is(#publico_id, #epocaOcurrencia_id) {right: -23px;}
 
 							/* Rclv */
-							.linkRCLV {
+							.linkRclv {
 								position: absolute; transform: translateY(-50%); top: 50%; font-size: 1rem;
 								width: 15px; cursor: pointer;
 								&#alta {right: -40px;}

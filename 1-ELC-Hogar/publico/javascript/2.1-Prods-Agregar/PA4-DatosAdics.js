@@ -15,32 +15,32 @@ window.addEventListener("load", async () => {
 		radioSI: document.querySelectorAll(".inputError .radioSI"),
 		radioNO: document.querySelectorAll(".inputError .radioNO"),
 
-		// RCLV
+		// Rclv
 		checkRCLV: document.querySelector("#segundaColumna #checkBox input"),
 		selectsRCLV: document.querySelector("#segundaColumna #selectsRCLV"),
 		errorRCLV: document.querySelector(".inputError #errorRCLV"),
 		inputsRCLV: document.querySelectorAll("#segundaColumna .inputError .input"),
 
-		// RCLV - Sectores
+		// Rclv - Sectores
 		sectorRCLV: document.querySelector("#segundaColumna"),
 		sectorPers: document.querySelector("#segundaColumna #personaje_id"),
 		sectorHecho: document.querySelector("#segundaColumna #hecho_id"),
 		sectorValor: document.querySelector("#segundaColumna #tema_id"),
 
-		// RCLV - Selects y Opciones
+		// Rclv - Selects y Opciones
 		selectPers: document.querySelector("select[name='personaje_id']"),
 		selectHecho: document.querySelector("select[name='hecho_id']"),
 		optgroupPers: document.querySelectorAll("select[name='personaje_id'] optgroup"),
 		optgroupHecho: document.querySelectorAll("select[name='hecho_id'] optgroup"),
 
-		// RCLV - Varios
+		// Rclv - Varios
 		ayudaRclv: document.querySelectorAll("#segundaColumna .ayudaRclv"),
 		iconosOK_RCLV: document.querySelectorAll("#segundaColumna .inputError .fa-circle-check"),
 		iconosError_RCLV: document.querySelectorAll("#segundaColumna .inputError .fa-circle-xmark"),
 
-		// RCLV - Links
-		linksRCLV_Alta: document.querySelectorAll("#segundaColumna .inputError .linkRCLV.alta"),
-		linksRCLV_Edic: document.querySelectorAll("#segundaColumna .inputError .linkRCLV.edicion"),
+		// Rclv - Links
+		linksRCLV_Alta: document.querySelectorAll("#segundaColumna .inputError .linkRclv.alta"),
+		linksRCLV_Edic: document.querySelectorAll("#segundaColumna .inputError .linkRclv.edicion"),
 
 		// OK/Errores
 		iconosError: document.querySelectorAll(".inputError .fa-circle-xmark"),
@@ -49,14 +49,14 @@ window.addEventListener("load", async () => {
 	};
 
 	// Otras variables
-	let camposError = ["cfc", "bhr", "tipoActuacion_id", "RCLV"];
+	const camposError = ["cfc", "bhr", "tipoActuacion_id", "rclv"];
 	DOM.opcionesPers = [];
 	for (let grupo of DOM.optgroupPers) DOM.opcionesPers.push([...grupo.children]);
 	DOM.opcionesHechos = [];
 	for (let grupo of DOM.optgroupHecho) DOM.opcionesHechos.push([...grupo.children]);
 
 	// Comunes a todos los campos
-	let funcionesGrales = {
+	const funcionesGrales = {
 		obtieneLosDatos: () => {
 			// Variables
 			let datosUrl = "";
@@ -68,12 +68,12 @@ window.addEventListener("load", async () => {
 				if (radioSI.name == "bhr" && respuesta) DOM.errorRCLV.classList.remove("ocultar");
 			});
 
-			// Busca el checkbox de RCLV
+			// Busca el checkbox de rclv
 			if (DOM.checkRCLV.checked) datosUrl += "sinRCLV=on&";
 
 			//Busca todos los valores 'input'
 			DOM.inputs.forEach((input, i) => {
-				// Particularidad para RCLV
+				// Particularidad para rclv
 				if (camposRCLV.includes(input.name) && DOM.checkRCLV.checked) return;
 
 				// Agrega el campo y el valor
@@ -118,7 +118,7 @@ window.addEventListener("load", async () => {
 			// Consecuencias de la validación de errores
 			await this.muestraLosErrores(datosUrl, mostrarIconoError);
 			this.actualizaBotonSubmit();
-			// Impactos en RCLV
+			// Impactos en rclv
 			for (let metodo in impactoVisualEnRCLV) impactoVisualEnRCLV[metodo]();
 			// Fin
 			return;
@@ -153,12 +153,12 @@ window.addEventListener("load", async () => {
 			return;
 		},
 	};
-	// RCLV
-	let impactoVisualEnRCLV = {
+	// Rclv
+	const impactoVisualEnRCLV = {
 		cfc: () => {
 			// Variables
 			const categoria = cfcSI.checked ? "CFC" : cfcNO.checked ? "VPC" : "";
-			if (!categoria) return DOM.sectorRCLV.classList.add("ocultaCfc"); // si no hay respuesta, agrega el 'oculta' de RCLVs
+			if (!categoria) return DOM.sectorRCLV.classList.add("ocultaCfc"); // si no hay respuesta, agrega el 'oculta' de rclvs
 
 			// Personajes - Borra todas las opciones y agrega las que van
 			DOM.selectPers.innerHTML = "";
@@ -180,7 +180,7 @@ window.addEventListener("load", async () => {
 				}
 			});
 
-			// Quita el 'oculta' de RCLVs
+			// Quita el 'oculta' de rclvs
 			DOM.sectorRCLV.classList.remove("ocultaCfc");
 			// Fin
 			return;
@@ -190,7 +190,7 @@ window.addEventListener("load", async () => {
 			const bhrSI = DOM.bhrSI.checked && !DOM.bhrNO.checked;
 			const bhrNO = DOM.bhrNO.checked && !DOM.bhrSI.checked;
 
-			// Oculta o muestra el sector de RCLVs
+			// Oculta o muestra el sector de rclvs
 			bhrSI || bhrNO ? DOM.sectorRCLV.classList.remove("ocultaOcurrio") : DOM.sectorRCLV.classList.add("ocultaOcurrio");
 
 			// Acciones si ocurrió
@@ -210,13 +210,13 @@ window.addEventListener("load", async () => {
 				// Ayudas
 				DOM.ayudaRclv[0].classList.add("ocultar");
 				DOM.ayudaRclv[1].classList.remove("ocultar");
-				// Valores de RCLV
+				// Valores de rclv
 				DOM.selectPers.value = 1;
 				DOM.selectHecho.value = 1;
 			}
 		},
 		sinRCLV: () => {
-			// Muestra u oculta el sector RCLV
+			// Muestra u oculta el sector rclv
 			DOM.checkRCLV.checked ? DOM.selectsRCLV.classList.add("ocultar") : DOM.selectsRCLV.classList.remove("ocultar");
 			// Fin
 			return;
@@ -231,30 +231,6 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-	};
-	let interaccionesApMar = (campo) => {
-		// Cambia el contenido del Personaje o Hecho
-		// Acciones si se cambia el personaje
-		if (campo == "personaje_id") {
-			// Obtiene del personaje, el 'id' de la Aparición Mariana
-			for (var opcion of DOM.opcionesPers) if (opcion.value == DOM.inputsRCLV[0].value) break;
-			let clases = opcion.className.split(" ");
-			let indice = clases.indexOf("AMA");
-			clases.splice(indice, 1);
-			let id = clases[indice].slice(2);
-			// Cambia el contenido del Hecho
-			DOM.inputsRCLV[1].value = id;
-		}
-		// Acciones si se cambia el hecho
-		if (campo == "hecho_id") {
-			// Muestra los personajes que hayan presenciado la aparición y oculta los demás
-			for (let opcion of DOM.opcionesPers) {
-				if (opcion.className.includes("AM" + DOM.inputsRCLV[1].value)) opcion.classList.remove("ocultar");
-				else opcion.classList.add("ocultar");
-			}
-			// Cambia el contenido del Personaje
-			verificaUnaSolaOpcionRCLV();
-		}
 	};
 
 	// ADD EVENT LISTENERS *********************************
@@ -274,7 +250,7 @@ window.addEventListener("load", async () => {
 			DOM.selectHecho.value = "1";
 		}
 
-		// 2. Para campos 'RCLV'
+		// 2. Para campos 'rclv'
 		if (camposRCLV.includes(campo)) impactoVisualEnRCLV.edicJesusNinguno();
 		if (campo == "sinRCLV" || camposRCLV.includes(campo)) DOM.errorRCLV.classList.remove("ocultar");
 
@@ -288,7 +264,7 @@ window.addEventListener("load", async () => {
 		funcionesGrales.actualizaBotonSubmit();
 	});
 
-	// Links a RCLV - Alta
+	// Links a rclv - Alta
 	DOM.linksRCLV_Alta.forEach((link) => {
 		link.addEventListener("click", () => {
 			// Guardar los valores en Session y Cookies
@@ -297,17 +273,17 @@ window.addEventListener("load", async () => {
 			// Obtiene la entRclv
 			const entRclv = obtieneEntRclv(link);
 
-			// Para ir a la vista RCLV
+			// Para ir a la vista rclv
 			location.href = "/" + entRclv + "/agregar/r/?origen=PDA";
 		});
 	});
-	// Links a RCLV - Edición
+	// Links a rclv - Edición
 	DOM.linksRCLV_Edic.forEach((link, i) => {
 		link.addEventListener("click", () => {
 			// Guardar los valores en Session y Cookies
 			funcionesGrales.guardaLosValoresEnSessionCookies();
 
-			// Redirige a la vista RCLV
+			// Redirige a la vista rclv
 			const entRclv = obtieneEntRclv(link);
 			const id = DOM.inputsRCLV[i].value;
 			location.href = "/" + entRclv + "/edicion/r/?id=" + id + "&origen=PDA";
