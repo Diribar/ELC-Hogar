@@ -4,27 +4,27 @@ module.exports = async (req, res, next) => {
 	// Variables
 	const entidad = comp.obtieneEntidadDesdeUrl(req);
 	const {id: entId, origen} = req.query;
-	const {asocsRclv} = variables.entidades;
+	const {rclvsAsoc} = variables.entidades;
 	const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 	const condicion = {[campo_id]: entId};
 	const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase();
 	const ea = comp.obtieneDesdeEntidad.ea(entidad);
 
 	// Obtiene la prodEdicion con sus RCLV
-	const edicion = await baseDeDatos.obtienePorCondicion("prodsEdicion", condicion, asocsRclv);
+	const edicion = await baseDeDatos.obtienePorCondicion("prodsEdicion", condicion, rclvsAsoc);
 
 	// Si alguno de sus RCLV está en status creado, genera la información
 	if (edicion)
-		for (let asocRclv of asocsRclv)
-			if (edicion[asocRclv] && edicion[asocRclv].statusRegistro_id == creado_id) {
+		for (let rclvAsoc of rclvsAsoc)
+			if (edicion[rclvAsoc] && edicion[rclvAsoc].statusRegistro_id == creado_id) {
 				// Variables
 				const vistaAnterior = variables.vistaAnterior(req.session.urlAnterior);
 				const rclv = {
-					entidad: comp.obtieneDesdeAsoc.entidad(asocRclv),
-					id: edicion[asocRclv].id,
-					entidadNombre: comp.obtieneDesdeAsoc.entidadNombre(asocRclv).toLowerCase(),
-					a: comp.obtieneDesdeAsoc.a(asocRclv),
-					oa: comp.obtieneDesdeAsoc.oa(asocRclv),
+					entidad: comp.obtieneDesdeAsoc.entidad(rclvAsoc),
+					id: edicion[rclvAsoc].id,
+					entidadNombre: comp.obtieneDesdeAsoc.entidadNombre(rclvAsoc).toLowerCase(),
+					a: comp.obtieneDesdeAsoc.a(rclvAsoc),
+					oa: comp.obtieneDesdeAsoc.oa(rclvAsoc),
 				};
 
 				// Obtiene la vista siguiente
