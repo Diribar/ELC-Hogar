@@ -6,9 +6,9 @@ module.exports = {
 	// Links - Controlador Vista
 	obtieneLinksConEdicion: async (entidad, prodId, usuario_id) => {
 		// Variables
-		let campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
-		let include = ["tipo", "prov", "statusRegistro", "ediciones", "motivo"];
-		let camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
+		const include = ["tipo", "prov", "statusRegistro", "ediciones", "motivo"];
+		const camposARevisar = variables.camposRevisar.links.map((n) => n.nombre);
 
 		// Obtiene los linksOriginales
 		let links = await baseDeDatos.obtieneTodosPorCondicion("links", {[campo_id]: prodId}, include);
