@@ -29,44 +29,23 @@ module.exports = {
 			const petitFamilias = familias == "productos" ? "prods" : familias;
 			return petitFamilias;
 		},
-		siglaFam: (entidad) => FN.siglaFam(entidad),
-		entidadNombre: (entidad) => FN.entidadNombre(entidad),
+		entidadEdic:function (entidad) {
+			const petitFamilias=this.petitFamilias(entidad)
+			const entidadEdic=petitFamilias?petitFamilias+"Edicion":null
+			return entidadEdic;
+		},
 		campo_id: (entidad) => {
-			const {todos, todos_id} = variables.entidades;
-			for (let i = 0; i < todos.length; i++) if (todos[i] == entidad) return todos_id[i];
-			return null;
+			const indice = variables.entidades.todos.indexOf(entidad);
+			const campo_id = indice > -1 ? variables.entidades.todos_id[indice] : null;
+			return campo_id;
 		},
 		asociacion: (entidad) => {
-			const {todos, todosAsocs} = variables.entidades;
-			return entidad == "peliculas"
-				? "pelicula"
-				: entidad == "colecciones"
-				? "coleccion"
-				: entidad == "capitulos"
-				? "capitulo"
-				: entidad == "personajes"
-				? "personaje"
-				: entidad == "hechos"
-				? "hecho"
-				: entidad == "temas"
-				? "tema"
-				: entidad == "eventos"
-				? "evento"
-				: entidad == "epocasDelAno"
-				? "epocaDelAno"
-				: entidad == "links"
-				? "link"
-				: null;
+			const indice = variables.entidades.todos.indexOf(entidad);
+			const asociacion = indice > -1 ? variables.entidades.todosAsocs[indice] : null;
+			return asociacion;
 		},
-		entidadEdic: (entidad) => {
-			return variables.entidades.prods.includes(entidad)
-				? "prodsEdicion"
-				: variables.entidades.rclvs.includes(entidad)
-				? "rclvsEdicion"
-				: entidad == "links"
-				? "linksEdicion"
-				: null;
-		},
+		siglaFam: (entidad) => FN.siglaFam(entidad),
+		entidadNombre: (entidad) => FN.entidadNombre(entidad),
 
 		// Masculino / Femenino
 		delLa: (entidad) => {
