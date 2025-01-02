@@ -92,7 +92,7 @@ const FN_rutaAceptada = (urlActual, urlAnterior) => {
 	// Variables
 	const rutasIncludes = [
 		...["/historial", "/inactivar", "/recuperar", "/eliminado", "/correccion"], // Familia
-		...["/agregar", "/detalle/", "/edicion", "/calificar", "/productos-por-registro/r", "/abm-links/p", "/mirar/l"], // Productos, Rclv y Links
+		...["/agregar", "/detalle/", "/edicion", "/calificar", "/productos-por-registro/r", "/abm-links/p", "/mirar/l"], // Productos, Rclvs y Links
 	];
 
 	const rutasStartsWith = [
