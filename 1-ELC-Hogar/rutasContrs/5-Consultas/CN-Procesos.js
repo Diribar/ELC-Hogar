@@ -866,7 +866,7 @@ module.exports = {
 						datosNeces = {...datosNeces, fechaDelAno_id, fechaDelAno: fechaDelAno.nombre}; // sólo muestra la 'fechaDelAno_id' en el Front-End para las vistas con santoral
 					if (epocaOcurrencia)
 						datosNeces = {...datosNeces, epocaOcurrencia_id, epocaOcurrencia: epocaOcurrencia.consulta}; // hace falta la 'fechaDelAno_id' en el Front-End
-					if (categoria_id == "CFC" || soloCfc || entidad == "epocasDelAno") datosNeces.cfc = true;
+					if (categoria_id == "CFC" || soloCfc || ["eventos", "epocasDelAno"].includes(entidad)) datosNeces.cfc = true;
 
 					// Obtiene campos en función de la entidad
 					if (entidad == "personajes" && rclv.rolIglesia_id != "NN") {
