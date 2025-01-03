@@ -27,7 +27,7 @@ module.exports = (req, res, next) => {
 	prodRclvNombre(ruta).then((nombre) => {
 		if (!comentario && nombre) comentario = nombre.slice(0, 20);
 		let dispCliente = req.headers["user-agent"];
-		for (let metodo in requestsClientes) if (requestsClientes[metodo].includes(dispCliente)) dispCliente = metodo;
+		for (let metodo in requestsClientes) if (requestsClientes[metodo] == dispCliente) dispCliente = metodo; // convierte la descripción larga en un código
 		baseDeDatos.agregaRegistro("navegsDia", {cliente_id, ruta, comentario, dispCliente});
 	});
 
