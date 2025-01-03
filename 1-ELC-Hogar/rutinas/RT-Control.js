@@ -278,20 +278,18 @@ module.exports = {
 		imagenDerecha: async () => {
 			// Variables
 			const {ImagenesDerecha: imgsYaProcs} = rutinasJson;
-			const milisegs = Date.now() + (new Date().getTimezoneOffset() / 60) * unaHora;
-			const fechaInicial = milisegs - 2 * unDia; // Arranca desde 2 días atrás
-			const cantFechas = 5; // Incluye 5 días
+			const fechaHoy = Date.now();
 			let fechas = [];
 			let tituloNuevo;
 
 			// Limpia el historial de ImagenesDerecha en 'global'
 			ImagenesDerecha = {};
 
-			// Actualiza los títulos de la imagen derecha para cada fecha y guarda las imágenes nuevas
-			for (let i = 0; i < cantFechas; i++) {
+			// Actualiza los títulos de la imagen derecha para cada fecha y guarda las imágenes nuevas - arranca desde 2 días atrás hasta 2 días para adelante
+			for (let i = -2; i <= 2; i++) {
 				// Variables
-				const fechaNum = fechaInicial + unDia * i;
-				const fechaArchivo = procesos.diaMesAno(fechaNum);
+				const fechaNum = fechaHoy + unDia * i;
+				const fechaArchivo = procesos.diaMesAnoUTC(fechaNum);
 
 				// Arma el array de fechas
 				fechas.push(fechaArchivo);
@@ -307,11 +305,9 @@ module.exports = {
 					// Actualiza los datos para esa fecha
 					ImagenesDerecha[fechaArchivo] = entidad && id ? {leyenda, entidad, id} : {leyenda};
 
-					// Guarda el archivo de la 'imgDerecha' para esa fecha
-					comp.gestionArchivos.copiaImagen(
-						carpeta + nombreArchivo,
-						"./publico/imagenes/ImagenDerecha/" + fechaArchivo + ".jpg"
-					);
+					// Guarda el archivo de imagen para esa fecha
+					const archivoDestino = "./publico/imagenes/ImagenDerecha/" + fechaArchivo + ".jpg";
+					comp.gestionArchivos.copiaImagen(carpeta + nombreArchivo, archivoDestino);
 				}
 			}
 
@@ -343,7 +339,7 @@ module.exports = {
 			await baseDeDatos.eliminaPorCondicion("links", condicion);
 
 			// Elimina registros sin entidad_id
-			await procesos.eliminaRegsSinEntidad_id()
+			await procesos.eliminaRegsSinEntidad_id();
 
 			// Fin
 			return;
