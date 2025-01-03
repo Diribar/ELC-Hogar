@@ -29,10 +29,10 @@ module.exports = {
 			const petitFamilias = familias == "productos" ? "prods" : familias;
 			return petitFamilias;
 		},
-		entidadEdic: function (entidad) {
+		entEdic: function (entidad) {
 			const petitFamilias = this.petitFamilias(entidad);
-			const entidadEdic = petitFamilias ? petitFamilias + "Edicion" : null;
-			return entidadEdic;
+			const entEdic = petitFamilias ? petitFamilias + "Edicion" : null;
+			return entEdic;
 		},
 		// Campos vinculados
 		campo_id: (entidad) => {
@@ -61,32 +61,23 @@ module.exports = {
 	},
 	obtieneDesdeCampo_id: {
 		// Entidad
-		entidadProd: (registro) => {
+		entProd: (registro) => {
 			const {prods, prods_id} = variables.entidades;
 			for (let i = 0; i < prods_id.length; i++) if (registro[prods_id[i]]) return prods[i];
 			return null;
 		},
-		entidadRCLV: (registro) => {
+		entRclv: (registro) => {
 			const {rclvs, rclvs_id} = variables.entidades;
 			for (let i = 0; i < rclvs_id.length; i++) if (registro[rclvs_id[i]]) return rclvs[i];
 			return null;
 		},
 		entidad: function (registro, familiaEdic) {
-			const entProd = this.entidadProd(registro);
-			const entRCLV = this.entidadRCLV(registro);
+			const entProd = this.entProd(registro);
+			const entRclv = this.entRclv(registro);
 
 			// Fin
-			return familiaEdic == "prodsEdicion"
-				? entProd
-				: familiaEdic == "rclvsEdicion"
-				? entRCLV
-				: registro.link_id
-				? "links"
-				: entProd // debe ir antes de los entRCLV por sus ediciones
-				? entProd
-				: entRCLV
-				? entRCLV
-				: null;
+			if (familiaEdic) return familiaEdic == "prodsEdicion" ? entProd : familiaEdic == "rclvsEdicion" ? entRclv : null;
+			else return registro.link_id ? "links" : entProd || entRclv;
 		},
 
 		// campo_id
@@ -94,50 +85,25 @@ module.exports = {
 			for (let prod_id in variables.entidades.prods_id) if (registro[prod_id]) return prod_id;
 			return null;
 		},
-		campo_idRCLV: (registro) => {
+		campo_idRclv: (registro) => {
 			for (let rclv_id in variables.entidades.rclvs_id) if (registro[rclv_id]) return rclv_id;
 			return null;
 		},
 		campo_id: function (registro) {
 			// Variables
 			const prod_id = this.campo_idProd(registro);
-			const rclv_id = this.campo_idRCLV(registro);
+			const rclv_id = this.campo_idRclv(registro);
 
-			// Fin
-			return registro.link_id // debe ir antes de los productos por sus ediciones
-				? "link_id"
-				: prod_id // debe ir antes de los rclv_id por sus ediciones
-				? prod_id
-				: rclv_id
-				? rclv_id
-				: null;
+			// Fin - es importante el orden link_id, prod_id, rclv_id, por sus ediciones
+			return registro.link_id ? "link_id" : prod_id || rclv_id;
 		},
 
 		// Asociación
-		asocProd: (registro) => FN.asocProd(registro),
-		asocRCLV: (registro) => {
-			return registro.personaje_id
-				? "personaje"
-				: registro.hecho_id
-				? "hecho"
-				: registro.tema_id
-				? "tema"
-				: registro.evento_id
-				? "evento"
-				: registro.epocaDelAno_id
-				? "epocaDelAno"
-				: null;
-		},
-		asociacion: function (registro) {
-			const producto_id = FN.asocProd(registro);
-			const rclv_id = this.asocRCLV(registro);
-			return registro.link_id
-				? "link_id"
-				: producto_id // debe ir antes de los rclv_id por sus ediciones
-				? producto_id
-				: rclv_id
-				? rclv_id
-				: null;
+		prodAsoc: (registro) => FN.obtieneProdAsoc(registro),
+		asociacion: (registro) => {
+			const producto_id = FN.obtieneProdAsoc(registro);
+			const rclv_id = FN.obtieneRclvAsoc(registro);
+			return registro.link_id ? "link_id" : producto_id || rclv_id;
 		},
 	},
 	obtieneDesdeAsoc: {
@@ -167,7 +133,7 @@ module.exports = {
 		entidad = variables.entidades.todos.find((n) => url.includes("/" + n + "/"));
 		return entidad;
 	},
-	// Productos y RCLVs
+	// Productos y Rclvs
 	obtieneLeadTime: (desdeOrig, hastaOrig) => {
 		// Variables
 		let desdeFinal = desdeOrig;
@@ -225,7 +191,7 @@ module.exports = {
 	puleEdicion: async function (entidad, original, edicion) {
 		// Variables
 		const familias = this.obtieneDesdeEntidad.familias(entidad);
-		const entidadEdic = this.obtieneDesdeEntidad.entidadEdic(entidad);
+		const entEdic = this.obtieneDesdeEntidad.entEdic(entidad);
 		const edicId = edicion.id;
 		let camposNull = {};
 		let camposRevisar = [];
@@ -275,13 +241,13 @@ module.exports = {
 			if (edicId) edicion.id = edicId;
 
 			// Si la edición existe en BD y hubieron campos iguales entre la edición y el original, actualiza la edición
-			if (edicId && Object.keys(camposNull).length) await baseDeDatos.actualizaPorId(entidadEdic, edicId, camposNull);
+			if (edicId && Object.keys(camposNull).length) await baseDeDatos.actualizaPorId(entEdic, edicId, camposNull);
 		} else {
 			// Convierte en 'null' la variable de 'edicion'
 			edicion = null;
 
 			// Si había una edición guardada en la BD, la elimina
-			if (edicId) await baseDeDatos.eliminaPorId(entidadEdic, edicId);
+			if (edicId) await baseDeDatos.eliminaPorId(entEdic, edicId);
 		}
 
 		// Fin
@@ -617,7 +583,7 @@ module.exports = {
 	},
 	azar: () => parseInt(Math.random() * Math.pow(10, 6)), // Le asigna un n° entero al azar, donde 10^6 es el máximo posible
 
-	// RCLVs
+	// R
 	canonNombre: (rclv) => {
 		// Variables
 		let canonNombre = "";
@@ -643,9 +609,9 @@ module.exports = {
 		// Fin
 		return canonNombre;
 	},
-	actualizaProdsEnRCLV: async function ({entidad, id}) {
+	actualizaProdsEnRclv: async function ({entidad, id}) {
 		// Variables
-		const entidadesProds = variables.entidades.prods;
+		const entsProd = variables.entidades.prods;
 		const statusAprobado = {statusRegistro_id: aprobado_id};
 		const statusValido = {statusRegistro_id: {[Op.ne]: inactivo_id}};
 		let prodsAprob;
@@ -658,8 +624,8 @@ module.exports = {
 		const condicion = {[rclv_id]: id};
 
 		// 1. Averigua si existe algún producto aprobado, con ese rclv_id
-		for (let entidadProd of entidadesProds) {
-			prodsAprob = await baseDeDatos.obtienePorCondicion(entidadProd, {...condicion, ...statusAprobado});
+		for (let entProd of entsProd) {
+			prodsAprob = await baseDeDatos.obtienePorCondicion(entProd, {...condicion, ...statusAprobado});
 			if (prodsAprob) {
 				prodsAprob = conLinks;
 				break;
@@ -668,8 +634,8 @@ module.exports = {
 
 		// 2. Averigua si existe algún producto en status provisorio, con ese rclv_id
 		if (!prodsAprob)
-			for (let entidadProd of entidadesProds) {
-				prodsAprob = await baseDeDatos.obtienePorCondicion(entidadProd, {...condicion, ...statusValido});
+			for (let entProd of entsProd) {
+				prodsAprob = await baseDeDatos.obtienePorCondicion(entProd, {...condicion, ...statusValido});
 				if (prodsAprob) {
 					prodsAprob = linksTalVez;
 					break;
@@ -682,7 +648,7 @@ module.exports = {
 		// 4. No encontró ningún caso
 		if (!prodsAprob) prodsAprob = sinLinks;
 
-		// Actualiza el campo en el RCLV
+		// Actualiza el campo en el rclv
 		baseDeDatos.actualizaPorId(entidad, id, {prodsAprob});
 
 		// Fin
@@ -781,8 +747,8 @@ module.exports = {
 					const fechaVencim = new Date(desde + linksVU);
 
 					// Se actualiza el link con el anoEstreno y la fechaVencim
-					const asocProd = FN.asocProd(link);
-					const anoEstreno = link[asocProd] ? link[asocProd].anoEstreno : link.anoEstreno;
+					const prodAsoc = FN.obtieneProdAsoc(link);
+					const anoEstreno = link[prodAsoc] ? link[prodAsoc].anoEstreno : link.anoEstreno;
 					espera.push(baseDeDatos.actualizaPorId("links", link.id, {anoEstreno, fechaVencim}));
 				}
 				await Promise.all(espera);
@@ -1242,14 +1208,15 @@ const FN = {
 		const entNombre = indice > -1 ? [...variables.entidades.todosNombre][indice] : null;
 		return entNombre;
 	},
-	asocProd: (registro) => {
-		return registro.pelicula_id
-			? "pelicula"
-			: registro.capitulo_id // debe ir antes de la colección por sus ediciones
-			? "capitulo"
-			: registro.coleccion_id
-			? "coleccion"
-			: null;
+	obtieneProdAsoc: (registro) => {
+		const {prodsAsoc, prods_id} = variables.entidades;
+		for (let i = 0; i < prods_id.length; i++) if (registro[prods_id[i]]) return prodsAsoc[i];
+		return null;
+	},
+	obtieneRclvAsoc: (registro) => {
+		const {rclvsAsoc, rclvs_id} = variables.entidades;
+		for (let i = 0; i < rclvs_id.length; i++) if (registro[rclvs_id[i]]) return rclvsAsoc[i];
+		return null;
 	},
 	siglaFam: (entidad) =>
 		[...variables.entidades.prods, "prodsEdicion"].includes(entidad)
