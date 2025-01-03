@@ -122,7 +122,7 @@ module.exports = {
 				if (!respuesta) {
 					// Variables
 					const fechaDelAno_id = fechasDelAno.find((n) => n.dia == datos.dia && n.mes_id == datos.mes_id).id;
-					const fechaFin = (Number(anoFM) - anoHoy) * 366 + (fechaDelAno_id - 1 + diasDeDuracion);
+					const fechaFin = (Number(anoFM) - anoHoy) * 366 + (fechaDelAno_id + diasDeDuracion - 1);// el '-1' es para sumar bien la duración
 					if (fechaFin < fechaDelAnoHoy_id) respuesta = "La época del año debe concluir en una fecha futura";
 				}
 
