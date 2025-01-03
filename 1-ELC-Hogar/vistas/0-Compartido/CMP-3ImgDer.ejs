@@ -21,7 +21,7 @@
 		<% entRclv = ImagenesDerecha[hoyLocal] && ImagenesDerecha[hoyLocal].entidad %>
 		<% destino = entRclv && rclv_id ? ("/"+ entRclv + "/detalle/r/?id=" + rclv_id) : null %>
 		<% ruta = "/publico/imagenes/ImagenDerecha/" + hoyLocal + ".jpg" %>
-		<% titulo = ImagenesDerecha[hoyLocal].leyenda %>
+		<% titulo = ImagenesDerecha[hoyLocal] && ImagenesDerecha[hoyLocal].leyenda %>
 	<% } %>
 
 	<!-- Publica la imagen -->
@@ -31,7 +31,7 @@
 	<% if (locals.tema == "prodRud" && codigo == "detalle" && registro.statusRegistro_id != inactivo_id) { %>
 		<%- include('PR1-Detalle-2Links') %>
 	<% } %>
-	<% if (locals.tema == "consultas") { %>
+	<% if (locals.tema == "consultas" && ImagenesDerecha[hoyLocal]) { %>
 		<%- include("CN-CartelRclv", {hoyLocal, destino, entRclv}) %>
 	<% } %>
 	<% if (locals.iconosMobile) { %>
