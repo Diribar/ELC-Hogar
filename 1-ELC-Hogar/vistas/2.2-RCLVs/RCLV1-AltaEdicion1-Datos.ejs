@@ -50,7 +50,7 @@
 				<% if (personajes || hechos) { %><%- include("MN-Ayuda", {mensajes: ayudas.fecha}) %><% } %>
 				<%- include("MN-Errores", {nombre: "fecha", ocultarOK: true}) %>
 			</div>
-			<!-- Mes y Día -->
+			<!-- Mes, Día, Año -->
 			<div id="mesDia" class="flexRowAlign margenDebajo">
 				<!-- Meses -->
 				<select name="mes_id" class="input">
@@ -76,7 +76,7 @@
 				<!-- Años -->
 				<select name="anoFM" class="input">
 					<option value="" <% if (!dataEntry.anoFM) { %>selected<% } %>>Año</option>
-					<% for (let anoFM = anoHoy; anoFM < (anoHoy + 2); anoFM++) { %>
+					<% for (let anoFM = anoMin ; anoFM < (anoHoy + 2); anoFM++) { %>
 						<option value="<%= anoFM %>" <% if (dataEntry.anoFM == anoFM) { %>selected<% } %>><%= anoFM %></option>
 					<% } %>
 				</select>
@@ -119,6 +119,7 @@
 				<div id="calendario" class="relative">
 					<table class="absolute">
 						<tbody>
+							<% //console.log(122,fechasDelAno.filter(n=>n.id<9)) %>
 							<% for (let fechaDelAno of fechasDelAno) { %>
 								<% if (fechaDelAno.id > 366) {break} %>
 								<tr>
