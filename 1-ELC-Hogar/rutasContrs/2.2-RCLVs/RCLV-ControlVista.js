@@ -89,13 +89,12 @@ module.exports = {
 
 			// Más variables
 			const {id, entProd, prodId} = req.query;
-			const origen = req.query.origen ? req.query.origen : tema == "revisionEnts" ? (codigo == "alta/r" ? "RA" : "TE") : "";
+			const origen = req.query.origen || (tema == "revisionEnts" ? (codigo == "alta/r" ? "RA" : "TE") : "");
 			const usuario_id = req.session.usuario.id;
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 			const familia = comp.obtieneDesdeEntidad.familia(entidad);
 			const personajes = entidad == "personajes";
 			const hechos = entidad == "hechos";
-			const temas = entidad == "temas";
 			const eventos = entidad == "eventos";
 			const epocasDelAno = entidad == "epocasDelAno";
 			let dataEntry = {};
@@ -103,9 +102,8 @@ module.exports = {
 
 			// Configura el título de la vista
 			const titulo =
-				(codigo == "agregar" ? "Agregar - " : codigo == "edicion" ? "Edición" : "Revisar el Alta") +
-				(epocasDelAno ? " de la " : " del ") +
-				entidadNombre;
+				(codigo == "agregar" ? "Agregar - " : codigo == "edicion" ? "Edición" : "Revisión del Alta") +
+				(comp.obtieneDesdeEntidad.delLa(entidad) + entidadNombre);
 
 			// Variables específicas para personajes
 			if (personajes)
@@ -169,7 +167,7 @@ module.exports = {
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, origen, titulo},
 				...{entidad, id, entProd, prodId, edicId, familia: "rclv", ent, familia},
-				...{personajes, hechos, temas, eventos, epocasDelAno, prioridadesRclv},
+				...{personajes, hechos, eventos, epocasDelAno, prioridadesRclv},
 				...{dataEntry, imgDerPers, statusCreado, bloqueDer, ayudas},
 				...{apMars, originalUrl, opcsHoyEstamos, opcsLeyNombre, statusAlineado},
 				...{cartelGenerico, cartelRechazo, estrucPers: true},
