@@ -1,5 +1,4 @@
 Época 'Navidad':
-   - El año puede ser anterior al actual
    - A veces da error (fechaDelAno no tiene epocaDelAno)
 
 Edición del usuario
