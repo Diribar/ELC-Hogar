@@ -162,13 +162,14 @@ module.exports = {
 			const statusAlineado = codigo == "alta/r";
 			const cartelGenerico = codigo == "edicion";
 			const cartelRechazo = tema == "revisionEnts";
+			const anoMin = anoHoy - !!epocasDelAno;
 
 			// Ir a la vista
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, origen, titulo},
 				...{entidad, id, entProd, prodId, edicId, familia: "rclv", ent, familia},
 				...{personajes, hechos, eventos, epocasDelAno, prioridadesRclv},
-				...{dataEntry, imgDerPers, statusCreado, bloqueDer, ayudas},
+				...{dataEntry, imgDerPers, statusCreado, bloqueDer, ayudas, anoMin},
 				...{apMars, originalUrl, opcsHoyEstamos, opcsLeyNombre, statusAlineado},
 				...{cartelGenerico, cartelRechazo, estrucPers: true},
 			});
