@@ -137,7 +137,7 @@ module.exports = {
 		const {RutinasDiarias} = rutinasJson;
 		for (let rutinaDiaria in RutinasDiarias) {
 			// No aplica para el entorno de test
-			if (entorno == "test" && rutinaDiaria != "imagenDerecha") continue; // sólo se debe ejecutar la rutina 'imagenDerecha'
+			if (entorno == "test" && rutinaDiaria != "imagenDerecha") continue; // en test, sólo se debe ejecutar la rutina 'imagenDerecha'
 
 			// Realiza la rutina
 			const comienzo = Date.now();
