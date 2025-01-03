@@ -88,7 +88,7 @@ module.exports = {
 		delete fechaDelAno.epocaDelAno; // quita el include
 
 		// Obtiene los rclvs
-		const rclvs = await FN_obtieneImgDerecha.obtieneLosRclv(fechaDelAno);
+		const rclvs = await FN_obtieneImgDerecha.obtieneLosRclvs(fechaDelAno);
 
 		// Acciones si se encontraron varios rclvs
 		const resultado = FN_obtieneImgDerecha.reduceRclvs(rclvs);
@@ -1009,7 +1009,7 @@ const formatos = {
 	},
 };
 const FN_obtieneImgDerecha = {
-	obtieneLosRclv: async (fechaDelAno) => {
+	obtieneLosRclvs: async (fechaDelAno) => {
 		// Variables
 		let rclvs = [];
 
