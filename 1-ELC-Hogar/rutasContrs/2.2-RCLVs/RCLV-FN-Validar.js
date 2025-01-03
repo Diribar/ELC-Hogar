@@ -65,6 +65,9 @@ module.exports = {
 
 		// Validaciones para Fecha Fija y Fecha Móvil
 		if (datos.tipoFecha != "SF") {
+			// Variables
+			const {anoFM} = datos;
+
 			// Valida que el mes y el día estén respondidos
 			if (!datos.mes_id || !datos.dia) respuesta = cartelFaltaElDatoSobre + "el mes y/o el día";
 			// Valida si el día supera lo permitido para el mes
@@ -83,14 +86,15 @@ module.exports = {
 			// Validaciones para Fecha Movil
 			if (!respuesta && datos.tipoFecha == "FM") {
 				// Valida el añoFM
-				const anoFM = datos.anoFM;
-				const fechaDelAno_id = fechasDelAno.find((n) => n.dia == datos.dia && n.mes_id == datos.mes_id).id;
-				respuesta =
-					!anoFM || !Number(anoFM) || Number(anoFM) < anoHoy || Number(anoFM) > anoHoy + 1
-						? cartelAnoIncorrecto
-						: anoFM == anoHoy && fechaDelAno_id < fechaDelAnoHoy_id
-						? cartelFechaFutura
-						: "";
+				respuesta = !anoFM
+					? "Falta completar el año"
+					: !Number(anoFM)
+					? "Dato incorrecto para el año"
+					: Number(anoFM) > anoHoy + 1
+					? "El año no debe ser mayor al próximo"
+					: datos.entidad != "epocasDelAno" && Number(anoFM) < anoHoy
+					? "El año debe ser el actual o el próximo"
+					: "";
 
 				// Valida si existe un comentario adecuado para la fecha móvil
 				if (!respuesta && !datos.comentarioMovil) respuesta = cartelCriterioSobre + "la Fecha Móvil";
@@ -104,9 +108,23 @@ module.exports = {
 			if (!respuesta && datos.entidad == "epocasDelAno") {
 				// Variables
 				const sufijo = "los Días de Duración";
+				let {diasDeDuracion} = datos;
+				diasDeDuracion = diasDeDuracion && Number(diasDeDuracion);
+
 				// Valida la cantidad de días
-				if (!respuesta && !datos.diasDeDuracion) respuesta = cartelFaltaElDatoSobre + sufijo;
-				if (!respuesta && datos.diasDeDuracion < 2) respuesta = "La cantidad de dias debe ser mayor a dos";
+				respuesta = !diasDeDuracion
+					? cartelFaltaElDatoSobre + sufijo
+					: diasDeDuracion < 2
+					? "La cantidad de dias debe ser mayor"
+					: "";
+
+				// Valida si termina antes de hoy
+				if (!respuesta) {
+					// Variables
+					const fechaDelAno_id = fechasDelAno.find((n) => n.dia == datos.dia && n.mes_id == datos.mes_id).id;
+					const fechaFin = (Number(anoFM) - anoHoy) * 366 + (fechaDelAno_id - 1 + diasDeDuracion);
+					if (fechaFin < fechaDelAnoHoy_id) respuesta = "La época del año debe concluir en una fecha futura";
+				}
 
 				// Valida el comentario para la cantidad de días
 				if (!respuesta) {
@@ -222,8 +240,6 @@ module.exports = {
 // Carteles
 const cartelFaltaElDatoSobre = "Falta el dato sobre ";
 const cartelMesDiaIncompatibles = "El número de día y el mes elegidos son incompatibles";
-const cartelAnoIncorrecto = "El año debe ser el actual o el próximo";
-const cartelFechaFutura = "La fecha debe ser en el futuro";
 const cartelCriterioSobre = "Necesitamos saber el criterio sobre ";
 const cartelRegistroDuplicado = "Por favor asegurate de que no coincida con ningún otro registro, y destildalos.";
 
