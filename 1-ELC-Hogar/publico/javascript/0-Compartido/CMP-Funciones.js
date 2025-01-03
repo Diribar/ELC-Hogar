@@ -425,7 +425,7 @@ const inactivaEliminaLink = async ({DOM, fila, botonOut, ruta}) => {
 	// Inactiva
 	else {
 		// Obtiene los datos
-		let url = "?prodEntidad=" + entidad + "&prodId=" + id;
+		let url = "?entProd=" + entidad + "&prodId=" + id;
 		url += "&url=" + encodeURIComponent(DOM.linksUrl[fila].value);
 		url += "&IN=NO";
 		url += "&aprob=NO";

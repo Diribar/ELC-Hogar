@@ -13,7 +13,7 @@ window.addEventListener("load", async () => {
 		botonCapAnt.addEventListener("click", () => {
 			location.href =
 				"/capitulos/inactivar-captura/?id=".concat(id) +
-				"&prodEntidad=capitulos&prodId=".concat(capAntID) +
+				"&entProd=capitulos&prodId=".concat(capAntID) +
 				"&urlOrigen=".concat(encodeURIComponent(urlOrigen));
 		});
 	} else botonCapAnt.classList.add("inactivo");
@@ -24,7 +24,7 @@ window.addEventListener("load", async () => {
 		botonCapPost.addEventListener("click", () => {
 			location.href =
 				"/capitulos/inactivar-captura/?id=".concat(id) +
-				"&prodEntidad=capitulos&prodId=".concat(capPostID) +
+				"&entProd=capitulos&prodId=".concat(capPostID) +
 				"&urlOrigen=".concat(encodeURIComponent(urlOrigen));
 		});
 	} else botonCapPost.classList.add("inactivo");

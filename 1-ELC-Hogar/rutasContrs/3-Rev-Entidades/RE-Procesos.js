@@ -689,8 +689,8 @@ module.exports = {
 			const revId = req.session.usuario.id;
 			const decisAprob = aprob == "SI";
 			const campoDecision = "links" + (decisAprob ? "Aprob" : "Rech");
-			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
-			const anoEstreno = link[asocProd].anoEstreno;
+			const prodAsoc = comp.obtieneDesdeCampo_id.prodAsoc(link);
+			const anoEstreno = link[prodAsoc].anoEstreno;
 			const ahora = comp.fechaHora.ahora();
 			const fechaVencim = FN_links.fechaVencim({link, IN, ahora});
 			const statusRegistro_id = IN == "SI" ? aprobado_id : inactivo_id;

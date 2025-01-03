@@ -294,11 +294,11 @@ window.addEventListener("load", async () => {
 			// Guardar los valores en Session y Cookies
 			funcionesGrales.guardaLosValoresEnSessionCookies();
 
-			// Obtiene la RCLV_entidad
-			const entidadRclv = entidadesRclv(link);
+			// Obtiene la entRclv
+			const entRclv = obtieneEntRclv(link);
 
 			// Para ir a la vista RCLV
-			location.href = "/" + entidadRclv + "/agregar/r/?origen=PDA";
+			location.href = "/" + entRclv + "/agregar/r/?origen=PDA";
 		});
 	});
 	// Links a RCLV - Edición
@@ -308,9 +308,9 @@ window.addEventListener("load", async () => {
 			funcionesGrales.guardaLosValoresEnSessionCookies();
 
 			// Redirige a la vista RCLV
-			const entidadRclv = entidadesRclv(link);
+			const entRclv = obtieneEntRclv(link);
 			const id = DOM.inputsRCLV[i].value;
-			location.href = "/" + entidadRclv + "/edicion/r/?id=" + id + "&origen=PDA";
+			location.href = "/" + entRclv + "/edicion/r/?id=" + id + "&origen=PDA";
 		});
 	});
 
@@ -336,5 +336,5 @@ const rutas = {
 };
 const camposRCLV = ["personaje_id", "hecho_id", "tema_id"];
 
-let entidadesRclv = (link) =>
+const obtieneEntRclv = (link) =>
 	link.className.includes("personaje") ? "personajes" : link.className.includes("hecho") ? "hechos" : "temas";

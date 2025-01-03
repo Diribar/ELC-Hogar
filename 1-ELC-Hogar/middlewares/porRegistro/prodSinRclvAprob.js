@@ -10,10 +10,10 @@ module.exports = async (req, res, next) => {
 	const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad).toLowerCase();
 	const ea = comp.obtieneDesdeEntidad.ea(entidad);
 
-	// Obtiene la prodEdicion con sus RCLV
+	// Obtiene la prodEdicion con sus rclvs
 	const edicion = await baseDeDatos.obtienePorCondicion("prodsEdicion", condicion, rclvsAsoc);
 
-	// Si alguno de sus RCLV está en status creado, genera la información
+	// Si alguno de sus rclvs está en status creado, genera la información
 	if (edicion)
 		for (let rclvAsoc of rclvsAsoc)
 			if (edicion[rclvAsoc] && edicion[rclvAsoc].statusRegistro_id == creado_id) {
@@ -29,7 +29,7 @@ module.exports = async (req, res, next) => {
 
 				// Obtiene la vista siguiente
 				let urlSiguiente = "/revision/alta/r/" + rclv.entidad + "/?id=" + rclv.id;
-				urlSiguiente += "&prodEntidad=" + entidad + "&prodId=" + entId + (origen ? "&origen=" + origen : "");
+				urlSiguiente += "&entProd=" + entidad + "&prodId=" + entId + (origen ? "&origen=" + origen : "");
 				const vistaSiguiente = variables.vistaSiguiente(urlSiguiente);
 
 				// Genera la información

@@ -1,7 +1,7 @@
 module.exports = (sequelize, dt) => {
 	const alias = "temas";
 	const columns = {
-		// Común con todos los RCLVs
+		// Común con todos los rclvs
 		nombre: {type: dt.STRING(35)},
 		genero_id: {type: dt.STRING(3)},
 		prodsAprob: {type: dt.INTEGER},
