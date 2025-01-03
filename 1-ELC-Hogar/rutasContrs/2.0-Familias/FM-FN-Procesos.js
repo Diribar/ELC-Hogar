@@ -303,9 +303,9 @@ module.exports = {
 
 				// producto_id
 				if (entidad == "links") {
-					const producto_id = comp.obtieneDesdeCampo_id.campo_idProd(original);
+					const prod_id = comp.obtieneDesdeCampo_id.campo_idProd(original);
 					edicion[producto_id] = original[producto_id];
-					if (producto_id != "pelicula_id") edicion.grupoCol_id = original.grupoCol_id; // para ediciones de links
+					if (prod_id != "pelicula_id") edicion.grupoCol_id = original.grupoCol_id; // para ediciones de links
 				}
 
 				// grupoCol_id

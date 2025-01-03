@@ -101,9 +101,9 @@ module.exports = {
 		// Asociación
 		prodAsoc: (registro) => FN.obtieneProdAsoc(registro),
 		asociacion: (registro) => {
-			const producto_id = FN.obtieneProdAsoc(registro);
+			const prod_id = FN.obtieneProdAsoc(registro);
 			const rclv_id = FN.obtieneRclvAsoc(registro);
-			return registro.link_id ? "link_id" : producto_id || rclv_id;
+			return registro.link_id ? "link_id" : prod_id || rclv_id;
 		},
 	},
 	obtieneDesdeAsoc: {
