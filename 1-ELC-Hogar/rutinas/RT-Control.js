@@ -277,7 +277,7 @@ module.exports = {
 		// Gestiones diarias
 		imagenDerecha: async () => {
 			// Variables
-			let {ImagenesDerecha: imgsYaProcs} = rutinasJson;
+			const {ImagenesDerecha: imgsYaProcs} = rutinasJson;
 			const milisegs = Date.now() + (new Date().getTimezoneOffset() / 60) * unaHora;
 			const fechaInicial = milisegs - 2 * unDia; // Arranca desde 2 días atrás
 			const cantFechas = 5; // Incluye 5 días
