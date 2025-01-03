@@ -1013,7 +1013,7 @@ const FN_obtieneImgDerecha = {
 		// Variables
 		let rclvs = [];
 
-		// Obtiene los rclv
+		// Obtiene los rclvs
 		for (const entidad of variables.entidades.rclvs) {
 			// Si corresponde, saltea la rutina
 			if (entidad == "epocasDelAno" && fechaDelAno.epocaDelAno_id == ninguno_id) continue;

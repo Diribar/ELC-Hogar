@@ -824,7 +824,7 @@ module.exports = {
 					// Obtiene el nombre de la entidad
 					datosNeces.entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
-					// Obtiene los rclv
+					// Obtiene los rclvs
 					for (let entRclv of entsRclv) {
 						// Variables
 						const campo_id = comp.obtieneDesdeEntidad.campo_id(entRclv);
