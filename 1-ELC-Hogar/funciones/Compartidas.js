@@ -583,7 +583,7 @@ module.exports = {
 	},
 	azar: () => parseInt(Math.random() * Math.pow(10, 6)), // Le asigna un n° entero al azar, donde 10^6 es el máximo posible
 
-	// R
+	// Rclv
 	canonNombre: (rclv) => {
 		// Variables
 		let canonNombre = "";
