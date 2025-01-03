@@ -6,39 +6,6 @@ const axios = require("axios");
 // Exportar
 module.exports = {
 	// Entidades
-	obtieneDesdeFamilias: {
-		familia: (familias) => {
-			return familias == "productos"
-				? "producto"
-				: familias == "rclvs"
-				? "rclv"
-				: familias == "links"
-				? "link"
-				: familias == "usuarios"
-				? "usuario"
-				: "";
-		},
-		petitFamilias: (familias) => {
-			return familias == "links"
-				? "links"
-				: familias == "rclvs"
-				? "rclvs"
-				: familias == "productos"
-				? "prods"
-				: familias == "usuarios" // Hace falta para la eliminación de avatars
-				? "usuarios"
-				: "";
-		},
-		entidadEdic: (familias) => {
-			return familias == "productos"
-				? "prodsEdicion"
-				: familias == "rclvs"
-				? "rclvsEdicion"
-				: familias == "links"
-				? "linksEdicion"
-				: "";
-		},
-	},
 	obtieneDesdeEntidad: {
 		// Familia y derivados
 		familia: (entidad) => {
@@ -48,56 +15,29 @@ module.exports = {
 				? "rclv"
 				: ["links", "linksEdicion"].includes(entidad)
 				? "link"
-				: "";
-		},
-		familias: (entidad) => {
-			return [...variables.entidades.prods, "prodsEdicion"].includes(entidad)
-				? "productos"
-				: [...variables.entidades.rclvs, "rclvsEdicion"].includes(entidad)
-				? "rclvs"
-				: ["links", "linksEdicion"].includes(entidad)
-				? "links"
 				: entidad == "usuarios"
-				? "usuarios"
-				: "";
+				? "usuario"
+				: null;
 		},
-		petitFamilias: (entidad) => {
-			return false
-				? null
-				: entidad == "links"
-				? "links"
-				: variables.entidades.rclvs.includes(entidad)
-				? "rclvs"
-				: variables.entidades.prods.includes(entidad)
-				? "prods"
-				: entidad == "ediciones"
-				? "edics"
-				: "";
+		familias: function (entidad) {
+			const familia = this.familia(entidad);
+			const familias = familia ? familia + "s" : null;
+			return familias;
+		},
+		petitFamilias: function (entidad) {
+			const familias = this.familias(entidad);
+			const petitFamilias = familias == "productos" ? "prods" : familias;
+			return petitFamilias;
 		},
 		siglaFam: (entidad) => FN.siglaFam(entidad),
 		entidadNombre: (entidad) => FN.entidadNombre(entidad),
 		campo_id: (entidad) => {
-			return entidad == "peliculas"
-				? "pelicula_id"
-				: entidad == "colecciones"
-				? "coleccion_id"
-				: entidad == "capitulos"
-				? "capitulo_id"
-				: entidad == "personajes"
-				? "personaje_id"
-				: entidad == "hechos"
-				? "hecho_id"
-				: entidad == "temas"
-				? "tema_id"
-				: entidad == "eventos"
-				? "evento_id"
-				: entidad == "epocasDelAno"
-				? "epocaDelAno_id"
-				: entidad == "links"
-				? "link_id"
-				: "";
+			const {todos, todos_id} = variables.entidades;
+			for (let i = 0; i < todos.length; i++) if (todos[i] == entidad) return todos_id[i];
+			return null;
 		},
 		asociacion: (entidad) => {
+			const {todos, todosAsocs} = variables.entidades;
 			return entidad == "peliculas"
 				? "pelicula"
 				: entidad == "colecciones"
@@ -116,7 +56,7 @@ module.exports = {
 				? "epocaDelAno"
 				: entidad == "links"
 				? "link"
-				: "";
+				: null;
 		},
 		entidadEdic: (entidad) => {
 			return variables.entidades.prods.includes(entidad)
@@ -125,7 +65,7 @@ module.exports = {
 				? "rclvsEdicion"
 				: entidad == "links"
 				? "linksEdicion"
-				: "";
+				: null;
 		},
 
 		// Masculino / Femenino
@@ -142,26 +82,14 @@ module.exports = {
 	obtieneDesdeCampo_id: {
 		// Entidad
 		entidadProd: (registro) => {
-			return registro.pelicula_id
-				? "peliculas"
-				: registro.coleccion_id
-				? "colecciones"
-				: registro.capitulo_id
-				? "capitulos"
-				: "";
+			const {prods, prods_id} = variables.entidades;
+			for (let i = 0; i < prods_id.length; i++) if (registro[prods_id[i]]) return prods[i];
+			return null;
 		},
 		entidadRCLV: (registro) => {
-			return registro.personaje_id
-				? "personajes"
-				: registro.hecho_id
-				? "hechos"
-				: registro.tema_id
-				? "temas"
-				: registro.evento_id
-				? "eventos"
-				: registro.epocaDelAno_id
-				? "epocasDelAno"
-				: "";
+			const {rclvs, rclvs_id} = variables.entidades;
+			for (let i = 0; i < rclvs_id.length; i++) if (registro[rclvs_id[i]]) return rclvs[i];
+			return null;
 		},
 		entidad: function (registro, familiaEdic) {
 			const entProd = this.entidadProd(registro);
@@ -178,7 +106,7 @@ module.exports = {
 				? entProd
 				: entRCLV
 				? entRCLV
-				: "";
+				: null;
 		},
 
 		// campo_id
@@ -192,17 +120,17 @@ module.exports = {
 		},
 		campo_id: function (registro) {
 			// Variables
-			const producto_id = this.campo_idProd(registro);
+			const prod_id = this.campo_idProd(registro);
 			const rclv_id = this.campo_idRCLV(registro);
 
 			// Fin
 			return registro.link_id // debe ir antes de los productos por sus ediciones
 				? "link_id"
-				: producto_id // debe ir antes de los rclv_id por sus ediciones
-				? producto_id
+				: prod_id // debe ir antes de los rclv_id por sus ediciones
+				? prod_id
 				: rclv_id
 				? rclv_id
-				: "";
+				: null;
 		},
 
 		// Asociación
@@ -218,10 +146,10 @@ module.exports = {
 				? "evento"
 				: registro.epocaDelAno_id
 				? "epocaDelAno"
-				: "";
+				: null;
 		},
 		asociacion: function (registro) {
-			const producto_id = this.asocProd(registro);
+			const producto_id = FN.asocProd(registro);
 			const rclv_id = this.asocRCLV(registro);
 			return registro.link_id
 				? "link_id"
@@ -229,20 +157,19 @@ module.exports = {
 				? producto_id
 				: rclv_id
 				? rclv_id
-				: "";
+				: null;
 		},
 	},
 	obtieneDesdeAsoc: {
 		// Entidad
 		entidad: (asoc) => {
-			const indice = [...variables.entidades.asocProdsRclvs].indexOf(asoc);
-			const entidad = indice > -1 ? [...variables.entidades.prodsRclvs][indice] : null;
+			const indice = variables.entidades.prodsRclvsAsoc.indexOf(asoc);
+			const entidad = indice > -1 ? variables.entidades.prodsRclvs[indice] : null;
 			return entidad;
 		},
 		entidadNombre: (asoc) => {
-			const indice = [...variables.entidades.asocsProd, ...variables.entidades.asocsRclv].indexOf(asoc);
-			const entNombre =
-				indice > -1 ? [...variables.entidades.prodsNombre, ...variables.entidades.rclvsNombre][indice] : null;
+			const indice = variables.entidades.prodsRclvsAsoc.indexOf(asoc);
+			const entNombre = indice > -1 ? variables.entidades.todosNombre[indice] : null;
 			return entNombre;
 		},
 
@@ -861,7 +788,7 @@ module.exports = {
 			// Si no se especificaron links, obtiene todos los aprobados que no tengan 'fechaVencim'
 			if (!links) {
 				const condicion = {statusRegistro_id: aprobado_id, fechaVencim: null};
-				const include = variables.entidades.asocsProd;
+				const include = variables.entidades.prodsAsoc;
 				links = await baseDeDatos.obtieneTodosPorCondicion("links", condicion, include);
 			}
 
@@ -1342,7 +1269,7 @@ const FN = {
 			? "capitulo"
 			: registro.coleccion_id
 			? "coleccion"
-			: "";
+			: null;
 	},
 	siglaFam: (entidad) =>
 		[...variables.entidades.prods, "prodsEdicion"].includes(entidad)
@@ -1408,7 +1335,7 @@ const FN = {
 			? registro.nombreOriginal
 			: registro.nombre
 			? registro.nombre
-			: "";
+			: null;
 	},
 };
 const FN_links = {
