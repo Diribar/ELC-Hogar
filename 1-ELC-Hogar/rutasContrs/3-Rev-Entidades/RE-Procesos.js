@@ -387,14 +387,14 @@ module.exports = {
 		},
 		prodsAsocs: async (entidad, id) => {
 			// Variables
-			const entidadesProd = variables.entidades.prods;
+			const entsProd = variables.entidades.prods;
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const statusSugeridoPor_id = usAutom_id;
 			const statusSugeridoEn = comp.fechaHora.ahora();
 			const statusCreadoAprob = {statusSugeridoPor_id, statusSugeridoEn, statusRegistro_id: creadoAprob_id};
 
 			// Rutina por entProd
-			for (let entProd of entidadesProd) {
+			for (let entProd of entsProd) {
 				// Actualiza los productos no aprobados, quitándole el valor al 'campo_id'
 				FN.actualizaLosProdsVinculadosNoAprobados({entidad: entProd, campo_id, id});
 
