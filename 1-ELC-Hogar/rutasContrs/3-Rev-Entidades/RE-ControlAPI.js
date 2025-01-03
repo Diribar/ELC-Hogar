@@ -48,7 +48,7 @@ module.exports = {
 		}
 
 		// Actualiza el solapamiento
-		if (entidad == "epocasDelAno" && aprob) comp.actualizaSolapam();
+		if (entidad == "epocasDelAno" && aprob) comp.actualizaSolapam(); // no hace falta el await, porque no se usa en la vista
 
 		// Fin
 		return res.json({OK: true, quedanCampos: !!edicion, statusAprob, reload});
@@ -77,7 +77,7 @@ module.exports = {
 	aprobInactivo: async (req, res) => {
 		// Variables
 		const {url} = req.query;
-		const link = await baseDeDatos.obtienePorCondicion("links", {url}, variables.entidades.asocsProd);
+		const link = await baseDeDatos.obtienePorCondicion("links", {url}, variables.entidades.prodsAsoc);
 
 		// Más variables
 		const datos = procesos.links.variables({link, req});

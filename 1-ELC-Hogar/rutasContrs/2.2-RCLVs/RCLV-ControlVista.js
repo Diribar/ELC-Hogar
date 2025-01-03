@@ -282,7 +282,7 @@ module.exports = {
 			}
 
 			// Si corresponde, actualiza el solapamiento
-			if (entidad == "epocasDelAno" && !edicion && !edicN) comp.actualizaSolapam();
+			if (entidad == "epocasDelAno" && !edicion && !edicN) comp.actualizaSolapam(); // no hace falta el await, porque no se usa en la vista
 
 			// Obtiene el url de la siguiente instancia
 			let destino = "/" + entidad + "/inactivar-captura/?id=" + (id ? id : 1) + "&origen=" + origen;

@@ -1,6 +1,6 @@
 "use strict";
 // Variables
-const {prods: entsProd, rclvs: entsRclv, asocsRclv} = variables.entidades;
+const {prods: entsProd, rclvs: entsRclv, rclvsAsoc} = variables.entidades;
 
 module.exports = {
 	varios: {
@@ -132,7 +132,7 @@ module.exports = {
 				if (["santoralAzar", "azar"].includes(layout.codigo)) include.push("prodAzar");
 
 				// Include - complejo
-				if (entidad == "productos") include.push(...asocsRclv);
+				if (entidad == "productos") include.push(...rclvsAsoc);
 				else if (prefs.apMar) include.push("personaje", "hecho");
 				else if (["rolesIgl", "canons"].some((n) => Object.keys(prefs).includes(n))) include.push("personaje");
 
@@ -168,8 +168,8 @@ module.exports = {
 								// Variable 'hoy' - exclusivo para cuando importa el día de hoy
 								const fechaHoy =
 									fechaDelAno &&
-									asocsRclv.some(
-										(asocRclv) => prod[asocRclv] && prod[asocRclv].fechaDelAno_id == fechaDelAno.id
+									rclvsAsoc.some(
+										(rclvAsoc) => prod[rclvAsoc] && prod[rclvAsoc].fechaDelAno_id == fechaDelAno.id
 									);
 								// Arma la respuesta
 								const respuesta = {...prod, entidad: entProd};
@@ -540,8 +540,8 @@ module.exports = {
 
 					// Busca las 'palsClave' dentro de sus campos include
 					if (!prods[i].palsClave)
-						for (let asocRclv of asocsRclv) {
-							const rclv = prod[asocRclv];
+						for (let rclvAsoc of rclvsAsoc) {
+							const rclv = prod[rclvAsoc];
 							for (let campo in rclv)
 								if (
 									rclv[campo] && // que tenga un valor
