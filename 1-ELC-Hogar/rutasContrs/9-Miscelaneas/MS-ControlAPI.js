@@ -89,6 +89,7 @@ module.exports = {
 		// Variables
 		const {cliente_id} = req.session.cliente || req.cookies;
 		const ruta = "busqueda-rapida";
+		const {comentario} = req.query;
 
 		// Si corresponde, guarda el registro
 		if (cliente_id && cliente_id != "U0000000011")
