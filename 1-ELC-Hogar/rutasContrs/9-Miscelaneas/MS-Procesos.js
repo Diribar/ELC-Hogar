@@ -460,20 +460,25 @@ const FN_navegsDia = {
 		const familias = ["prod", "rclv", "altaUser"];
 		let iconosCons = [];
 
+		// Deja solamente los registros con íconos
+		regsCliente = regsCliente.filter((n) => n.iconosArray);
+
 		// Obtiene los iconos por familia
 		for (let familia of familias) {
 			// Obtiene los regsCliente con ese ícono
-			const registrosConIcono = regsCliente.filter((n) => n.iconosArray && n.iconosArray[0].includes(iconos[familia]));
-			regsCliente = regsCliente.filter((n) => !n.iconosArray || !n.iconosArray[0].includes(iconos[familia]));
-			if (!registrosConIcono.length) continue;
+			const registrosDeFamilia = regsCliente.filter((n) => n.iconosArray[0].includes(iconos[familia]));
+			if (!registrosDeFamilia.length) continue;
+
+			// Descarta del general, los registros que ya se eligieron
+			regsCliente = regsCliente.filter((n) => !n.iconosArray[0].includes(iconos[familia]));
 
 			// Obtiene el ícono principal
-			const iconoFamilia = registrosConIcono[0].iconosArray[0];
+			const iconoFamilia = registrosDeFamilia[0].iconosArray[0];
 
 			// Obtiene los íconos secundarios
-			let iconosSecun = registrosConIcono.map((n) => n.iconosArray[1]);
+			let iconosSecun = registrosDeFamilia.map((n) => n.iconosArray[1]);
 			iconosSecun = [...new Set(iconosSecun)];
-			iconosSecun.sort((a, b) => (a < b ? -1 : 1));
+			iconosSecun.reverse();
 
 			// Consolida los íconos
 			const iconosConsFamilia = [iconoFamilia, ...iconosSecun].join(" ");
@@ -481,12 +486,12 @@ const FN_navegsDia = {
 		}
 
 		// Obtiene los íconos que no fueron incluidos
-		let iconosResto = regsCliente.map((n) => n.iconosArray && n.iconosArray[0]);
+		let iconosResto = regsCliente.map((n) => n.iconosArray[0]);
 		if (iconosResto.length) {
-			iconosResto = [...new Set(iconosResto)];
-			iconosResto.sort((a, b) => (a < b ? -1 : 1));
+			iconosResto = [...new Set(iconosResto)]; // elimina los repetidos
+			iconosResto.reverse(); // FIFO
 			const iconosConsFamilia = iconosResto.join(" ");
-			iconosCons.unshift(iconosConsFamilia);
+			iconosCons.unshift(iconosConsFamilia); // los agrega al inicio
 		}
 
 		// Convierte los íconos a texto
