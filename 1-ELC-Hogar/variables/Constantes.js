@@ -234,8 +234,8 @@ module.exports = {
 			["/institucional", "institucional", iconos.instituc],
 
 			// Familia
-			["/revision/inactivar", "revisionInactivar", iconos.revision,iconos.xMark],
-			["/revision/recuperar", "revisionRecuperar", iconos.revision,iconos.check],
+			["/revision/inactivar", "revisionInactivar", iconos.revision, iconos.xMark],
+			["/revision/recuperar", "revisionRecuperar", iconos.revision, iconos.check],
 			["/revision/", "revision", iconos.revision],
 
 			// Otros
