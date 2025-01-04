@@ -201,7 +201,7 @@ module.exports = {
 			const camposChkBox = camposDA.filter((n) => n.chkBox && (!n.exclusivo || n.exclusivo.includes(datosAdics.entidad)));
 			const camposDE = Object.keys(datosAdics);
 
-			// Grupos RCLV
+			// Grupos rclv
 			const gruposPers = procesos.grupos.pers(camposDA);
 			const gruposHechos = procesos.grupos.hechos(camposDA);
 
@@ -221,7 +221,7 @@ module.exports = {
 			let datosAdics = req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics;
 
 			// Obtiene los datosAdics
-			delete datosAdics.sinRCLV;
+			delete datosAdics.sinRclv;
 			datosAdics = {...datosAdics, ...req.body};
 
 			// Elimina los campos vacíos y pule los espacios innecesarios
@@ -234,7 +234,7 @@ module.exports = {
 
 			// Procesa algunos datos
 			datosAdics = procesos.datosAdics.valsCheckBtn(datosAdics);
-			datosAdics = procesos.datosAdics.quitaCamposRCLV(datosAdics);
+			datosAdics = procesos.datosAdics.quitaCamposRclv(datosAdics);
 			datosAdics.actores = procesos.datosAdics.valorParaActores(datosAdics);
 
 			// Guarda el data entry en session y cookie
@@ -300,9 +300,9 @@ module.exports = {
 			const {confirma} = req.session.confirma ? req.session : req.cookies;
 			const entidad = confirma.entidad;
 
-			// Si se eligió algún RCLV que no existe, vuelve a la instancia anterior
-			if (!confirma.sinRCLV) {
-				const {existe, epocaOcurrencia_id} = await procesos.confirma.verificaQueExistanLosRCLV(confirma);
+			// Si se eligió algún rclv que no existe, vuelve a la instancia anterior
+			if (!confirma.sinRclv) {
+				const {existe, epocaOcurrencia_id} = await procesos.confirma.verificaQueExistanLosRclv(confirma);
 				if (!existe) return res.redirect("agregar-da");
 				else confirma.epocaOcurrencia_id = epocaOcurrencia_id;
 			}
@@ -331,7 +331,7 @@ module.exports = {
 			// Guarda los datos de 'edición' - es clave escribir "edicion" así, para que la función no lo cambie
 			await procsFM.guardaActEdic({original: {...registro}, edicion: {...confirma}, entidad, usuario_id});
 
-			// RCLV - actualiza prodsAprob en RCLVs <-- esto tiene que estar después del guardado de la edición
+			// Rclv - actualiza prodsAprob en rclvs <-- esto tiene que estar después del guardado de la edición
 			if (confirma.personaje_id || confirma.hecho_id || confirma.tema_id)
 				procsFM.accsEnDepsPorCambioDeStatus(entidad, registro); // No es necesario el 'await', el proceso no necesita ese resultado
 

@@ -72,7 +72,7 @@
 				#encabezado #tituloPrincipal #layoutCheckbox #checkbox p {translate: -50% 0; left: 50%; z-index: 1;}
 				#zonaDisponible {
 					&.aumentaCn {animation-fill-mode: none; z-index: 1;}
-					&.toggle {display: none;} /* oculta los resultados y el cartelRCLV */
+					&.toggle {display: none;} /* oculta los resultados y el cartelRclv */
 					#vistaDeResults {
 						max-height: 97%; z-index: 1;
 						&:has(#scroll #botones li) {--altMargen: min(calc((var(--altoCuerpoMenosTitulo) * .97 - var(--altoBoton) * 2) / 3), 30px);}
@@ -87,7 +87,7 @@
 		#imgDerecha {
 			position: absolute; top: 50%; left: 50%; translate: -50% -50%;
 			img {max-width: 100vw; max-height: calc(var(--altoMain) - 27.6px - var(--altoFooter));} /* 27.6px es el alto del layout */
-			a:has(#cartelRCLV).toggle {display: none;} /* oculta los resultados y el cartelRCLV */
+			a:has(#cartelRclv).toggle {display: none;} /* oculta los resultados y el cartelRclv */
 		}
 	}
 

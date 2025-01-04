@@ -10,7 +10,7 @@
 		<!--Primera columna-->
 		<div id="primeraColumna" class="columna">
 			<!-- Datos generales -->
-			<h3 id="tituloRCLV" class="">Datos Generales</h3>
+			<h3 id="tituloRclv" class="">Datos Generales</h3>
 			<hr>
 
 			<!-- Campos radioBtn -->
@@ -32,20 +32,20 @@
 		<!--Segunda columna - Relación con la vida -->
 		<div id="segundaColumna" class="columna flexCol ocultaCfc ocultaOcurrio">
 			<div class="flexRowAlign inputError">
-				<h3 id="tituloRCLV" class="">Relación con la Vida</h3>
-				<!-- Ayuda para un RCLV -->
+				<h3 id="tituloRclv" class="">Relación con la Vida</h3>
+				<!-- Ayuda para un Rclv -->
 				<%- include("MN-Ayuda", {mensajes: ayudas.rclvs1, ayudaClass: "ayudaRclv"}) %>
-				<!-- Ayuda para más RCLVs -->
+				<!-- Ayuda para más Rclvs -->
 				<%- include("MN-Ayuda", {mensaje: ayudas.rclv2, ayudaClass: "ayudaRclv"}) %>
-				<div id="errorRCLV" class="ocultar">
-					<%- include("MN-Errores", {ocultarOK: true, nombre: "RCLV"}) %>
+				<div id="errorRclv" class="ocultar">
+					<%- include("MN-Errores", {ocultarOK: true, nombre: "rclv"}) %>
 				</div>
 			</div>
 			<!--No lo voy a responder ahora-->
-			<%- include("PA4-DA4-RCLV_chkbx", {nombre: "sinRCLV", }) %>
+			<%- include("PA4-DA4-RCLV_chkbx", {nombre: "sinRclv", }) %>
 
 			<!-- Opciones -->
-			<div id="selectsRCLV" class="flexCol">
+			<div id="selectsRclv" class="flexCol">
 				<hr>
 				<!--Personaje histórico-->
 				<%- include("PA4-DA4-RCLV_ph", {nombre: "personaje_id", grupos: gruposPers}) %>

@@ -87,10 +87,10 @@ const validaLinkRepetidos = async (datos) => {
 	const id = await validacsFM.repetidos(["url"], datos);
 	if (id) {
 		const link = await baseDeDatos.obtienePorId("links", id);
-		const prodEntidad = comp.obtieneDesdeCampo_id.entidadProd(link);
-		const campo_id = comp.obtieneDesdeEntidad.campo_id(prodEntidad);
+		const entProd = comp.obtieneDesdeCampo_id.entProd(link);
+		const campo_id = comp.obtieneDesdeEntidad.campo_id(entProd);
 		const prodId = link[campo_id];
-		datos = {entidad: prodEntidad, id: prodId, entidadNombre: "link"};
+		datos = {entidad: entProd, id: prodId, entidadNombre: "link"};
 		respuesta = comp.validacs.cartelRepetido(datos);
 	}
 	// Fin

@@ -3,7 +3,7 @@
 const router = express.Router();
 const API = require("./RE-ControlAPI");
 const vista = require("./RE-ControlVista");
-const vistaRCLV = require("../2.2-RCLVs/RCLV-ControlVista");
+const vistaRclv = require("../2.2-RCLVs/RCLV-ControlVista");
 const vistaFM = require("../2.0-Familias/FM-ControlVista");
 
 // Middlewares particulares
@@ -48,7 +48,7 @@ const correcs = [m.entValida, m.idValido, m.statusCompara, ...usuarioBase, m.per
 // APIs - Tablero
 router.get("/api/re-actualiza-visibles", API.actualizaVisibles);
 
-// APIs - Producto y RCLV
+// APIs - Producto y Rclv
 router.get("/api/re-motivo-generico", API.obtieneMotivoGenerico);
 router.get("/api/re-edicion-aprob-rech", m.edicionAPI, API.edicAprobRech);
 
@@ -63,7 +63,7 @@ router.get("/tablero", usuarioBase, m.usRolAutTablEnts, vista.tableroControl);
 // Vistas - Altas
 router.get("/alta/p/:entidad", aptoCRUD, m.prodSinRclvAprob, m.capturaActivar, m.rutaCRUD_ID, vista.form.altaProd);
 router.post("/alta/p/:entidad", aptoCRUD, m.usRolRevPERL, m.prodSinRclvAprob, m.capturaInactivar, vista.guardar.cambioStatus); // Cambios de status
-router.get("/alta/r/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaActivar, vistaRCLV.altaEdic.form);
+router.get("/alta/r/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaActivar, vistaRclv.altaEdic.form);
 router.post("/alta/r/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, m.multer.single("avatar"), vista.guardar.cambioStatus); // Cambios de status
 
 // Vistas - Edición
@@ -83,7 +83,7 @@ router.get("/recuperar/:entidad", aptoCRUD, m.capturaActivar, vistaFM.form.histo
 router.post("/recuperar/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaInactivar, vista.guardar.cambioStatus); // Va sin 'motivo'
 
 // Vistas - Solapamiento
-router.get("/solapamiento/r/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaActivar, vistaRCLV.altaEdic.form);
+router.get("/solapamiento/r/:entidad", aptoCRUD, m.usRolRevPERL, m.capturaActivar, vistaRclv.altaEdic.form);
 router.post("/solapamiento/r/:entidad", aptoCRUD, m.usRolRevPERL, m.multer.single("avatar"), m.capturaInactivar, vista.guardar.solapam);
 
 // Vistas - Links

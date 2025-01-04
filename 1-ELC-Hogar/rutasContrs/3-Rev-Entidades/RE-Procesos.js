@@ -26,7 +26,7 @@ module.exports = {
 			// Obtiene todas las ediciones
 			let ediciones = await baseDeDatos.obtieneTodos("prodsEdicion", include);
 
-			// Elimina las ediciones con RCLV no aprobado
+			// Elimina las ediciones con rclv no aprobado
 			ediciones = ediciones.filter(
 				(edicion) =>
 					!variables.entidades.rclvsAsoc.some((rclv) => edicion[rclv] && edicion[rclv].statusRegistro_id != aprobado_id)
@@ -34,7 +34,7 @@ module.exports = {
 
 			// Obtiene los productos
 			ediciones.map((n) => {
-				const entidad = comp.obtieneDesdeCampo_id.entidadProd(n);
+				const entidad = comp.obtieneDesdeCampo_id.entProd(n);
 				const asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
 				productos.push({
 					...n[asociacion],
@@ -142,7 +142,7 @@ module.exports = {
 			return {RP: repetidos};
 		},
 		obtieneSigProd_Links: async (revId) => FN_links.obtieneSigProd({revId}),
-		obtieneRCLVs1: async (revId) => {
+		obtieneRclvs1: async (revId) => {
 			// Variables
 			const entidades = variables.entidades.rclvs;
 			const camposFijos = {entidades, revId};
@@ -206,7 +206,7 @@ module.exports = {
 			// Fin
 			return {AL, SL, FM};
 		},
-		obtieneRCLVs2: async (revId) => {
+		obtieneRclvs2: async (revId) => {
 			// Variables
 			let include = variables.entidades.rclvsAsoc;
 			let rclvs = [];
@@ -218,7 +218,7 @@ module.exports = {
 			if (ediciones.length) {
 				// Obtiene los rclvs originales
 				ediciones.map((n) => {
-					let entidad = comp.obtieneDesdeCampo_id.entidadRCLV(n);
+					let entidad = comp.obtieneDesdeCampo_id.entRclv(n);
 					let asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
 					rclvs.push({
 						...n[asociacion],
@@ -270,9 +270,9 @@ module.exports = {
 				leadTimeEdicion: comp.obtieneLeadTime(original.creadoEn, ahora),
 			};
 
-			// Obtiene el RCLV actual
+			// Obtiene el rclv actual
 			const include = comp.obtieneTodosLosCamposInclude(entidad);
-			const RCLV_actual = await baseDeDatos.obtienePorId(entidad, original.id, include);
+			const rclvActual = await baseDeDatos.obtienePorId(entidad, original.id, include);
 
 			// Rutina para comparar los campos
 			for (let campoRevisar of camposRevisar) {
@@ -284,7 +284,7 @@ module.exports = {
 				if (campo == "prioridad_id") continue;
 
 				// Valores a comparar
-				const {valorAprob, valorDesc} = this.valoresComparar(original, RCLV_actual, relacInclude, campo);
+				const {valorAprob, valorDesc} = this.valoresComparar(original, rclvActual, relacInclude, campo);
 
 				// Si ninguna de las variables tiene un valor, saltea la rutina
 				if (!valorAprob && !valorDesc) continue;
@@ -320,18 +320,18 @@ module.exports = {
 			// Fin
 			return;
 		},
-		valoresComparar: (original, RCLV_actual, relacInclude, campo) => {
+		valoresComparar: (original, rclvActual, relacInclude, campo) => {
 			// Valores a comparar
-			let valorAprob = relacInclude ? RCLV_actual[relacInclude].nombre : RCLV_actual[campo];
+			let valorAprob = relacInclude ? rclvActual[relacInclude].nombre : rclvActual[campo];
 			let valorDesc = relacInclude ? original[relacInclude].nombre : original[campo];
 
 			// Casos especiales
 			if (["soloCfc", "ama"].includes(campo)) {
-				valorAprob = RCLV_actual[campo] == 1 ? "SI" : "NO";
+				valorAprob = rclvActual[campo] == 1 ? "SI" : "NO";
 				valorDesc = original[campo] == 1 ? "SI" : "NO";
 			}
 			if (campo == "epocaOcurrencia_id") {
-				valorAprob = RCLV_actual[relacInclude].nombre_pers;
+				valorAprob = rclvActual[relacInclude].nombre_pers;
 				valorDesc = original[relacInclude].nombre_pers;
 			}
 
@@ -387,20 +387,20 @@ module.exports = {
 		},
 		prodsAsocs: async (entidad, id) => {
 			// Variables
-			const entidadesProd = variables.entidades.prods;
+			const entsProd = variables.entidades.prods;
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const statusSugeridoPor_id = usAutom_id;
 			const statusSugeridoEn = comp.fechaHora.ahora();
 			const statusCreadoAprob = {statusSugeridoPor_id, statusSugeridoEn, statusRegistro_id: creadoAprob_id};
 
-			// Rutina por entidadProd
-			for (let entidadProd of entidadesProd) {
+			// Rutina por entProd
+			for (let entProd of entsProd) {
 				// Actualiza los productos no aprobados, quitándole el valor al 'campo_id'
-				FN.actualizaLosProdsVinculadosNoAprobados({entidad: entidadProd, campo_id, id});
+				FN.actualizaLosProdsVinculadosNoAprobados({entidad: entProd, campo_id, id});
 
 				// Obtiene los productos aprobados vinculados
 				const condicion = {[campo_id]: id, statusRegistro_id: aprobado_id};
-				let prodsVinculados = await baseDeDatos.obtieneTodosPorCondicion(entidadProd, condicion);
+				let prodsVinculados = await baseDeDatos.obtieneTodosPorCondicion(entProd, condicion);
 
 				// Actualiza los productos aprobados, quitándole el valor al 'campo_id' y fijándose si tiene errores
 				for (let prodVinculado of prodsVinculados) {
@@ -413,10 +413,10 @@ module.exports = {
 					if (errores.impideAprobado) objeto = {...objeto, ...statusCreadoAprob};
 
 					// Actualiza el registro del producto
-					baseDeDatos.actualizaPorId(entidadProd, prodVinculado.id, objeto);
+					baseDeDatos.actualizaPorId(entProd, prodVinculado.id, objeto);
 
 					// Si es una colección en status creadoAprob_id, actualiza sus capítulos que tengan status aprobado
-					if (entidadProd == "colecciones" && errores.impideAprobado) {
+					if (entProd == "colecciones" && errores.impideAprobado) {
 						const condicion = {coleccion_id: prodVinculado.id, statusRegistro_id: aprobado_id};
 						baseDeDatos.actualizaPorCondicion("capitulos", condicion, statusCreadoAprob);
 					}
@@ -545,7 +545,7 @@ module.exports = {
 			const {entidad, original, originalGuardado, revId, campo, aprob, motivo_id} = objeto;
 			let {edicion} = objeto;
 			const familias = comp.obtieneDesdeEntidad.familias(entidad);
-			const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
+			const entEdic = comp.obtieneDesdeEntidad.entEdic(entidad);
 			const decision = "edics" + (aprob ? "Aprob" : "Rech");
 			const ahora = comp.fechaHora.ahora();
 			const camposRevisar =
@@ -615,7 +615,7 @@ module.exports = {
 			}
 
 			// Elimina el valor del campo en el registro de 'edición' y en la variable
-			await baseDeDatos.actualizaPorId(nombreEdic, edicion.id, {[campo]: null});
+			await baseDeDatos.actualizaPorId(entEdic, edicion.id, {[campo]: null});
 			delete edicion[campo];
 			if (relacInclude) delete edicion[relacInclude]; // Es necesario eliminarla para que no la compare
 
@@ -629,39 +629,6 @@ module.exports = {
 		cartelNoQuedanCampos: {
 			mensajes: ["Se terminó de procesar esta edición.", "Podés volver al tablero de control"],
 			iconos: [variables.vistaTablero],
-		},
-		// RCLV-Edición Form
-		RCLV_EdicForm_ingrReempl: async (rclvOrig, edicion) => {
-			// Obtiene todos los campos a revisar
-			let campos = [...variables.camposRevisar.rclvs];
-			let resultado = [];
-
-			// Deja solamente los campos presentes en edicion
-			for (let nombre in edicion) {
-				// Obtiene el campo con varios datos
-				let campo = campos.find((n) => n.nombre == nombre);
-				// Si el campo no existe en los campos a revisar, saltea la rutina
-				if (!campo) continue;
-				// Obtiene las variables de include
-				let relacInclude = campo.relacInclude;
-				// Criterio para determinar qué valores originales mostrar
-				campo.mostrarOrig =
-					relacInclude && rclvOrig[relacInclude] // El producto original tiene un valor 'include'
-						? rclvOrig[relacInclude].nombre // Muestra el valor 'include'
-						: rclvOrig[nombre]; // Muestra el valor 'simple'
-				// Criterio para determinar qué valores editados mostrar
-				campo.mostrarEdic =
-					relacInclude && edicion[relacInclude] // El producto editado tiene un valor 'include'
-						? edicion[relacInclude].nombre // Muestra el valor 'include'
-						: edicion[nombre]; // Muestra el valor 'simple'
-				// Consolidar los resultados
-				resultado.push(campo);
-			}
-			// Separa los resultados entre ingresos y reemplazos
-			let ingresos = resultado.filter((n) => !n.mostrarOrig); // Datos de edición, sin valor en la versión original
-			let reemplazos = resultado.filter((n) => n.mostrarOrig);
-			// Fin
-			return [ingresos, reemplazos];
 		},
 	},
 
@@ -900,7 +867,7 @@ let FN_links = {
 		// Obtiene los productos
 		for (let link of links) {
 			// Variables
-			const entidad = comp.obtieneDesdeCampo_id.entidadProd(link);
+			const entidad = comp.obtieneDesdeCampo_id.entProd(link);
 			const asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
 			const campoFecha = link.statusRegistro_id ? "statusSugeridoEn" : "editadoEn";
 			const fechaRef = link[campoFecha];
@@ -1054,7 +1021,7 @@ let FN = {
 		// Obtiene el status final
 		const statusFinal_id = statusAprob
 			? rclv
-				? aprobado_id // si es un RCLV, se aprueba
+				? aprobado_id // si es un rclv, se aprueba
 				: impideAprobado // si es un producto, revisa si tiene errores que impidan su aprobación
 				? creadoAprob_id // si tiene errores que impiden el aprobado, status 'creadoAprob'
 				: entidad == "capitulos"

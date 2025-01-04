@@ -28,8 +28,8 @@ module.exports = {
 		// Variables
 		const palabras = req.query.palabras;
 		const usuario_id = req.session.usuario ? req.session.usuario.id : 0;
-		const entidadesProd = variables.entidades.prods;
-		const entidadesRCLV = variables.entidades.rclvs;
+		const entsProd = variables.entidades.prods;
+		const entsRclv = variables.entidades.rclvs;
 		const camposProds = ["nombreCastellano", "nombreOriginal"];
 		const camposRclvs = ["nombre", "nombreAltern"];
 		const original = true;
@@ -39,10 +39,10 @@ module.exports = {
 
 		// Armado de la variable 'datos' para productos originales
 		campos = camposProds;
-		for (let entidad of entidadesProd) datos.push({familia: "producto", entidad, campos, original});
+		for (let entidad of entsProd) datos.push({familia: "producto", entidad, campos, original});
 
 		// Armado de la variable 'datos' para rclvs originales
-		for (let entidad of entidadesRCLV) {
+		for (let entidad of entsRclv) {
 			campos = ["personajes", "hechos"].includes(entidad) ? camposRclvs : ["nombre"];
 			datos.push({familia: "rclv", entidad, campos, original});
 		}

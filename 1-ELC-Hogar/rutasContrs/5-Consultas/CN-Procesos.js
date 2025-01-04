@@ -148,11 +148,11 @@ module.exports = {
 							: {[Op.or]: [{[Op.eq]: null}, {[Op.gte]: 70}]};
 				} else if (layout.codigo == "calificacion") condicion.calificacion = {[Op.ne]: null}; // Para la opción 'calificación', agrega pautas en las condiciones
 
-				// RCLV
+				// Rclv
 				const campo_id = !["productos", "rclvs"].includes(entidad) ? comp.obtieneDesdeEntidad.campo_id(entidad) : null; // si es una entidad particular, obtiene el nombre del 'campo_id'
 				if (campo_id) condicion[campo_id] = {[Op.ne]: ninguno_id};
 
-				// Si el código es 'santoralAzar', obtiene la fecha del día para luego poder ordenar desde el RCLV del día
+				// Si el código es 'santoralAzar', obtiene la fecha del día para luego poder ordenar desde el rclv del día
 				const fechaDelAno =
 					layout.codigo == "santoralAzar" && fechasDelAno.find((n) => n.dia == prefs.dia && n.mes_id == prefs.mes);
 
@@ -305,16 +305,16 @@ module.exports = {
 					if (entidad != "personajes") return [];
 				}
 
-				// Obtiene los RCLVs
+				// Obtiene los rclvs
 				if (entidad == "rclvs") {
 					// Variables para todos los 'rclvs'
-					const entidadesRCLV =
+					const entsRclv =
 						layout.codigo == "anoOcurrencia"
 							? ["personajes", "hechos"] // son las únicas entidades que tienen el año histórico en que ocurrió
 							: [...entsRclv];
 
-					// Rutina por RCLV
-					for (let entRclv of entidadesRCLV) {
+					// Rutina por rclv
+					for (let entRclv of entsRclv) {
 						// Obtiene los registros
 						const {condicion, include} = this.obtieneIncludeCondics(entRclv, prefs);
 						rclvs.push(
@@ -326,7 +326,7 @@ module.exports = {
 					rclvs = await Promise.all(rclvs).then((n) => n.flat());
 				}
 
-				// Rutina para un sólo RCLV
+				// Rutina para un sólo rclv
 				else {
 					const {condicion, include} = this.obtieneIncludeCondics(entidad, prefs);
 					rclvs = await baseDeDatos
@@ -384,7 +384,7 @@ module.exports = {
 				const inclPers = [...inclHec, "rolIglesia", "canon"];
 				let rclvs = [];
 
-				// Rutina por entidad para obtener los RCLVs
+				// Rutina por entidad para obtener los rclvs
 				for (let entRclv of entsRclv) {
 					// Variables
 					const condicion = {statusRegistro_id: aprobado_id, fechaDelAno_id: {[Op.ne]: 400}};
@@ -491,13 +491,13 @@ module.exports = {
 				// Fin
 				return prods;
 			},
-			prodsConRCLVs: ({prods, rclvs}) => {
+			prodsConRclvs: ({prods, rclvs}) => {
 				// Interrumpe la función
-				if (!rclvs) return prods; // Si no se pidió cruzar contra RCLVs, devuelve la variable intacta
-				if (!prods.length || !rclvs.length) return []; // Si no hay RCLVs, reduce a cero los productos
+				if (!rclvs) return prods; // Si no se pidió cruzar contra rclvs, devuelve la variable intacta
+				if (!prods.length || !rclvs.length) return []; // Si no hay rclvs, reduce a cero los productos
 
-				// Para cada RCLV, busca los productos
-				const prodsCruzadosConRCLVs = [];
+				// Para cada rclv, busca los productos
+				const prodsCruzadosConRclvs = [];
 				for (const rclv of rclvs) {
 					// Variables
 					const campo_id = comp.obtieneDesdeEntidad.campo_id(rclv.entidad);
@@ -507,13 +507,13 @@ module.exports = {
 
 					// Acciones si se encontraron hallazgos
 					if (hallazgos.length) {
-						prodsCruzadosConRCLVs.push(...hallazgos.map((n) => ({...n, [asoc]: {...n[asoc], fechaDelAno}}))); // los agrega
+						prodsCruzadosConRclvs.push(...hallazgos.map((n) => ({...n, [asoc]: {...n[asoc], fechaDelAno}}))); // los agrega
 						prods = prods.filter((n) => n[campo_id] != rclv.id); // los elimina de prods para que no se dupliquen
 					}
 				}
 
 				// Fin
-				return prodsCruzadosConRCLVs;
+				return prodsCruzadosConRclvs;
 			},
 			prodsConPalsClave: ({prods, palabrasClave}) => {
 				if (!prods.length) return [];
@@ -600,12 +600,12 @@ module.exports = {
 				return prods;
 			},
 
-			// RCLVs
+			// Rclvs
 			rclvsConProds: ({rclvs, prods, prefs}) => {
 				// Cruza 'rclvs' con 'prods'
 				if (!prods.length || !rclvs.length) return [];
 
-				// Tareas por RCLV
+				// Tareas por rclv
 				let i = 0;
 				while (i < rclvs.length) {
 					// Variables
@@ -824,14 +824,14 @@ module.exports = {
 					// Obtiene el nombre de la entidad
 					datosNeces.entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 
-					// Obtiene los RCLV
+					// Obtiene los rclvs
 					for (let entRclv of entsRclv) {
 						// Variables
 						const campo_id = comp.obtieneDesdeEntidad.campo_id(entRclv);
 						const asociacion = comp.obtieneDesdeEntidad.asociacion(entRclv);
 						const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entRclv);
 
-						// RCLV nombre
+						// Rclv nombre
 						if (prod[campo_id] > varios_id) {
 							datosNeces[entidadNombre] = prod[asociacion].nombre;
 							break;
@@ -866,7 +866,7 @@ module.exports = {
 						datosNeces = {...datosNeces, fechaDelAno_id, fechaDelAno: fechaDelAno.nombre}; // sólo muestra la 'fechaDelAno_id' en el Front-End para las vistas con santoral
 					if (epocaOcurrencia)
 						datosNeces = {...datosNeces, epocaOcurrencia_id, epocaOcurrencia: epocaOcurrencia.consulta}; // hace falta la 'fechaDelAno_id' en el Front-End
-					if (categoria_id == "CFC" || soloCfc || entidad == "epocasDelAno") datosNeces.cfc = true;
+					if (categoria_id == "CFC" || soloCfc || ["eventos", "epocasDelAno"].includes(entidad)) datosNeces.cfc = true;
 
 					// Obtiene campos en función de la entidad
 					if (entidad == "personajes" && rclv.rolIglesia_id != "NN") {

@@ -126,11 +126,11 @@ module.exports = {
 		let original = await baseDeDatos.obtienePorId(entidad, id, include);
 		if (entidad == "capitulos") original.capitulos = await this.obtieneCapitulos(original.coleccion_id, original.temporada);
 
-		// Cantidad de productos asociados al RCLV
-		let canonNombre, RCLVnombre;
+		// Cantidad de productos asociados al rclv
+		let canonNombre, rclvNombre;
 		if (familia == "rclv") {
 			canonNombre = comp.canonNombre(original);
-			RCLVnombre = original.nombre;
+			rclvNombre = original.nombre;
 		}
 
 		// Más variables
@@ -146,7 +146,7 @@ module.exports = {
 		return {
 			...{tema, codigo, titulo, origen},
 			...{siglaFam, entidad, entidadNombre, familia, petitFamilias, id, registro: original, comentario},
-			...{canonNombre, RCLVnombre, imgDerPers, bloqueDer, status_id},
+			...{canonNombre, rclvNombre, imgDerPers, bloqueDer, status_id},
 			...{entsNombre, urlActual, cartelGenerico},
 		};
 	},
@@ -234,7 +234,7 @@ module.exports = {
 	},
 	obtieneOriginalEdicion: async ({entidad, entId, usuario_id, excluirInclude, omitirPulirEdic}) => {
 		// Variables
-		const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
+		const entEdic = comp.obtieneDesdeEntidad.entEdic(entidad);
 		const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 		const condEdic = {[campo_id]: entId, editadoPor_id: usuario_id};
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
@@ -251,7 +251,7 @@ module.exports = {
 
 		// Obtiene el registro original con sus includes
 		let original = baseDeDatos.obtienePorId(entidad, entId, includesOrig);
-		let edicion = usuario_id ? baseDeDatos.obtienePorCondicion(entidadEdic, condEdic, includesEdic) : null;
+		let edicion = usuario_id ? baseDeDatos.obtienePorCondicion(entEdic, condEdic, includesEdic) : null;
 		[original, edicion] = await Promise.all([original, edicion]);
 
 		// Le quita al original los campos sin contenido
@@ -285,7 +285,7 @@ module.exports = {
 	},
 	guardaActEdic: async ({entidad, original, edicion, usuario_id}) => {
 		// Variables
-		let entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
+		let entEdic = comp.obtieneDesdeEntidad.entEdic(entidad);
 
 		// Quita la info que no agrega valor
 		edicion = await comp.puleEdicion(entidad, original, edicion);
@@ -293,7 +293,7 @@ module.exports = {
 		// Acciones si quedaron datos para actualizar
 		if (edicion) {
 			// Si existe el registro, lo actualiza
-			if (edicion.id) await baseDeDatos.actualizaPorId(entidadEdic, edicion.id, edicion);
+			if (edicion.id) await baseDeDatos.actualizaPorId(entEdic, edicion.id, edicion);
 			// Si no existe el registro, lo agrega
 			else {
 				// campo_id, editadoPor_id
@@ -314,7 +314,7 @@ module.exports = {
 				if (entidad == "links") edicion.grupoCol_id = original.grupoCol_id; // para ediciones de links
 
 				// Se agrega el registro
-				await baseDeDatos.agregaRegistro(entidadEdic, edicion);
+				await baseDeDatos.agregaRegistro(entEdic, edicion);
 			}
 		}
 
@@ -521,7 +521,7 @@ module.exports = {
 		// Variables
 		const familias = comp.obtieneDesdeEntidad.familias(entidad);
 
-		// prodsEnRCLV
+		// prodsEnRclv
 		if (familias == "productos") {
 			// Variables
 			const prodAprob = activos_ids.includes(registro.statusRegistro_id); // antes era 'aprobados_ids'
@@ -539,7 +539,7 @@ module.exports = {
 				if (registro[rclv_id] && registro[rclv_id] != ninguno_id)
 					prodAprob
 						? baseDeDatos.actualizaPorId(entRclv, registro[rclv_id], {prodsAprob: true})
-						: comp.actualizaProdsEnRCLV({entidad: entRclv, id: registro[rclv_id]});
+						: comp.actualizaProdsEnRclv({entidad: entRclv, id: registro[rclv_id]});
 			}
 		}
 
@@ -622,7 +622,7 @@ module.exports = {
 			// - Elimina el valor del campo
 
 			// Variables
-			const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
+			const nombreEdic = comp.obtieneDesdeEntidad.entEdic(entidad);
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const condicion = {[campo_id]: id};
 			const ediciones = await baseDeDatos.obtieneTodosPorCondicion(nombreEdic, condicion);
@@ -640,13 +640,13 @@ module.exports = {
 		dependientes: async function (entidad, id) {
 			// Variables
 			const familias = comp.obtieneDesdeEntidad.familias(entidad);
-			const entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
+			const entEdic = comp.obtieneDesdeEntidad.entEdic(entidad);
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const condicion = {[entidad == "colecciones" ? "grupoCol_id" : campo_id]: id};
 			const espera = [];
 
 			// Elimina las ediciones
-			espera.push(baseDeDatos.eliminaPorCondicion(entidadEdic, condicion));
+			espera.push(baseDeDatos.eliminaPorCondicion(entEdic, condicion));
 
 			// Productos
 			if (familias == "productos") {
@@ -664,7 +664,7 @@ module.exports = {
 				}
 			}
 
-			// RCLV
+			// Rclv
 			if (familias == "rclvs") {
 				// Borra el vínculo en las ediciones de producto y las elimina si quedan vacías
 				espera.push(this.vinculoEdicsProds({entRclv: entidad, rclvID: id}));
@@ -702,23 +702,23 @@ module.exports = {
 		},
 		vinculoProds: async function ({entRclv, rclvID}) {
 			// Variables
-			const campo_idRCLV = comp.obtieneDesdeEntidad.campo_id(entRclv);
+			const campo_idRclv = comp.obtieneDesdeEntidad.campo_id(entRclv);
 			const entidades = variables.entidades.prods;
 			let prods = [];
 			let espera = [];
 
-			// Obtiene los productos vinculados al RCLV, en cada entidad
+			// Obtiene los productos vinculados al rclv, en cada entidad
 			for (let entidad of entidades)
 				prods.push(
 					baseDeDatos
-						.obtieneTodosPorCondicion(entidad, {[campo_idRCLV]: rclvID})
+						.obtieneTodosPorCondicion(entidad, {[campo_idRclv]: rclvID})
 						.then((n) => n.map((m) => ({...m, [campo_id]: 1})))
 				);
 			prods = await Promise.all(prods).then((n) => n.flat());
 
-			// Averigua si existían productos vinculados al RCLV
+			// Averigua si existían productos vinculados al rclv
 			if (prods.length) {
-				// Les actualiza el campo_idRCLV al valor 'Ninguno'
+				// Les actualiza el campo_idRclv al valor 'Ninguno'
 				for (let entidad of entidades)
 					espera.push(baseDeDatos.actualizaPorCondicion(entidad, {[campo_id]: rclvID}, {[campo_id]: 1}));
 
@@ -855,7 +855,7 @@ module.exports = {
 
 // Funciones
 let FN = {
-	eliminaEdicionesVacias: async function (ediciones, campo_idRCLV) {
+	eliminaEdicionesVacias: async function (ediciones, campo_idRclv) {
 		// Revisa si tiene que eliminar alguna edición
 		for (let edicion of ediciones) {
 			// Variables
@@ -867,7 +867,7 @@ let FN = {
 			const original = await baseDeDatos.obtienePorId(entProd, prodId);
 
 			// Elimina la edición si está vacía
-			delete edicion[campo_idRCLV];
+			delete edicion[campo_idRclv];
 			await comp.puleEdicion(entProd, original, edicion);
 		}
 		// Fin

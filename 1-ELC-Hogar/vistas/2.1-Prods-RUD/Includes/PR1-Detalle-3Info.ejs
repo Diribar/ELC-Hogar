@@ -4,7 +4,7 @@
 		<button type="button" class="etiqueta resaltar">Sinopsis</button>
 		<button type="button" class="etiqueta">Inform. General</button>
 		<button type="button" class="etiqueta">Actores</button>
-		<!-- RCLVs -->
+		<!-- Rclvs -->
 		<% for (let i=0; i < asocs.length; i++) if (bloqueIzq[asocs[i]]) { %>
 		<button type="button" class="etiqueta rclv"><%= rclvsNombre[i] %></button>
 		<% } %>
@@ -30,17 +30,17 @@
 		<div id="actores" class="datosParcial" style="display: none">
 			<p><%= bloqueIzq.actores ? bloqueIzq.actores : 'No disponemos de esa información' %></p>
 		</div>
-		<!-- Revisa cada RCLV asociado -->
-		<% for (RCLV of RCLVs) { %>
-		<!-- Acciones si tiene algún RCLV asociado -->
-		<% if (bloqueIzq[RCLV.asociacion]) { %>
+		<!-- Revisa cada rclv asociado -->
+		<% for (rclv of rclvs) { %>
+		<!-- Acciones si tiene algún rclv asociado -->
+		<% if (bloqueIzq[rclv.asociacion]) { %>
 		<div id="rclv" class="datosParcial" style="display: none">
-			<% for (let campo of bloqueIzq[RCLV.asociacion]) { %>
+			<% for (let campo of bloqueIzq[rclv.asociacion]) { %>
 			<!-- Un párrafo por cada dato -->
 			<p>
 				<!-- Si tiene más de un dato, muestra sus nombres -->
-				<% if (bloqueIzq[RCLV.asociacion].length > 1) { %><%= campo.titulo + ": " %><% } %> <% if (campo.titulo == bloqueIzq[RCLV.asociacion][0].titulo) { %>
-					<a href="<%= '/' + RCLV.entidad + '/detalle/r/?id=' + registro[RCLV.campo_id] %>">
+				<% if (bloqueIzq[rclv.asociacion].length > 1) { %><%= campo.titulo + ": " %><% } %> <% if (campo.titulo == bloqueIzq[rclv.asociacion][0].titulo) { %>
+					<a href="<%= '/' + rclv.entidad + '/detalle/r/?id=' + registro[rclv.campo_id] %>">
 						<b><%= campo.valor %></b>
 					</a>
 				<% } else { %>

@@ -4,8 +4,8 @@ module.exports = async (req, res, next) => {
 	// Variables
 	const {baseUrl, siglaFam, entidad} = comp.partesDelUrl(req);
 	const {id, edicId} = req.query;
+	const entEdic = comp.obtieneDesdeEntidad.entEdic(entidad);
 	let {origen} = req.query;
-	let entidadEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 	let informacion;
 
 	// Acciones en caso de que no exista el 'edicId' en el url
@@ -19,7 +19,7 @@ module.exports = async (req, res, next) => {
 
 		if (revision) {
 			// Averigua si existe una edicion
-			edicion = await baseDeDatos.obtienePorCondicion(entidadEdic, {[campo_id]: id});
+			edicion = await baseDeDatos.obtienePorCondicion(entEdic, {[campo_id]: id});
 
 			// Mensaje si no existe una edición
 			if (!edicion) {
@@ -42,7 +42,7 @@ module.exports = async (req, res, next) => {
 		} else {
 			// Averigua si existe una edicion propia
 			const condicion = {[campo_id]: id, editadoPor_id: req.session.usuario.id};
-			edicion = await baseDeDatos.obtienePorCondicion(entidadEdic, condicion);
+			edicion = await baseDeDatos.obtienePorCondicion(entEdic, condicion);
 		}
 
 		// En caso que exista una edición, redirige incluyendo esa edicId en el url
@@ -52,7 +52,7 @@ module.exports = async (req, res, next) => {
 	// Acciones en caso de que exista el 'edicId' en el url
 	if (edicId) {
 		// Averigua si existe la edicId en la base de datos
-		const edicion = await baseDeDatos.obtienePorId(entidadEdic, edicId);
+		const edicion = await baseDeDatos.obtienePorId(entEdic, edicId);
 
 		// En caso que no, mensaje de error
 		if (!edicion) {

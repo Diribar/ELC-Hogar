@@ -3,9 +3,9 @@ window.addEventListener("load", async () => {
 	// Variables
 	const DOM = {
 		// Variables generales
-		linksAlta: document.querySelectorAll(".inputError i.linkRCLV#alta"),
-		linksEdicion: document.querySelectorAll(".inputError i.linkRCLV#edicion"),
-		inputsRCLV: document.querySelectorAll(".inputError .input.RCLV"),
+		linksAlta: document.querySelectorAll(".inputError i.linkRclv#alta"),
+		linksEdicion: document.querySelectorAll(".inputError i.linkRclv#edicion"),
+		inputsRclv: document.querySelectorAll(".inputError .input.rclv"),
 
 		// Otras
 		inputs: document.querySelectorAll(".inputError .input"),
@@ -36,7 +36,7 @@ window.addEventListener("load", async () => {
 		return;
 	};
 
-	// Links a RCLV - Alta
+	// Links a rclv - Alta
 	DOM.linksAlta.forEach((link) => {
 		link.addEventListener("click", () => {
 			// Si el ícono está inactivo, aborta la operación
@@ -45,7 +45,7 @@ window.addEventListener("load", async () => {
 			// Guardar los valores en Session y Cookies
 			guardarLosValoresEnSession();
 
-			// Para ir a la vista RCLV
+			// Para ir a la vista rclv
 			const entRclv = obtieneEntRclv(link);
 			location.href = "/" + entRclv + "/agregar/r/?" + paramsOrigen;
 
@@ -54,7 +54,7 @@ window.addEventListener("load", async () => {
 		});
 	});
 
-	// Links a RCLV - Edición
+	// Links a rclv - Edición
 	DOM.linksEdicion.forEach((link, i) => {
 		link.addEventListener("click", () => {
 			// Si el ícono está inactivo, aborta la operación
@@ -63,15 +63,15 @@ window.addEventListener("load", async () => {
 			// Guardar los valores en Session y Cookies
 			guardarLosValoresEnSession();
 
-			// Redirige a la vista RCLV
+			// Redirige a la vista rclv
 			const entRclv = obtieneEntRclv(link);
-			const rclv_id = DOM.inputsRCLV[i].value;
+			const rclv_id = DOM.inputsRclv[i].value;
 			location.href = "/" + entRclv + "/edicion/r/?id=" + rclv_id + "&" + paramsOrigen;
 		});
 	});
 
-	// Mostrar u ocultar links RCLV
-	DOM.inputsRCLV.forEach((input, i) => {
+	// Mostrar u ocultar links rclv
+	DOM.inputsRclv.forEach((input, i) => {
 		mostrarOcultarIconos(input, i);
 		input.addEventListener("input", () => mostrarOcultarIconos(input, i));
 	});

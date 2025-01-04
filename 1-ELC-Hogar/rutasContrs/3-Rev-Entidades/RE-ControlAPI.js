@@ -5,19 +5,19 @@ const procsProd = require("../2.1-Prods-RUD/PR-FN-Procesos");
 const procesos = require("./RE-Procesos");
 
 module.exports = {
-	// Productos y RCLVs
+	// Productos y Rclvs
 	obtieneMotivoGenerico: (req, res) => res.json(motivoInfoErronea.id),
 	edicAprobRech: async (req, res) => {
 		// Variables
 		const {entidad, edicId, campo, aprob, motivo_id} = req.query;
 		const revId = req.session.usuario.id;
-		const nombreEdic = comp.obtieneDesdeEntidad.entidadEdic(entidad);
+		const entEdic = comp.obtieneDesdeEntidad.entEdic(entidad);
 		const include = comp.obtieneTodosLosCamposInclude(entidad);
 		const familias = comp.obtieneDesdeEntidad.familias(entidad);
 		let statusAprob, reload;
 
 		// Obtiene el registro editado
-		let edicion = await baseDeDatos.obtienePorId(nombreEdic, edicId, include);
+		let edicion = await baseDeDatos.obtienePorId(entEdic, edicId, include);
 
 		// Obtiene la versión original con include
 		const entId = entidad == "links" ? edicion.link_id : req.query.id;
@@ -26,10 +26,10 @@ module.exports = {
 		// Obtiene la versión a guardar
 		const originalGuardado = aprob ? {...original, [campo]: edicion[campo]} : {...original}; // debe estar antes de que se procese la edición
 
-		// Campos especiales - RCLVs
+		// Campos especiales - rclvs
 		if (familias == "rclvs" && campo == "fechaMovil" && originalGuardado.fechaMovil == "0") {
 			await baseDeDatos.actualizaPorId(entidad, entId, {anoFM: null}); // debe serlo por el eventual solapamiento
-			baseDeDatos.actualizaPorId(nombreEdic, edicId, {anoFM: null});
+			baseDeDatos.actualizaPorId(entEdic, edicId, {anoFM: null});
 			reload = !aprob; // si fue rechazado, se debe recargar la vista para quitar 'anoFM'
 		}
 

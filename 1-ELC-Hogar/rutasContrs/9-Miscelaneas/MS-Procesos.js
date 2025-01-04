@@ -71,7 +71,7 @@ module.exports = {
 			// Fin
 			return resultados;
 		},
-		obtieneRCLVs: async (usuario_id) => {
+		obtieneRclvs: async (usuario_id) => {
 			// Variables
 			const entsRclv = variables.entidades.rclvs;
 			const entsProd = [...variables.entidades.prods, "prodsEdicion"];
@@ -427,7 +427,7 @@ const FN_tablManten = {
 		// Obtiene los prods
 		for (let link of links) {
 			// Variables
-			const entidad = comp.obtieneDesdeCampo_id.entidadProd(link);
+			const entidad = comp.obtieneDesdeCampo_id.entProd(link);
 			const asociacion = comp.obtieneDesdeEntidad.asociacion(entidad);
 			const fechaRef = link.statusSugeridoEn;
 			const fechaRefTexto = comp.fechaHora.diaMes(link.statusSugeridoEn);

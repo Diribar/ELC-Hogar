@@ -28,8 +28,8 @@
 
                 tbody tr {
                     /* Celdas - Color de fondo */
-                    &.imparRCLV td {background: snow;}
-                    &.parRCLV td {background: var(--amarillo-claro);}
+                    &.imparRclv td {background: snow;}
+                    &.parRclv td {background: var(--amarillo-claro);}
                     &.parProd td:nth-child(n+1) {background: var(--gris-claro);}
 
                     td {

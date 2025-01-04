@@ -20,7 +20,7 @@ module.exports = {
 		const familia = comp.obtieneDesdeEntidad.familia(entidad);
 		let imgDerPers;
 
-		// Obtiene RCLV y sus productos
+		// Obtiene el rclv y sus productos
 		const [original, edicion] = await procsFM.obtieneOriginalEdicion({entidad, entId: id, usuario_id});
 		const rclv = {...original, ...edicion, id};
 		const prodsDelRclv = await procesos.prodsDelRclv
@@ -61,7 +61,7 @@ module.exports = {
 		// Datos para la vista
 		const status_id = original.statusRegistro_id;
 		const canonNombre = comp.canonNombre(rclv);
-		const RCLVnombre = rclv.nombre;
+		const rclvNombre = rclv.nombre;
 		const revisorPERL = usuario && usuario.rolUsuario.revisorPERL;
 		const creadoPor_id = rclv.creadoPor_id;
 		const tituloDetalle = "Detalle" + delLa + entidadNombre;
@@ -75,20 +75,20 @@ module.exports = {
 		return res.render("CMP-0Estructura", {
 			...{tema, codigo, tituloDetalle, titulo, ayudasTitulo, origen, revisorPERL, usuario},
 			...{entidad, entidadNombre, id, familia, status_id, creadoPor_id, registro: rclv, statusAlineado},
-			...{imgDerPers, bloqueDer, prodsDelRclv, canonNombre, RCLVnombre, ea, prodsCons},
+			...{imgDerPers, bloqueDer, prodsDelRclv, canonNombre, rclvNombre, ea, prodsCons},
 			...{iconosMobile: true, iconoDL, iconoDB},
 		});
 	},
 	altaEdic: {
 		form: async (req, res) => {
-			// Variables - puede venir de: agregarProd, edicionProd, detalleRCLV, revision...
+			// Variables - puede venir de: agregarProd, edicionProd, detalleRclv, revision...
 			const {baseUrl, tarea, entidad} = comp.partesDelUrl(req);
 			const tema = baseUrl == "/revision" ? "revisionEnts" : "rclvCrud";
 			let codigo = tarea.slice(1);
 			if (codigo == "alta") codigo += "/r"; // crud: 'agregar', 'edicion'; revisión: 'alta/r', 'solapamiento'
 
 			// Más variables
-			const {id, prodEntidad, prodId} = req.query;
+			const {id, entProd, prodId} = req.query;
 			const origen = req.query.origen ? req.query.origen : tema == "revisionEnts" ? (codigo == "alta/r" ? "RA" : "TE") : "";
 			const usuario_id = req.session.usuario.id;
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
@@ -168,7 +168,7 @@ module.exports = {
 			// Ir a la vista
 			return res.render("CMP-0Estructura", {
 				...{tema, codigo, origen, titulo},
-				...{entidad, id, prodEntidad, prodId, edicId, familia: "rclv", ent, familia},
+				...{entidad, id, entProd, prodId, edicId, familia: "rclv", ent, familia},
 				...{personajes, hechos, temas, eventos, epocasDelAno, prioridadesRclv},
 				...{dataEntry, imgDerPers, statusCreado, bloqueDer, ayudas},
 				...{apMars, originalUrl, opcsHoyEstamos, opcsLeyNombre, statusAlineado},
@@ -176,9 +176,9 @@ module.exports = {
 			});
 		},
 		guardar: async (req, res) => {
-			// Variables - puede venir de agregarProd, edicionProd, detalleRCLV, revision
+			// Variables - puede venir de agregarProd, edicionProd, detalleRclv, revision
 			const {tarea, entidad} = comp.partesDelUrl(req);
-			const {id, prodEntidad, prodId, eliminarEdic} = req.query;
+			const {id, entProd, prodId, eliminarEdic} = req.query;
 			const campo_id = comp.obtieneDesdeEntidad.campo_id(entidad);
 			const origen = req.query.origen ? req.query.origen : "DT";
 			const usuario_id = req.session.usuario.id;
@@ -250,7 +250,7 @@ module.exports = {
 				if (origen == "PED") {
 					// Obtiene el registro original del producto, y su edición ya creada (si existe)
 					let [prodOrig, prodEdic] = await procsFM.obtieneOriginalEdicion({
-						entidad: prodEntidad,
+						entidad: entProd,
 						entId: prodId,
 						usuario_id,
 						excluirInclude: true,
@@ -260,7 +260,7 @@ module.exports = {
 					prodEdic = {...prodEdic, [campo_id]: original.id};
 
 					// Crea o actualiza la edición
-					await procsFM.guardaActEdic({entidad: prodEntidad, original: prodOrig, edicion: prodEdic, usuario_id});
+					await procsFM.guardaActEdic({entidad: entProd, original: prodOrig, edicion: prodEdic, usuario_id});
 				}
 			}
 
@@ -286,7 +286,7 @@ module.exports = {
 
 			// Obtiene el url de la siguiente instancia
 			let destino = "/" + entidad + "/inactivar-captura/?id=" + (id ? id : 1) + "&origen=" + origen;
-			if (origen == "PED") destino += "&prodEntidad=" + prodEntidad + "&prodId=" + prodId;
+			if (origen == "PED") destino += "&entProd=" + entProd + "&prodId=" + prodId;
 
 			// Redirecciona a la siguiente instancia
 			return res.redirect(destino);

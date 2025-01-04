@@ -34,9 +34,9 @@ module.exports = {
 		const {infoGral, actores} = procesos.bloqueIzq(prodComb);
 		const bloqueIzq = {infoGral, actores};
 
-		// RCLV - Variables
-		const entidadesRCLV = variables.entidades.rclvs;
-		const RCLVs = entidadesRCLV.map((n) => ({
+		// Rclv - Variables
+		const entsRclv = variables.entidades.rclvs;
+		const rclvs = entsRclv.map((n) => ({
 			entidad: n,
 			campo_id: comp.obtieneDesdeEntidad.campo_id(n),
 			asociacion: comp.obtieneDesdeEntidad.asociacion(n),
@@ -44,15 +44,15 @@ module.exports = {
 		const rclvs_id = variables.entidades.rclvs_id;
 		const asocs = variables.entidades.rclvsAsoc;
 
-		// RCLV - Le agrega datos al bloque izquierdo
+		// Rclv - Le agrega datos al bloque izquierdo
 		for (let i = 0; i < asocs.length; i++)
 			if (prodComb[rclvs_id[i]] != ninguno_id) {
-				const entidadRclv = entidadesRCLV[i];
-				const include = entidadRclv == "personajes" ? "canon" : "";
+				const entRclv = entsRclv[i];
+				const include = entRclv == "personajes" ? "canon" : "";
 				const rclv = include
-					? await baseDeDatos.obtienePorId(entidadRclv, prodComb[rclvs_id[i]], include)
+					? await baseDeDatos.obtienePorId(entRclv, prodComb[rclvs_id[i]], include)
 					: prodComb[asocs[i]];
-				bloqueIzq[asocs[i]] = procsFM.bloques.rclv({...rclv, entidad: entidadRclv});
+				bloqueIzq[asocs[i]] = procsFM.bloques.rclv({...rclv, entidad: entRclv});
 			}
 		const rclvsNombre = variables.entidades.rclvsNombre;
 
@@ -91,7 +91,7 @@ module.exports = {
 			...{entidad, id, familia, status_id, creadoPor_id, statusAlineado},
 			...{entidadNombre, registro: prodComb, links, interesDelUsuario, yaCalificada},
 			...{imgDerPers, tituloImgDerPers: prodComb.nombreCastellano},
-			...{bloqueIzq, bloqueDer, RCLVs, asocs, rclvsNombre},
+			...{bloqueIzq, bloqueDer, rclvs, asocs, rclvsNombre},
 			...{iconosMobile: true, iconoDL, iconoDB, anchorEncab},
 		});
 	},

@@ -233,7 +233,7 @@ module.exports = {
 		// Acciones varias
 		if (entidad == "productos") {
 			// Filtros
-			prods = procesos.resultados.cruce.prodsConRCLVs({prods, rclvs}); // Cruza 'prods' con 'rclvs'
+			prods = procesos.resultados.cruce.prodsConRclvs({prods, rclvs}); // Cruza 'prods' con 'rclvs'
 			prods = procesos.resultados.cruce.prodsConPalsClave({prods, palabrasClave});
 			prods = await procesos.resultados.cruce.prodsConMisCalifs({prods, usuario_id, layout});
 			prods = await procesos.resultados.cruce.prodsConMisConsultas({prods, usuario_id, layout});
@@ -247,7 +247,7 @@ module.exports = {
 		} else {
 			// Filtros
 			rclvs = procesos.resultados.orden.rclvs({rclvs, layout}); // Tiene que estar antes del cruce con productos, porque quita rclvs con mismo producto
-			rclvs = procesos.resultados.cruce.rclvsConProds({rclvs, prods, prefs}); // Cruza 'rclvs' con 'prods' - Descarta los 'prods de RCLV' que no están en 'prods' y los rclvs sin productos
+			rclvs = procesos.resultados.cruce.rclvsConProds({rclvs, prods, prefs}); // Cruza 'rclvs' con 'prods' - Descarta los 'prods de rclv' que no están en 'prods' y los rclvs sin productos
 			rclvs = procesos.resultados.cruce.rclvsConPalsClave({rclvs, palabrasClave}); // Cruza 'rclvs' con 'palabrasClave' - Debe estar antes del cruce de 'rclvs' con 'prods'
 			rclvs = procesos.resultados.descartaCapsSiColPresente.rclvs(rclvs);
 			rclvs = procesos.resultados.quitaExcedente({resultados: rclvs, layout, prefs});

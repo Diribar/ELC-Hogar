@@ -69,7 +69,7 @@ window.addEventListener("load", async () => {
 		cartelUsSinPPP: DOM.zonaDisponible.querySelector("#carteles #cartelUsSinPPP"),
 		cartelLoginPend: DOM.zonaDisponible.querySelector("#carteles #loginPend"),
 		cartelVerVideo: DOM.zonaDisponible.querySelector("#carteles #verVideo"),
-		cartelRCLV: document.querySelector("#imgDerecha a:has(#cartelRCLV)"),
+		cartelRclv: document.querySelector("#imgDerecha a:has(#cartelRclv)"),
 
 		// Otros
 		anchorVerVideo: DOM.zonaDisponible.querySelector("#carteles #verVideo span#consultas"),

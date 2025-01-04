@@ -1,7 +1,7 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Lun. 30/dic",
-	"HoraUTC": "10:48",
+	"FechaUTC": "Jue. 2/ene",
+	"HoraUTC": "17:31",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
 	"FechaSemUTC": "Lun. 30/dic",
@@ -39,7 +39,7 @@
 		"revisaCorrigeLinksEnProd": "SI",
 		"revisaCorrigeCalidadesDeLinkEnColes": "SI",
 		"revisaCorrigeProdAprobEnLink": "SI",
-		"revisaCorrigeProdsEnRCLV": "SI",
+		"revisaCorrigeProdsEnRclv": "SI",
 		"revisaCorrigeAprobadoConAvatarLink": "SI",
 		"revisaCorrigeRclv_idEnCapsSiLaColeTieneUnValor": "SI",
 		"revisaCorrigeRclvsSinEpocaPSTyConAno": "SI",
@@ -51,7 +51,6 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"31-dic-24": {"leyenda": "Estamos en época de Navidad", "entidad": "epocasDelAno", "id": 26},
 		"01-ene-25": {"leyenda": "Hoy recordamos a santa María, madre de Jesús", "entidad": "personajes", "id": 4},
 		"04-ene-25": {"leyenda": "Hoy recordamos a santa Elizabeth Ann Seton", "entidad": "personajes", "id": 130}
 	}

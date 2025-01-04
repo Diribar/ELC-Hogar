@@ -6,7 +6,7 @@
 		<!-- Input -->
 		<select name="<%= nombre %>" class="input" autofocus>
 			<% for (let valor of valores) { %>
-				<option value="<%= valor.id %>" class="RCLV <%= valor.clase %>" <% if (dataEntry[nombre] == valor.id) { %>selected<% } %>><%= valor.nombre %></option>
+				<option value="<%= valor.id %>" class="rclv <%= valor.clase %>" <% if (dataEntry[nombre] == valor.id) { %>selected<% } %>><%= valor.nombre %></option>
 			<% } %>
 		</select>
 		<%- include("MN-Errores", {nombre, ocultarOK: true}) %>

@@ -32,7 +32,7 @@ window.addEventListener("load", async () => {
 		// Días del año
 		dias_del_ano_Fila: document.querySelectorAll("form #calendario tr"),
 		dias_del_ano_Dia: document.querySelectorAll("form #calendario tr td:first-child"),
-		dias_del_ano_RCLV: document.querySelectorAll("form #calendario tr td:nth-child(2)"),
+		dias_del_ano_Rclv: document.querySelectorAll("form #calendario tr td:nth-child(2)"),
 		marcoCalendario: document.querySelector("form #calendario"),
 		tablaCalendario: document.querySelector("form #calendario table"),
 	};
@@ -158,8 +158,8 @@ window.addEventListener("load", async () => {
 
 				// Actualiza el color de todos los días del año
 				for (let i = 0; i < DOM.dias_del_ano_Fila.length; i++) {
-					let ninguno = DOM.dias_del_ano_RCLV[i].innerHTML == "Ninguno";
-					let siMismo = DOM.dias_del_ano_RCLV[i].innerHTML == DOM.nombre.innerHTML;
+					let ninguno = DOM.dias_del_ano_Rclv[i].innerHTML == "Ninguno";
+					let siMismo = DOM.dias_del_ano_Rclv[i].innerHTML == DOM.nombre.innerHTML;
 					let colores =
 						(idInicio < idFin && (i < idInicio || i > idFin)) || (idFin < i && i < idInicio)
 							? "snow"

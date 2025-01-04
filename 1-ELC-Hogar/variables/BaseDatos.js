@@ -34,7 +34,7 @@ module.exports = {
 			entretiene: baseDeDatos.obtieneTodosConOrden("entretiene", "orden"),
 			calidadTecnica: baseDeDatos.obtieneTodosConOrden("calidadTecnica", "orden"),
 
-			// Variables de RCLVs
+			// Variables de rclvs
 			epocasOcurrencia: baseDeDatos.obtieneTodosConOrden("epocasOcurrencia", "orden"),
 			rolesIglesia: baseDeDatos.obtieneTodosConOrden("rolesIglesia", "orden"),
 			canons: baseDeDatos.obtieneTodosConOrden("canons", "orden"),

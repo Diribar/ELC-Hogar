@@ -208,7 +208,7 @@ module.exports = {
 		// 3. Si es una colección, revisa si corresponde aprobar capítulos
 		if (entidad == "colecciones") await this.cambioDeStatusCaps(registro.id);
 
-		// 4. Actualiza 'prodsEnRCLV' en sus RCLVs
+		// 4. Actualiza 'prodsEnRclv' en sus rclvs
 		procsFM.accsEnDepsPorCambioDeStatus(entidad, {...registro, ...datos});
 
 		// Fin
