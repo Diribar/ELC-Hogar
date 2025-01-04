@@ -119,12 +119,9 @@ let exportar = {
 };
 
 for (let tema of ["Hora", "Prod", "Ruta"])
-	exportar = {
-		...exportar,
-		["navegsPor" + tema]: async (req, res) => {
-			const registros = await baseDeDatos.obtieneTodosConOrden("navegsDia" + tema + "Acum", "fecha");
-			return res.json(registros);
-		},
+	exportar["navegsPor" + tema] = async (req, res) => {
+		const registros = await baseDeDatos.obtieneTodosConOrden("navegsDia" + tema + "Acum", "fecha");
+		return res.json(registros);
 	};
 
 module.exports = exportar;

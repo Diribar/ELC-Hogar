@@ -85,13 +85,15 @@ module.exports = {
 		// Envia la info al FE
 		return res.json(resultados);
 	},
-	agregarUrlBR: (req, res) => {
+	agregaUrlBusqRap: (req, res) => {
 		// Variables
 		const {cliente_id} = req.session.cliente || req.cookies;
 		const ruta = "busqueda-rapida";
+		const {comentario} = req.query;
 
 		// Si corresponde, guarda el registro
-		if (cliente_id && cliente_id != "U0000000011") baseDeDatos.agregaRegistro("navegsDia", {ruta, cliente_id});
+		if (cliente_id && cliente_id != "U0000000011")
+			comp.guardaRegistroNavegac({cliente_id, ruta, comentario, reqHeaders: req.headers["user-agent"]});
 
 		// Fin
 		return res.json();

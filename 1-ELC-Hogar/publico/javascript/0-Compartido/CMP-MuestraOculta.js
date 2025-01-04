@@ -7,8 +7,9 @@ window.addEventListener("load", () => {
 		vista: document.querySelectorAll(".clickVista"),
 
 		// Relacionado con búsqueda rápida
-		brMostrar: document.querySelector("header #busquedaRapida .clickVista"), // es el ícono del header
-		brInput: document.querySelector("header #busquedaRapida .clickVista input"),
+		brIcono: document.querySelector("header #busquedaRapida .clickIcono"),
+		brMostrar: document.querySelector("header #busquedaRapida .clickVista"), // es el contenedor del input
+		brInput: document.querySelector("header #busquedaRapida .clickVista input"), // es el input
 
 		// Varios
 		menuMobile: document.querySelector("header #menuMobile"),
@@ -25,23 +26,22 @@ window.addEventListener("load", () => {
 
 		// Rutina por cada dupla
 		for (let i = 0; i < DOM.clicks.length; i++) {
-			// Sólo avanza si el 'click' fue fuera de la vista
-			if (e.target.parentElement != DOM.vista[i]) {
-				// Se fija si el 'click' fue en el ícono y si está activo
-				e.target == DOM.clicks[i] && !DOM.clicks[i].className.includes("inactivo")
-					? DOM.vista[i].classList.toggle("ocultar") // caso exitoso, toggle de la vista
-					: DOM.vista[i].classList.add("ocultar"); // caso fallido, oculta la vista
-			}
+			// Si el 'click' fue fuera de la vista, saltea la rutina
+			if (e.target.parentElement == DOM.vista[i]) continue;
+
+			// Se fija si el 'click' fue en el ícono y si está activo
+			e.target == DOM.clicks[i] && !DOM.clicks[i].className.includes("inactivo")
+				? DOM.vista[i].classList.toggle("ocultar") // caso exitoso, toggle de la vista
+				: DOM.vista[i].classList.add("ocultar"); // caso fallido, oculta la vista
 		}
 
-		// Si el click fue 'menú Mobile búsqueda rápida', muestra el bloque donde escribirlo
-		if (typeof e.target.className == "string" && e.target.className.includes("mmBR"))
-			DOM.brMostrar.classList.remove("ocultar");
+		// Foco en búsqueda rápida
+		if (e.target == DOM.brIcono && !DOM.brMostrar.className.includes("ocultar")) DOM.brInput.focus();
 
-		// Foco en búsqueda rápida - puede mostrarse desde el ícono del header o del menú mobile, por eso está aparte
-		if (!DOM.brMostrar.className.includes("ocultar")) {
+		// Si el click fue 'menú Mobile búsqueda rápida', muestra el input y hace foco en búsqueda rápida
+		if (typeof e.target.className == "string" && e.target.className.includes("mmBR")) {
+			DOM.brMostrar.classList.remove("ocultar");
 			DOM.brInput.focus();
-			fetch("/api/cmp-agregar-url-br");
 		}
 	});
 });

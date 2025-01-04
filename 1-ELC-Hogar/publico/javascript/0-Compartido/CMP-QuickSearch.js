@@ -8,54 +8,55 @@ window.addEventListener("load", () => {
 		escribiMas: document.querySelector("#busquedaRapida .clickVista #escribiMas"),
 	};
 	let posicion = 0;
+	let resultados;
 
 	// Funciones
-	let agregaResultados = (registros) => {
+	const agregaResultados = () => {
 		// Generar las condiciones para que se puedan mostrar los 'muestraResultados'
 		DOM.muestraResultados.innerHTML = "";
 		DOM.muestraResultados.classList.remove("ocultar");
 
 		// Si se encontraron resultados, crea el listado
-		if (Array.isArray(registros)) return creaElListado(registros);
+		if (Array.isArray(resultados)) return creaElListado();
 
 		// Mensaje de 'no se encontraron resultados'
 		const parrafo = document.createElement("p");
 		parrafo.style.fontStyle = "italic";
 		parrafo.style.textAlign = "center";
-		parrafo.appendChild(document.createTextNode(registros));
+		parrafo.appendChild(document.createTextNode(resultados));
 		DOM.muestraResultados.appendChild(parrafo);
 	};
-	let creaElListado = (registros) => {
+	const creaElListado = () => {
 		// Rutina de creación de filas
-		for (let registro of registros) {
+		for (let resultado of resultados) {
 			// Variables
-			const {familia, entidad, id} = registro;
+			const {familia, entidad, id} = resultado;
 			const siglaFam = familia[0];
 			const clase = familia.slice(0, 4);
 
-			// Crea el anchor del registro
+			// Crea el anchor del resultado
 			const anchor = document.createElement("a");
 			anchor.classList.add(clase, "flexRow");
 			anchor.href = "/" + entidad + "/detalle/" + siglaFam + "/?id=" + id;
 
 			// Crea las celdas
-			creaLasCeldas({anchor, registro});
+			creaLasCeldas({anchor, resultado});
 
 			// Agrega la fila al cuerpo de la tabla
 			DOM.muestraResultados.appendChild(anchor);
 		}
 
 		// Terminación
-		DOM.muestraResultados.children[0].classList.add("resaltar"); // Resalta el registro anterior
+		DOM.muestraResultados.children[0].classList.add("resaltar"); // Resalta el resultado anterior
 		posicion = 0;
 
 		// Fin
 		return;
 	};
-	let creaLasCeldas = ({anchor, registro}) => {
+	const creaLasCeldas = ({anchor, resultado}) => {
 		// Variables
-		const {familia, entidad, anoEstreno} = registro;
-		let {nombre} = registro;
+		const {familia, entidad, anoEstreno} = resultado;
+		let {nombre} = resultado;
 		let anchoMax = 40;
 
 		// Nombre
@@ -78,12 +79,15 @@ window.addEventListener("load", () => {
 		// Fin
 		return;
 	};
+	const agregaUrlBusqRap = async () => {
+		await fetch("/api/cmp-agregar-url-br/?comentario=" + DOM.input.value);
+	};
 
 	// Add Event Listener
 	DOM.input.addEventListener("input", async () => {
 		// Impide los caracteres que no son válidos
 		DOM.input.value = DOM.input.value.replace(/[^a-záéíóúüñ'¡¿-\d\s]/gi, "").replace(/ +/g, " ");
-		let dataEntry = DOM.input.value;
+		const dataEntry = DOM.input.value;
 
 		// Elimina palabras repetidas
 		let palabras = dataEntry.split(" ");
@@ -102,11 +106,11 @@ window.addEventListener("load", () => {
 
 		// Busca los productos
 		palabras = palabras.join(" ");
-		const resultados = await fetch("/api/cmp-busqueda-rapida/?palabras=" + palabras).then((n) => n.json());
+		resultados = await fetch("/api/cmp-busqueda-rapida/?palabras=" + palabras).then((n) => n.json());
+		if (!resultados.length) resultados = "- No encontramos resultados -";
 
-		// Acciones en función de si encuentra resultados
-		if (resultados.length) agregaResultados(resultados);
-		else agregaResultados("- No encontramos coincidencias -");
+		// Muestra los resultados
+		agregaResultados();
 
 		// Fin
 		return;
@@ -116,28 +120,28 @@ window.addEventListener("load", () => {
 		const cantResultados = DOM.muestraResultados.children && DOM.muestraResultados.children.length;
 		if (!cantResultados) return;
 
-		// Resalta el registro anterior
+		// Resalta el resultado anterior
 		if (e.key == "ArrowUp" && posicion) {
-			DOM.muestraResultados.children[posicion].classList.remove("resaltar"); // Des-resalta el registro vigente
+			DOM.muestraResultados.children[posicion].classList.remove("resaltar"); // Des-resalta el resultado vigente
 			posicion--;
-			DOM.muestraResultados.children[posicion].classList.add("resaltar"); // Resalta el registro anterior
+			DOM.muestraResultados.children[posicion].classList.add("resaltar"); // Resalta el resultado anterior
 		}
 
-		// Resalta el registro siguiente
+		// Resalta el resultado siguiente
 		if (e.key == "ArrowDown" && posicion < cantResultados - 1) {
-			DOM.muestraResultados.children[posicion].classList.remove("resaltar"); // Des-resalta el registro vigente
+			DOM.muestraResultados.children[posicion].classList.remove("resaltar"); // Des-resalta el resultado vigente
 			posicion++;
-			DOM.muestraResultados.children[posicion].classList.add("resaltar"); // Resalta el registro siguiente
+			DOM.muestraResultados.children[posicion].classList.add("resaltar"); // Resalta el resultado siguiente
 		}
 
 		// Redirige a la vista del hallazgo
-		if (e.key == "Enter") {
-			const href = DOM.muestraResultados.children[posicion].href;
-			if (href) location.href = href;
-		}
+		if (e.key == "Enter") location.href = DOM.muestraResultados.children[posicion].href;
 
-		// Escape - Oculta el sector de muestraResultados
+		// Oculta el sector de muestraResultados
 		if (e.key == "Escape") DOM.clickVista.classList.add("ocultar");
+
+		// Fin
+		return;
 	});
 	DOM.muestraResultados.addEventListener("mouseover", (e) => {
 		// Variables

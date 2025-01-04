@@ -20,7 +20,7 @@ const aptoUsuario = [usAltaTerm, usAptoInput, usPenalizaciones];
 // APIs
 router.get("/api/cmp-horario-inicial/", API.horarioInicial);
 router.get("/api/cmp-busqueda-rapida/", API.busquedaRapida);
-router.get("/api/cmp-agregar-url-br/", API.agregarUrlBR);
+router.get("/api/cmp-agregar-url-br/", API.agregaUrlBusqRap);
 
 // Vista
 router.get("/", vista.inicio);
