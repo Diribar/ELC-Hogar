@@ -222,9 +222,6 @@ module.exports = {
 			["/usuarios/perennes", "altaPerennes", iconos.altaUser, "fa-user-lock"], // candado
 			["/usuarios/perennes-bienvenido", "perennesBienvenido", iconos.altaUser, "fa-user-gear"], // rueda de configuración
 
-			// Agregar productos
-			["/agregar-pc", "agregarProd", iconos.prod, iconos.agregar],
-
 			// Varios
 			["/", "inicio", iconos.inicio],
 			["/institucional/inicio", "inicio", iconos.inicio],
@@ -258,6 +255,16 @@ module.exports = {
 			["/historial/p", "historial", iconos.prod, iconos.historial],
 			["/inactivar/p", "inactivar", iconos.prod, iconos.xMark],
 			["/recuperar/p", "recuperar", iconos.prod, iconos.check],
+
+			// Agregar productos
+			["/agregar-pc", "agregarProd-pc", iconos.agregar, "fa-caret-up"],
+			["/agregar-im", "agregarProd-im", iconos.agregar, "fa-square-caret-up"],
+			["/agregar-ds", "agregarProd-ds", iconos.agregar, "fa-caret-right"],
+			["/agregar-fa", "agregarProd-fa", iconos.agregar, "fa-square-caret-right"],
+			["/agregar-dd", "agregarProd-dd", iconos.agregar, "fa-caret-down"],
+			["/agregar-da", "agregarProd-da", iconos.agregar, "fa-caret-left"],
+			["/agregar-cn", "agregarProd-cn", iconos.agregar, iconos.ayuda],
+			["/agregar-tr", "agregarProd-tr", iconos.agregar, iconos.check],
 
 			// Familia "Rclvs"
 			["/detalle/r", "detalleRclv", iconos.rclv, iconos.detalle],
