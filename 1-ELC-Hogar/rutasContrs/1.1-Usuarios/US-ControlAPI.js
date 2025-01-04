@@ -60,7 +60,7 @@ module.exports = {
 			if (!mailEnviado) return res.json(mailEnviado);
 
 			// Crea el usuario
-			const {cliente_id} = await procesos.creaElUsuario({cliente, email, contrasena});
+			const cliente_id = await procesos.creaElUsuario({cliente, email, contrasena});
 			res.cookie("cliente_id", cliente_id, {maxAge: unAno});
 
 			// Guarda el mail en 'session'
