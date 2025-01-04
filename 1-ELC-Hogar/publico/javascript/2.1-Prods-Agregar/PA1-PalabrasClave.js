@@ -67,34 +67,37 @@ window.addEventListener("load", async () => {
 			// Fin
 			return;
 		},
-		submit: async function (e) {
-			e.preventDefault();
+		submit: function (e) {
+			// Botón 'Avanzar o previene el submit
+			if (DOM.botonSubmit.className.includes("verdeOscuro")) return;
+			else e.preventDefault();
 
 			// Botón inactivo
 			if (DOM.botonSubmit.className.includes("inactivo")) return this.muestraElErrorMasBotonSubmit(true);
 
 			// Botón 'Buscar'
-			if (DOM.botonSubmit.className.includes("verdeClaro")) {
-				// Adecuaciones iniciales
-				DOM.botonSubmit.classList.add("inactivo");
-				DOM.botonSubmit.innerHTML = "Buscando";
-				DOM.resultado.innerHTML = "<br>";
+			if (DOM.botonSubmit.className.includes("verdeClaro")) return this.botonBuscar(); // no hace falta el 'await' porque está con un return
 
-				// Obtiene los resultados
-				const palabrasClave = DOM.inputPalsClave.value.trim();
-				APIs_buscar[0].ruta = APIs_buscar[0].ruta.split("&")[0];
-				APIs_buscar[0].ruta += "&palabrasClave=" + palabrasClave;
-				resultados = await barraProgreso(rutas.pre, APIs_buscar);
+			// Fin
+			return;
+		},
+		botonBuscar: async function () {
+			// Adecuaciones iniciales
+			DOM.botonSubmit.classList.add("inactivo");
+			DOM.botonSubmit.innerHTML = "Buscando";
+			DOM.resultado.innerHTML = "<br>";
 
-				// Actualiza el mensaje y adecua el botón submit
-				this.muestraResultados();
+			// Obtiene los resultados
+			const palabrasClave = DOM.inputPalsClave.value.trim();
+			APIs_buscar[0].ruta = APIs_buscar[0].ruta.split("&")[0];
+			APIs_buscar[0].ruta += "&palabrasClave=" + palabrasClave;
+			resultados = await barraProgreso(rutas.pre, APIs_buscar);
 
-				// Fin
-				return;
-			}
+			// Actualiza el mensaje y adecua el botón submit
+			this.muestraResultados();
 
-			// Botón 'Avanzar
-			if (DOM.botonSubmit.className.includes("verdeOscuro")) return DOM.form.submit(); // post
+			// Fin
+			return;
 		},
 		statusInicial: async function () {
 			// Si el botón está inactivo, interrumpe la función
