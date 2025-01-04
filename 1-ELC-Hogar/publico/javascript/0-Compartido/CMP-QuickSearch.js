@@ -79,13 +79,15 @@ window.addEventListener("load", () => {
 		// Fin
 		return;
 	};
-	const agregaUrlBusqRap = () => {};
+	const agregaUrlBusqRap = async () => {
+		await fetch("/api/cmp-agregar-url-br/?comentario=" + DOM.input.value);
+	};
 
 	// Add Event Listener
 	DOM.input.addEventListener("input", async () => {
 		// Impide los caracteres que no son válidos
 		DOM.input.value = DOM.input.value.replace(/[^a-záéíóúüñ'¡¿-\d\s]/gi, "").replace(/ +/g, " ");
-		let dataEntry = DOM.input.value;
+		const dataEntry = DOM.input.value;
 
 		// Elimina palabras repetidas
 		let palabras = dataEntry.split(" ");
@@ -133,13 +135,13 @@ window.addEventListener("load", () => {
 		}
 
 		// Redirige a la vista del hallazgo
-		if (e.key == "Enter") {
-			const href = DOM.muestraResultados.children[posicion].href;
-			if (href) location.href = href;
-		}
+		if (e.key == "Enter") location.href = DOM.muestraResultados.children[posicion].href;
 
 		// Escape - Oculta el sector de muestraResultados
 		if (e.key == "Escape") DOM.clickVista.classList.add("ocultar");
+
+		// Fin
+		return;
 	});
 	DOM.muestraResultados.addEventListener("mouseover", (e) => {
 		// Variables
