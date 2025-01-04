@@ -1163,6 +1163,9 @@ module.exports = {
 		return aceptado;
 	},
 	guardaRegistroNavegac: async ({cliente_id, ruta, comentario, reqHeaders}) => {
+		// Si es el usuario de Diego, interrumpe la función
+		if (cliente_id && cliente_id != "U0000000011") return;
+
 		// Funciones
 		const prodRclvNombre = async () => {
 			// Si no tiene id, interrumpe la función
@@ -1190,11 +1193,11 @@ module.exports = {
 			return nombre;
 		};
 
-		// Obtiene el nombre del prod o rclv
-		const nombre = await prodRclvNombre();
+		// Si no existe un comentario, obtiene el nombre del prod o rclv
+		const nombre = comentario || (await prodRclvNombre());
 
-		// Si no tiene comentario, lo obtiene del nombre
-		if (!comentario && nombre) comentario = nombre.slice(0, 20);
+		// Reduce el largo del comentario
+		if (nombre) comentario = nombre.slice(0, 20);
 
 		// Averigua el dispositivo del cliente
 		let dispCliente = reqHeaders;
