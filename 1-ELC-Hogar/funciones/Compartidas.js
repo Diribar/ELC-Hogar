@@ -1149,8 +1149,8 @@ module.exports = {
 		// Busca la ruta
 		let resultado;
 		if (!resultado) resultado = rutasConHistorial.iguales.find((n) => url == n[0]);
-		if (!resultado) resultado = rutasConHistorial.includes.find((n) => url.includes(n[0]));
 		if (!resultado) resultado = rutasConHistorial.startsWith.find((n) => url.startsWith(n[0]));
+		if (!resultado) resultado = rutasConHistorial.includes.find((n) => url.includes(n[0]));
 
 		// Fin
 		if (resultado) resultado = resultado[1];
