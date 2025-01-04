@@ -1146,11 +1146,16 @@ module.exports = {
 		return {baseUrl, tarea, siglaFam, entidad, url};
 	},
 	rutasConHistorial: (url) => {
-		// Busca la ruta
+		// Variables
 		let resultado;
+
+		// Vigentes - busca la ruta
 		if (!resultado) resultado = rutasConHistorial.iguales.find((n) => url == n[0]);
 		if (!resultado) resultado = rutasConHistorial.startsWith.find((n) => url.startsWith(n[0]));
 		if (!resultado) resultado = rutasConHistorial.includes.find((n) => url.includes(n[0]));
+
+		// Discontinuados - busca la ruta
+		if (!resultado) resultado = rutasConHistorial.disconts.find((n) => url.startsWith(n[0]));
 
 		// Fin
 		if (resultado) resultado = resultado[1];
@@ -1164,7 +1169,7 @@ module.exports = {
 	},
 	guardaRegistroNavegac: async ({cliente_id, ruta, comentario, reqHeaders}) => {
 		// Si es el usuario de Diego, interrumpe la función
-		if (!cliente_id || (cliente_id && cliente_id == "U0000000011")) return;
+		if (!cliente_id || (cliente_id && cliente_id == "U000000001")) return;
 
 		// Funciones
 		const prodRclvNombre = async () => {
