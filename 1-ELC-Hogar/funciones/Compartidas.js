@@ -1169,7 +1169,7 @@ module.exports = {
 	},
 	guardaRegistroNavegac: async ({cliente_id, ruta, comentario, reqHeaders}) => {
 		// Si es el usuario de Diego, interrumpe la función
-		if (!cliente_id || (cliente_id && cliente_id == "U000000001")) return;
+		if (!cliente_id || (cliente_id && cliente_id == "U0000000011")) return;
 
 		// Funciones
 		const prodRclvNombre = async () => {
