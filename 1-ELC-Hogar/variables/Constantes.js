@@ -203,10 +203,14 @@ module.exports = {
 	eliminarCuandoSinEntidadId: ["statusHistorial", "edicsHistorial", "misConsultas", "pppRegistros", "calRegistros"],
 	requestsTriviales: ["WhatsApp", "Postman", "TelegramBot", "TwitterBot", "Zabbix"], // evita que se cuenten como visitas
 	requestsClientes: {
-		MB_Ch125: "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/27.0 Chrome/125.0.0.0 Mobile Safari/537.36",
-		PC_Ch120: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-		PC_Ch124: "Mozilla/5.0 (Windows NT 10.0.0; Win64; x64; ) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.93 Chrome/124.0.6367.93 Not-A.Brand/99  Safari/537.36",
-		PC_Ch131: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+		MB_Ch125:
+			"Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/27.0 Chrome/125.0.0.0 Mobile Safari/537.36",
+		PC_Ch120:
+			"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+		PC_Ch124:
+			"Mozilla/5.0 (Windows NT 10.0.0; Win64; x64; ) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.93 Chrome/124.0.6367.93 Not-A.Brand/99  Safari/537.36",
+		PC_Ch131:
+			"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
 	},
 	rutasConHistorial: {
 		iguales: [
@@ -237,14 +241,14 @@ module.exports = {
 		startsWith: [
 			// Usuarios
 			["/usuarios/login", "login", iconos.login],
-			["/usuarios/alta-mail", "altaDeMail", iconos.altaUser],
-			["/usuarios/editables", "altaDeMail", iconos.altaUser],
-			["/usuarios/editables-bienvenido", "altaDeMail", iconos.altaUser],
-			["/usuarios/perennes", "perennes", iconos.altaUser],
-			["/usuarios/perennes-bienvenido", "perennes", iconos.altaUser],
+			["/usuarios/alta-mail", "altaDeMail", iconos.altaUser, "fa-address-card"], // tarjeta de presentación
+			["/usuarios/editables", "usuarioEditables", iconos.altaUser, "fa-user-pen"], // usuario con edición
+			["/usuarios/editables-bienvenido", "altaDeMail", iconos.altaUser, "fa-user-check"], // usuario con check
+			["/usuarios/perennes", "perennes", iconos.altaUser, "fa-user-lock"], // candado
+			["/usuarios/perennes-bienvenido", "perennes", iconos.altaUser, "fa-user-gear"], // rueda de configuración
 
 			// Institucional
-			["/institucional/contactanos", "contactanos", iconos.mail],
+			["/institucional/contactanos", "contactanos", iconos.instituc, iconos.mail],
 			["/institucional", "institucional", iconos.instituc],
 
 			// Otros
