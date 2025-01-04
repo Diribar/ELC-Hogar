@@ -97,7 +97,11 @@ module.exports = {
 		contrasena = bcryptjs.hashSync(contrasena, 10);
 		return {contrasena, mailEnviado};
 	},
-	creaElUsuario: async () => {
+	creaElUsuario: async ({cliente,email, contrasena}) => {
+		// Variables
+		const {diasNaveg, visitaCreadaEn} = cliente;
+
+		// Crea el usuario
 		const usuario = await baseDeDatos.agregaRegistroIdCorrel("usuarios", {
 			...{email, contrasena},
 			...{diasNaveg, visitaCreadaEn},
@@ -108,6 +112,9 @@ module.exports = {
 		// Actualiza 'cliente_id' en la BD 'usuarios' y en la cookie 'cliente_id'
 		const cliente_id = "U" + String(usuario.id).padStart(10, "0");
 		await baseDeDatos.actualizaPorId("usuarios", usuario.id, {cliente_id}); // es necesario el 'await' para session
+
+		// Fin
+		return cliente_id
 	},
 
 	// Ambos
