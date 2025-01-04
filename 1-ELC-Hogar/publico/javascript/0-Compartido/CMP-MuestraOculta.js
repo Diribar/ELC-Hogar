@@ -37,11 +37,5 @@ window.addEventListener("load", () => {
 		// Si el click fue 'menú Mobile búsqueda rápida', muestra el bloque donde escribirlo
 		if (typeof e.target.className == "string" && e.target.className.includes("mmBR"))
 			DOM.brMostrar.classList.remove("ocultar");
-
-		// Foco en búsqueda rápida - puede mostrarse desde el ícono del header o del menú mobile, por eso está aparte
-		if (!DOM.brMostrar.className.includes("ocultar")) {
-			DOM.brInput.focus();
-			fetch("/api/cmp-agregar-url-br");
-		}
 	});
 });
