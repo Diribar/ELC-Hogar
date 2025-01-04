@@ -6,14 +6,17 @@ module.exports = (req, res, next) => {
 	if (req.originalUrl.includes("/inactivar-captura/")) return next();
 	if (comp.omitirMiddlewsTransv(req)) return next();
 
-	// Obtiene el cliente
+	// Variables
 	const {cliente_id} = req.session.cliente;
-	if (cliente_id == "U0000000011") return next();
+	let {originalUrl: ruta} = req;
 
 	// Obtiene la ruta
-	let {originalUrl: ruta} = req;
+	if (cliente_id == "U0000000011") return next();
 	if (ruta == "/institucional/inicio") return next(); // saltea, porque redirecciona a "/inicio"
 	if (ruta.startsWith("/consultas")) return next(); // se guarda desde una API dedicada
+	if (ruta.includes("/agregar-")) return next(); // saltea, porque se guarda desde la controladora
+
+	// Quita el 'query' de la ruta
 	if (ruta.includes("&")) ruta = ruta.split("&")[0];
 
 	// Obtiene el comentario
