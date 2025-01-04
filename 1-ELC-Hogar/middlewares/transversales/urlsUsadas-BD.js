@@ -11,7 +11,7 @@ module.exports = (req, res, next) => {
 	let {originalUrl: ruta} = req;
 
 	// Motivos para discontinuar la función
-	if (cliente_id == "U000000001") return next();
+	if (cliente_id == "U0000000011") return next();
 	if (ruta == "/institucional/inicio") return next(); // saltea, porque redirecciona a "/inicio"
 	if (ruta.startsWith("/consultas")) return next(); // se guarda desde una API dedicada
 	if (ruta.includes("/agregar-")) return next(); // saltea, porque se guarda desde la controladora
