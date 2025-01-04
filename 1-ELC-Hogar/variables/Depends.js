@@ -387,7 +387,15 @@ module.exports = {
 		if (familias.length) familias = [...new Set(familias)];
 
 		// Fin
-		return familias
+		return familias;
+	},
+	familiasRutasTitulo: {
+		[iconos.instituc]: "institucional", // fa-building-columns
+		[iconos.prod]: "producto", // fa-video
+		[iconos.rclv]: "rclv", // fa-child
+		[iconos.agregar]: "agregarProd", // fa-circle-plus
+		[iconos.altaUser]: "agregarUsuario", // fa-user-plus
+		[iconos.revisar]: "revisión", // fa-user-graduate
 	},
 };
 
