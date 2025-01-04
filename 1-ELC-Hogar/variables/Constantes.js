@@ -16,6 +16,7 @@ const iconos = {
 
 	// Ocasionales
 	...{agregar: "fa-circle-plus", calificar: "fa-chart-simple", eliminar: "fa-trash-can"},
+	historial: "fa-arrow-right-arrow-left",
 	...{detalle: "fa-circle-info", edicion: "fa-pen", edicionCambiada: "fa-arrow-right-long", rotar: "fa-rotate-90"},
 	...{graficos: "fa-chart-line", chart: "fa-chart-pie", columnas: "fa-chart-simple", area: "fa-chart-area"},
 	...{prod: "fa-video", rclv: "fa-child", link: "fa-link", instituc: "fa-building-columns", mail: "fa-envelope"},
@@ -221,6 +222,8 @@ module.exports = {
 			["/usuarios/perennes", "altaPerennes", iconos.altaUser, "fa-user-lock"], // candado
 			["/usuarios/perennes-bienvenido", "perennesBienvenido", iconos.altaUser, "fa-user-gear"], // rueda de configuración
 
+			// Agregar productos
+			["/agregar-pc", "agregarProd", iconos.prod, iconos.agregar],
 
 			// Varios
 			["/", "inicio", iconos.inicio],
@@ -251,19 +254,21 @@ module.exports = {
 			["/edicion/p/", "edicionProd", iconos.prod, iconos.edicion],
 			["/calificar/p/", "calificarProd", iconos.prod, iconos.calificar],
 			["/links/mirar/l/", "mirarLink", iconos.prod, "fa-couch"],
-			["/agregar-", "agregarProd", iconos.prod, iconos.agregar],
 			["/abm-links/p/", "abmLinks", iconos.prod, iconos.link],
+			["/historial/p", "historial", iconos.prod, iconos.historial],
+			["/inactivar/p", "inactivar", iconos.prod, iconos.xMark],
+			["/recuperar/p", "recuperar", iconos.prod, iconos.check],
 
 			// Familia "Rclvs"
 			["/detalle/r", "detalleRclv", iconos.rclv, iconos.detalle],
 			["/edicion/r", "edicionDeRclv", iconos.rclv, iconos.edicion],
 			["/agregar/r/", "agregarRclv", iconos.rclv, iconos.agregar],
+			["/historial/r", "historial", iconos.rclv, iconos.historial],
+			["/inactivar/r", "inactivar", iconos.rclv, iconos.xMark],
+			["/recuperar/r", "recuperar", iconos.rclv, iconos.check],
 
 			// Familia
-			["/historial", "historial"],
-			["/inactivar", "inactivar"],
-			["/recuperar", "recuperar"],
-			["/correccion-del-", "correccion"],
+			["/correccion-del-", "correccion", iconos.revision],
 		],
 	},
 	rutasSinHistorial: {
