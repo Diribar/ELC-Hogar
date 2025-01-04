@@ -182,11 +182,10 @@ module.exports = {
 			const comentario = layout.slice(0, 20);
 
 			// Guarda el registro de navegación
-			if (cliente_id && cliente_id != "U0000000011")
-				await baseDeDatos.agregaRegistro("navegsDia", {cliente_id, ruta, comentario});
+			comp.guardaRegistroNavegac({cliente_id, ruta, comentario, reqHeaders: req.headers["user-agent"]});
 
 			// Fin
-			return res.json()
+			return res.json();
 		},
 	},
 	sessionCookie: {
