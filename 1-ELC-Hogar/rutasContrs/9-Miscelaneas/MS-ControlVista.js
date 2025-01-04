@@ -4,13 +4,7 @@ const procesos = require("./MS-Procesos");
 
 module.exports = {
 	// Vistas
-	inicio: (req, res) => {
-		const vistaActual = vistasInstitucs.inicio;
-		return res.render("CMP-0Estructura", {
-			tema: "institucional",
-			...vistaActual,
-		});
-	},
+	inicio: (req, res) => res.render("CMP-0Estructura", {tema: "institucional", ...vistasInstitucs.inicio}),
 	mantenim: async (req, res) => {
 		// Variables
 		const tema = "mantenimiento";
