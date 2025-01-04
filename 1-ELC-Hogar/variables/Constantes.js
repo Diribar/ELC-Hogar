@@ -214,39 +214,21 @@ module.exports = {
 	},
 	rutasConHistorial: {
 		iguales: [
+			// Familia - Alta de Usuarios
+			["/usuarios/alta-mail", "altaDeMail", iconos.altaUser, "fa-address-card"], // tarjeta de presentación
+			["/usuarios/editables", "altaEditables", iconos.altaUser, "fa-user-pen"], // usuario con edición
+			["/usuarios/editables-bienvenido", "editablesBienvenido", iconos.altaUser, "fa-user-check"], // usuario con check
+			["/usuarios/perennes", "altaPerennes", iconos.altaUser, "fa-user-lock"], // candado
+			["/usuarios/perennes-bienvenido", "perennesBienvenido", iconos.altaUser, "fa-user-gear"], // rueda de configuración
+
+
+			// Varios
 			["/", "inicio", iconos.inicio],
 			["/institucional/inicio", "inicio", iconos.inicio],
 			["busqueda-rapida", "busquedaRapida", "fa-magnifying-glass"],
-		],
-		includes: [
-			// Productos
-			["/detalle/p/", "detalleProd", iconos.prod, iconos.detalle],
-			["/edicion/p/", "edicionProd", iconos.prod, iconos.edicion],
-			["/calificar/p/", "calificarProd", iconos.prod, iconos.calificar],
-			["/links/mirar/l/", "mirarLink", iconos.prod, "fa-couch"],
-			["/agregar-", "agregarProd", iconos.prod, iconos.agregar],
-			["/abm-links/p/", "abmLinks", iconos.prod, iconos.link],
-
-			// Rclvs
-			["/detalle/r", "detalleRclv", iconos.rclv, iconos.detalle],
-			["/edicion/r", "edicionDeRclv", iconos.rclv, iconos.edicion],
-			["/agregar/r/", "agregarRclv", iconos.rclv, iconos.agregar],
-
-			// Familia
-			["/historial", "historial"],
-			["/inactivar", "inactivar"],
-			["/recuperar", "recuperar"],
-			["/correccion-del-", "correccion"],
+			["/usuarios/login", "login", iconos.login],
 		],
 		startsWith: [
-			// Usuarios
-			["/usuarios/login", "login", iconos.login],
-			["/usuarios/alta-mail", "altaDeMail", iconos.altaUser, "fa-address-card"], // tarjeta de presentación
-			["/usuarios/editables", "usuarioEditables", iconos.altaUser, "fa-user-pen"], // usuario con edición
-			["/usuarios/editables-bienvenido", "altaDeMail", iconos.altaUser, "fa-user-check"], // usuario con check
-			["/usuarios/perennes", "perennes", iconos.altaUser, "fa-user-lock"], // candado
-			["/usuarios/perennes-bienvenido", "perennes", iconos.altaUser, "fa-user-gear"], // rueda de configuración
-
 			// Institucional
 			["/institucional/contactanos", "contactanos", iconos.instituc, iconos.mail],
 			["/institucional", "institucional", iconos.instituc],
@@ -256,11 +238,32 @@ module.exports = {
 			["/revision", "revision", iconos.revision],
 			["/mantenimiento", "mantenimiento", iconos.mantenim],
 			["/graficos", "graficos", iconos.graficos],
+			["/usuarios/envio-exitoso-de-mail", "mailBienvenido", iconos.altaUser, iconos.mail], // sobre de correo - tiene query
 
 			// Discontinuados
 			["/producto", "antiguaProd"],
 			["/rclv", "antiguaRclv"],
 			["/links", "antiguaLinks"],
+		],
+		includes: [
+			// Familia "Productos"
+			["/detalle/p/", "detalleProd", iconos.prod, iconos.detalle],
+			["/edicion/p/", "edicionProd", iconos.prod, iconos.edicion],
+			["/calificar/p/", "calificarProd", iconos.prod, iconos.calificar],
+			["/links/mirar/l/", "mirarLink", iconos.prod, "fa-couch"],
+			["/agregar-", "agregarProd", iconos.prod, iconos.agregar],
+			["/abm-links/p/", "abmLinks", iconos.prod, iconos.link],
+
+			// Familia "Rclvs"
+			["/detalle/r", "detalleRclv", iconos.rclv, iconos.detalle],
+			["/edicion/r", "edicionDeRclv", iconos.rclv, iconos.edicion],
+			["/agregar/r/", "agregarRclv", iconos.rclv, iconos.agregar],
+
+			// Familia
+			["/historial", "historial"],
+			["/inactivar", "inactivar"],
+			["/recuperar", "recuperar"],
+			["/correccion-del-", "correccion"],
 		],
 	},
 	rutasSinHistorial: {
