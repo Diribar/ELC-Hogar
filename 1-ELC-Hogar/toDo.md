@@ -1,3 +1,8 @@
+Época 'Navidad':
+   - A veces da error (fechaDelAno no tiene epocaDelAno)
+
+Edición del usuario
+
 Tabla urlsMasLentas
     - Guardar las 5 más lentas
     - Se revisa cada vez que se accede a una vista
