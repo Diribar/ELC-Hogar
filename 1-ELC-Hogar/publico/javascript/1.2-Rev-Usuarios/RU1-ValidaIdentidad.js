@@ -10,16 +10,13 @@ window.addEventListener("load", () => {
 	let iconosOK = document.querySelectorAll("#datos .aprobRech .fa-circle-check");
 	let iconosError = document.querySelectorAll("#datos .aprobRech .fa-circle-xmark");
 	// Variables del documento
-	let motivo_docum = document.querySelector("#datos select#motivo_docum");
+	let motivoDocum = document.querySelector("#datos select#motivoDocum");
 
 	// Si se eligió un ícono para cada caso, se activa el botón submit
 	let botonSubmitActivoInactivo = () => {
-		let clases = [
-			...Array.from(iconosOK).map((n) => n.className),
-			...Array.from(iconosError).map((n) => n.className),
-		];
+		let clases = [...Array.from(iconosOK).map((n) => n.className), ...Array.from(iconosError).map((n) => n.className)];
 		let sinDecision = clases.filter((n) => n.includes("sinDecision"));
-		if (sinDecision.length == cantCampos || (motivo_docum.value && motivo_docum.value != "0"))
+		if (sinDecision.length == cantCampos || (motivoDocum.value && motivoDocum.value != "0"))
 			botonSubmit.classList.remove("inactivo");
 		else botonSubmit.classList.add("inactivo");
 	};
@@ -43,9 +40,9 @@ window.addEventListener("load", () => {
 	}
 
 	// Si cambia el 'select', se activa el ícono de error en el Documento
-	motivo_docum.addEventListener("change", () => {
+	motivoDocum.addEventListener("change", () => {
 		// Muestra u oculta las opciones de texto
-		if (motivo_docum.value == "0") texto.classList.remove("invisible");
+		if (motivoDocum.value == "0") texto.classList.remove("invisible");
 		else texto.classList.add("invisible");
 		// Actualiza el botón submit
 		botonSubmitActivoInactivo();
@@ -53,16 +50,20 @@ window.addEventListener("load", () => {
 
 	// Frenar el submit si el botonSubmit está inactivo
 	form.addEventListener("submit", (e) => {
-		if (botonSubmit.className.includes("inactivo")) {
-			e.preventDefault();
-			if (motivo_docum.value == "0")
-				for (let i = 0; i < cantCampos; i++) {
-					if (
-						iconosOK[i].className.includes("sinDecision") &&
-						iconosError[i].className.includes("sinDecision")
-					)
-						iconos[i].classList.add("bordeRojo");
-				}
+		// Si el botón está activo, permite el submit. De los contrario, lo interrumpe
+		if (!botonSubmit.className.includes("inactivo")) return;
+		e.preventDefault();
+
+		// Si el motivo del documento es distinto de cero, interrumpe la función
+		if (motivoDocum.value != "0") return;
+
+		// Marca el error
+		for (let i = 0; i < cantCampos; i++) {
+			if (iconosOK[i].className.includes("sinDecision") && iconosError[i].className.includes("sinDecision"))
+				iconos[i].classList.add("bordeRojo");
 		}
+
+		// Fin
+		return;
 	});
 });
