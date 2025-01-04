@@ -99,11 +99,11 @@ module.exports = {
 		// Fin
 		return imgDerecha;
 	},
-	diaMesAno: (fecha) => {
+	diaMesAnoUTC: (fecha) => {
 		fecha = new Date(fecha);
-		const dia = ("0" + fecha.getDate()).slice(-2);
-		const mes = mesesAbrev[fecha.getMonth()];
-		const ano = fecha.getFullYear().toString().slice(-2);
+		const dia = ("0" + fecha.getUTCDate()).slice(-2);
+		const mes = mesesAbrev[fecha.getUTCMonth()];
+		const ano = fecha.getUTCFullYear().toString().slice(-2);
 		fecha = dia + "-" + mes + "-" + ano;
 		return fecha;
 	},
@@ -1019,7 +1019,15 @@ const FN_obtieneImgDerecha = {
 			if (entidad == "epocasDelAno" && fechaDelAno.epocaDelAno_id == ninguno_id) continue;
 
 			// Condicion genérica
-			const condicion = {statusRegistro_id: aprobado_id, avatar: {[Op.ne]: null}, anoFM: {[Op.or]: [null, anoHoy]}}; // es necesario escribir anoFM de esa manera, para que funcione
+			const condicion = {
+				statusRegistro_id: aprobado_id,
+				avatar: {[Op.ne]: null},
+				// El año no sea del futuro - es necesario escribirlo así, para que funcione
+				[Op.or]: [
+					{anoFM: null}, // el año sea null
+					{anoFM: {[Op.lte]: anoHoy}}, // el año sea el anterior o el actual
+				],
+			};
 
 			// Condiciones particulares
 			entidad != "epocasDelAno" ? (condicion.fechaDelAno_id = fechaDelAno.id) : (condicion.id = fechaDelAno.epocaDelAno_id);

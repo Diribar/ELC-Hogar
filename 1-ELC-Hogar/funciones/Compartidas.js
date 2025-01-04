@@ -82,11 +82,11 @@ module.exports = {
 
 		// campo_id
 		campo_idProd: (registro) => {
-			for (let prod_id in variables.entidades.prods_id) if (registro[prod_id]) return prod_id;
+			for (let prod_id of variables.entidades.prods_id) if (registro[prod_id]) return prod_id;
 			return null;
 		},
 		campo_idRclv: (registro) => {
-			for (let rclv_id in variables.entidades.rclvs_id) if (registro[rclv_id]) return rclv_id;
+			for (let rclv_id of variables.entidades.rclvs_id) if (registro[rclv_id]) return rclv_id;
 			return null;
 		},
 		campo_id: function (registro) {
