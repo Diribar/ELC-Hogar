@@ -79,9 +79,7 @@ window.addEventListener("load", () => {
 		// Fin
 		return;
 	};
-	const agregaUrlBusqRap = async () => {
-		await fetch("/api/cmp-agregar-url-br/?comentario=" + DOM.input.value);
-	};
+	const agregaUrlBusqRap = () => fetch("/api/cmp-agregar-url-br/?comentario=" + DOM.input.value); // no hace falta el 'await', porque se puede guardar en forma asincrónica
 
 	// Add Event Listener
 	DOM.input.addEventListener("input", async () => {
@@ -135,7 +133,10 @@ window.addEventListener("load", () => {
 		}
 
 		// Redirige a la vista del hallazgo
-		if (e.key == "Enter") location.href = DOM.muestraResultados.children[posicion].href;
+		if (e.key == "Enter") {
+			agregaUrlBusqRap();
+			location.href = DOM.muestraResultados.children[posicion].href;
+		}
 
 		// Oculta el sector de muestraResultados
 		if (e.key == "Escape") DOM.clickVista.classList.add("ocultar");
@@ -157,4 +158,5 @@ window.addEventListener("load", () => {
 		// Fin
 		return;
 	});
+	DOM.muestraResultados.addEventListener("click", (e) => agregaUrlBusqRap());
 });
