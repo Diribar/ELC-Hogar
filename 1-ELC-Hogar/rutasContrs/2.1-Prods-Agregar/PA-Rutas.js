@@ -17,6 +17,7 @@ const m = {
 	prodYaEnBD: require("../../middlewares/porRegistro/prodYaEnBD"),
 
 	// Otros
+	agregarUrlEnBd: require("../../middlewares/porUsuario/urlAgregarProd"),
 	multer: require("../../middlewares/varios/multer"),
 };
 
@@ -55,27 +56,27 @@ router.get("/api/pa-averigua-si-fa-ya-existe-en-bd", API.averiguaSiYaExisteEnBd)
 router.get("/api/pa-guarda-datos-adicionales/", API.guardaDatosAdics); // datos adicionales
 
 // Vistas - Data entry
-router.get("/agregar-pc", dataEntry, vista.palabrasClave.form);
+router.get("/agregar-pc", dataEntry, m.agregarUrlEnBd, vista.palabrasClave.form);
 router.post("/agregar-pc", dataEntry, vista.palabrasClave.guardar);
-router.get("/agregar-ds", dataEntry, vista.desambiguar);
+router.get("/agregar-ds", dataEntry, m.agregarUrlEnBd, vista.desambiguar);
 
 // Vistas - Comienzo de "prodYaEnBD"
-router.get("/agregar-dd", dataEntryMasYaEnBD, vista.datosDuros.form);
+router.get("/agregar-dd", dataEntryMasYaEnBD, m.agregarUrlEnBd, vista.datosDuros.form);
 router.post("/agregar-dd", dataEntryMasYaEnBD, m.multer.single("avatar"), vista.datosDuros.guardar);
-router.get("/agregar-da", dataEntryMasYaEnBD, vista.datosAdics.form);
+router.get("/agregar-da", dataEntryMasYaEnBD, m.agregarUrlEnBd, vista.datosAdics.form);
 router.post("/agregar-da", dataEntryMasYaEnBD, vista.datosAdics.guardar);
-router.get("/agregar-cn", dataEntryMasYaEnBD, vista.confirma.form);
+router.get("/agregar-cn", dataEntryMasYaEnBD, m.agregarUrlEnBd, vista.confirma.form);
 router.post("/agregar-cn", dataEntryMasYaEnBD, vista.confirma.guardar);
 
 // Vistas - Fin de "prodYaEnBD"
-router.get("/agregar-tr", dataEntry, vista.terminaste);
+router.get("/agregar-tr", dataEntry, m.agregarUrlEnBd, vista.terminaste);
 
 // Vistas - Ingreso Manual
-router.get("/agregar-im", dataEntry, vista.IM.form);
+router.get("/agregar-im", dataEntry, m.agregarUrlEnBd, vista.IM.form);
 router.post("/agregar-im", dataEntry, vista.IM.guardar);
 
 // Vistas - Ingreso FA
-router.get("/agregar-fa", dataEntryMasFA, vista.FA.form);
+router.get("/agregar-fa", dataEntryMasFA, m.agregarUrlEnBd, vista.FA.form);
 router.post("/agregar-fa", dataEntryMasFA, vista.FA.guardar);
 
 // Fin
