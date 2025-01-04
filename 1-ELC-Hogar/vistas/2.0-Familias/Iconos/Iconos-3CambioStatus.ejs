@@ -9,7 +9,7 @@
 	<% if (condicDetalle && locals.statusAlineado && condicHistorial && condicRegistro) { %>
 		<!-- Historial de movimientos -->
 		<a href="<%= '/' + entidad + '/historial/' + siglaFam + '/?id=' + id + origenHTML %>" tabindex="-1">
-			<i class="<%= iconos.faSolid %> fa-arrow-right-arrow-left" tabindex="-1" title="Historial de movimientos"></i>
+			<i class="<%= iconos.faSolid %> <%= iconos.historial %>" tabindex="-1" title="Historial de movimientos"></i>
 		</a>
 	<% } %>
 	<% if (condicUsuario && condicRegistro && condicDetalle) { %>
