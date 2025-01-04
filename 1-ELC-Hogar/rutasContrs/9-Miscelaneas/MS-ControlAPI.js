@@ -92,8 +92,7 @@ module.exports = {
 		const {comentario} = req.query;
 
 		// Si corresponde, guarda el registro
-		if (cliente_id && cliente_id != "U0000000011")
-			comp.guardaRegistroNavegac({cliente_id, ruta, comentario, reqHeaders: req.headers["user-agent"]});
+		comp.guardaRegistroNavegac({cliente_id, ruta, comentario, reqHeaders: req.headers["user-agent"]});
 
 		// Fin
 		return res.json();
