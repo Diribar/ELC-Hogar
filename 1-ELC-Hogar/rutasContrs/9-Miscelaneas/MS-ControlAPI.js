@@ -85,7 +85,7 @@ module.exports = {
 		// Envia la info al FE
 		return res.json(resultados);
 	},
-	agregarUrlBR: (req, res) => {
+	agregaUrlBusqRap: (req, res) => {
 		// Variables
 		const {cliente_id} = req.session.cliente || req.cookies;
 		const ruta = "busqueda-rapida";
