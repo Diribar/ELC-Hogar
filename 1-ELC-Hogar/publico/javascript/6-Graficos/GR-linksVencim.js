@@ -9,7 +9,7 @@ window.addEventListener("load", async () => {
 	const semanaActual = (lunesDeEstaSemana - primerLunesDelAno) / unaSemana + 1;
 	const {promSem} = cantLinks;
 	const maxEjeY = Math.round(promSem.prods * 0.15) * 10;
-	const lunesSemana53 = primerLunesDelAno + unaSemana * 53;
+	const lunesSemana53 = primerLunesDelAno + unaSemana * 52; // son 52 semanas posteriores al primer lunes del año
 	const ano52Sems = new Date(lunesSemana53).getUTCFullYear() > new Date(primerLunesDelAno).getUTCFullYear();
 
 	// Genera el resultado

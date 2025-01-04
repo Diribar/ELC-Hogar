@@ -26,8 +26,9 @@ module.exports = (req, res, next) => {
 	// Guarda el registro de navegación
 	prodRclvNombre(ruta).then((nombre) => {
 		if (!comentario && nombre) comentario = nombre.slice(0, 20);
-		const headers = req.headers["user-agent"];
-		baseDeDatos.agregaRegistro("navegsDia", {cliente_id, ruta, comentario, headers});
+		let dispCliente = req.headers["user-agent"];
+		for (let metodo in requestsClientes) if (requestsClientes[metodo].includes(dispCliente)) dispCliente = metodo;
+		baseDeDatos.agregaRegistro("navegsDia", {cliente_id, ruta, comentario, dispCliente});
 	});
 
 	// Fin
@@ -47,7 +48,7 @@ const prodRclvNombre = async (ruta) => {
 	// Si es un link, averigua el producto
 	if (ruta.startsWith("/links/mirar/l")) {
 		const link = await baseDeDatos.obtienePorId("links", id);
-		entidad = comp.obtieneDesdeCampo_id.entidadProd(link);
+		entidad = comp.obtieneDesdeCampo_id.entProd(link);
 		const campo_id = comp.obtieneDesdeCampo_id.campo_id(link);
 		id = link[campo_id];
 	}

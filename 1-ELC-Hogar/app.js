@@ -14,7 +14,6 @@ global.entorno = produccion ? "production" : pruebas ? "test" : "development";
 // Variables que toman valores de '.env'
 require("dotenv").config();
 global.fetch = require("node-fetch");
-global.anoELC = process.env.anoELC;
 global.carpetaPublica = path.join(__dirname, "publico");
 global.carpetaExterna = path.join(__dirname, "..", process.env.carpetaExterna);
 

@@ -304,8 +304,8 @@ window.addEventListener("load", async () => {
 
 		// Acciones si se cambió el personaje
 		if (["personaje_id", "hecho_id"].includes(nombre) && valor != 1) {
-			const entidadRclv = nombre == "personaje_id" ? "personajes" : "hechos";
-			const rclv = await fetch(rutas.obtieneRclv + entidadRclv + "&id=" + valor).then((n) => n.json());
+			const entRclv = nombre == "personaje_id" ? "personajes" : "hechos";
+			const rclv = await fetch(rutas.obtieneRclv + entRclv + "&id=" + valor).then((n) => n.json());
 			if (rclv.epocaOcurrencia_id) DOM.epocaOcurrencia_id.value = rclv.epocaOcurrencia_id;
 		}
 

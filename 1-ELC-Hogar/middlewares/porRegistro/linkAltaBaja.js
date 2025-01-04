@@ -9,7 +9,7 @@ module.exports = async (req, res, next) => {
 	if (!respuesta && !url) respuesta = "Falta el 'url' del link";
 
 	// Valida que el link exista en la BD
-	const link = await baseDeDatos.obtienePorCondicion("links", {url}, variables.entidades.asocsProd);
+	const link = await baseDeDatos.obtienePorCondicion("links", {url}, variables.entidades.prodsAsoc);
 	if (!respuesta && !link) respuesta = "El link no existe en la base de datos";
 
 	// Valida que el link tenga un status distinto a 'estable'

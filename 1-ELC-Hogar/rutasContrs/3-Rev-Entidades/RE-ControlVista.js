@@ -168,7 +168,7 @@ module.exports = {
 			const statusLink_id = [creado_id, aprobado_id, recuperar_id];
 			const links = await procsProd.obtieneLinksDelProducto({entidad, id, statusLink_id, origen: "RA"});
 			const status_id = statusRegistro_id;
-			const asocs = variables.entidades.asocsRclv;
+			const asocs = variables.entidades.rclvsAsoc;
 
 			// Va a la vista
 			return res.render("CMP-0Estructura", {
@@ -194,8 +194,6 @@ module.exports = {
 			const edicEntidad = comp.obtieneDesdeEntidad.entidadEdic(entidad);
 			const entidadNombre = comp.obtieneDesdeEntidad.entidadNombre(entidad);
 			const delLa = comp.obtieneDesdeEntidad.delLa(entidad);
-			const articulo = ["peliculas", "colecciones", "epocasDelAno"].includes(entidad) ? " la " : "l ";
-			const usuario_id = req.session.usuario.id;
 
 			// Obtiene los include
 			const includeEdic = comp.obtieneTodosLosCamposInclude(entidad);
@@ -273,7 +271,7 @@ module.exports = {
 			const [ingresos, reemplazos] = await procesos.edicion.ingrReempl(original, edicion);
 
 			// Variables para la vista
-			const titulo = "Revisión de la Edición de" + articulo + entidadNombre;
+			const titulo = "Revisión de la Edición" + delLa + entidadNombre;
 			const ayudasTitulo = [
 				"Necesitamos que nos digas si estás de acuerdo con la información editada.",
 				"Si considerás que no, te vamos a pedir que nos digas el motivo.",
@@ -454,7 +452,7 @@ module.exports = {
 						}
 
 						// Actualiza el solapamiento
-						comp.actualizaSolapam();
+						comp.actualizaSolapam(); // no hace falta el await, porque no se usa en la vista
 					}
 				}
 
@@ -644,7 +642,7 @@ module.exports = {
 			await baseDeDatos.actualizaPorId("epocasDelAno", id, datos);
 
 			// Actualiza el solapamiento
-			comp.actualizaSolapam();
+			comp.actualizaSolapam(); // no hace falta el await, porque no se usa en la vista
 
 			// Fin
 			return res.redirect("/revision/tablero");

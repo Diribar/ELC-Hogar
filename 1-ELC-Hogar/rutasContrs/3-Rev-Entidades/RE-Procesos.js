@@ -20,7 +20,7 @@ module.exports = {
 		},
 		obtieneProds1: async (revId) => {
 			// Variables
-			let include = [...variables.entidades.asocsProd, ...variables.entidades.asocsRclv];
+			let include = [...variables.entidades.prodsAsoc, ...variables.entidades.rclvsAsoc];
 			let productos = [];
 
 			// Obtiene todas las ediciones
@@ -29,7 +29,7 @@ module.exports = {
 			// Elimina las ediciones con RCLV no aprobado
 			ediciones = ediciones.filter(
 				(edicion) =>
-					!variables.entidades.asocsRclv.some((rclv) => edicion[rclv] && edicion[rclv].statusRegistro_id != aprobado_id)
+					!variables.entidades.rclvsAsoc.some((rclv) => edicion[rclv] && edicion[rclv].statusRegistro_id != aprobado_id)
 			);
 
 			// Obtiene los productos
@@ -208,7 +208,7 @@ module.exports = {
 		},
 		obtieneRCLVs2: async (revId) => {
 			// Variables
-			let include = variables.entidades.asocsRclv;
+			let include = variables.entidades.rclvsAsoc;
 			let rclvs = [];
 
 			// Obtiene todas las ediciones ajenas
@@ -689,8 +689,8 @@ module.exports = {
 			const revId = req.session.usuario.id;
 			const decisAprob = aprob == "SI";
 			const campoDecision = "links" + (decisAprob ? "Aprob" : "Rech");
-			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
-			const anoEstreno = link[asocProd].anoEstreno;
+			const prodAsoc = comp.obtieneDesdeCampo_id.prodAsoc(link);
+			const anoEstreno = link[prodAsoc].anoEstreno;
 			const ahora = comp.fechaHora.ahora();
 			const fechaVencim = FN_links.fechaVencim({link, IN, ahora});
 			const statusRegistro_id = IN == "SI" ? aprobado_id : inactivo_id;
@@ -850,13 +850,13 @@ let FN_links = {
 	},
 	obtieneLinks: {
 		ediciones: async () => {
-			const include = variables.entidades.asocsProd;
+			const include = variables.entidades.prodsAsoc;
 			const ediciones = await baseDeDatos.obtieneTodos("linksEdicion", include);
 			return ediciones;
 		},
 		links: async () => {
 			// Variables
-			const include = variables.entidades.asocsProd;
+			const include = variables.entidades.prodsAsoc;
 
 			// Obtiene los links en status 'a revisar'
 			const condicion = {statusRegistro_id: [...creados_ids, ...inacRecup_ids], prodAprob: true};

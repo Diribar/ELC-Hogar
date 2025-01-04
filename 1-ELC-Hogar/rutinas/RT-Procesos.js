@@ -129,7 +129,7 @@ module.exports = {
 
 		// edicsPERL
 		entsProdsRclvs = ["prodsEdicion", "rclvsEdicion"];
-		include = {prodsEdicion: variables.entidades.asocsProd, rclvsEdicion: variables.entidades.asocsRclv};
+		include = {prodsEdicion: variables.entidades.prodsAsoc, rclvsEdicion: variables.entidades.rclvsAsoc};
 		let edicsPERL = [];
 		for (let entPERL of entsProdsRclvs) {
 			const registros = baseDeDatos
@@ -150,29 +150,29 @@ module.exports = {
 
 		// regsLinks
 		condicion = {...condicion, prodAprob: true};
-		include = ["statusSugeridoPor", ...variables.entidades.asocsProd];
+		include = ["statusSugeridoPor", ...variables.entidades.prodsAsoc];
 		const regsLinks = await baseDeDatos
 			.obtieneTodosPorCondicion("links", condicion, include)
 			.then((links) => links.filter((link) => !rolesRevLinks_ids.includes(link.statusSugeridoPor.rolUsuario_id)))
 			.then((links) =>
 				links.map((link) => {
-					const asociacion = comp.obtieneDesdeCampo_id.asocProd(link);
+					const prodAsoc = comp.obtieneDesdeCampo_id.prodAsoc(link);
 					const entidad = comp.obtieneDesdeCampo_id.entidadProd(link);
-					return {...link[asociacion], entidad, familia: "links"};
+					return {...link[prodAsoc], entidad, familia: "links"};
 				})
 			)
 			.then((prods) => comp.eliminaRepetidos(prods));
 
 		// edicsLinks
-		include = ["editadoPor", ...variables.entidades.asocsProd];
+		include = ["editadoPor", ...variables.entidades.prodsAsoc];
 		const edicsLinks = await baseDeDatos
 			.obtieneTodos("linksEdicion", include)
 			.then((edics) => edics.filter((edic) => !rolesRevPERL_ids.includes(edic.editadoPor.rolUsuario_id)))
 			.then((edics) =>
 				edics.map((edic) => {
-					const asociacion = comp.obtieneDesdeCampo_id.asocProd(edic);
+					const prodAsoc = comp.obtieneDesdeCampo_id.prodAsoc(edic);
 					const entidad = comp.obtieneDesdeCampo_id.entidadProd(edic);
-					return {...edic[asociacion], entidad, familia: "links"};
+					return {...edic[prodAsoc], entidad, familia: "links"};
 				})
 			)
 			.then((prods) => comp.eliminaRepetidos(prods));
@@ -184,7 +184,7 @@ module.exports = {
 	// Borra imágenes obsoletas
 	eliminaImagenesSinRegistro: async ({carpeta, familias, entidadEdic, status_id, campoAvatar}) => {
 		// Variables
-		const petitFamilias = comp.obtieneDesdeFamilias.petitFamilias(familias);
+		const petitFamilias = familias == "productos" ? "prods" : familias;
 		let avatars = [];
 
 		// Revisa los avatars que están en las ediciones
@@ -965,13 +965,13 @@ const FN_mailDeFeedback = {
 				(">" + nombre + "</a>");
 		} else {
 			// Obtiene el registro
-			const asocs = variables.entidades.asocsProd;
+			const asocs = variables.entidades.prodsAsoc;
 			const link = await baseDeDatos.obtienePorId("links", reg.entidad_id, [...asocs, "prov"]);
 			if (!link.id) return {};
 
 			// Obtiene el nombre
-			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
-			nombre = comp.nombresPosibles(link[asocProd]);
+			const prodAsoc = comp.obtieneDesdeCampo_id.prodAsoc(link);
+			nombre = comp.nombresPosibles(link[prodAsoc]);
 
 			// Obtiene el anchor
 			link.href = link.prov.embededPoner ? urlHost + "/links/mirar/l/?id=" + link.id : "//" + link.url;
@@ -1197,15 +1197,15 @@ const FN_navegsDia = {
 		navegsDia = navegsDia.map(async (n) => {
 			// Obtiene el link con su producto
 			const linkId = parseFloat(n.ruta.split("id=")[1]);
-			const asocsProd = variables.entidades.asocsProd;
-			const link = await baseDeDatos.obtienePorId("links", linkId, asocsProd);
+			const {prodsAsoc} = variables.entidades;
+			const link = await baseDeDatos.obtienePorId("links", linkId, prodsAsoc);
 
 			// Obtiene el producto
-			const asocProd = comp.obtieneDesdeCampo_id.asocProd(link);
-			const producto = link[asocProd];
+			const prodAsoc = comp.obtieneDesdeCampo_id.prodAsoc(link);
+			const producto = link[prodAsoc];
 
 			// Completa la info
-			const datos = {fecha: n.fecha, entidad: asocProd, id: producto.id, nombreCastellano: producto.nombreCastellano};
+			const datos = {fecha: n.fecha, entidad: prodAsoc, id: producto.id, nombreCastellano: producto.nombreCastellano};
 			return datos;
 		});
 		navegsDia = await Promise.all(navegsDia);

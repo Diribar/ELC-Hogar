@@ -46,8 +46,8 @@ window.addEventListener("load", async () => {
 			guardarLosValoresEnSession();
 
 			// Para ir a la vista RCLV
-			const entidadRclv = entidadesRclv(link);
-			location.href = "/" + entidadRclv + "/agregar/r/?" + paramsOrigen;
+			const entRclv = obtieneEntRclv(link);
+			location.href = "/" + entRclv + "/agregar/r/?" + paramsOrigen;
 
 			// Fin
 			return;
@@ -64,9 +64,9 @@ window.addEventListener("load", async () => {
 			guardarLosValoresEnSession();
 
 			// Redirige a la vista RCLV
-			const entidadRclv = entidadesRclv(link);
+			const entRclv = obtieneEntRclv(link);
 			const rclv_id = DOM.inputsRCLV[i].value;
-			location.href = "/" + entidadRclv + "/edicion/r/?id=" + rclv_id + "&" + paramsOrigen;
+			location.href = "/" + entRclv + "/edicion/r/?id=" + rclv_id + "&" + paramsOrigen;
 		});
 	});
 
@@ -79,10 +79,10 @@ window.addEventListener("load", async () => {
 
 // Variables
 const rutaSession = "/producto/api/pr-envia-a-req-session/";
-const paramsOrigen = "prodEntidad=" + entidad + "&prodId=" + id + "&origen=PED";
+const paramsOrigen = "entProd=" + entidad + "&prodId=" + id + "&origen=PED";
 
 // Funciones
-const entidadesRclv = (link) => {
+const obtieneEntRclv = (link) => {
 	return link.className.includes("personaje_id")
 		? "personajes"
 		: link.className.includes("hecho_id")
