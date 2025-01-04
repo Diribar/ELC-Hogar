@@ -233,9 +233,13 @@ module.exports = {
 			["/institucional/contactanos", "contactanos", iconos.instituc, iconos.mail],
 			["/institucional", "institucional", iconos.instituc],
 
+			// Familia
+			["/revision/inactivar", "revisionInactivar", iconos.revision,iconos.xMark],
+			["/revision/recuperar", "revisionRecuperar", iconos.revision,iconos.check],
+			["/revision/", "revision", iconos.revision],
+
 			// Otros
 			["/consultas", "consultas", "fa-film"],
-			["/revision", "revision", iconos.revision],
 			["/mantenimiento", "mantenimiento", iconos.mantenim],
 			["/graficos", "graficos", iconos.graficos],
 			["/usuarios/envio-exitoso-de-mail", "mailBienvenido", iconos.altaUser, iconos.mail], // sobre de correo - tiene query
