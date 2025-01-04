@@ -219,14 +219,6 @@ module.exports = {
 			return navegsDia;
 		},
 		iconosArray: (url) => {
-			// Variables
-			const familias = {
-				[iconos.instituc]: "institucional",
-				[iconos.prod]: "producto",
-				[iconos.rclv]: "rclv",
-				[iconos.agregar]: "agregar",
-			};
-
 			// Averigua si es una ruta que puede tener una abreviatura
 			const distintivo = comp.rutasConHistorial(url);
 			if (!distintivo) return {};
@@ -242,8 +234,8 @@ module.exports = {
 			let familia;
 			for (let icono of iconosDistintivo) {
 				// Genera el ícono
-				familia = familias[icono] || familia;
-				const titulo = familias[icono] || distintivo;
+				familia = variables.familiasRutasTitulo[icono] || familia;
+				const titulo = variables.familiasRutasTitulo[icono] || distintivo;
 				let iconoHTML = "<i class='fa-solid " + icono;
 				if (familia) iconoHTML += " " + familia;
 				iconoHTML += "' title='" + titulo + "'></i>";
@@ -457,14 +449,13 @@ const FN_tablManten = {
 const FN_navegsDia = {
 	obtieneIconosPorFamilia: (regsCliente) => {
 		// Variables
-		const familias = ["prod", "rclv", "altaUser"];
 		let iconosCons = [];
 
 		// Deja solamente los registros con íconos
 		regsCliente = regsCliente.filter((n) => n.iconosArray);
 
 		// Obtiene los iconos por familia
-		for (let familia of familias) {
+		for (let familia of familiaRutas) {
 			// Obtiene los regsCliente con ese ícono
 			const registrosDeFamilia = regsCliente.filter((n) => n.iconosArray[0].includes(iconos[familia]));
 			if (!registrosDeFamilia.length) continue;
