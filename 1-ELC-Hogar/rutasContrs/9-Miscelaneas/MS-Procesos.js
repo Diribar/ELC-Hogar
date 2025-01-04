@@ -234,8 +234,8 @@ module.exports = {
 			let familia;
 			for (let icono of iconosDistintivo) {
 				// Genera el ícono
-				familia = variables.familiasRutasTitulo[icono] || familia;
-				const titulo = variables.familiasRutasTitulo[icono] || distintivo;
+				familia = familiasRutasTitulo[icono] || familia;
+				const titulo = familiasRutasTitulo[icono] || distintivo;
 				let iconoHTML = "<i class='fa-solid " + icono;
 				if (familia) iconoHTML += " " + familia;
 				iconoHTML += "' title='" + titulo + "'></i>";

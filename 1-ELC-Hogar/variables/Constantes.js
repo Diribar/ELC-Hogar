@@ -243,11 +243,6 @@ module.exports = {
 			["/mantenimiento", "mantenimiento", iconos.mantenim],
 			["/graficos", "graficos", iconos.graficos],
 			["/usuarios/envio-exitoso-de-mail", "mailBienvenido", iconos.altaUser, iconos.mail], // sobre de correo - tiene query
-
-			// Discontinuados
-			["/producto", "antiguaProd"],
-			["/rclv", "antiguaRclv"],
-			["/links", "antiguaLinks"],
 		],
 		includes: [
 			// Familia "Productos"
@@ -281,6 +276,11 @@ module.exports = {
 			// Familia
 			["/correccion-del-", "correccion", iconos.revision],
 		],
+		disconts: [
+			["/producto", "antiguaProd", "fa-down-long", iconos.prod],
+			["/rclv", "antiguaRclv", "fa-down-long", iconos.rclv],
+			["/links", "antiguaLinks", "fa-down-long", iconos.link],
+		],
 	},
 	rutasSinHistorial: {
 		includes: ["/eliminado"],
@@ -289,5 +289,14 @@ module.exports = {
 			...["/productos-por-registro/r", "/listados/links"], // Familias
 			"/usuarios",
 		],
+	},
+	familiasRutasTitulo: {
+		[iconos.instituc]: "institucional", // fa-building-columns
+		[iconos.prod]: "producto", // fa-video
+		[iconos.rclv]: "rclv", // fa-child
+		[iconos.agregar]: "agregarProd", // fa-circle-plus
+		[iconos.altaUser]: "agregarUsuario", // fa-user-plus
+		[iconos.revisar]: "revisión", // fa-user-graduate
+		"fa-down-long": "rutaAntigua",
 	},
 };
