@@ -18,9 +18,10 @@ const capturaInactivar = require("../../middlewares/varios/capturaInactivar");
 const aptoUsuario = [usAltaTerm, usAptoInput, usPenalizaciones];
 
 // APIs
-router.get("/api/cmp-horario-inicial/", API.horarioInicial);
-router.get("/api/cmp-busqueda-rapida/", API.busquedaRapida);
-router.get("/api/cmp-agregar-url-br/", API.agregaUrlBusqRap);
+router.get("/api/cmp-horario-inicial", API.horarioInicial);
+router.get("/api/cmp-busqueda-rapida", API.busquedaRapida);
+router.get("/api/cmp-agregar-url-br", API.agregaUrlBusqRap);
+router.get("/api/cmp-bienvenido-aceptado", API.bienvenidoAceptado);
 
 // Vista
 router.get("/", vista.inicio);

@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", () => {
 	// Variables
-	const clasesHabituales = " ocultar pointer scale absoluteCentro";
+	const clasesHabituales = "ocultar pointer scale absoluteCentro";
 	let DOM = {
 		// Menús
 		menus: document.querySelectorAll("#menuCapacitac .menuOpcion"),
@@ -20,7 +20,7 @@ window.addEventListener("load", () => {
 
 	// Crea el botón de "cierraVideo"
 	const cierraVideo = document.createElement("i");
-	cierraVideo.className = "fa-solid fa-circle-xmark" + clasesHabituales;
+	cierraVideo.className = "fa-solid fa-circle-xmark " + clasesHabituales;
 	cierraVideo.id = "cierraVideo";
 
 	// Acciones si se elige un video

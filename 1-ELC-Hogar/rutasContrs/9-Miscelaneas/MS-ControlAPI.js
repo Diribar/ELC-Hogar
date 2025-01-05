@@ -97,4 +97,8 @@ module.exports = {
 		// Fin
 		return res.json();
 	},
+	bienvenidoAceptado: (req, res) => {
+		req.session.bienvenido = true;
+		return res.json();
+	},
 };

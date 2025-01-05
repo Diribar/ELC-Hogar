@@ -1,7 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
 	// Variables
-	let DOM = {
+	const DOM = {
 		timer: document.querySelector("#timer"),
 
 		// Partes del cartel
@@ -13,7 +13,7 @@ window.addEventListener("load", async () => {
 	if (!entidad && pathname.includes("/revision-us")) entidad = "usuarios";
 
 	// Si no hay datos, interrumpe la función
-	if (!entidad || !id) return;
+	if (!entidad || !id || !DOM.timer) return;
 
 	// Horario Inicial
 	const datos = await fetch("/api/cmp-horario-inicial/?entidad=" + entidad + "&id=" + id).then((n) => n.json());
