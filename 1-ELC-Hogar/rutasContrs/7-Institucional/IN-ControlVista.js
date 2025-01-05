@@ -39,7 +39,8 @@ module.exports = {
 				informacion = {
 					mensajes: [
 						"Si vas a querer que te respondamos, necesitamos saber quién sos.",
-						"Podés ir al login o continuar como estás, con los íconos de abajo.",
+						"Para identificarte, podés ir al login con el ícono de abajo a la izquierda.",
+						"También podés continuar como estás, con el ícono de la derecha.",
 					],
 					iconos: [
 						{clase: iconos.login, link: "/usuarios/login", titulo: "Ir a 'Login'"},
