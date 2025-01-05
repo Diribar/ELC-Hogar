@@ -26,7 +26,7 @@ module.exports = async (req, res, next) => {
 	const icono = {...variables.vistaEntendido(req.session.urlActual), autofocus: true};
 
 	// Prepara la información
-	const informacion = {mensajes, iconos: [icono], titulo: "Te damos la Bienvenida", check: true};
+	const informacion = {mensajes, iconos: [icono], titulo: "Te damos la Bienvenida", check: true, bienvenido: true};
 
 	// Fin
 	return res.render("CMP-0Estructura", {informacion});
