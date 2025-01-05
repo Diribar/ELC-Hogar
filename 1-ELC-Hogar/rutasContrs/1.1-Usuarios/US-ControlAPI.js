@@ -70,6 +70,9 @@ module.exports = {
 			baseDeDatos.eliminaPorCondicion("visitas", {cliente_id: cliente_idViejo});
 			delete req.session.cliente;
 
+			// Cambia el cliente_id en la tabla de navegsDia
+			procesos.cambiaVisitaEnNavegsDia({cliente_id, cliente_idViejo});
+
 			// Devuelve la info
 			return res.json(mailEnviado);
 		},

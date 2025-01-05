@@ -288,6 +288,7 @@ module.exports = {
 			if (esVisita) {
 				baseDeDatos.eliminaPorCondicion("visitas", {cliente_id}); // elimina el registro de la tabla
 				res.cookie("cliente_id", usuario.cliente_id, {maxAge: unAno}); // actualiza la cookie
+				procesos.cambiaVisitaEnNavegsDia({cliente_id: usuario.cliente_id, cliente_idViejo: cliente_id}); // cambia el cliente_id en la tabla de navegsDia
 			}
 
 			// Limpia la información obsoleta
@@ -365,6 +366,7 @@ module.exports = {
 			const {codigo} = req.query;
 			const altaMail = codigo == "alta-mail";
 			const olvidoContr = codigo == "olvido-contrasena";
+			let prop;
 
 			// Feedback
 			const informacion = {
@@ -387,12 +389,12 @@ module.exports = {
 			};
 
 			// Elimina la cookie de intenciones
-			const cookie = altaMail ? "intentosAM" : olvidoContr ? "intentosDP" : "";
-			res.clearCookie(cookie);
+			prop = altaMail ? "intentosAM" : olvidoContr ? "intentosDP" : "";
+			res.clearCookie(prop);
 
 			// Elimina la cookie de los datos y errores
-			const session = altaMail ? "altaMail" : olvidoContr ? "olvidoContr" : "";
-			delete req.session[session];
+			prop = altaMail ? "altaMail" : olvidoContr ? "olvidoContr" : "";
+			delete req.session[prop];
 
 			// Vista
 			return res.render("CMP-0Estructura", {informacion});
