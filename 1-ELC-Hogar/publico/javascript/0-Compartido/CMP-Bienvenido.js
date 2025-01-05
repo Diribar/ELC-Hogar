@@ -1,13 +1,7 @@
 "use strict";
 window.addEventListener("load", async () => {
-	// Variables
-	const titulo = document.querySelector("#cartelGenerico #encab #titulo");
-	const botonEntendido =
-		titulo && titulo.innerHTML.includes("Bienvenid")
-			? document.querySelector("#cartelGenerico #iconosCartel .fa-thumbs-up")
-			: null;
-
 	// Si no hay datos, interrumpe la función
+	const botonEntendido = document.querySelector("#cartelGenerico #iconosCartel.bienvenido .fa-thumbs-up");
 	if (!botonEntendido) return;
 
 	// Evento

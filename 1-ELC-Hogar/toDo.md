@@ -1,3 +1,5 @@
+navegsDia: agregar 'dispositivo' en la vista
+
 Edición del usuario
 
 Tabla urlsMasLentas

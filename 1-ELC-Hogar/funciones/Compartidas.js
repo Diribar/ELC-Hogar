@@ -1217,7 +1217,7 @@ module.exports = {
 // Funciones
 const FN = {
 	// Fecha y hora
-	ahora: () => new Date(new Date().toUTCString()), // <-- para convertir en 'horario local'
+	ahora: () => new Date(new Date().toUTCString()), // <-- para convertir en horario 'UTC'
 	nuevoHorario: function (delay, horario) {
 		horario = horario ? horario : this.ahora();
 		let nuevoHorario = new Date(horario);

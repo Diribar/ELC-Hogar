@@ -22,9 +22,8 @@ const m = {
 };
 
 // Middlewares - Consolidados
-const dataEntry = [m.usAltaTerm, m.usPenalizaciones, m.usAptoInput, m.prodAgregar];
-const dataEntryMasYaEnBD = [...dataEntry, m.prodYaEnBD];
-const dataEntryMasFA = [...dataEntry, m.usAutorizFA];
+const deForm = [m.prodAgregar, m.agregarUrlEnBd, m.usAltaTerm, m.usPenalizaciones, m.usAptoInput];
+const dePost = [m.prodAgregar, m.usAltaTerm, m.usPenalizaciones, m.usAptoInput];
 
 // APIs - Validaciones
 router.get("/api/pa-valida-pc", API.validacs.palabrasClave);
@@ -56,28 +55,28 @@ router.get("/api/pa-averigua-si-fa-ya-existe-en-bd", API.averiguaSiYaExisteEnBd)
 router.get("/api/pa-guarda-datos-adicionales/", API.guardaDatosAdics); // datos adicionales
 
 // Vistas - Data entry
-router.get("/agregar-pc", dataEntry, m.agregarUrlEnBd, vista.palabrasClave.form);
-router.post("/agregar-pc", dataEntry, vista.palabrasClave.guardar);
-router.get("/agregar-ds", dataEntry, m.agregarUrlEnBd, vista.desambiguar);
+router.get("/agregar-pc", deForm, vista.palabrasClave.form);
+router.post("/agregar-pc", dePost, vista.palabrasClave.guardar);
+router.get("/agregar-ds", deForm, vista.desambiguar);
 
 // Vistas - Comienzo de "prodYaEnBD"
-router.get("/agregar-dd", dataEntryMasYaEnBD, m.agregarUrlEnBd, vista.datosDuros.form);
-router.post("/agregar-dd", dataEntryMasYaEnBD, m.multer.single("avatar"), vista.datosDuros.guardar);
-router.get("/agregar-da", dataEntryMasYaEnBD, m.agregarUrlEnBd, vista.datosAdics.form);
-router.post("/agregar-da", dataEntryMasYaEnBD, vista.datosAdics.guardar);
-router.get("/agregar-cn", dataEntryMasYaEnBD, m.agregarUrlEnBd, vista.confirma.form);
-router.post("/agregar-cn", dataEntryMasYaEnBD, vista.confirma.guardar);
+router.get("/agregar-dd", deForm, m.prodYaEnBD, m.agregarUrlEnBd, vista.datosDuros.form);
+router.post("/agregar-dd", dePost, m.prodYaEnBD, m.multer.single("avatar"), vista.datosDuros.guardar);
+router.get("/agregar-da", deForm, m.prodYaEnBD, m.agregarUrlEnBd, vista.datosAdics.form);
+router.post("/agregar-da", dePost, m.prodYaEnBD, vista.datosAdics.guardar);
+router.get("/agregar-cn", deForm, m.prodYaEnBD, m.agregarUrlEnBd, vista.confirma.form);
+router.post("/agregar-cn", dePost, m.prodYaEnBD, vista.confirma.guardar);
 
 // Vistas - Fin de "prodYaEnBD"
-router.get("/agregar-tr", dataEntry, m.agregarUrlEnBd, vista.terminaste);
+router.get("/agregar-tr", vista.terminaste);
 
 // Vistas - Ingreso Manual
-router.get("/agregar-im", dataEntry, m.agregarUrlEnBd, vista.IM.form);
-router.post("/agregar-im", dataEntry, vista.IM.guardar);
+router.get("/agregar-im", deForm, vista.IM.form);
+router.post("/agregar-im", dePost, vista.IM.guardar);
 
 // Vistas - Ingreso FA
-router.get("/agregar-fa", dataEntryMasFA, m.agregarUrlEnBd, vista.FA.form);
-router.post("/agregar-fa", dataEntryMasFA, vista.FA.guardar);
+router.get("/agregar-fa", deForm, m.usAutorizFA, m.agregarUrlEnBd, vista.FA.form);
+router.post("/agregar-fa", dePost, m.usAutorizFA, vista.FA.guardar);
 
 // Fin
 module.exports = router;
