@@ -11,7 +11,7 @@ module.exports = {
 		const linkVolver =
 			entidad && id
 				? "/" + entidad + "/inactivar-captura/?id=" + id + "&origen=" + (origen || "DT")
-				: req.session.urlSinCaptura;
+				: req.session.urlSinLogin;
 
 		// Fin
 		return {
