@@ -219,14 +219,6 @@ module.exports = {
 			return navegsDia;
 		},
 		iconosArray: (url) => {
-			// Variables
-			const familias = {
-				[iconos.instituc]: "institucional",
-				[iconos.prod]: "producto",
-				[iconos.rclv]: "rclv",
-				[iconos.agregar]: "agregar",
-			};
-
 			// Averigua si es una ruta que puede tener una abreviatura
 			const distintivo = comp.rutasConHistorial(url);
 			if (!distintivo) return {};
@@ -242,8 +234,8 @@ module.exports = {
 			let familia;
 			for (let icono of iconosDistintivo) {
 				// Genera el ícono
-				familia = familias[icono] || familia;
-				const titulo = familias[icono] || distintivo;
+				familia = familiasRutasTitulo[icono] || familia;
+				const titulo = familiasRutasTitulo[icono] || distintivo;
 				let iconoHTML = "<i class='fa-solid " + icono;
 				if (familia) iconoHTML += " " + familia;
 				iconoHTML += "' title='" + titulo + "'></i>";
@@ -457,24 +449,27 @@ const FN_tablManten = {
 const FN_navegsDia = {
 	obtieneIconosPorFamilia: (regsCliente) => {
 		// Variables
-		const familias = ["prod", "rclv", "agregar"];
-
 		let iconosCons = [];
 
+		// Deja solamente los registros con íconos
+		regsCliente = regsCliente.filter((n) => n.iconosArray);
+
 		// Obtiene los iconos por familia
-		for (let familia of familias) {
+		for (let familia of familiaRutas) {
 			// Obtiene los regsCliente con ese ícono
-			const registrosConIcono = regsCliente.filter((n) => n.iconosArray && n.iconosArray[0].includes(iconos[familia]));
-			regsCliente = regsCliente.filter((n) => !n.iconosArray || !n.iconosArray[0].includes(iconos[familia]));
-			if (!registrosConIcono.length) continue;
+			const registrosDeFamilia = regsCliente.filter((n) => n.iconosArray[0].includes(iconos[familia]));
+			if (!registrosDeFamilia.length) continue;
+
+			// Descarta del general, los registros que ya se eligieron
+			regsCliente = regsCliente.filter((n) => !n.iconosArray[0].includes(iconos[familia]));
 
 			// Obtiene el ícono principal
-			const iconoFamilia = registrosConIcono[0].iconosArray[0];
+			const iconoFamilia = registrosDeFamilia[0].iconosArray[0];
 
 			// Obtiene los íconos secundarios
-			let iconosSecun = registrosConIcono.map((n) => n.iconosArray[1]);
+			let iconosSecun = registrosDeFamilia.map((n) => n.iconosArray[1]);
 			iconosSecun = [...new Set(iconosSecun)];
-			iconosSecun.sort((a, b) => (a < b ? -1 : 1));
+			iconosSecun.reverse();
 
 			// Consolida los íconos
 			const iconosConsFamilia = [iconoFamilia, ...iconosSecun].join(" ");
@@ -482,12 +477,12 @@ const FN_navegsDia = {
 		}
 
 		// Obtiene los íconos que no fueron incluidos
-		let iconosResto = regsCliente.map((n) => n.iconosArray && n.iconosArray[0]);
+		let iconosResto = regsCliente.map((n) => n.iconosArray[0]);
 		if (iconosResto.length) {
-			iconosResto = [...new Set(iconosResto)];
-			iconosResto.sort((a, b) => (a < b ? -1 : 1));
+			iconosResto = [...new Set(iconosResto)]; // elimina los repetidos
+			iconosResto.reverse(); // FIFO
 			const iconosConsFamilia = iconosResto.join(" ");
-			iconosCons.unshift(iconosConsFamilia);
+			iconosCons.unshift(iconosConsFamilia); // los agrega al inicio
 		}
 
 		// Convierte los íconos a texto

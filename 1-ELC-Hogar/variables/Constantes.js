@@ -16,6 +16,7 @@ const iconos = {
 
 	// Ocasionales
 	...{agregar: "fa-circle-plus", calificar: "fa-chart-simple", eliminar: "fa-trash-can"},
+	historial: "fa-arrow-right-arrow-left",
 	...{detalle: "fa-circle-info", edicion: "fa-pen", edicionCambiada: "fa-arrow-right-long", rotar: "fa-rotate-90"},
 	...{graficos: "fa-chart-line", chart: "fa-chart-pie", columnas: "fa-chart-simple", area: "fa-chart-area"},
 	...{prod: "fa-video", rclv: "fa-child", link: "fa-link", instituc: "fa-building-columns", mail: "fa-envelope"},
@@ -203,60 +204,82 @@ module.exports = {
 	eliminarCuandoSinEntidadId: ["statusHistorial", "edicsHistorial", "misConsultas", "pppRegistros", "calRegistros"],
 	requestsTriviales: ["WhatsApp", "Postman", "TelegramBot", "TwitterBot", "Zabbix"], // evita que se cuenten como visitas
 	requestsClientes: {
-		Mobile: "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/27.0 Chrome/125.0.0.0 Mobile Safari/537.36",
-		PC1: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-		PC3: "Mozilla/5.0 (Windows NT 10.0.0; Win64; x64; ) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.93 Chrome/124.0.6367.93 Not-A.Brand/99  Safari/537.36",
-		PC2: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+		MB_Ch125:
+			"Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/27.0 Chrome/125.0.0.0 Mobile Safari/537.36",
+		PC_Ch120:
+			"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+		PC_Ch124:
+			"Mozilla/5.0 (Windows NT 10.0.0; Win64; x64; ) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.93 Chrome/124.0.6367.93 Not-A.Brand/99  Safari/537.36",
+		PC_Ch131:
+			"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
 	},
 	rutasConHistorial: {
 		iguales: [
+			// Familia - Alta de Usuarios
+			["/usuarios/alta-mail", "altaDeMail", iconos.altaUser, "fa-address-card"], // tarjeta de presentación
+			["/usuarios/editables", "altaEditables", iconos.altaUser, "fa-user-pen"], // usuario con edición
+			["/usuarios/editables-bienvenido", "editablesBienvenido", iconos.altaUser, "fa-user-check"], // usuario con check
+			["/usuarios/perennes", "altaPerennes", iconos.altaUser, "fa-user-lock"], // candado
+			["/usuarios/perennes-bienvenido", "perennesBienvenido", iconos.altaUser, "fa-user-gear"], // rueda de configuración
+
+			// Varios
 			["/", "inicio", iconos.inicio],
 			["/institucional/inicio", "inicio", iconos.inicio],
 			["busqueda-rapida", "busquedaRapida", "fa-magnifying-glass"],
+			["/usuarios/login", "login", iconos.login],
+		],
+		startsWith: [
+			// Institucional
+			["/institucional/contactanos", "contactanos", iconos.instituc, iconos.mail],
+			["/institucional", "institucional", iconos.instituc],
+
+			// Familia
+			["/revision/inactivar", "revisionInactivar", iconos.revision, iconos.xMark],
+			["/revision/recuperar", "revisionRecuperar", iconos.revision, iconos.check],
+			["/revision/", "revision", iconos.revision],
+
+			// Otros
+			["/consultas", "consultas", "fa-film"],
+			["/mantenimiento", "mantenimiento", iconos.mantenim],
+			["/graficos", "graficos", iconos.graficos],
+			["/usuarios/envio-exitoso-de-mail", "mailBienvenido", iconos.altaUser, iconos.mail], // sobre de correo - tiene query
 		],
 		includes: [
-			// Productos
+			// Familia "Productos"
 			["/detalle/p/", "detalleProd", iconos.prod, iconos.detalle],
 			["/edicion/p/", "edicionProd", iconos.prod, iconos.edicion],
 			["/calificar/p/", "calificarProd", iconos.prod, iconos.calificar],
 			["/links/mirar/l/", "mirarLink", iconos.prod, "fa-couch"],
-			["/agregar-", "agregarProd", iconos.prod, iconos.agregar],
 			["/abm-links/p/", "abmLinks", iconos.prod, iconos.link],
+			["/historial/p", "historial", iconos.prod, iconos.historial],
+			["/inactivar/p", "inactivar", iconos.prod, iconos.xMark],
+			["/recuperar/p", "recuperar", iconos.prod, iconos.check],
 
-			// Rclvs
+			// Agregar productos
+			["/agregar-pc", "agregarProd-pc", iconos.agregar, "fa-caret-up"],
+			["/agregar-im", "agregarProd-im", iconos.agregar, "fa-square-caret-up"],
+			["/agregar-ds", "agregarProd-ds", iconos.agregar, "fa-caret-right"],
+			["/agregar-fa", "agregarProd-fa", iconos.agregar, "fa-square-caret-right"],
+			["/agregar-dd", "agregarProd-dd", iconos.agregar, "fa-caret-down"],
+			["/agregar-da", "agregarProd-da", iconos.agregar, "fa-caret-left"],
+			["/agregar-cn", "agregarProd-cn", iconos.agregar, iconos.ayuda],
+			["/agregar-tr", "agregarProd-tr", iconos.agregar, iconos.check],
+
+			// Familia "Rclvs"
 			["/detalle/r", "detalleRclv", iconos.rclv, iconos.detalle],
 			["/edicion/r", "edicionDeRclv", iconos.rclv, iconos.edicion],
 			["/agregar/r/", "agregarRclv", iconos.rclv, iconos.agregar],
+			["/historial/r", "historial", iconos.rclv, iconos.historial],
+			["/inactivar/r", "inactivar", iconos.rclv, iconos.xMark],
+			["/recuperar/r", "recuperar", iconos.rclv, iconos.check],
 
 			// Familia
-			["/historial", "historial"],
-			["/inactivar", "inactivar"],
-			["/recuperar", "recuperar"],
-			["/correccion-del-", "correccion"],
+			["/correccion-del-", "correccion", iconos.revision],
 		],
-		startsWith: [
-			// Usuarios
-			["/usuarios/login", "login", iconos.login],
-			["/usuarios/alta-mail", "altaDeMail", iconos.altaUser],
-			["/usuarios/editables", "altaDeMail", iconos.altaUser],
-			["/usuarios/editables-bienvenido", "altaDeMail", iconos.altaUser],
-			["/usuarios/perennes", "perennes", iconos.altaUser],
-			["/usuarios/perennes-bienvenido", "perennes", iconos.altaUser],
-
-			// Institucional
-			["/institucional/contactanos", "contactanos", iconos.mail],
-			["/institucional", "institucional", iconos.instituc],
-
-			// Otros
-			["/consultas", "consultas", "fa-film"],
-			["/revision", "revision", iconos.revision],
-			["/mantenimiento", "mantenimiento", iconos.mantenim],
-			["/graficos", "graficos", iconos.graficos],
-
-			// Discontinuados
-			["/producto", "antiguaProd"],
-			["/rclv", "antiguaRclv"],
-			["/links", "antiguaLinks"],
+		disconts: [
+			["/producto", "antiguaProd", "fa-down-long", iconos.prod],
+			["/rclv", "antiguaRclv", "fa-down-long", iconos.rclv],
+			["/links", "antiguaLinks", "fa-down-long", iconos.link],
 		],
 	},
 	rutasSinHistorial: {
@@ -266,5 +289,14 @@ module.exports = {
 			...["/productos-por-registro/r", "/listados/links"], // Familias
 			"/usuarios",
 		],
+	},
+	familiasRutasTitulo: {
+		[iconos.instituc]: "institucional", // fa-building-columns
+		[iconos.prod]: "producto", // fa-video
+		[iconos.rclv]: "rclv", // fa-child
+		[iconos.agregar]: "agregarProd", // fa-circle-plus
+		[iconos.altaUser]: "agregarUsuario", // fa-user-plus
+		[iconos.revisar]: "revisión", // fa-user-graduate
+		"fa-down-long": "rutaAntigua",
 	},
 };

@@ -1,6 +1,3 @@
-Época 'Navidad':
-   - A veces da error (fechaDelAno no tiene epocaDelAno)
-
 Edición del usuario
 
 Tabla urlsMasLentas

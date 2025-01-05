@@ -51,7 +51,7 @@ module.exports = {
 			// Variables
 			const {email} = req.query;
 			const {cliente} = req.session;
-			const {diasNaveg, visitaCreadaEn, cliente_id: cliente_idViejo} = cliente;
+			const {cliente_id: cliente_idViejo} = cliente;
 
 			// Envía el mail con la contraseña
 			const {contrasena, mailEnviado} = await procesos.envioDeMailConContrasena({email, altaMail: true});
@@ -60,16 +60,7 @@ module.exports = {
 			if (!mailEnviado) return res.json(mailEnviado);
 
 			// Crea el usuario
-			const usuario = await baseDeDatos.agregaRegistroIdCorrel("usuarios", {
-				...{email, contrasena},
-				...{diasNaveg, visitaCreadaEn},
-				statusRegistro_id: mailPendValidar_id,
-				versionElc,
-			});
-
-			// Actualiza 'cliente_id' en la BD 'usuarios' y en la cookie 'cliente_id'
-			const cliente_id = "U" + String(usuario.id).padStart(10, "0");
-			await baseDeDatos.actualizaPorId("usuarios", usuario.id, {cliente_id}); // es necesario el 'await' para session
+			const cliente_id = await procesos.creaElUsuario({cliente, email, contrasena});
 			res.cookie("cliente_id", cliente_id, {maxAge: unAno});
 
 			// Guarda el mail en 'session'

@@ -1146,11 +1146,16 @@ module.exports = {
 		return {baseUrl, tarea, siglaFam, entidad, url};
 	},
 	rutasConHistorial: (url) => {
-		// Busca la ruta
+		// Variables
 		let resultado;
+
+		// Vigentes - busca la ruta
 		if (!resultado) resultado = rutasConHistorial.iguales.find((n) => url == n[0]);
-		if (!resultado) resultado = rutasConHistorial.includes.find((n) => url.includes(n[0]));
 		if (!resultado) resultado = rutasConHistorial.startsWith.find((n) => url.startsWith(n[0]));
+		if (!resultado) resultado = rutasConHistorial.includes.find((n) => url.includes(n[0]));
+
+		// Discontinuados - busca la ruta
+		if (!resultado) resultado = rutasConHistorial.disconts.find((n) => url.startsWith(n[0]));
 
 		// Fin
 		if (resultado) resultado = resultado[1];
@@ -1163,6 +1168,9 @@ module.exports = {
 		return aceptado;
 	},
 	guardaRegistroNavegac: async ({cliente_id, ruta, comentario, reqHeaders}) => {
+		// Si es el usuario de Diego, interrumpe la función
+		if (!cliente_id || (cliente_id && cliente_id == "U0000000011")) return;
+
 		// Funciones
 		const prodRclvNombre = async () => {
 			// Si no tiene id, interrumpe la función
@@ -1190,11 +1198,9 @@ module.exports = {
 			return nombre;
 		};
 
-		// Obtiene el nombre del prod o rclv
-		const nombre = await prodRclvNombre();
-
-		// Si no tiene comentario, lo obtiene del nombre
-		if (!comentario && nombre) comentario = nombre.slice(0, 20);
+		// Actualiza el comentario
+		const nombre = comentario || (await prodRclvNombre());
+		if (nombre) comentario = nombre.slice(0, 20);
 
 		// Averigua el dispositivo del cliente
 		let dispCliente = reqHeaders;

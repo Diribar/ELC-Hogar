@@ -242,9 +242,6 @@ module.exports = {
 
 	// Entorno Revisiones
 	camposRevisar: {
-		// Campos
-		// productos, películas, colecciones, capítulos --> para filtrar los campos por entidad
-		// input --> en los motivos de rechazo, para saber si se escribió a mano
 		productos: [
 			...camposDD,
 			{titulo: "Avatar_url", nombre: "avatarUrl"}, // es necesario para 'agregar-prod'
@@ -375,6 +372,22 @@ module.exports = {
 			titulo: "Ir a la vista Detalle",
 			autofocus: true,
 		}),
+	},
+
+	// Otros
+	familiaRutas: () => {
+		// Variables
+		let familias = [];
+
+		// Obtiene las rutas con más de un ícono
+		for (let metodo in rutasConHistorial)
+			for (let ruta of rutasConHistorial[metodo]) if (ruta.length > 3) familias.push(ruta[2]);
+
+		// Descarta los casos repetidos
+		if (familias.length) familias = [...new Set(familias)];
+
+		// Fin
+		return familias;
 	},
 };
 

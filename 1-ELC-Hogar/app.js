@@ -87,6 +87,7 @@ app.set("views", [
 
 	// Variables que requieren 'require'
 	global.variables = require("./variables/Depends.js");
+	global.familiaRutas = variables.familiaRutas();
 	global.comp = require("./funciones/Compartidas"); // tiene que ir antes que las BD
 	global.rutinasJson = lecturaRutinasJSON();
 	global.ImagenesDerecha = rutinasJson.ImagenesDerecha;

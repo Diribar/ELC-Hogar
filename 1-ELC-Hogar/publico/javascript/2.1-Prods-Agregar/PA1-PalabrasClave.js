@@ -69,7 +69,7 @@ window.addEventListener("load", async () => {
 		},
 		submit: function (e) {
 			// Botón 'Avanzar o previene el submit
-			if (DOM.botonSubmit.className.includes("verdeOscuro")) return;
+			if (DOM.botonSubmit.className.includes("verdeOscuro")) return DOM.form.submit();
 			else e.preventDefault();
 
 			// Botón inactivo
