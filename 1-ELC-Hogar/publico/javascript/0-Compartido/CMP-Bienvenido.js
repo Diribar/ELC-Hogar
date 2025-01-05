@@ -11,5 +11,9 @@ window.addEventListener("load", async () => {
 	if (!botonEntendido) return;
 
 	// Evento
-	botonEntendido.addEventListener("click", () => fetch("/api/cmp-bienvenido-aceptado"));
+	botonEntendido.addEventListener("click", async (e) => {
+		e.preventDefault();
+		await fetch("/api/cmp-bienvenido-aceptado");// es clave el 'await' para que session.bienvenido sea 'true'
+		location.reload();
+	});
 });

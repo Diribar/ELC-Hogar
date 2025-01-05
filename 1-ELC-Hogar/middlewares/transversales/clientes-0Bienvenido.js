@@ -9,10 +9,9 @@ module.exports = async (req, res, next) => {
 		comp.omitirMiddlewsTransv(req) ||
 		req.session.cliente || // Si ya hay una visita previa
 		(req.cookies && req.cookies.cliente_id) || // Si ya hay una visita previa
-		req.session.bienvenido // Si ya se accedió al cartel de 'Bienvenido'
+		req.session.bienvenido // Si ya se aceptó el cartel de 'Bienvenido'
 	)
 		return next();
-	else req.session.bienvenido = true;
 	console.log(16, "Cartel bienvenida", req.headers["user-agent"], req.originalUrl);
 
 	// Prepara los mensajes y el ícono
