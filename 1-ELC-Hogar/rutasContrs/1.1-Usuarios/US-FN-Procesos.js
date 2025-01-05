@@ -97,7 +97,7 @@ module.exports = {
 		contrasena = bcryptjs.hashSync(contrasena, 10);
 		return {contrasena, mailEnviado};
 	},
-	creaElUsuario: async ({cliente,email, contrasena}) => {
+	creaElUsuario: async ({cliente, email, contrasena}) => {
 		// Variables
 		const {diasNaveg, visitaCreadaEn} = cliente;
 
@@ -114,10 +114,21 @@ module.exports = {
 		await baseDeDatos.actualizaPorId("usuarios", usuario.id, {cliente_id}); // es necesario el 'await' para session
 
 		// Fin
-		return cliente_id
+		return cliente_id;
 	},
 
 	// Ambos
+	cambiaVisitaEnNavegsDia: async ({cliente_id, cliente_idViejo}) => {
+		// Varables
+		const fechaHoy = comp.fechaHora.ahora().setHours(0, 0, 0);
+		const condicion = {cliente_id: cliente_idViejo, fecha: {[Op.gte]: fechaHoy}};
+
+		// Cambia el campo de la visita_id
+		await baseDeDatos.actualizaPorCondicion("navegsDia", condicion, {cliente_id});
+
+		// Fin
+		return
+	},
 	comentarios: {
 		credsInvalidas: {
 			altaMail: "Esa dirección de email ya existe en nuestra base de datos.",
