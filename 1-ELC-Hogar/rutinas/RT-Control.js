@@ -691,7 +691,6 @@ module.exports = {
 		eliminaImagenesSinRegistroEnBd: async () => {
 			// Variables
 			const statusDistintoCreado_id = statusRegistros.filter((n) => n.id != creado_id).map((n) => n.id);
-
 			const objetos = [
 				// Carpetas REVISAR
 				{carpeta: "2-Productos/Revisar", familias: "productos", entEdic: "prodsEdicion"}, // para los prods, sólo pueden estar en 'Edición'
