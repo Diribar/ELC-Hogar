@@ -273,6 +273,13 @@ module.exports = {
 			// Fin
 			return;
 		},
+		eliminaRegsSinEntidadId: async () => {
+			// Elimina registros sin entidad_id
+			await procesos.eliminaRegsSinEntidadId();
+
+			// Fin
+			return;
+		},
 
 		// Gestiones diarias
 		imagenDerecha: async () => {
@@ -337,9 +344,6 @@ module.exports = {
 			const fechaDeCorte = comp.fechaHora.nuevoHorario(-25);
 			const condicion = {statusRegistro_id: inactivo_id, statusSugeridoEn: {[Op.lt]: fechaDeCorte}};
 			await baseDeDatos.eliminaPorCondicion("links", condicion);
-
-			// Elimina registros sin entidad_id
-			await procesos.eliminaRegsSinEntidad_id();
 
 			// Fin
 			return;
