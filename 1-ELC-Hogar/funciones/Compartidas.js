@@ -970,7 +970,7 @@ module.exports = {
 			// Fin
 			return;
 		},
-		},
+	},
 
 	// Varias
 	letras: {
