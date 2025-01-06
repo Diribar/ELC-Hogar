@@ -842,6 +842,136 @@ module.exports = {
 		return false;
 	},
 
+	// Gestión de archivos
+	gestionArchivos: {
+		existe: (rutaNombre) => {
+			return rutaNombre && fs.existsSync(rutaNombre);
+		},
+		carpetaProvisorio: function () {
+			// Si no existe la carpeta, la crea
+			const provisorio = carpetaExterna + "9-Provisorio";
+			if (!this.existe(provisorio)) fs.mkdirSync(provisorio);
+
+			// Fin
+			return;
+		},
+		elimina: function (ruta, archivo, output) {
+			// Arma el nombre del archivo
+			let rutaNombre = path.join(ruta, archivo);
+			output = true;
+
+			// Se fija si encuentra el archivo
+			if (this.existe(rutaNombre)) {
+				// Borra el archivo
+				fs.unlinkSync(rutaNombre);
+				// Avisa que lo borra
+				if (output) console.log("Archivo '" + rutaNombre + "' borrado");
+			}
+			// Mensaje si no lo encuentra
+			else if (output) console.log("Archivo " + rutaNombre + " no encontrado para borrar");
+
+			// Fin
+			return;
+		},
+		descarga: async function (url, rutaYnombre, output) {
+			// Carpeta donde descargar
+			const ruta = rutaYnombre.slice(0, rutaYnombre.lastIndexOf("/"));
+			if (!this.existe(ruta)) fs.mkdirSync(ruta);
+
+			// Realiza la descarga
+			let writer = fs.createWriteStream(rutaYnombre);
+			let response = await axios({method: "GET", url, responseType: "stream"});
+			response.data.pipe(writer);
+
+			// Obtiene el resultado de la descarga
+			let resultado = await new Promise((resolve, reject) => {
+				writer.on("finish", () => {
+					const nombre = rutaYnombre.slice(rutaYnombre.lastIndexOf("/") + 1);
+					if (output) console.log("Imagen '" + nombre + "' descargada");
+					resolve("OK");
+				});
+				writer.on("error", (error) => {
+					console.log("Error en la descarga", error);
+					reject("Error");
+				});
+			});
+			// Fin
+			return resultado;
+		},
+		mueveImagen: function (nombre, origen, destino, output) {
+			// Variables
+			let archivoOrigen = carpetaExterna + origen + "/" + nombre;
+			let carpetaDestino = carpetaExterna + destino + "/";
+			let archivoDestino = carpetaDestino + nombre;
+
+			// Si no existe la carpeta de destino, la crea
+			if (!this.existe(carpetaDestino)) fs.mkdirSync(carpetaDestino);
+
+			// Si no encuentra el archivo de origen, lo avisa
+			if (!this.existe(archivoOrigen)) console.log("No se encuentra el archivo " + archivoOrigen + " para moverlo");
+			// Mueve el archivo
+			else
+				fs.renameSync(archivoOrigen, archivoDestino, (error) => {
+					if (!error) {
+						if (output) console.log("Archivo de imagen movido a la carpeta " + archivoDestino);
+					} else throw error;
+				});
+
+			// Fin
+			return;
+		},
+		copiaImagen: function (archivoOrigen, archivoDestino, output) {
+			// Variables
+			const nombreOrigen = (!archivoOrigen.includes("/publico/") ? carpetaExterna : "") + archivoOrigen;
+			const nombreDestino = (!archivoDestino.includes("/publico/") ? carpetaExterna : "") + archivoDestino;
+			const carpetaDestino = nombreDestino.slice(0, nombreDestino.lastIndexOf("/"));
+
+			// Acciones
+			if (!this.existe(carpetaDestino)) fs.mkdirSync(carpetaDestino);
+			if (!this.existe(nombreOrigen)) console.log("No se encuentra el archivo " + archivoOrigen + " para copiarlo");
+			else
+				fs.copyFile(nombreOrigen, nombreDestino, (error) => {
+					if (!error) {
+						if (output) console.log("Archivo " + archivoOrigen + " copiado a la carpeta " + archivoDestino);
+					} else throw error;
+				});
+		},
+		imagenAlAzar: (carpeta) => {
+			// Obtiene el listado de archivos
+			const archivos = fs.readdirSync(carpeta);
+
+			// Elije al azar el n° de imagen
+			const indice = parseInt(Math.random() * archivos.length);
+
+			// Genera el nombre del archivo
+			const imagenAlAzar = archivos[indice];
+
+			// Fin
+			return imagenAlAzar;
+		},
+		eliminaImagenesSinRegistro: async ({carpeta, familias, entEdic, status_id}) => {
+			// Variables
+			const petitFamilias = familias == "productos" ? "prods" : familias;
+			let avatars = [];
+
+			// Revisa los avatars que están en las ediciones
+			if (entEdic) avatars.push(FN_eliminaImagenesSinRegistro.obtieneNombresDeAvatarEnBD({entidad: entEdic}));
+
+			// Revisa los avatars que están en los originales
+			for (let entidad of variables.entidades[petitFamilias])
+				avatars.push(FN_eliminaImagenesSinRegistro.obtieneNombresDeAvatarEnBD({entidad, status_id}));
+
+			// Consolida los resultados
+			avatars = await Promise.all(avatars).then((n) => n.flat());
+
+			// Elimina los avatars
+			FN_eliminaImagenesSinRegistro.eliminaImagenesSinNombreEnBd(avatars, carpeta);
+
+			// Fin
+			return;
+		},
+		},
+
 	// Varias
 	letras: {
 		convierteAlIngles: (resultado) =>
@@ -972,113 +1102,6 @@ module.exports = {
 			}
 			// Fin
 			return datos;
-		},
-	},
-	gestionArchivos: {
-		existe: (rutaNombre) => {
-			return rutaNombre && fs.existsSync(rutaNombre);
-		},
-		carpetaProvisorio: function () {
-			// Si no existe la carpeta, la crea
-			const provisorio = carpetaExterna + "9-Provisorio";
-			if (!this.existe(provisorio)) fs.mkdirSync(provisorio);
-
-			// Fin
-			return;
-		},
-		elimina: function (ruta, archivo, output) {
-			// Arma el nombre del archivo
-			let rutaNombre = path.join(ruta, archivo);
-			output = true;
-
-			// Se fija si encuentra el archivo
-			if (this.existe(rutaNombre)) {
-				// Borra el archivo
-				fs.unlinkSync(rutaNombre);
-				// Avisa que lo borra
-				if (output) console.log("Archivo '" + rutaNombre + "' borrado");
-			}
-			// Mensaje si no lo encuentra
-			else if (output) console.log("Archivo " + rutaNombre + " no encontrado para borrar");
-
-			// Fin
-			return;
-		},
-		descarga: async function (url, rutaYnombre, output) {
-			// Carpeta donde descargar
-			const ruta = rutaYnombre.slice(0, rutaYnombre.lastIndexOf("/"));
-			if (!this.existe(ruta)) fs.mkdirSync(ruta);
-
-			// Realiza la descarga
-			let writer = fs.createWriteStream(rutaYnombre);
-			let response = await axios({method: "GET", url, responseType: "stream"});
-			response.data.pipe(writer);
-
-			// Obtiene el resultado de la descarga
-			let resultado = await new Promise((resolve, reject) => {
-				writer.on("finish", () => {
-					const nombre = rutaYnombre.slice(rutaYnombre.lastIndexOf("/") + 1);
-					if (output) console.log("Imagen '" + nombre + "' descargada");
-					resolve("OK");
-				});
-				writer.on("error", (error) => {
-					console.log("Error en la descarga", error);
-					reject("Error");
-				});
-			});
-			// Fin
-			return resultado;
-		},
-		mueveImagen: function (nombre, origen, destino, output) {
-			// Variables
-			let archivoOrigen = carpetaExterna + origen + "/" + nombre;
-			let carpetaDestino = carpetaExterna + destino + "/";
-			let archivoDestino = carpetaDestino + nombre;
-
-			// Si no existe la carpeta de destino, la crea
-			if (!this.existe(carpetaDestino)) fs.mkdirSync(carpetaDestino);
-
-			// Si no encuentra el archivo de origen, lo avisa
-			if (!this.existe(archivoOrigen)) console.log("No se encuentra el archivo " + archivoOrigen + " para moverlo");
-			// Mueve el archivo
-			else
-				fs.renameSync(archivoOrigen, archivoDestino, (error) => {
-					if (!error) {
-						if (output) console.log("Archivo de imagen movido a la carpeta " + archivoDestino);
-					} else throw error;
-				});
-
-			// Fin
-			return;
-		},
-		copiaImagen: function (archivoOrigen, archivoDestino, output) {
-			// Variables
-			const nombreOrigen = (!archivoOrigen.includes("/publico/") ? carpetaExterna : "") + archivoOrigen;
-			const nombreDestino = (!archivoDestino.includes("/publico/") ? carpetaExterna : "") + archivoDestino;
-			const carpetaDestino = nombreDestino.slice(0, nombreDestino.lastIndexOf("/"));
-
-			// Acciones
-			if (!this.existe(carpetaDestino)) fs.mkdirSync(carpetaDestino);
-			if (!this.existe(nombreOrigen)) console.log("No se encuentra el archivo " + archivoOrigen + " para copiarlo");
-			else
-				fs.copyFile(nombreOrigen, nombreDestino, (error) => {
-					if (!error) {
-						if (output) console.log("Archivo " + archivoOrigen + " copiado a la carpeta " + archivoDestino);
-					} else throw error;
-				});
-		},
-		imagenAlAzar: (carpeta) => {
-			// Obtiene el listado de archivos
-			const archivos = fs.readdirSync(carpeta);
-
-			// Elije al azar el n° de imagen
-			const indice = parseInt(Math.random() * archivos.length);
-
-			// Genera el nombre del archivo
-			const imagenAlAzar = archivos[indice];
-
-			// Fin
-			return imagenAlAzar;
 		},
 	},
 	enviaMail: async ({email, asunto, comentario}) => {
@@ -1423,5 +1446,45 @@ const FN_links = {
 	},
 	condicEstandar: function (link) {
 		return !this.condicCreado(link) && !this.condicEstrRec(link);
+	},
+};
+const FN_eliminaImagenesSinRegistro = {
+	obtieneNombresDeAvatarEnBD: async ({entidad, status_id}) => {
+		// Variables
+		const condicion = {avatar: {[Op.and]: [{[Op.ne]: null}, {[Op.notLike]: "%/%"}]}};
+		if (status_id) condicion.statusRegistro_id = status_id;
+
+		// Obtiene los registros
+		const registros = await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion).then((n) =>
+			n.map((m) => ({
+				imagen: m.avatar,
+				nombre: m.nombre || m.nombreCastellano || m.nombreOriginal,
+				entidad,
+			}))
+		);
+
+		// Fin
+		return registros;
+	},
+	eliminaImagenesSinNombreEnBd: (avatars, carpeta) => {
+		// Obtiene el nombre de todas las imagenes de los archivos de la carpeta
+		const archivos = fs.readdirSync(carpetaExterna + carpeta);
+		const imagenes = avatars.map((n) => n.imagen);
+
+		// Rutina para borrar archivos
+		for (let archivo of archivos)
+			if (!imagenes.includes(archivo)) comp.gestionArchivos.elimina(carpetaExterna + carpeta, archivo);
+
+		// Rutina para detectar nombres sin archivo
+		for (let avatar of avatars)
+			if (!archivos.includes(avatar.imagen))
+				console.log(
+					"Archivo no encontrado:",
+					carpeta + "/" + avatar.imagen,
+					"(" + avatar.nombre + " - " + avatar.entidad + ")"
+				);
+
+		// Fin
+		return;
 	},
 };
