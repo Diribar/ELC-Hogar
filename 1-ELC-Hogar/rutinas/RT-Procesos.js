@@ -789,7 +789,7 @@ module.exports = {
 		return;
 	},
 	sumaUnDia: (fecha) => comp.fechaHora.anoMesDia(new Date(fecha).getTime() + unDia),
-	eliminaRegsSinEntidad_id: async () => {
+	eliminaRegsSinEntidadId: async () => {
 		// Variables
 		const entidades = [...variables.entidades.todos, "usuarios"];
 		let idsPorEntidad = {};
