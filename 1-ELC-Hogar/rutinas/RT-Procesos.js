@@ -182,28 +182,6 @@ module.exports = {
 	},
 
 	// Borra imágenes obsoletas
-	eliminaImagenesSinRegistro: async ({carpeta, familias, entEdic, status_id, campoAvatar}) => {
-		// Variables
-		const petitFamilias = familias == "productos" ? "prods" : familias;
-		let avatars = [];
-
-		// Revisa los avatars que están en las ediciones
-		if (entEdic) avatars.push(FN_eliminaImagenesSinRegistro.nombresDeAvatarEnBD({entidad: entEdic}));
-
-		// Revisa los avatars que están en los originales
-		if (status_id)
-			for (let entidad of variables.entidades[petitFamilias])
-				avatars.push(FN_eliminaImagenesSinRegistro.nombresDeAvatarEnBD({entidad, status_id, campoAvatar}));
-
-		// Consolida los resultados
-		avatars = await Promise.all(avatars).then((n) => n.flat());
-
-		// Elimina los avatars
-		FN_eliminaImagenesSinRegistro.eliminaLasImagenes(avatars, carpeta);
-
-		// Fin
-		return;
-	},
 	eliminaImagenesProvisorio: () => {
 		// Obtiene el nombre de todas las imagenes de los archivos de la carpeta
 		let archivos = fs.readdirSync(carpetaExterna + "9-Provisorio");
@@ -1118,47 +1096,6 @@ const FN_obtieneImgDerecha = {
 
 		// Fin
 		return imgDerecha;
-	},
-};
-const FN_eliminaImagenesSinRegistro = {
-	eliminaLasImagenes: (avatars, carpeta) => {
-		// Obtiene el nombre de todas las imagenes de los archivos de la carpeta
-		const archivos = fs.readdirSync(carpetaExterna + carpeta);
-		const imagenes = avatars.map((n) => n.imagen);
-
-		// Rutina para borrar archivos
-		for (let archivo of archivos)
-			if (!imagenes.includes(archivo)) comp.gestionArchivos.elimina(carpetaExterna + carpeta, archivo);
-
-		// Rutina para detectar nombres sin archivo
-		for (let avatar of avatars)
-			if (!archivos.includes(avatar.imagen))
-				console.log(
-					"Archivo no encontrado:",
-					carpeta + "/" + avatar.imagen,
-					"(" + avatar.nombre + " - " + avatar.entidad + ")"
-				);
-
-		// Fin
-		return;
-	},
-	nombresDeAvatarEnBD: async ({entidad, status_id, campoAvatar}) => {
-		// Variables
-		campoAvatar = campoAvatar ? campoAvatar : "avatar";
-		const condicion = {[campoAvatar]: {[Op.and]: [{[Op.ne]: null}, {[Op.notLike]: "%/%"}]}};
-		if (status_id) condicion.statusRegistro_id = status_id;
-
-		// Obtiene los registros
-		const registros = await baseDeDatos.obtieneTodosPorCondicion(entidad, condicion).then((n) =>
-			n.map((m) => ({
-				imagen: m[campoAvatar],
-				nombre: m.nombre ? m.nombre : m.nombreCastellano ? m.nombreCastellano : m.nombreOriginal,
-				entidad,
-			}))
-		);
-
-		// Fin
-		return registros;
 	},
 };
 const FN_navegsDia = {

@@ -1,12 +1,12 @@
 {
 	"Subtitulo1": "------------ TEMAS DE FECHA ------------------",
-	"FechaUTC": "Dom. 5/ene",
-	"HoraUTC": "3:32",
+	"FechaUTC": "Lun. 6/ene",
+	"HoraUTC": "0:00",
 	"FechaHoraUTC": "SI",
 	"Subtitulo2": "------------TEMAS DE SEMANA ------------------",
-	"FechaSemUTC": "Lun. 30/dic",
-	"HoraSemUTC": "10:48",
-	"semanaUTC": 53,
+	"FechaSemUTC": "Lun. 6/ene",
+	"HoraSemUTC": "0:00",
+	"semanaUTC": 1,
 	"SemanaUTC": "SI",
 	"Subtitulo3": "-------------- RUTINAS HORARIAS ---------------",
 	"MotivoHorarias1": "Solución de errores con impacto en el usuario y no maduros",
@@ -43,7 +43,7 @@
 		"revisaCorrigeAprobadoConAvatarLink": "SI",
 		"revisaCorrigeRclv_idEnCapsSiLaColeTieneUnValor": "SI",
 		"revisaCorrigeRclvsSinEpocaPSTyConAno": "SI",
-		"eliminaImagenesSinRegistro": "SI",
+		"eliminaImagenesSinRegistroEnBd": "SI",
 		"eliminaMisConsultasExcedente": "SI",
 		"eliminaCalifsSinPPP": "SI",
 		"eliminaRegsDelHistStatus": "SI",
@@ -51,10 +51,10 @@
 	},
 	"Subtitulo6": "------------ IMAGEN DERECHA -------------------",
 	"ImagenesDerecha": {
-		"03-ene-25": {"leyenda": "Estamos en época de Navidad", "entidad": "epocasDelAno", "id": 26},
 		"04-ene-25": {"leyenda": "Hoy recordamos a santa Elizabeth Ann Seton", "entidad": "personajes", "id": 130},
 		"05-ene-25": {"leyenda": "Estamos en época de Navidad", "entidad": "epocasDelAno", "id": 26},
-		"06-ene-25": {"leyenda": "Estamos en época de Navidad", "entidad": "epocasDelAno", "id": 26},
-		"07-ene-25": {}
+		"06-ene-25": {"leyenda": "Hoy recordamos la Epifanía del Señor a los Reyes Magos", "entidad": "eventos", "id": 31},
+		"07-ene-25": {},
+		"08-ene-25": {}
 	}
 }

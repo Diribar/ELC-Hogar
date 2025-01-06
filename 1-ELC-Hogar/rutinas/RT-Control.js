@@ -688,10 +688,9 @@ module.exports = {
 		},
 
 		// Rutinas semanales - Eliminaciones de mantenimiento
-		eliminaImagenesSinRegistro: async () => {
+		eliminaImagenesSinRegistroEnBd: async () => {
 			// Variables
 			const statusDistintoCreado_id = statusRegistros.filter((n) => n.id != creado_id).map((n) => n.id);
-			const statusCualquiera_id = {[Op.ne]: null};
 
 			const objetos = [
 				// Carpetas REVISAR
@@ -703,11 +702,11 @@ module.exports = {
 				{carpeta: "3-RCLVs/Final", familias: "rclvs", status_id: statusDistintoCreado_id},
 
 				// Carpetas USUARIOS
-				{carpeta: "1-Usuarios", familias: "usuarios", status_id: statusCualquiera_id},
+				{carpeta: "1-Usuarios", familias: "usuarios"},
 			];
 
 			// Elimina las imágenes de las carpetas "Revisar" y "Final"
-			for (let objeto of objetos) await procesos.eliminaImagenesSinRegistro(objeto);
+			for (let objeto of objetos) await comp.gestionArchivos.eliminaImagenesSinRegistroEnBd(objeto);
 
 			// Elimina las imágenes de "Provisorio"
 			procesos.eliminaImagenesProvisorio();

@@ -51,6 +51,7 @@ module.exports = {
 			const {id} = req.query;
 			const include = entidad == "colecciones" ? "capitulos" : "";
 			const original = await baseDeDatos.obtienePorId(entidad, id, include);
+			const familias = comp.obtieneDesdeEntidad.familias(entidad);
 
 			// Elimina sus registros dependientes
 			await procesos.elimina.dependientes(entidad, id);
@@ -60,6 +61,13 @@ module.exports = {
 
 			// Elimina registros vinculados (no dependientes)
 			for (let tabla of eliminarCuandoSinEntidadId) baseDeDatos.eliminaPorCondicion(tabla, {entidad, entidad_id: id});
+
+			// Elimina avatars
+			if (["productos", "rclvs"].includes(familias)) {
+				const carpeta = (familias == "productos" ? "2-Productos" : "3-RCLVs") + "/Final";
+				const status_id = statusRegistros.filter((n) => n.id != creado_id).map((n) => n.id); // no necesita tomar en cuenta los que están en status 'creado'
+				comp.gestionArchivos.eliminaImagenesSinRegistroEnBd({carpeta, familias, status_id}); // no hace falta el 'await', porque no impacta en procesos posteriores
+			}
 
 			// Variables para la vista
 			const nombre = comp.nombresPosibles(original);
