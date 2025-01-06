@@ -231,7 +231,7 @@ module.exports = {
 		],
 		startsWith: [
 			// Institucional
-			["/institucional/contactanos", "contactanos", iconos.instituc, iconos.mail],
+			["/institucional/contactanos", "contactanos", iconos.mail],
 			["/institucional", "institucional", iconos.instituc],
 
 			// Familia

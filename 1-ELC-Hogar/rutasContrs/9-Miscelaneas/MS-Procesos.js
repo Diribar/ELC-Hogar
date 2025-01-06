@@ -457,11 +457,11 @@ const FN_navegsDia = {
 		// Obtiene los iconos por familia
 		for (let familia of familiaRutas) {
 			// Obtiene los regsCliente con ese ícono
-			const registrosDeFamilia = regsCliente.filter((n) => n.iconosArray[0].includes(iconos[familia]));
+			const registrosDeFamilia = regsCliente.filter((n) => n.iconosArray[0].includes(familia));
 			if (!registrosDeFamilia.length) continue;
 
 			// Descarta del general, los registros que ya se eligieron
-			regsCliente = regsCliente.filter((n) => !n.iconosArray[0].includes(iconos[familia]));
+			regsCliente = regsCliente.filter((n) => !n.iconosArray[0].includes(familia));
 
 			// Obtiene el ícono principal
 			const iconoFamilia = registrosDeFamilia[0].iconosArray[0];
