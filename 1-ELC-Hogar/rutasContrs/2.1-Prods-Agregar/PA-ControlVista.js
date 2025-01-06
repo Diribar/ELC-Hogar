@@ -521,6 +521,8 @@ module.exports = {
 		},
 	},
 };
+
+// Fórmulas
 const accionesParaCapitulosIMFA = async (datos, req, res) => {
 	// Compara su temporada vs la cant. de temps. en la colección
 	const coleccion = await baseDeDatos.obtienePorId("colecciones", datos.coleccion_id);
