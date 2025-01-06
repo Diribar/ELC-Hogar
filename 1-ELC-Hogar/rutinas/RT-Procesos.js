@@ -789,36 +789,6 @@ module.exports = {
 		return;
 	},
 	sumaUnDia: (fecha) => comp.fechaHora.anoMesDia(new Date(fecha).getTime() + unDia),
-	eliminaRegsSinEntidad_id: async () => {
-		// Variables
-		const entidades = [...variables.entidades.todos, "usuarios"];
-		let idsPorEntidad = {};
-		let aux = [];
-
-		// Obtiene los registros por entidad
-		for (let entidad of entidades) aux.push(baseDeDatos.obtieneTodos(entidad).then((n) => n.map((m) => m.id)));
-		aux = await Promise.all(aux);
-		entidades.forEach((entidad, i) => (idsPorEntidad[entidad] = aux[i])); // obtiene un objeto de ids por entidad
-
-		// Elimina historial
-		for (let tabla of eliminarCuandoSinEntidadId) {
-			// Obtiene los registros de historial, para analizar si corresponde eliminar alguno
-			const regsHistorial = await baseDeDatos.obtieneTodos(tabla);
-
-			// Si no encuentra la "entidad + id", elimina el registro
-			for (let regHistorial of regsHistorial)
-				if (
-					!regHistorial.entidad || // no existe la entidad
-					!entidades.includes(regHistorial.entidad) || // entidad desconocida
-					!regHistorial.entidad_id || // no existe la entidad_id
-					!idsPorEntidad[regHistorial.entidad].includes(regHistorial.entidad_id) // no existe la combinacion de entidad + entidad_id
-				)
-					baseDeDatos.eliminaPorId(tabla, regHistorial.id);
-		}
-
-		// Fin
-		return;
-	},
 };
 
 // Variables

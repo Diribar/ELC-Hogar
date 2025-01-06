@@ -24,7 +24,7 @@ main .cartelCentro {
 				li {font-size: 1.15rem; margin-top: 3px;}
 			}
 			& em {color: snow;}
-			& i {
+			& > i {
 				font-size: 1rem; line-height: normal; margin-right: 10px;
 				&.fa-circle {border: solid 1px transparent;}
 				&.fa-solid.fa-circle {color: var(--amarillo-oscuro);}

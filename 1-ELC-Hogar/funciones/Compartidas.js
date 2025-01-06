@@ -958,8 +958,9 @@ module.exports = {
 			if (entEdic) avatars.push(FN_eliminaImagenesSinRegistro.obtieneNombresDeAvatarEnBD({entidad: entEdic}));
 
 			// Revisa los avatars que están en los originales
-			for (let entidad of variables.entidades[petitFamilias])
-				avatars.push(FN_eliminaImagenesSinRegistro.obtieneNombresDeAvatarEnBD({entidad, status_id}));
+			if (status_id || familias == "usuarios")
+				for (let entidad of variables.entidades[petitFamilias])
+					avatars.push(FN_eliminaImagenesSinRegistro.obtieneNombresDeAvatarEnBD({entidad, status_id}));
 
 			// Consolida los resultados
 			avatars = await Promise.all(avatars).then((n) => n.flat());

@@ -338,8 +338,35 @@ module.exports = {
 			const condicion = {statusRegistro_id: inactivo_id, statusSugeridoEn: {[Op.lt]: fechaDeCorte}};
 			await baseDeDatos.eliminaPorCondicion("links", condicion);
 
-			// Elimina registros sin entidad_id
-			await procesos.eliminaRegsSinEntidad_id();
+			// Fin
+			return;
+		},
+		eliminaRegsSinEntidadId: async () => {
+			// Variables
+			const entidades = [...variables.entidades.todos, "usuarios"];
+			let idsPorEntidad = {};
+			let aux = [];
+
+			// Obtiene los registros por entidad
+			for (let entidad of entidades) aux.push(baseDeDatos.obtieneTodos(entidad).then((n) => n.map((m) => m.id)));
+			aux = await Promise.all(aux);
+			entidades.forEach((entidad, i) => (idsPorEntidad[entidad] = aux[i])); // obtiene un objeto de ids por entidad
+
+			// Elimina historial
+			for (let tabla of eliminarCuandoSinEntidadId) {
+				// Obtiene los registros de historial, para analizar si corresponde eliminar alguno
+				const regsHistorial = await baseDeDatos.obtieneTodos(tabla);
+
+				// Si no encuentra la "entidad + id", elimina el registro
+				for (let regHistorial of regsHistorial)
+					if (
+						!regHistorial.entidad || // no existe la entidad
+						!entidades.includes(regHistorial.entidad) || // entidad desconocida
+						!regHistorial.entidad_id || // no existe la entidad_id
+						!idsPorEntidad[regHistorial.entidad].includes(regHistorial.entidad_id) // no existe la combinacion de entidad + entidad_id
+					)
+						baseDeDatos.eliminaPorId(tabla, regHistorial.id);
+			}
 
 			// Fin
 			return;
@@ -691,7 +718,6 @@ module.exports = {
 		eliminaImagenesSinRegistroEnBd: async () => {
 			// Variables
 			const statusDistintoCreado_id = statusRegistros.filter((n) => n.id != creado_id).map((n) => n.id);
-
 			const objetos = [
 				// Carpetas REVISAR
 				{carpeta: "2-Productos/Revisar", familias: "productos", entEdic: "prodsEdicion"}, // para los prods, sólo pueden estar en 'Edición'
