@@ -17,11 +17,11 @@ module.exports = async (req, res, next) => {
 	// Prepara los mensajes y el ícono
 	const mensajes = [
 		"¡Bienvenido/a a nuestro sitio gratuito de <em>Recomendación de Películas</em>!",
-		"Queremos ayudarte a resolver el típico problema de:<ul><li><em>No sé qué película ver</em></li><li><em>Quiero ver una película que me deje algo bueno</em></li></ul>",
+		//"Queremos ayudarte a resolver el típico problema de:<ul><li><em>No sé qué película ver</em></li><li><em>Quiero ver una película que me deje algo bueno</em></li></ul>",
 		"Acá te ayudamos a elegir una película con valores afines a la Fe Católica Apostólica Romana, y te derivamos a dónde verla.",
 		"Intentamos tener en catálogo todas las películas que existan con ese perfil. Si nos falta alguna, nos la podés agregar creándote un usuario.",
 		"Usamos cookies para que tengas una mejor experiencia de navegación.",
-		"Para avanzar, apretá el ícono de <em>entendido</em> que está a continuación.",
+		"Para avanzar, apretá el ícono <em><i class='fa-solid fa-thumbs-up'></i></em> que está a continuación.",
 	];
 	const icono = {...variables.vistaEntendido(req.session.urlActual), autofocus: true};
 
