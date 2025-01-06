@@ -14,7 +14,7 @@ module.exports = {
 			const titulo = "Agregar - Palabras Clave";
 
 			// Obtiene el Data Entry de session y cookies
-			const {palabrasClave} = req.session.palabrasClave ? req.session : req.cookies;
+			const palabrasClave = req.session.palabrasClave || req.cookies.palabrasClave;
 
 			// Variables para la vista
 			const mensajesAyuda = [
@@ -65,7 +65,7 @@ module.exports = {
 		const titulo = "Agregar - Desambiguar";
 
 		// Obtiene la palabraClave
-		const {desambiguar: palabrasClave} = req.session.desambiguar ? req.session : req.cookies;
+		const palabrasClave = req.session.desambiguar || req.cookies.desambiguar;
 
 		// Se asegura de que exista el session
 		if (!req.session.desambiguar) req.session.desambiguar = palabrasClave;
@@ -84,7 +84,7 @@ module.exports = {
 			const titulo = "Agregar - Datos Duros";
 
 			// Obtiene el Data Entry de session y cookies
-			const {datosDuros} = req.session.datosDuros ? req.session : req.cookies;
+			const datosDuros = req.session.datosDuros || req.cookies.datosDuros;
 
 			// Acciones si existe un valor para el campo 'avatar'
 			if (datosDuros.avatar) {
@@ -129,7 +129,7 @@ module.exports = {
 		},
 		guardar: async (req, res) => {
 			// Actualiza datosDuros con la info ingresada. Si se ingresa manualmente un avatar, no lo incluye
-			let datosDuros = req.session.datosDuros ? req.session.datosDuros : req.cookies.datosDuros;
+			let datosDuros = req.session.datosDuros || req.cookies.datosDuros;
 
 			// Acciones si existe un archivo avatar ingresado anteriormente y ahora se ingresó otro
 			if (datosDuros.avatar && req.file) {
@@ -145,7 +145,7 @@ module.exports = {
 				if (!datosDuros[prop]) delete datosDuros[prop];
 				else if (typeof datosDuros[prop] == "string") datosDuros[prop] = datosDuros[prop].trim();
 
-			// Acciones si se ingresó un archivo de imagen (IM)
+			// Acciones si se ingresó un archivo de imagen (ej: IM)
 			if (req.file) {
 				// Obtiene la información sobre el avatar
 				datosDuros.avatar = req.file.filename;
@@ -169,17 +169,18 @@ module.exports = {
 			req.session.datosAdics = datosAdics;
 			res.cookie("datosAdics", datosAdics, {maxAge: unDia});
 
-			// Guarda session y cookie de Datos Originales
+			// Campos que se agregan a los Datos Originales - nombreOriginal, nombreCastellano, anoEstreno, epocaEstreno_id, sinopsis
 			if (datosDuros.fuente == "IM" || datosDuros.fuente == "FA") {
-				// Variables
+				// Variables - campos que se agregan (no se agrega el avatar)
 				const {nombreOriginal, nombreCastellano, anoEstreno, sinopsis} = datosDuros;
 				const epocaEstreno_id = epocasEstreno.find((n) => n.desde <= Number(anoEstreno)).id; // se debe agregar en el original
-				let datosOriginales = req.session.datosOriginales ? req.session.datosOriginales : req.cookies.datosOriginales;
 
 				// Se consolida la información
+				let datosOriginales = req.session.datosOriginales || req.cookies.datosOriginales;
 				datosOriginales = {...datosOriginales, nombreOriginal, nombreCastellano, anoEstreno, epocaEstreno_id, sinopsis}; // No se guarda nada en el avatar, para revisarlo en Revisión
 
 				// Se guarda la cookie
+				req.session.datosOriginales = datosOriginales;
 				res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
 			}
 
@@ -196,7 +197,7 @@ module.exports = {
 			const usuario_id = req.session.usuario.id;
 
 			// Prepara variables para la vista
-			const {datosAdics} = req.session.datosAdics ? req.session : req.cookies;
+			const datosAdics = req.session.datosAdics || req.cookies.datosAdics;
 			const camposDA = await variables.camposDA_conValores(usuario_id);
 			const camposChkBox = camposDA.filter((n) => n.chkBox && (!n.exclusivo || n.exclusivo.includes(datosAdics.entidad)));
 			const camposDE = Object.keys(datosAdics);
@@ -218,7 +219,7 @@ module.exports = {
 		},
 		guardar: async (req, res) => {
 			// Obtiene el Data Entry de session y cookies
-			let datosAdics = req.session.datosAdics ? req.session.datosAdics : req.cookies.datosAdics;
+			let datosAdics = req.session.datosAdics || req.cookies.datosAdics;
 
 			// Obtiene los datosAdics
 			delete datosAdics.sinRclv;
@@ -264,7 +265,7 @@ module.exports = {
 			let maximo;
 
 			// Obtiene el Data Entry de session y cookies
-			let {confirma} = req.session.confirma ? req.session : req.cookies;
+			const confirma = req.session.confirma || req.cookies.confirma;
 
 			// Datos de la producción
 			maximo = 50;
@@ -297,7 +298,7 @@ module.exports = {
 			const usuario_id = req.session.usuario.id;
 
 			// Obtiene el Data Entry de session y cookies
-			const {confirma} = req.session.confirma ? req.session : req.cookies;
+			const confirma = req.session.confirma || req.cookies.confirma;
 			const entidad = confirma.entidad;
 
 			// Si se eligió algún rclv que no existe, vuelve a la instancia anterior
@@ -355,7 +356,7 @@ module.exports = {
 		const codigo = "terminaste";
 		const titulo = "Agregar - Terminaste";
 		const usuario_id = req.session.usuario.id;
-		const {terminaste} = req.session.terminaste ? req.session : req.cookies;
+		const terminaste = req.session.terminaste || req.cookies.terminaste;
 
 		// Elimina todas las sessions y cookies del proceso
 		procesos.borraSessionCookies(req, res, "borrarTodo");
@@ -513,7 +514,7 @@ module.exports = {
 
 			// Actualiza datosOriginales con FA_id
 			const FA_id = datosDuros.FA_id;
-			const datosOriginales = {...req.cookies.datosOriginales, FA_id};
+			const datosOriginales = {...req.cookies.datosOriginales, FA_id}; // no se incluye el campo 'avatarUrl'
 			res.cookie("datosOriginales", datosOriginales, {maxAge: unDia});
 
 			// Redirecciona a la siguiente instancia
