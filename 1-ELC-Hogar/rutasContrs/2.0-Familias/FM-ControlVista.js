@@ -65,8 +65,8 @@ module.exports = {
 			// Elimina avatars
 			if (["productos", "rclvs"].includes(familias)) {
 				const carpeta = (familias == "productos" ? "2-Productos" : "3-RCLVs") + "/Final";
-				const status_id = statusRegistros.filter((n) => n.id != creado_id).map((n) => n.id);
-				comp.gestionArchivos.eliminaImagenesSinRegistro({carpeta, familias, status_id}); // no hace falta el 'await', porque no impacta en procesos posteriores
+				const status_id = statusRegistros.filter((n) => n.id != creado_id).map((n) => n.id); // no necesita tomar en cuenta los que están en status 'creado'
+				comp.gestionArchivos.eliminaImagenesSinRegistroEnBd({carpeta, familias, status_id}); // no hace falta el 'await', porque no impacta en procesos posteriores
 			}
 
 			// Variables para la vista

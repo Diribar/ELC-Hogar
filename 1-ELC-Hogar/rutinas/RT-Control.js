@@ -688,7 +688,7 @@ module.exports = {
 		},
 
 		// Rutinas semanales - Eliminaciones de mantenimiento
-		eliminaImagenesSinRegistro: async () => {
+		eliminaImagenesSinRegistroEnBd: async () => {
 			// Variables
 			const statusDistintoCreado_id = statusRegistros.filter((n) => n.id != creado_id).map((n) => n.id);
 
@@ -706,7 +706,7 @@ module.exports = {
 			];
 
 			// Elimina las imágenes de las carpetas "Revisar" y "Final"
-			for (let objeto of objetos) await comp.gestionArchivos.eliminaImagenesSinRegistro(objeto);
+			for (let objeto of objetos) await comp.gestionArchivos.eliminaImagenesSinRegistroEnBd(objeto);
 
 			// Elimina las imágenes de "Provisorio"
 			procesos.eliminaImagenesProvisorio();

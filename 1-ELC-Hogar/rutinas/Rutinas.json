@@ -43,7 +43,7 @@
 		"revisaCorrigeAprobadoConAvatarLink": "SI",
 		"revisaCorrigeRclv_idEnCapsSiLaColeTieneUnValor": "SI",
 		"revisaCorrigeRclvsSinEpocaPSTyConAno": "SI",
-		"eliminaImagenesSinRegistro": "SI",
+		"eliminaImagenesSinRegistroEnBd": "SI",
 		"eliminaMisConsultasExcedente": "SI",
 		"eliminaCalifsSinPPP": "SI",
 		"eliminaRegsDelHistStatus": "SI",

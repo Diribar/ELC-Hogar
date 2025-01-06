@@ -949,7 +949,7 @@ module.exports = {
 			// Fin
 			return imagenAlAzar;
 		},
-		eliminaImagenesSinRegistro: async ({carpeta, familias, entEdic, status_id}) => {
+		eliminaImagenesSinRegistroEnBd: async ({carpeta, familias, entEdic, status_id}) => {
 			// Variables
 			const petitFamilias = familias == "productos" ? "prods" : familias;
 			let avatars = [];
