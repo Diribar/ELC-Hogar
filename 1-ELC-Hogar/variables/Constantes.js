@@ -201,7 +201,7 @@ module.exports = {
 		{descripcion: "Comentario sobre una película", codigo: "producto"},
 		{descripcion: "Otro motivo", codigo: "varios"},
 	],
-	eliminarCuandoSinEntidadId: ["statusHistorial", "edicsHistorial", "misConsultas", "pppRegistros", "calRegistros"],
+	eliminarCuandoSinEntidadId: ["statusHistorial", "edicsHistorial", "misConsultas", "pppRegistros", "calRegistros", "capturas"],
 	requestsTriviales: ["WhatsApp", "Postman", "TelegramBot", "TwitterBot", "Zabbix"], // evita que se cuenten como visitas
 	requestsClientes: {
 		"MB-Ch125":
